@@ -4,3 +4,9 @@ C:\Users\Drew\Desktop\Brogue\Brogue\Brogue\Brogue\obj\x86\Debug\Brogue.csprojRes
 C:\Users\Drew\Desktop\Brogue\Brogue\Brogue\Brogue\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
 C:\Users\Drew\Desktop\Brogue\Brogue\Brogue\Brogue\obj\x86\Debug\Brogue.exe
 C:\Users\Drew\Desktop\Brogue\Brogue\Brogue\Brogue\obj\x86\Debug\Brogue.pdb
+C:\Users\Jon\Desktop\C# Project\Brogue\Brogue\Brogue\bin\x86\Debug\Brogue.exe
+C:\Users\Jon\Desktop\C# Project\Brogue\Brogue\Brogue\bin\x86\Debug\Brogue.pdb
+C:\Users\Jon\Desktop\C# Project\Brogue\Brogue\Brogue\obj\x86\Debug\Brogue.csprojResolveAssemblyReference.cache
+C:\Users\Jon\Desktop\C# Project\Brogue\Brogue\Brogue\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
+C:\Users\Jon\Desktop\C# Project\Brogue\Brogue\Brogue\obj\x86\Debug\Brogue.exe
+C:\Users\Jon\Desktop\C# Project\Brogue\Brogue\Brogue\obj\x86\Debug\Brogue.pdb
