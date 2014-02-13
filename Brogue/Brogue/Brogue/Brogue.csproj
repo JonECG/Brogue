@@ -72,6 +72,7 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EnviromentObjects\Interactive\Door.cs" />
     <Compile Include="JonTest.cs" />
     <Compile Include="Enemy.cs" />
     <Compile Include="GameCharacter.cs" />
@@ -118,7 +119,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="EnviromentObjects\" />
+    <Folder Include="EnviromentObjects\Decorative\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
