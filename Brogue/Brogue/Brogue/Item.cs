@@ -7,5 +7,6 @@ namespace Brogue
 {
     abstract class Item
     {
+
     }
 }
