@@ -7,8 +7,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Jon\Desktop\C# Project\Brogue\Brogue\Brogue\bin\x86\Debug\Content\levelTileset.xnb</Output>
-      <Time>2014-02-13T00:49:06.0904014-07:00</Time>
+      <Output>C:\School Work\Dot Net Projects\Brogue Shadow Warrior II Brogue Harder\Brogue\Brogue\Brogue\bin\x86\Debug\Content\levelTileset.xnb</Output>
+      <Time>2014-02-13T09:10:02.6849524-07:00</Time>
     </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>
@@ -17,10 +17,10 @@
       <TargetProfile>Reach</TargetProfile>
       <BuildConfiguration>Debug</BuildConfiguration>
       <CompressContent>false</CompressContent>
-      <RootDirectory>C:\Users\Jon\Desktop\C# Project\Brogue\Brogue\BrogueContent\</RootDirectory>
-      <LoggerRootDirectory>C:\Users\Jon\Desktop\C# Project\Brogue\Brogue\Brogue\</LoggerRootDirectory>
-      <IntermediateDirectory>C:\Users\Jon\Desktop\C# Project\Brogue\Brogue\Brogue\obj\x86\Debug\</IntermediateDirectory>
-      <OutputDirectory>C:\Users\Jon\Desktop\C# Project\Brogue\Brogue\Brogue\bin\x86\Debug\Content\</OutputDirectory>
+      <RootDirectory>C:\School Work\Dot Net Projects\Brogue Shadow Warrior II Brogue Harder\Brogue\Brogue\BrogueContent\</RootDirectory>
+      <LoggerRootDirectory>C:\School Work\Dot Net Projects\Brogue Shadow Warrior II Brogue Harder\Brogue\Brogue\Brogue\</LoggerRootDirectory>
+      <IntermediateDirectory>C:\School Work\Dot Net Projects\Brogue Shadow Warrior II Brogue Harder\Brogue\Brogue\Brogue\obj\x86\Debug\</IntermediateDirectory>
+      <OutputDirectory>C:\School Work\Dot Net Projects\Brogue Shadow Warrior II Brogue Harder\Brogue\Brogue\Brogue\bin\x86\Debug\Content\</OutputDirectory>
     </Settings>
     <Assemblies>
       <Assembly>
@@ -49,7 +49,7 @@
       </Assembly>
       <Assembly>
         <Key>C:\Windows\Microsoft.Net\assembly\GAC_32\Microsoft.Xna.Framework.Content.Pipeline\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.Content.Pipeline.dll</Key>
-        <Value>2014-02-12T10:37:43.8729839-07:00</Value>
+        <Value>2014-02-12T10:10:42.5841377-07:00</Value>
       </Assembly>
     </Assemblies>
   </Asset>
