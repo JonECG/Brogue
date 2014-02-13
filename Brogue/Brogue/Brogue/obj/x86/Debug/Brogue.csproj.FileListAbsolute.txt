@@ -5,6 +5,16 @@ C:\Users\Drew\Desktop\Brogue\Brogue\Brogue\Brogue\obj\x86\Debug\Microsoft.Xna.Fr
 C:\Users\Drew\Desktop\Brogue\Brogue\Brogue\Brogue\obj\x86\Debug\Brogue.exe
 C:\Users\Drew\Desktop\Brogue\Brogue\Brogue\Brogue\obj\x86\Debug\Brogue.pdb
 <<<<<<< .mine
+<<<<<<< .mine
+C:\Users\bauxer\Documents\Neumont\Application Development Lab\Brogue Shadow Warrior II Brogue Harder\Brogue\Brogue\Brogue\bin\x86\Debug\Brogue.exe
+C:\Users\bauxer\Documents\Neumont\Application Development Lab\Brogue Shadow Warrior II Brogue Harder\Brogue\Brogue\Brogue\bin\x86\Debug\Brogue.pdb
+C:\Users\bauxer\Documents\Neumont\Application Development Lab\Brogue Shadow Warrior II Brogue Harder\Brogue\Brogue\Brogue\obj\x86\Debug\Brogue.csprojResolveAssemblyReference.cache
+C:\Users\bauxer\Documents\Neumont\Application Development Lab\Brogue Shadow Warrior II Brogue Harder\Brogue\Brogue\Brogue\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
+C:\Users\bauxer\Documents\Neumont\Application Development Lab\Brogue Shadow Warrior II Brogue Harder\Brogue\Brogue\Brogue\obj\x86\Debug\Brogue.exe
+C:\Users\bauxer\Documents\Neumont\Application Development Lab\Brogue Shadow Warrior II Brogue Harder\Brogue\Brogue\Brogue\obj\x86\Debug\Brogue.pdb
+=======
+=======
+<<<<<<< .mine
 C:\School Work\Dot Net Projects\Brogue Shadow Warrior II Brogue Harder\Brogue\Brogue\Brogue\bin\x86\Debug\Brogue.exe
 C:\School Work\Dot Net Projects\Brogue Shadow Warrior II Brogue Harder\Brogue\Brogue\Brogue\bin\x86\Debug\Brogue.pdb
 C:\School Work\Dot Net Projects\Brogue Shadow Warrior II Brogue Harder\Brogue\Brogue\Brogue\obj\x86\Debug\Brogue.csprojResolveAssemblyReference.cache
@@ -12,6 +22,7 @@ C:\School Work\Dot Net Projects\Brogue Shadow Warrior II Brogue Harder\Brogue\Br
 C:\School Work\Dot Net Projects\Brogue Shadow Warrior II Brogue Harder\Brogue\Brogue\Brogue\obj\x86\Debug\Brogue.exe
 C:\School Work\Dot Net Projects\Brogue Shadow Warrior II Brogue Harder\Brogue\Brogue\Brogue\obj\x86\Debug\Brogue.pdb
 =======
+>>>>>>> .r10
 C:\Users\Jon\Desktop\C# Project\Brogue\Brogue\Brogue\bin\x86\Debug\Brogue.exe
 C:\Users\Jon\Desktop\C# Project\Brogue\Brogue\Brogue\bin\x86\Debug\Brogue.pdb
 C:\Users\Jon\Desktop\C# Project\Brogue\Brogue\Brogue\obj\x86\Debug\Brogue.csprojResolveAssemblyReference.cache
@@ -19,5 +30,9 @@ C:\Users\Jon\Desktop\C# Project\Brogue\Brogue\Brogue\obj\x86\Debug\Microsoft.Xna
 C:\Users\Jon\Desktop\C# Project\Brogue\Brogue\Brogue\obj\x86\Debug\Brogue.exe
 C:\Users\Jon\Desktop\C# Project\Brogue\Brogue\Brogue\obj\x86\Debug\Brogue.pdb
 C:\Users\Jon\Desktop\C# Project\Brogue\Brogue\Brogue\bin\x86\Debug\Content\levelTileset.xnb
+<<<<<<< .mine
+>>>>>>> .r8
+=======
 >>>>>>> .r8
 C:\School Work\Dot Net Projects\Brogue Shadow Warrior II Brogue Harder\Brogue\Brogue\Brogue\bin\x86\Debug\Content\levelTileset.xnb
+>>>>>>> .r10
