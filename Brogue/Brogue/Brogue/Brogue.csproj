@@ -73,16 +73,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EnviromentObjects\Interactive\Door.cs" />
-    <Compile Include="JonTest.cs" />
+    <Compile Include="TestCases\JonTest.cs" />
     <Compile Include="Enemy.cs" />
     <Compile Include="GameCharacter.cs" />
     <Compile Include="IRenderable.cs" />
     <Compile Include="Item.cs" />
-    <Compile Include="Level.cs" />
+    <Compile Include="Mapping\Level.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />
-    <Compile Include="Tile.cs" />
+    <Compile Include="Mapping\Tile.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

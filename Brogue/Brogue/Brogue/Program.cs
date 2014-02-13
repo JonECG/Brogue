@@ -1,3 +1,4 @@
+using Brogue.TestCases;
 using System;
 
 namespace Brogue
