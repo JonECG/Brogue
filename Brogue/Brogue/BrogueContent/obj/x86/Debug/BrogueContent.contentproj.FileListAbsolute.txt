@@ -1,5 +1,0 @@
-<<<<<<< .mine
-C:\Users\bauxer\Documents\Neumont\Application Development Lab\Brogue Shadow Warrior II Brogue Harder\Brogue\Brogue\BrogueContent\obj\x86\Debug\BrogueContent.contentprojResolveAssemblyReference.cache
-=======
-C:\School Work\Dot Net Projects\Brogue Shadow Warrior II Brogue Harder\Brogue\Brogue\BrogueContent\obj\x86\Debug\BrogueContent.contentprojResolveAssemblyReference.cache
->>>>>>> .r10
