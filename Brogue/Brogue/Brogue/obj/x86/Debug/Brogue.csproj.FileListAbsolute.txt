@@ -10,3 +10,4 @@ C:\Users\Jon\Desktop\C# Project\Brogue\Brogue\Brogue\obj\x86\Debug\Brogue.csproj
 C:\Users\Jon\Desktop\C# Project\Brogue\Brogue\Brogue\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
 C:\Users\Jon\Desktop\C# Project\Brogue\Brogue\Brogue\obj\x86\Debug\Brogue.exe
 C:\Users\Jon\Desktop\C# Project\Brogue\Brogue\Brogue\obj\x86\Debug\Brogue.pdb
+C:\Users\Jon\Desktop\C# Project\Brogue\Brogue\Brogue\bin\x86\Debug\Content\levelTileset.xnb

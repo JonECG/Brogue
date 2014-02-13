@@ -10,7 +10,12 @@ namespace Brogue
         /// </summary>
         static void Main(string[] args)
         {
-            using (Game1 game = new Game1())
+            //using (Game1 game = new Game1())
+            //{
+            //    game.Run();
+            //}
+
+            using (JonTest game = new JonTest())
             {
                 game.Run();
             }

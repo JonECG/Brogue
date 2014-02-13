@@ -1,7 +1,8 @@
-﻿namespace Brogue
+﻿using Microsoft.Xna.Framework.Graphics;
+namespace Brogue
 {
     interface IRenderable
     {
-        void render();
+        void render( SpriteBatch sb );
     }
 }
