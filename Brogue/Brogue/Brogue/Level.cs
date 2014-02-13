@@ -18,6 +18,11 @@ namespace Brogue
         public static Level generate(int seed, int levels)
         {
             Random rand = new Random(seed);
+
+            //bool[,] module = createModule(rand, levels);
+
+
+            
             const int PADDING = 4;
 
             int maxPlayGround = 1500;
@@ -70,13 +75,24 @@ namespace Brogue
                     }
                 }
 
+                bool[,] section = new bool[roomWidth + 3, roomHeight + 3];
+                for (int x = 0; x < roomWidth + 3; x++)
+                {
+                    for (int y = 0; y < roomHeight + 3; y++)
+                    {
+                        section[x, y] = playGround[x - anchorX + targetX - 1, y - anchorY + targetY - 1];
+                    }
+                }
+
                 
 
                 for( int i = 0; i < edges.Length; i++ )
                 {
                     Vector2 vec = edges[(i + startingIndex) % edges.Length];
+                    int x = (int)vec.X;
+                    int y = (int)vec.Y;
 
-                    waitingForDoor = previousWasEmpty && playGround[(int)vec.X, (int)vec.Y];
+                    waitingForDoor = previousWasEmpty && playGround[x,y];
 
                     bool newSolid;
                     if (waitingForDoor && previousWasEmpty && !corners.Contains( vec ) )
@@ -87,12 +103,25 @@ namespace Brogue
                     else
                     {
                         newSolid = false;
+
+                        for (int w = -1; w <= 1; w++)
+                        {
+                            for (int h = -1; h <= 1; h++)
+                            {
+                                if (w != 0 || h != 0)
+                                    newSolid = newSolid || (!section[x + w - targetX + anchorX + 1, y + h - targetY + anchorY + 1]);
+                            }
+                        }
+
+                        newSolid = (newSolid) ? playGround[x, y] : false;
+
+                        //newSolid = ( (!playGround[x - 1, y]) || (!playGround[x + 1, y]) || (!playGround[x, y - 1]) || (!playGround[x, y + 1]) ) ? playGround[x,y] : false;
                     }
                     
                      
-                    previousWasEmpty = !playGround[(int)vec.X, (int)vec.Y];
+                    previousWasEmpty = !playGround[x,y];
                     
-                    playGround[(int)vec.X, (int)vec.Y] = newSolid;
+                    playGround[x,y] = newSolid;
                 }
 
                 left = Math.Min(left, targetX - anchorX);
@@ -105,33 +134,33 @@ namespace Brogue
             }
 
             //Widen single areas
-            bool[,] copy = new bool[playGround.GetLength(0), playGround.GetLength(1)];
-            for (int x = 0; x < copy.GetLength(0); x++)
-            {
-                for (int y = 0; y < copy.GetLength(1); y++)
-                {
-                    copy[x, y] = playGround[x, y];
-                }
-            }
-            for (int x = left; x < right; x++)
-            {
-                for (int y = bottom; y < top; y++)
-                {
-                    if (copy[x, y])
-                    {
-                        if ( (!copy[x - 1, y] && !copy[x + 1, y]) || (!copy[x, y - 1] && !copy[x, y + 1]) )
-                        {
-                            for (int i = -1; i <= 1; i++)
-                            {
-                                for (int j = -1; j <= 1; j++)
-                                {
-                                    playGround[x + i, y + j] = true;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            //bool[,] copy = new bool[playGround.GetLength(0), playGround.GetLength(1)];
+            //for (int x = 0; x < copy.GetLength(0); x++)
+            //{
+            //    for (int y = 0; y < copy.GetLength(1); y++)
+            //    {
+            //        copy[x, y] = playGround[x, y];
+            //    }
+            //}
+            //for (int x = left; x < right; x++)
+            //{
+            //    for (int y = bottom; y < top; y++)
+            //    {
+            //        if (copy[x, y])
+            //        {
+            //            if ( (!copy[x - 1, y] && !copy[x + 1, y]) || (!copy[x, y - 1] && !copy[x, y + 1]) )
+            //            {
+            //                for (int i = -1; i <= 1; i++)
+            //                {
+            //                    for (int j = -1; j <= 1; j++)
+            //                    {
+            //                        playGround[x + i, y + j] = true;
+            //                    }
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
 
 
             Level result = new Level();

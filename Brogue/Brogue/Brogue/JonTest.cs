@@ -96,7 +96,7 @@ namespace Brogue
             isPressed = Keyboard.GetState().IsKeyDown(Keys.RightControl) || Keyboard.GetState().IsKeyDown(Keys.LeftControl);
             if (isPressed && !wasControlPressed)
             {
-                levels+=10;
+                levels+=1;
                 currentLevel = Level.generate(seed, levels);
             }
             //wasControlPressed = isPressed;
