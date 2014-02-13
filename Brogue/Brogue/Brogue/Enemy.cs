@@ -7,7 +7,8 @@ using System.Text;
 //Jake
 namespace Brogue
 {
-    class Enemy
+    abstract class Enemy : GameCharacter
     {
+
     }
 }
