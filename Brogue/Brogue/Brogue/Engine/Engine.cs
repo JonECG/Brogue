@@ -34,5 +34,9 @@ namespace Brogue.Engine
 
         }
 
+        public static void Draw()
+        {
+            
+        }
     }
 }
