@@ -7,9 +7,10 @@ namespace Brogue
 {
     
 
-    abstract class GameCharacter
+    public abstract class GameCharacter
     {
-		public IntVec position;        abstract public void TakeTurn();
+		public IntVec position;
+        abstract public void TakeTurn();
         public abstract void takeDamage(int damage);
     }
 }
