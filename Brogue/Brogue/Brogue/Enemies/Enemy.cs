@@ -9,10 +9,10 @@ namespace Brogue
     abstract class Enemy : GameCharacter
     {
         protected GameCharacter target;
-        protected int Attack;
-        protected int Defense;
-        protected int Health;
-        protected int MoveSpeed;
+        protected int attack;
+        protected int defense;
+        protected int health;
+        protected int moveSpeed;
 
         public Boolean IsAggro
         {
