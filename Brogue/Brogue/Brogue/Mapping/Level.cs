@@ -24,25 +24,61 @@ namespace Brogue.Mapping
             characterEntities = new List<GameCharacter>();
         }
 
-        private void cache()
+        public bool[,] getSolid()
         {
-            for (int x = 0; x < tiles.GetLength(0); x++)
+            cache();
+            bool[,] result = new bool[cachedSolid.GetLength(0), cachedSolid.GetLength(1)];
+
+            for (int x = 0; x < cachedSolid.GetLength(0); x++)
             {
-                for (int y = 0; y < tiles.GetLength(1); y++)
+                for (int y = 0; y < cachedSolid.GetLength(1); y++)
                 {
-                    cachedSolid[x, y] = tiles[x, y].isSolid;
+                    result[x, y] = cachedSolid[x, y];
                 }
             }
 
-            foreach( GameCharacter character in characterEntities)
+            return result;
+        }
+
+        public int[,] getIntSolid()
+        {
+            cache();
+
+            int[,] result = new int[cachedSolid.GetLength(0), cachedSolid.GetLength(1)];
+
+            for (int x = 0; x < result.GetLength(0); x++)
             {
-                //cachedSolid[character.x, character.y] = true;
+                for (int y = 0; y < result.GetLength(1); y++)
+                {
+                    result[x, y] = (cachedSolid[x, y]) ? int.MaxValue : int.MinValue;
+                }
             }
 
-            //foreach (EnvironmentObject enviro in environment)
-            //{
-            //    cachedSolid[enviro.x, enviro.y] = enviro.isSolid;
-            //}
+            return result;
+        }
+
+        private void cache()
+        {
+            if (needToCache)
+            {
+                for (int x = 0; x < tiles.GetLength(0); x++)
+                {
+                    for (int y = 0; y < tiles.GetLength(1); y++)
+                    {
+                        cachedSolid[x, y] = tiles[x, y].isSolid;
+                    }
+                }
+
+                foreach (GameCharacter character in characterEntities)
+                {
+                    //cachedSolid[character.x, character.y] = true;
+                }
+
+                //foreach (EnvironmentObject enviro in environment)
+                //{
+                //    cachedSolid[enviro.x, enviro.y] = enviro.isSolid;
+                //}
+            }
         }
 
         public bool isSolid(int x, int y)

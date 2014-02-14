@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Brogue.Engine;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -36,6 +37,21 @@ namespace Brogue
         {
             ints[0] = x;
             ints[1] = y;
+        }
+
+        public static implicit operator IntVec(Direction dir)
+        {
+            return new IntVec( dir.X, dir.Y );
+        }
+
+        public static IntVec operator +(IntVec vec1, IntVec vec2)
+        {
+            return new IntVec( vec1.X + vec2.X, vec1.Y + vec2.Y );
+        }
+
+        public static IntVec operator -(IntVec vec1, IntVec vec2)
+        {
+            return new IntVec(vec1.X - vec2.X, vec1.Y - vec2.Y);
         }
     }
 }
