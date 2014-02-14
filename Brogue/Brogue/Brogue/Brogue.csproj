@@ -74,7 +74,7 @@
   <ItemGroup>
     <Compile Include="EnviromentObjects\Interactive\Door.cs" />
     <Compile Include="TestCases\JonTest.cs" />
-    <Compile Include="Enemy.cs" />
+    <Compile Include="Enemies\Enemy.cs" />
     <Compile Include="GameCharacter.cs" />
     <Compile Include="IRenderable.cs" />
     <Compile Include="Item.cs" />
@@ -119,7 +119,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Enemies\" />
     <Folder Include="EnviromentObjects\Decorative\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
