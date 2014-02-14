@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Brogue.Enemies
 {
-    class BossEnemy
+    class BossEnemy : Enemy
     {
     }
 }
