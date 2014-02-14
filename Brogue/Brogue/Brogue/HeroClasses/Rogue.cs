@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Brogue.HeroClasses
 {
-    class Mage : Hero
+    class Rogue : Hero
     {
-        public Mage()
+        public Rogue()
         {
             numAbilities = 2;
             directionFacing = (float)(3 * Math.PI / 2);

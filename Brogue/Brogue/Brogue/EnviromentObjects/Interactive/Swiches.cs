@@ -48,7 +48,7 @@ namespace Brogue.EnviromentObjects.Interactive
             active = false;
         }
 
-        public ~presserPlate()
+        ~presserPlate()
         {
 
         }

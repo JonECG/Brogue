@@ -81,7 +81,9 @@
     <Compile Include="EnviromentObjects\Interactive\Wall.cs" />
     <Compile Include="HeroClasses\Hero.cs" />
     <Compile Include="HeroClasses\Mage.cs" />
+    <Compile Include="HeroClasses\Rogue.cs" />
     <Compile Include="HeroClasses\Warrior.cs" />
+    <Compile Include="IntVec.cs" />
     <Compile Include="Mapping\LevelGenerator.cs" />
     <Compile Include="TestCases\JonTest.cs" />
     <Compile Include="Enemies\Enemy.cs" />

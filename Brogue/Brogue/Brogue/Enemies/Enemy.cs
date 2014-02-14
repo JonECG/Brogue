@@ -26,7 +26,7 @@ namespace Brogue
         //to the level of difficulty the enemy should be. This will also affect drop table choice.
         public abstract void buildEnemy(int i);
 
-        private abstract void die();
+        protected abstract void die();
 
         public override void takeDamage(int damage)
         {
