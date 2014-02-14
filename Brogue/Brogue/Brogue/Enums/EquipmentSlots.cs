@@ -15,6 +15,7 @@ namespace Brogue.Enums
         Finger_Two,
         Necklace,
         Hand_Primary,
-        Hand_Auxillary
+        Hand_Auxillary,
+        Hand_Both
     };
 }

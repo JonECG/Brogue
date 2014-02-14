@@ -5,10 +5,14 @@ using System.Text;
 
 namespace Brogue.Equipment.Weapon.Ranged
 {
-    abstract class RangedWeapon
+    abstract class RangedWeapon : Weapon
     {
-        int damage;
-        int range;
-        Projectile ammo;
+        Random rand = new Random();
+
+        public RangedWeapon()
+        {
+            Range = 3;
+            BaseDamage = rand.Next(2, 8);
+        }
     }
 }

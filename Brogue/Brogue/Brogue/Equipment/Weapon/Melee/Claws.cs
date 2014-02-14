@@ -6,12 +6,12 @@ using Brogue.Enums;
 
 namespace Brogue.Equipment.Weapon.Melee
 {
-    class Sword : MeleeWeapon
+    class Claws : MeleeWeapon
     {
-        Sword(int dungeonLevel)
+        Claws(int dungeonLevel)
         {
-            Name = "Sword";
-            UsedBy = new List<Class> { Class.Warrior, Class.Rogue };
+            Name = "Claws";
+            UsedBy = new List<Class> { Class.Rogue };
             EquipableIn = new List<Slots> { Slots.Hand_Primary, Slots.Hand_Auxillary };
             LevelReq = findLevelReq(dungeonLevel);
             Damage = findDamage(BaseDamage, dungeonLevel, LevelReq);

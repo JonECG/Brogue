@@ -7,9 +7,12 @@ namespace Brogue.Equipment.Weapon.Melee
 {
     abstract class MeleeWeapon : Weapon
     {
+        Random rand = new Random();
+
         public MeleeWeapon()
         {
             Range = 1;
+            BaseDamage = rand.Next(5, 14);
         }
     }
 }
