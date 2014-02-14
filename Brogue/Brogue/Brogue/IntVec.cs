@@ -32,7 +32,7 @@ namespace Brogue
             }
         }
 
-        public GridLocation(int x, int y)
+        public IntVec(int x, int y)
         {
             ints[0] = x;
             ints[1] = y;
