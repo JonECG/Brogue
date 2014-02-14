@@ -8,6 +8,13 @@ namespace Brogue
 {
     abstract class Enemy : GameCharacter
     {
+        private GameCharacter target;
+
+        public Boolean IsAggro
+        {
+            get { return (target != null); }
+        }
+
         //This method will be called each turn to determine who (if anyone) to attack
         public abstract void aggro();
 
