@@ -72,6 +72,10 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enemies\BossEnemy.cs" />
+    <Compile Include="Enemies\MageEnemy.cs" />
+    <Compile Include="Enemies\MeleeEnemy.cs" />
+    <Compile Include="Enemies\RangedEnemy.cs" />
     <Compile Include="Engine\Engine.cs" />
     <Compile Include="EnviromentObjects\Interactive\Chest.cs" />
     <Compile Include="EnviromentObjects\Interactive\Door.cs" />
