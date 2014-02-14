@@ -5,28 +5,45 @@ using System.Text;
 
 namespace Brogue.EnviromentObjects.Interactive
 {
-    class Door
+    class Door : Iinteractable
     {
-       bool isPassable { get; set; }
+       bool isSolid { get; set; }
        bool isOpen { get; set; }
 
        public Door() 
        {
-           isPassable = false;
+           isSolid = false;
            isOpen = false;
        }
 
+<<<<<<< .mine
+       public void changeSolid()
+       {
+           if(isSolid)
+           {
+               isSolid = false;
+           }
+           else if (!isSolid) 
+           {
+               isSolid =true;
+           }
+       }
+=======
+>>>>>>> .r35
+<<<<<<< .mine
+=======
 
+>>>>>>> .r35
     }
 
     class secretDoor
     {
-        bool isPassable { get; set; }
+        bool isSolid { get; set; }
         bool isOpen { get; set; }
 
         public secretDoor()
         {
-            isPassable = false;
+            isSolid = false;
             isOpen = false;
         }
     }

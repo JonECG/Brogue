@@ -7,14 +7,33 @@ namespace Brogue.EnviromentObjects.Interactive
 {
     class Wall
     {
+        public bool isSolid;
+
         public Wall()
+        {
+            isSolid = false;
+        }
+    }
+
+    class SecretWall : Iinteractable
+    {
+        public bool isSolid { get; set; }
+
+        public SecretWall()
         {
 
         }
 
-        public ~Wall()
+        public void changeSolid()
         {
-
+            if (isSolid)
+            {
+                isSolid = false;
+            }
+            else if (!isSolid)
+            {
+                isSolid = true;
+            }
         }
     }
 }

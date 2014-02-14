@@ -5,20 +5,27 @@ using System.Text;
 
 namespace Brogue.EnviromentObjects.Interactive
 {
-    class Chest
+    class Chest : Iinteractable
     {
-        public bool isPassable { get; set; }
+        public bool isSolid { get; set; }
         public bool isOpen { get; set; }
         //public 
 
-        public Chest() 
+        public Chest()
         {
-            isPassable = false;
+            isSolid = false;
         }
 
-        public ~Chest()
+        public void changeSolid()
         {
-            
+           if(isSolid)
+           {
+               isSolid = false;
+           }
+           else if (!isSolid) 
+           {
+               isSolid =true;
+           }
         }
     }
 }

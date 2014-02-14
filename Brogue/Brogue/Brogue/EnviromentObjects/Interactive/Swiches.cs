@@ -5,19 +5,16 @@ using System.Text;
 
 namespace Brogue.EnviromentObjects.Interactive
 {
-
     public class Swiches
     {
         public bool active { get; set; }
+        public bool isSolid { get; set; }
+        //private 
+        public Iinteractable target { get; set; }
 
         public Swiches() 
         {
             active = false;
-        }
-
-        public ~Swiches()
-        {
-
         }
 
         public void changeState()
@@ -31,11 +28,20 @@ namespace Brogue.EnviromentObjects.Interactive
                 active = true;
             }
         }
+
+        public void click() 
+        {
+            changeState();
+            target.changeSolid();
+        }
+
     }
 
     public class presserPlate
     {
         public bool active { get; set; }
+
+        public Iinteractable target { get; set; }
 
         public presserPlate()
         {
@@ -58,6 +64,19 @@ namespace Brogue.EnviromentObjects.Interactive
                 active = true;
             }
         }
+
+        public void stepOn() 
+        {
+            changeState();
+            target.changeSolid();
+        }
+
+        public void stepOff()
+        {
+            changeState();
+            target.changeSolid();
+        }
+        
     }
 
 }
