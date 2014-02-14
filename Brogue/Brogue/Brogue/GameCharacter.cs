@@ -9,8 +9,7 @@ namespace Brogue
 
     abstract class GameCharacter
     {
-        //public GridLocation position;
-        abstract public void TakeTurn();
+		public IntVec position;        abstract public void TakeTurn();
         public abstract void takeDamage(int damage);
     }
 }
