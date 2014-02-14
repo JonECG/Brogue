@@ -12,9 +12,13 @@ namespace Brogue.Enemies
             buildEnemy(i);
         }
 
-        public override void aggro()
+        public override bool aggro()
         {
-            
+            bool targetFound = false;
+
+
+
+            return targetFound;
         }
 
         public override void buildEnemy(int i)
@@ -24,7 +28,14 @@ namespace Brogue.Enemies
 
         public override void TakeTurn()
         {
-            aggro();
+            if (aggro())
+            {
+
+            }
+            else
+            {
+
+            }
         }
     }
 }

@@ -11,5 +11,6 @@ namespace Brogue
     {
         public GridLocation position;
         abstract public void TakeTurn();
+        public abstract void takeDamage(int damage);
     }
 }
