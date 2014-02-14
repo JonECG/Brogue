@@ -73,10 +73,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enemies\Skeleton.cs" />
+    <Compile Include="Engine\Engine.cs" />
+    <Compile Include="EnviromentObjects\Interactive\Chest.cs" />
     <Compile Include="EnviromentObjects\Interactive\Door.cs" />
+    <Compile Include="EnviromentObjects\Interactive\Swiches.cs" />
+    <Compile Include="EnviromentObjects\Interactive\Wall.cs" />
     <Compile Include="HeroClasses\Hero.cs" />
     <Compile Include="HeroClasses\Mage.cs" />
     <Compile Include="HeroClasses\Warrior.cs" />
+    <Compile Include="Mapping\LevelGenerator.cs" />
     <Compile Include="TestCases\JonTest.cs" />
     <Compile Include="Enemies\Enemy.cs" />
     <Compile Include="GameCharacter.cs" />
