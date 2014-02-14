@@ -38,11 +38,5 @@ namespace Brogue.Enemies
             }
         }
 
-        public override void takeDamage(int damage)
-        {
-            float tempArmor = (float)defense/100f;
-            damage -= (int)((float)damage * tempArmor);
-            health -= damage;
-        }
     }
 }
