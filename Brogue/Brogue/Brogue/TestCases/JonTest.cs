@@ -52,7 +52,7 @@ namespace Brogue.TestCases
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             Random rand = new Random();
-            currentLevel = Level.generate(rand.Next(), 1);
+            currentLevel = LevelGenerator.generate(rand.Next(), 1);
             Tile.tileset = Content.Load<Texture2D>("levelTileset");
             
             // TODO: use this.Content to load your game content here
@@ -68,7 +68,7 @@ namespace Brogue.TestCases
         }
 
         int seed = 50;
-        int levels = 1;
+        int levels = 10000;
         bool wasSpacePressed = false;
         bool wasControlPressed = false;
 
@@ -89,8 +89,8 @@ namespace Brogue.TestCases
             {
                 Random rand = new Random();
                 seed = rand.Next();
-                levels = 1;
-                currentLevel = Level.generate(seed,levels);
+                levels = 10;
+                currentLevel = LevelGenerator.generate(seed,levels);
             }
             wasSpacePressed = isPressed;
 
@@ -98,7 +98,7 @@ namespace Brogue.TestCases
             if (isPressed && !wasControlPressed)
             {
                 levels+=1;
-                currentLevel = Level.generate(seed, levels);
+                currentLevel = LevelGenerator.generate(seed, levels);
             }
             //wasControlPressed = isPressed;
 
