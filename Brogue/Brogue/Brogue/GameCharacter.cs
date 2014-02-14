@@ -41,7 +41,7 @@ namespace Brogue
 
     abstract class GameCharacter
     {
-        abstract public GridLocation position;
+        public GridLocation position;
         abstract public void TakeTurn();
 
     }

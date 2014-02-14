@@ -73,6 +73,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EnviromentObjects\Interactive\Door.cs" />
+    <Compile Include="HeroClasses\Hero.cs" />
+    <Compile Include="HeroClasses\Mage.cs" />
+    <Compile Include="HeroClasses\Warrior.cs" />
     <Compile Include="TestCases\JonTest.cs" />
     <Compile Include="Enemies\Enemy.cs" />
     <Compile Include="GameCharacter.cs" />

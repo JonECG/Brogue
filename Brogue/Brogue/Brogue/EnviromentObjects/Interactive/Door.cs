@@ -16,11 +16,6 @@ namespace Brogue.EnviromentObjects.Interactive
            isOpen = false;
        }
 
-       public ~Door() 
-       {
-       
-       }
-
 
     }
 
@@ -33,11 +28,6 @@ namespace Brogue.EnviromentObjects.Interactive
         {
             isPassable = false;
             isOpen = false;
-        }
-
-        public ~secretDoor()
-        {
-
         }
     }
 }
