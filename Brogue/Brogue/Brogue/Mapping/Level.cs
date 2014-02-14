@@ -11,27 +11,83 @@ namespace Brogue.Mapping
     {
         Tile[,] tiles;
         //EnvironmentObject[] environment;
-        List<Item> droppedItems;
+        //List<Item> droppedItems;
         List<GameCharacter> characterEntities;
         bool[,] cachedSolid;
+        bool needToCache;
+
+        public Level(Tile[,] tiles)
+        {
+            this.tiles = tiles;
+            needToCache = true;
+            cachedSolid = new bool[tiles.GetLength(0), tiles.GetLength(1)];
+            characterEntities = new List<GameCharacter>();
+        }
+
+        private void cache()
+        {
+            for (int x = 0; x < tiles.GetLength(0); x++)
+            {
+                for (int y = 0; y < tiles.GetLength(1); y++)
+                {
+                    cachedSolid[x, y] = tiles[x, y].isSolid;
+                }
+            }
+
+            foreach( GameCharacter character in characterEntities)
+            {
+                //cachedSolid[character.x, character.y] = true;
+            }
+
+            //foreach (EnvironmentObject enviro in environment)
+            //{
+            //    cachedSolid[enviro.x, enviro.y] = enviro.isSolid;
+            //}
+        }
+
+        public bool isSolid(int x, int y)
+        {
+            cache();
+            return cachedSolid[x, y];
+        }
 
         public static Level generate(int seed, int levels)
         {
             Random rand = new Random(seed);
 
-            //bool[,] module = createModule(rand, levels);
+            bool[,] floorPlan = createFloorPlan(rand, levels);
+            //EnvironmentObject[] = populateEnvironmentObjects(floorPlan, rand);
 
 
-            
+            Tile[,] tiles = new Tile[floorPlan.GetLength(0), floorPlan.GetLength(1)];
+
+            for (int x = 0; x < floorPlan.GetLength(0); x++)
+            {
+                for (int y = 0; y < floorPlan.GetLength(1); y++)
+                {
+                    tiles[x, y ] = new Tile(floorPlan[x,y]);
+                }
+            }
+
+            return new Level( tiles );
+        }
+
+        private static void populateEnvironmentObjects(bool[,] floorPlan, Random rand)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static bool[,] createFloorPlan(Random rand, int levels)
+        {
             const int PADDING = 4;
 
             int maxPlayGround = 1500;
             bool[,] playGround = new bool[maxPlayGround, maxPlayGround];
-            int targetX = maxPlayGround / 2, 
-                targetY = maxPlayGround / 2, 
-                left = maxPlayGround / 2, 
-                right = maxPlayGround / 2, 
-                top = maxPlayGround / 2, 
+            int targetX = maxPlayGround / 2,
+                targetY = maxPlayGround / 2,
+                left = maxPlayGround / 2,
+                right = maxPlayGround / 2,
+                top = maxPlayGround / 2,
                 bottom = maxPlayGround / 2;
 
             int floorComplexity = levels;// rand.Next(100) + 10;
@@ -40,8 +96,8 @@ namespace Brogue.Mapping
             {
                 int roomWidth = rand.Next(10) + 6;
                 int roomHeight = rand.Next(10) + 6;
-                int anchorX = rand.Next(roomWidth - PADDING) + PADDING/2;
-                int anchorY = rand.Next(roomHeight - PADDING) + PADDING/2;
+                int anchorX = rand.Next(roomWidth - PADDING) + PADDING / 2;
+                int anchorY = rand.Next(roomHeight - PADDING) + PADDING / 2;
 
                 for (int x = 1; x < roomWidth; x++)
                 {
@@ -68,7 +124,7 @@ namespace Brogue.Mapping
                 {
                     if (!foundEmpty && !playGround[(int)edges[i].X, (int)edges[i].Y])
                     {
-                        startingIndex = i+1;
+                        startingIndex = i + 1;
                         waitingForDoor = true;
                         previousWasEmpty = true;
                         foundEmpty = true;
@@ -84,18 +140,18 @@ namespace Brogue.Mapping
                     }
                 }
 
-                
 
-                for( int i = 0; i < edges.Length; i++ )
+
+                for (int i = 0; i < edges.Length; i++)
                 {
                     Vector2 vec = edges[(i + startingIndex) % edges.Length];
                     int x = (int)vec.X;
                     int y = (int)vec.Y;
 
-                    waitingForDoor = previousWasEmpty && playGround[x,y];
+                    waitingForDoor = previousWasEmpty && playGround[x, y];
 
                     bool newSolid;
-                    if (waitingForDoor && previousWasEmpty && !corners.Contains( vec ) )
+                    if (waitingForDoor && previousWasEmpty && !corners.Contains(vec))
                     {
                         waitingForDoor = false;
                         newSolid = true;
@@ -117,61 +173,71 @@ namespace Brogue.Mapping
 
                         //newSolid = ( (!playGround[x - 1, y]) || (!playGround[x + 1, y]) || (!playGround[x, y - 1]) || (!playGround[x, y + 1]) ) ? playGround[x,y] : false;
                     }
-                    
-                     
-                    previousWasEmpty = !playGround[x,y];
-                    
-                    playGround[x,y] = newSolid;
+
+
+                    previousWasEmpty = !playGround[x, y];
+
+                    playGround[x, y] = newSolid;
                 }
 
                 left = Math.Min(left, targetX - anchorX);
-                right = Math.Max(right, roomWidth + targetX - anchorX );
-                bottom = Math.Min(bottom, targetY - anchorY );
-                top = Math.Max(top, roomHeight + targetY - anchorY );
+                right = Math.Max(right, roomWidth + targetX - anchorX);
+                bottom = Math.Min(bottom, targetY - anchorY);
+                top = Math.Max(top, roomHeight + targetY - anchorY);
 
-                targetX += rand.Next(roomWidth - PADDING) + PADDING/2 - anchorX;
-                targetY += rand.Next(roomHeight - PADDING) + PADDING/2 - anchorY;
+                targetX += rand.Next(roomWidth - PADDING) + PADDING / 2 - anchorX;
+                targetY += rand.Next(roomHeight - PADDING) + PADDING / 2 - anchorY;
+
+                
             }
 
+            bool[,] cropped = arrayCrop(playGround, left-1, bottom-1, right+1, top+1);
+            //widenFloorPlan(cropped);
+
+            return cropped;
+        }
+
+        private static void widenFloorPlan(bool[,] playGround)
+        {
             //Widen single areas
-            //bool[,] copy = new bool[playGround.GetLength(0), playGround.GetLength(1)];
-            //for (int x = 0; x < copy.GetLength(0); x++)
-            //{
-            //    for (int y = 0; y < copy.GetLength(1); y++)
-            //    {
-            //        copy[x, y] = playGround[x, y];
-            //    }
-            //}
-            //for (int x = left; x < right; x++)
-            //{
-            //    for (int y = bottom; y < top; y++)
-            //    {
-            //        if (copy[x, y])
-            //        {
-            //            if ( (!copy[x - 1, y] && !copy[x + 1, y]) || (!copy[x, y - 1] && !copy[x, y + 1]) )
-            //            {
-            //                for (int i = -1; i <= 1; i++)
-            //                {
-            //                    for (int j = -1; j <= 1; j++)
-            //                    {
-            //                        playGround[x + i, y + j] = true;
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
+            bool[,] copy = new bool[playGround.GetLength(0), playGround.GetLength(1)];
+            for (int x = 0; x < copy.GetLength(0); x++)
+            {
+                for (int y = 0; y < copy.GetLength(1); y++)
+                {
+                    copy[x, y] = playGround[x, y];
+                }
+            }
+            for (int x = 1; x < copy.GetLength(0)-1; x++)
+            {
+                for (int y = 1; y < copy.GetLength(1)-1; y++)
+                {
+                    if (copy[x, y])
+                    {
+                        if ((!copy[x - 1, y] && !copy[x + 1, y]) || (!copy[x, y - 1] && !copy[x, y + 1]))
+                        {
+                            for (int i = -1; i <= 1; i++)
+                            {
+                                for (int j = -1; j <= 1; j++)
+                                {
+                                    playGround[x + i, y + j] = true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
-
-            Level result = new Level();
-
-            result.tiles = new Tile[right - left, top - bottom];
+        private static bool[,] arrayCrop(bool[,] playGround, int left, int bottom, int right, int top)
+        {
+            bool[,] result = new bool[right - left, top - bottom];
 
             for (int x = left; x < right; x++)
             {
                 for (int y = bottom; y < top; y++)
                 {
-                    result.tiles[x - left, y - bottom] = new Tile(playGround[x,y]);
+                    result[x - left, y - bottom] = playGround[x,y];
                 }
             }
 
