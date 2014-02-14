@@ -16,7 +16,6 @@ namespace Brogue.EnviromentObjects.Interactive
            isOpen = false;
        }
 
-<<<<<<< .mine
        public void changeSolid()
        {
            if(isSolid)
@@ -28,15 +27,9 @@ namespace Brogue.EnviromentObjects.Interactive
                isSolid =true;
            }
        }
-=======
->>>>>>> .r35
-<<<<<<< .mine
-=======
-
->>>>>>> .r35
     }
 
-    class secretDoor
+    class secretDoor : Iinteractable
     {
         bool isSolid { get; set; }
         bool isOpen { get; set; }
@@ -45,6 +38,18 @@ namespace Brogue.EnviromentObjects.Interactive
         {
             isSolid = false;
             isOpen = false;
+        }
+
+        public void changeSolid()
+        {
+            if (isSolid)
+            {
+                isSolid = false;
+            }
+            else if (!isSolid)
+            {
+                isSolid = true;
+            }
         }
     }
 }
