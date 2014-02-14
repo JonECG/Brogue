@@ -7,8 +7,8 @@ namespace Brogue.EnviromentObjects.Interactive
 {
     class Door
     {
-       bool isPassable;
-       bool isOpen;
+       bool isPassable { get; set; }
+       bool isOpen { get; set; }
 
        public Door() 
        {
@@ -20,12 +20,14 @@ namespace Brogue.EnviromentObjects.Interactive
        {
        
        }
+
+
     }
 
     class secretDoor
     {
-        bool isPassable;
-        bool isOpen;
+        bool isPassable { get; set; }
+        bool isOpen { get; set; }
 
         public secretDoor()
         {

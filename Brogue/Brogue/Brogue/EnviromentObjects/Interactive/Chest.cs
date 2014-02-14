@@ -7,7 +7,9 @@ namespace Brogue.EnviromentObjects.Interactive
 {
     class Chest
     {
-        bool isPassable;
+        public bool isPassable { get; set; }
+        public bool isOpen { get; set; }
+        //public 
 
         public Chest() 
         {
@@ -17,11 +19,6 @@ namespace Brogue.EnviromentObjects.Interactive
         public ~Chest()
         {
             
-        }
-
-        bool getPassable()
-        {
-            return isPassable;
         }
     }
 }
