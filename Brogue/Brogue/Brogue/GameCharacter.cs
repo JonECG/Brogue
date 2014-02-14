@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Brogue
 {
-    class GridLocation
+    public class GridLocation
     {
         public int[] ints = new int[2];
 
