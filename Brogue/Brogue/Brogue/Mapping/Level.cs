@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Brogue.Engine;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -16,12 +17,33 @@ namespace Brogue.Mapping
         bool[,] cachedSolid;
         bool needToCache;
 
+        static Random statRand = new Random();
+
         public Level(Tile[,] tiles)
         {
             this.tiles = tiles;
             needToCache = true;
             cachedSolid = new bool[tiles.GetLength(0), tiles.GetLength(1)];
             characterEntities = new List<GameCharacter>();
+
+            a = findRandomOpenPosition();
+            b = findRandomOpenPosition();
+            path = AStar.getPathBetween(this, a, b);
+            moveset = AStar.getPossiblePositionsFrom(this, a, 15);
+        }
+
+        public IntVec findRandomOpenPosition()
+        {
+            cache();
+
+            IntVec result = null;
+            do
+            {
+                result = new IntVec(statRand.Next(cachedSolid.GetLength(0)), statRand.Next(cachedSolid.GetLength(1)));
+            }
+            while(cachedSolid[result.X,result.Y]);
+
+            return result;
         }
 
         public bool[,] getSolid()
@@ -87,6 +109,11 @@ namespace Brogue.Mapping
             return cachedSolid[x, y];
         }
 
+        IntVec a;
+        IntVec b;
+        Direction[] path;
+        IntVec[] moveset;
+
         public void render(SpriteBatch sb)
         {
             //sb.Draw(Tile.tileset, new Rectangle(0, 0, 48, 48), new Rectangle(0, 0, 48, 48), Color.White);
@@ -96,10 +123,26 @@ namespace Brogue.Mapping
             {
                 for (int y = 0; y < tiles.GetLength(1); y++)
                 {
-                    if( tiles[x,y].isSolid )
+                    if( !tiles[x,y].isSolid )
                         sb.Draw(Tile.tileset, new Rectangle((int)(x * tileWidth), (int)(y * tileWidth), (int)Math.Ceiling(tileWidth), (int)Math.Ceiling(tileWidth)), new Rectangle(0, 0, 48, 48), Color.White);
                 }
             }
+
+
+            //IntVec current = new IntVec(a.X, a.Y);
+            //foreach (Direction dir in path)
+            //{
+            //    current += dir;
+            //    sb.Draw(Tile.tileset, new Rectangle((int)(current.X * tileWidth), (int)(current.Y * tileWidth), (int)Math.Ceiling(tileWidth), (int)Math.Ceiling(tileWidth)), new Rectangle(0, 0, 48, 48), Color.Orange);
+            //}
+
+            foreach (IntVec vec in moveset)
+            {
+                sb.Draw(Tile.tileset, new Rectangle((int)(vec.X * tileWidth), (int)(vec.Y * tileWidth), (int)Math.Ceiling(tileWidth), (int)Math.Ceiling(tileWidth)), new Rectangle(0, 0, 48, 48), Color.Blue);
+            }
+
+            sb.Draw(Tile.tileset, new Rectangle((int)(a.X * tileWidth), (int)(a.Y * tileWidth), (int)Math.Ceiling(tileWidth), (int)Math.Ceiling(tileWidth)), new Rectangle(0, 0, 48, 48), Color.Green);
+            sb.Draw(Tile.tileset, new Rectangle((int)(b.X * tileWidth), (int)(b.Y * tileWidth), (int)Math.Ceiling(tileWidth), (int)Math.Ceiling(tileWidth)), new Rectangle(0, 0, 48, 48), Color.Red);
         }
     }
 }

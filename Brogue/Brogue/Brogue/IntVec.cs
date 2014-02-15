@@ -33,6 +33,16 @@ namespace Brogue
             }
         }
 
+        public double angle()
+        {
+            return Math.Atan2(Y, X);
+        }
+
+        public double dangle()
+        {
+            return 180 * angle() / Math.PI;
+        }
+
         public IntVec(int x, int y)
         {
             ints[0] = x;

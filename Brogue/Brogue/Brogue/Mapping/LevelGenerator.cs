@@ -22,7 +22,7 @@ namespace Brogue.Mapping
             {
                 for (int y = 0; y < floorPlan.GetLength(1); y++)
                 {
-                    tiles[x, y] = new Tile(floorPlan[x, y]);
+                    tiles[x, y] = new Tile(!floorPlan[x, y]);
                 }
             }
 

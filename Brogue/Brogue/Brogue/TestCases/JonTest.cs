@@ -97,10 +97,10 @@ namespace Brogue.TestCases
             isPressed = Keyboard.GetState().IsKeyDown(Keys.RightControl) || Keyboard.GetState().IsKeyDown(Keys.LeftControl);
             if (isPressed && !wasControlPressed)
             {
-                levels+=1;
+                levels+=100;
                 currentLevel = LevelGenerator.generate(seed, levels);
             }
-            //wasControlPressed = isPressed;
+            wasControlPressed = isPressed;
 
             // TODO: Add your update logic here
 
