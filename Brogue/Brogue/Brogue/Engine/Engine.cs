@@ -8,6 +8,9 @@ namespace Brogue.Engine
     class Engine
     {
 
+        public static CELLWIDTH = 48;
+        private static Game game;
+
         public static void Start()
         {
             CharacterCreation();
@@ -34,9 +37,9 @@ namespace Brogue.Engine
 
         }
 
-        public static void Draw()
+        public static void Draw(Texture2D tex, GridLocation loc)
         {
-            
+            game.spriteBatch.Draw(tex, loc * CELLWIDTH, Color.White);
         }
     }
 }
