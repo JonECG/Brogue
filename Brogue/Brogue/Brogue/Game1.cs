@@ -17,7 +17,12 @@ namespace Brogue
     public class Game1 : Microsoft.Xna.Framework.Game
     {
         GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
+        
+        Effect effect;
+
+        public SpriteBatch spriteBatch;
+        private const int WIDTH = 1366;
+        private const int HEIGHT = 768;8
 
         public Game1()
         {
@@ -34,6 +39,7 @@ namespace Brogue
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            Engine.Engine.Start(this);
 
             base.Initialize();
         }
@@ -46,7 +52,8 @@ namespace Brogue
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            
+            effect = Content.Load<Effect>("Shader");
             // TODO: use this.Content to load your game content here
         }
 
@@ -82,9 +89,14 @@ namespace Brogue
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            // TODO: Add your drawing code here
-
+            Matrix transform = Matrix.CreateTranslation(-Engine.Engine.cameraPosition.X + graphics.PreferredBackBufferWidth / 2, -Engine.Engine.cameraPosition.Y + graphics.PreferredBackBufferHeight / 2, 1.0f) * Matrix.CreateScale(1.0f, 1.0f, 1);
+            spriteBatch.Begin(SpriteSortMode.BackToFront,
+                        BlendState.AlphaBlend,
+                        null,
+                        null,
+                        null,
+                        effect,
+                        transform);
             base.Draw(gameTime);
         }
     }
