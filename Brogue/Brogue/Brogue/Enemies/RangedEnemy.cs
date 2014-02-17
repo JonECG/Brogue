@@ -7,5 +7,6 @@ namespace Brogue.Enemies
 {
     class RangedEnemy : Enemy
     {
+
     }
 }

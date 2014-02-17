@@ -13,6 +13,7 @@ namespace Brogue
         protected int defense;
         protected int health;
         protected int moveSpeed;
+        protected int range;
 
         public Boolean IsAggro
         {
@@ -26,13 +27,23 @@ namespace Brogue
         //to the level of difficulty the enemy should be. This will also affect drop table choice.
         public abstract void buildEnemy(int i);
 
+        //Drops items and any other needed actions for death
         protected abstract void die();
+        
+        //Attacks the current target
+        protected abstract void attack();
 
+        //Converts damage based on armour and then removes from health.
         public override void takeDamage(int damage)
         {
             float tempArmor = (float)defense / 100f;
             damage -= (int)((float)damage * tempArmor);
             health -= damage;
+            if (health <= 0)
+            {
+                health = 0;
+                die();
+            }
         }
     }
 }
