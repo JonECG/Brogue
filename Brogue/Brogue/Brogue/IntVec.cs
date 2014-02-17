@@ -49,9 +49,26 @@ namespace Brogue
             ints[1] = y;
         }
 
-        public static implicit operator IntVec(Direction dir)
+        public static implicit operator IntVec(direction dir)
         {
-            return new IntVec( dir.X, dir.Y );
+            //This function was broken. direction is an enum, but the code was trying access members of it (X and Y). I made it work as intended. --Drew Hurdle
+            IntVec result = new IntVec(0, 0);
+            switch (dir)
+            {
+                case direction.DOWN:
+                    result.Y = 1;
+                    break;
+                case direction.UP:
+                    result.Y = -1;
+                    break;
+                case direction.LEFT:
+                    result.X = -1;
+                    break;
+                case direction.RIGHT:
+                    result.X = 1;
+                    break;
+            }
+            return result;
         }
 
         public static IntVec operator +(IntVec vec1, IntVec vec2)

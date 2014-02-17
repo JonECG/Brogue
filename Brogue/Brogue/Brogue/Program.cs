@@ -16,7 +16,7 @@ namespace Brogue
             //    game.Run();
             //}
 
-            using (JonTest game = new JonTest())
+            using (Game1 game = new Game1())
             {
                 game.Run();
             }

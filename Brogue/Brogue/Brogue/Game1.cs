@@ -21,13 +21,31 @@ namespace Brogue
         Effect effect;
 
         public SpriteBatch spriteBatch;
-        private const int WIDTH = 1366;
-        private const int HEIGHT = 768;8
+        private SpriteBatch uiSpriteBatch;
+        private int WIDTH = 1366;
+        private int HEIGHT = 768;
+
+        public int Width
+        {
+            get
+            {
+                return WIDTH;
+            }
+        }
+        public int Height
+        {
+            get
+            {
+                return HEIGHT;
+            }
+        }
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            graphics.PreferredBackBufferWidth = WIDTH;
+            graphics.PreferredBackBufferHeight = HEIGHT;
         }
 
         /// <summary>
@@ -52,7 +70,8 @@ namespace Brogue
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            
+            uiSpriteBatch = new SpriteBatch(GraphicsDevice);
+            Engine.Engine.LoadContent(Content);
             effect = Content.Load<Effect>("Shader");
             // TODO: use this.Content to load your game content here
         }
@@ -97,6 +116,11 @@ namespace Brogue
                         null,
                         effect,
                         transform);
+            spriteBatch.End();
+
+            uiSpriteBatch.Begin();
+            Engine.Engine.DrawUI(uiSpriteBatch);
+            uiSpriteBatch.End();
             base.Draw(gameTime);
         }
     }
