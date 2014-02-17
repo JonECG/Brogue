@@ -12,6 +12,6 @@ namespace Brogue
     {
 		public IntVec position;
         abstract public void TakeTurn(Level level);
-        public abstract void takeDamage(int damage);
+        public abstract void TakeDamage(int damage);
     }
 }
