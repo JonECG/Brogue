@@ -37,9 +37,9 @@ namespace Brogue.Engine
 
         }
 
-        public static void Draw(Texture2D tex, GridLocation loc)
+        public static void Draw(Texture2D tex, IntVec loc)
         {
-            game.spriteBatch.Draw(tex, loc * CELLWIDTH, Color.White);
+            game.spriteBatch.Draw(tex, Vector2(loc.X * CELLWIDTH, loc.Y * CELLWIDTH), Color.White);
         }
     }
 }
