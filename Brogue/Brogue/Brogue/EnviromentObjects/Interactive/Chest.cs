@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Brogue.EnviromentObjects.Interactive
@@ -31,9 +32,9 @@ namespace Brogue.EnviromentObjects.Interactive
            }
         }
 
-        public void render(Microsoft.Xna.Framework.Graphics.SpriteBatch sb)
+        public void LoadContent(ContentManager content)
         {
-            
+            sprite = content.Load<Texture2D>("levelTileset");
         }
     }
 }

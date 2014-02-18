@@ -17,19 +17,12 @@ namespace Brogue.EnviromentObjects.Interactive
        {
            isSolid = false;
            isOpen = false;
-           //sprite = new Texture2D(
-            
        }
 
        public void LoadContent(ContentManager content)
-        {
-            // Create a new SpriteBatch, which can be used to draw textures.
-            //SpriteBatch spriteBatch = new SpriteBatch(GraphicsDevice);
-            
-           //Drew: NO!!!! ^ This is not correct! NEVER create a new spriteBatch! Especially to load content! That would screw everything up. LoadContent is also NOT an overload function. Just do it like this:
-
-            sprite = content.Load<Texture2D>("levelTileset");
-        }
+       {
+           sprite = content.Load<Texture2D>("levelTileset");
+       }
 
        public void changeSolid()
        {

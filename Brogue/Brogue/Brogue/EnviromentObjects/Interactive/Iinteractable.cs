@@ -7,6 +7,7 @@ namespace Brogue.EnviromentObjects.Interactive
 {
     interface Iinteractable
     {
+        void getsolidity();
         void changeSolid();
     }
 }

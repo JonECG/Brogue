@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Brogue.EnviromentObjects.Interactive
@@ -18,6 +19,12 @@ namespace Brogue.EnviromentObjects.Interactive
             isSolid = true;
             isPassable = false;
         }
+
+        public void LoadContent(ContentManager content)
+        {
+            sprite = content.Load<Texture2D>("levelTileset");
+        }
+
     }
 
     class SecretWall : Iinteractable
@@ -43,5 +50,11 @@ namespace Brogue.EnviromentObjects.Interactive
                 isSolid = true;
             }
         }
+
+        public void LoadContent(ContentManager content)
+        {
+            sprite = content.Load<Texture2D>("levelTileset");
+        }
+
     }
 }
