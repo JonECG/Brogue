@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,7 +53,20 @@ namespace Brogue.Engine
 
         public static void StartGame()
         {
+            //Make new level.
+            //Start gameloop.
 
+            KeyboardState keyState = Keyboard.GetState();
+
+            //Check keystate for engine relate key presses (exit, menu things, etc).
+            //If it's the players turn, pass keystate to Hero.
+            //Otherwise, take AI turn.
+
+        }
+
+        private static void AITurn()
+        {
+            //Iterate through each AI within maximum AI distance and call its TakeTurn method.
         }
 
         public static void Draw(Texture2D tex, IntVec destination)
