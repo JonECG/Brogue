@@ -17,7 +17,7 @@ namespace Brogue
         protected int range;
         protected int aggroRange;
 
-        public Boolean IsAggro
+        public bool IsAggro
         {
             get { return (target != null); }
         }
