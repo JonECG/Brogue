@@ -11,6 +11,7 @@ namespace Brogue
     public abstract class GameCharacter
     {
 		public IntVec position;
+        public bool isFriendly;
         abstract public void TakeTurn(Level level);
         public abstract void TakeDamage(int damage);
     }
