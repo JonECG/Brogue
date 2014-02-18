@@ -14,5 +14,6 @@ namespace Brogue
         public bool isFriendly;
         abstract public void TakeTurn(Level level);
         public abstract void TakeDamage(int damage);
+        public abstract void Heal(int heal);
     }
 }
