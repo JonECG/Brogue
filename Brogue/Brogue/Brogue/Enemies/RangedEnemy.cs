@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Brogue.Mapping;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -32,6 +33,28 @@ namespace Brogue.Enemies
             {
                 //unimplemented
             }
+        }
+
+        public override bool Aggro(Level level)
+        {
+            bool targetFound = false;
+
+            if (target != null)
+            {
+                if (AStar.getCost(AStar.getPathBetween(level, this.position, level.getPlayer().position)) < aggroRange + 3)
+                {
+                    target = level.getPlayer();
+                }
+            }
+            else
+            {
+                if (AStar.getCost(AStar.getPathBetween(level, this.position, level.getPlayer().position)) < aggroRange)
+                {
+                    target = level.getPlayer();
+                }
+            }
+
+            return targetFound;
         }
 
         public override void buildEnemy(int i)

@@ -44,17 +44,7 @@ namespace Brogue
         }
 
         //This method will be called each turn to determine who (if anyone) to attack
-        public bool Aggro(Level level)
-        {
-            bool targetFound = false;
-
-            if (AStar.getCost(AStar.getPathBetween(level, this.position, level.getPlayer().position)) < aggroRange)
-            {
-                target = level.getPlayer();
-            }
-
-            return targetFound;
-        }
+        public abstract bool Aggro(Level level);
 
         //This method accepts an int i (maybe change to an enum later, talk about it with you guys) which corresponds
         //to the level of difficulty the enemy should be. This will also affect drop table choice.
