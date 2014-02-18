@@ -8,13 +8,13 @@ namespace Brogue.Equipment.Weapon.Ranged
 {
     class Staff : RangedWeapon
     {
-        Staff(int dungeonLevel)
+        public Staff(int dLevel)
         {
             Name = "Staff";
             UsedBy = new List<Class> { Class.Mage };
             EquipableIn = new List<Slots> { Slots.Hand_Both };
-            LevelReq = findLevelReq(dungeonLevel);
-            Damage = findDamage(BaseDamage, dungeonLevel, LevelReq);
+            LevelReq = findLevelReq(dLevel);
+            Damage = findDamage(BaseDamage, dLevel, LevelReq);
         }
     }
 }

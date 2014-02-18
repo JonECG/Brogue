@@ -10,10 +10,9 @@ namespace Brogue.Enums
         Head,
         Chest,
         Legs,
-        Arms,
         Finger_One,
         Finger_Two,
-        Necklace,
+        Neck,
         Hand_Primary,
         Hand_Auxillary,
         Hand_Both

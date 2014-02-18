@@ -8,13 +8,13 @@ namespace Brogue.Equipment.Weapon.Melee
 {
     class WarHammer : MeleeWeapon
     {
-        WarHammer(int dungeonLevel)
+        public WarHammer(int dLevel)
         {
-            Name = "War Hammer";
+            Name = "WarHammer";
             UsedBy = new List<Class> { Class.Warrior };
             EquipableIn = new List<Slots> { Slots.Hand_Both };
-            LevelReq = findLevelReq(dungeonLevel);
-            Damage = findDamage(BaseDamage, dungeonLevel, LevelReq);
+            LevelReq = findLevelReq(dLevel);
+            Damage = findDamage(BaseDamage, dLevel, LevelReq);
         }
     }
 }

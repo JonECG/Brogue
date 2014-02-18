@@ -79,11 +79,31 @@
     <Compile Include="Engine\Engine.cs" />
     <Compile Include="Enums\Classes.cs" />
     <Compile Include="Enums\EquipmentSlots.cs" />
+    <Compile Include="Enums\StatModifiers.cs" />
     <Compile Include="EnviromentObjects\Interactive\Chest.cs" />
     <Compile Include="EnviromentObjects\Interactive\Door.cs" />
     <Compile Include="EnviromentObjects\Interactive\Iinteractable.cs" />
     <Compile Include="EnviromentObjects\Interactive\Swiches.cs" />
     <Compile Include="EnviromentObjects\Interactive\Wall.cs" />
+    <Compile Include="Equipment\Accessory\Accessory.cs" />
+    <Compile Include="Equipment\Accessory\Necklaces\Necklace.cs" />
+    <Compile Include="Equipment\Accessory\Rings\Ring.cs" />
+    <Compile Include="Equipment\Armor\Armor.cs" />
+    <Compile Include="Equipment\Armor\Chest\Chest.cs" />
+    <Compile Include="Equipment\Armor\Chest\ClothChest.cs" />
+    <Compile Include="Equipment\Armor\Chest\LeatherChest.cs" />
+    <Compile Include="Equipment\Armor\Chest\MailChest.cs" />
+    <Compile Include="Equipment\Armor\Helm\ClothHelm.cs" />
+    <Compile Include="Equipment\Armor\Helm\Helm.cs" />
+    <Compile Include="Equipment\Armor\Helm\LeatherHelm.cs" />
+    <Compile Include="Equipment\Armor\Helm\MailHelm.cs" />
+    <Compile Include="Equipment\Armor\Legs\ClothLegs.cs" />
+    <Compile Include="Equipment\Armor\Legs\LeatherLegs.cs" />
+    <Compile Include="Equipment\Armor\Legs\Legs.cs" />
+    <Compile Include="Equipment\Armor\Legs\MailLegs.cs" />
+    <Compile Include="Equipment\Armor\Shields\PlateShield.cs" />
+    <Compile Include="Equipment\Armor\Shields\Shields.cs" />
+    <Compile Include="Equipment\Armor\Shields\WoodenShield.cs" />
     <Compile Include="Equipment\Gear.cs" />
     <Compile Include="Equipment\Weapon\Melee\Axe.cs" />
     <Compile Include="Equipment\Weapon\Melee\BastardSword.cs" />
@@ -104,6 +124,8 @@
     <Compile Include="HeroClasses\Rogue.cs" />
     <Compile Include="HeroClasses\Warrior.cs" />
     <Compile Include="IntVec.cs" />
+    <Compile Include="Items\Consumables\Consumable.cs" />
+    <Compile Include="Items\Consumables\Potion.cs" />
     <Compile Include="Mapping\LevelGenerator.cs" />
     <Compile Include="TestCases\JonTest.cs" />
     <Compile Include="Enemies\Enemy.cs" />
@@ -151,7 +173,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="EnviromentObjects\Decorative\" />
-    <Folder Include="Equipment\Armor\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
