@@ -5,11 +5,10 @@ using System.Text;
 
 namespace Brogue.Items.Consumables
 {
-    abstract class Consumable
+    abstract class Consumable : Item
     {
-        public string Name { get; set; }
-        public int RestoreAmount { get; set; }
-        public int BaseAmount { get; set; }
+        public int RestoreAmount { get; protected set; }
+        public int BaseAmount { get; protected set; }
 
         public static int findRestoreAmount(int dLevel, int bAmt)
         {
