@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Brogue.Mapping;
+using Brogue.Engine;
 
 namespace Brogue.Enemies
 {

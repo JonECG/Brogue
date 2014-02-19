@@ -1,4 +1,5 @@
-﻿using Brogue.Mapping;
+﻿using Brogue.Engine;
+using Brogue.Mapping;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,4 +1,5 @@
-﻿using Brogue.Mapping;
+﻿using Brogue.Engine;
+using Brogue.Mapping;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,19 +57,23 @@ namespace Brogue
         //Attacks the current target
         protected void Attack()
         {
-            target.takeDamage(attack);
+            target.TakeDamage(attack, this);
         }
 
         //Converts damage based on armour and then removes from health.
-        public override void TakeDamage(int damage)
+        public override void TakeDamage(int damage, GameCharacter attacker)
         {
+            if (target == null)
+            {
+                target = attacker;
+            }
             float tempArmor = (float)defense / 100f;
             damage -= (int)((float)damage * tempArmor);
             health -= damage;
             if (health <= 0)
             {
                 health = 0;
-                die();
+                Die();
             }
         }
     }
