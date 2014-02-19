@@ -75,6 +75,7 @@ namespace Brogue
 
         public static implicit operator IntVec(Direction dir)
         {
+            return new IntVec(dir.X, dir.Y);
         }
 
         public static IntVec operator +(IntVec vec1, IntVec vec2)
