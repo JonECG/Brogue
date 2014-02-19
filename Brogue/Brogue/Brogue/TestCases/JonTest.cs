@@ -52,7 +52,7 @@ namespace Brogue.TestCases
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             Random rand = new Random();
-            currentLevel = LevelGenerator.generate(rand.Next(), 1);
+            currentLevel = LevelGenerator.generate(rand.Next(), 10);
             Tile.tileset = Content.Load<Texture2D>("levelTileset");
             
             // TODO: use this.Content to load your game content here
@@ -68,9 +68,7 @@ namespace Brogue.TestCases
         }
 
         int seed = 50;
-        int levels = 10000;
-        bool wasSpacePressed = false;
-        bool wasControlPressed = false;
+        int levels = 10;
 
         /// <summary>
         /// Allows the game to run logic such as updating the world,
@@ -79,28 +77,27 @@ namespace Brogue.TestCases
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            
+            KeyboardController.Update();
+
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            bool isPressed = Keyboard.GetState().IsKeyDown(Keys.Space);
-            if (isPressed && !wasSpacePressed)
+            if (KeyboardController.IsPressed( Keys.Space ) )
             {
                 Random rand = new Random();
                 seed = rand.Next();
                 levels = 10;
                 currentLevel = LevelGenerator.generate(seed,levels);
             }
-            wasSpacePressed = isPressed;
 
-            isPressed = Keyboard.GetState().IsKeyDown(Keys.RightControl) || Keyboard.GetState().IsKeyDown(Keys.LeftControl);
-            if (isPressed && !wasControlPressed)
+            if (KeyboardController.IsPressed(Keys.RightControl))
             {
                 levels+=100;
                 currentLevel = LevelGenerator.generate(seed, levels);
             }
-            wasControlPressed = isPressed;
+
+            currentLevel.testUpdate();
 
             // TODO: Add your update logic here
 

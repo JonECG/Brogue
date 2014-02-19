@@ -49,26 +49,32 @@ namespace Brogue
             ints[1] = y;
         }
 
-        public static implicit operator IntVec(direction dir)
+        public override int GetHashCode()
         {
-            //This function was broken. direction is an enum, but the code was trying access members of it (X and Y). I made it work as intended. --Drew Hurdle
-            IntVec result = new IntVec(0, 0);
-            switch (dir)
+            return new { X, Y }.GetHashCode();
+        }
+        
+        public override bool Equals(object other)
+        {
+            // If parameter is null return false.
+            if (other == null)
             {
-                case direction.DOWN:
-                    result.Y = 1;
-                    break;
-                case direction.UP:
-                    result.Y = -1;
-                    break;
-                case direction.LEFT:
-                    result.X = -1;
-                    break;
-                case direction.RIGHT:
-                    result.X = 1;
-                    break;
+                return false;
             }
-            return result;
+
+            // If parameter cannot be cast to Point return false.
+            IntVec p = other as IntVec;
+            if ((System.Object)p == null)
+            {
+                return false;
+            }
+
+            // Return true if the fields match:
+            return (X == p.X) && (Y == p.Y);
+        }
+
+        public static implicit operator IntVec(Direction dir)
+        {
         }
 
         public static IntVec operator +(IntVec vec1, IntVec vec2)

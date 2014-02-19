@@ -49,7 +49,91 @@ namespace Brogue.Mapping
             return true;
         }
 
-        
+
+        private class __AStarNode : IComparable<__AStarNode>
+        {
+            public IntVec position;
+            public int actualCost;
+            public int heuristic;
+            public __AStarNode reachedFrom;
+            public Direction directionTaken;
+            public bool expanded;
+
+            public __AStarNode(IntVec position, int actualCost = 0, int heuristic = 0, __AStarNode reachedFrom = null, Direction directionTaken = null)
+            {
+                this.position = position;
+                this.actualCost = actualCost;
+                this.heuristic = heuristic;
+                this.reachedFrom = reachedFrom;
+                this.directionTaken = directionTaken;
+                expanded = false;
+            }
+
+            public class __AStarNodeComparer : IComparer<__AStarNode>
+            {
+                public int Compare(__AStarNode a, __AStarNode b)
+                {
+                    return a.CompareTo(b);
+                }
+            }
+
+            public int CompareTo(__AStarNode other)
+            {
+                int difference = (actualCost + heuristic) - (other.actualCost + other.heuristic);
+                if (difference == 0)
+                    difference = heuristic.CompareTo(other.heuristic);
+                if (difference == 0)
+                    difference = (!position.Equals(other.position) ? 1 : 0);
+                return difference;
+            }
+            
+        }
+
+        public static Direction[] getPathBetweenAttempt(Level level, IntVec from, IntVec to)
+        {
+            bool[,] solid = level.getSolid();
+            SortedSet<__AStarNode> nodes = new SortedSet<__AStarNode>( new __AStarNode.__AStarNodeComparer() );
+
+            __AStarNode recentNode = new __AStarNode(from);
+
+            while ( recentNode != null && !recentNode.position.Equals( to ) && !recentNode.expanded )
+            {
+                recentNode.expanded = true;
+
+                foreach( Direction dir in Direction.Values )
+                {
+                    IntVec newLocation = recentNode.position + dir;
+
+                    if (!solid[newLocation.X, newLocation.Y])
+                    {
+                        solid[newLocation.X, newLocation.Y] = true;
+                        nodes.Add(new __AStarNode(newLocation, recentNode.actualCost + 10, 10 * calculateHeuristic(newLocation, to), recentNode, dir));
+                    }
+                }
+
+                recentNode = nodes.Min;
+                nodes.Remove(recentNode);
+            }
+
+            List<Direction> path = new List<Direction>();
+
+            while ( !recentNode.position.Equals(from) )
+            {
+                path.Add(recentNode.directionTaken);
+                recentNode = recentNode.reachedFrom;
+            }
+
+            path.Reverse();
+
+            return path.ToArray();
+        }
+
+        public static int calculateHeuristic( IntVec from, IntVec to )
+        {
+            //return (int) Math.Sqrt(Math.Pow(to.X - from.X, 2) + Math.Pow(to.Y - from.Y, 2));
+            return Math.Abs(to.X - from.X) + Math.Abs(to.Y - from.Y);
+        }
+
         /// <summary>
         /// Returns an ordered array of directions needed for moves between two positions
         /// </summary>
@@ -156,11 +240,6 @@ namespace Brogue.Mapping
             }
 
             return result;
-        }
-
-        public static double angleDifference(int angle1, int angle2)
-        {
-            return ((((angle1 - angle2) % 360) + 540) % 360) - 180;
         }
 
         /// <summary>

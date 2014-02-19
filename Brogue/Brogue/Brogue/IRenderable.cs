@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 namespace Brogue
 {
-    interface IRenderable
+    public interface IRenderable
     {
         void render( SpriteBatch sb );
     }
