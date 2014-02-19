@@ -83,6 +83,11 @@ namespace Brogue
             return new IntVec( vec1.X + vec2.X, vec1.Y + vec2.Y );
         }
 
+        public static IntVec operator *(IntVec vec, int num)
+        {
+            return new IntVec(vec.X * num, vec.Y * num);
+        }
+
         public static IntVec operator -(IntVec vec1, IntVec vec2)
         {
             return new IntVec(vec1.X - vec2.X, vec1.Y - vec2.Y);

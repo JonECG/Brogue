@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using Brogue.Mapping;
 namespace Brogue
 {
     /// <summary>
@@ -96,6 +97,8 @@ namespace Brogue
                 this.Exit();
 
             // TODO: Add your update logic here
+            KeyboardController.Update();
+            Engine.Engine.Update( gameTime );
 
             base.Update(gameTime);
         }
@@ -115,6 +118,7 @@ namespace Brogue
                         null,
                         effect,
                         transform);
+            Engine.Engine.DrawGame(gameTime);
             spriteBatch.End();
 
             uiSpriteBatch.Begin();

@@ -16,8 +16,8 @@ namespace Brogue.Mapping
             
             Rectangle[] rooms = findRooms(floorPlan);
 
-            List<IEnvironmentObject> environment = populateEnvironmentObjects(rooms, rand);
-            List<GameCharacter> characters = populateGameCharacters(rooms, rand);
+            GridBoundList<IEnvironmentObject> environment = populateEnvironmentObjects(rooms, rand);
+           GridBoundList<GameCharacter> characters = populateGameCharacters(rooms, rand);
 
             Tile[,] tiles = new Tile[floorPlan.GetLength(0), floorPlan.GetLength(1)];
 
@@ -134,9 +134,9 @@ namespace Brogue.Mapping
             return new Rectangle(x, y, width, height);
         }
 
-        private static List<IEnvironmentObject> populateEnvironmentObjects(Rectangle[] rooms, Random rand)
+        private static GridBoundList<IEnvironmentObject> populateEnvironmentObjects(Rectangle[] rooms, Random rand)
         {
-            List<IEnvironmentObject> environ = new List<IEnvironmentObject>();
+            GridBoundList<IEnvironmentObject> environ = new GridBoundList<IEnvironmentObject>();
 
             foreach (Rectangle room in rooms)
             {
@@ -145,7 +145,7 @@ namespace Brogue.Mapping
                 {
                     for (int y = 0; y < room.Height; y++)
                     {
-                        environ.Add(new ColorEnvironment(room.X + x, room.Y + y,color));
+                        environ.Add( new ColorEnvironment(new Color(rand.Next(256),rand.Next(256),rand.Next(256))), new IntVec(room.X + x, room.Y + y) );
                     }
                 }
             }
@@ -154,7 +154,7 @@ namespace Brogue.Mapping
             return environ;
         }
 
-        private static List<GameCharacter> populateGameCharacters(Rectangle[] rooms, Random rand)
+        private static GridBoundList<GameCharacter> populateGameCharacters(Rectangle[] rooms, Random rand)
         {
             //throw new NotImplementedException();
             return null;

@@ -116,7 +116,7 @@ namespace Brogue.TestCases
 
             spriteBatch.Begin();
 
-            currentLevel.render(spriteBatch);
+            //currentLevel.render(spriteBatch);
 
             spriteBatch.End();
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Brogue.Mapping;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -17,6 +18,11 @@ namespace Brogue.Engine
         public static IntVec cameraPosition = new IntVec(0, 0);
 
         static Texture2D jar, bar, healthcontainer, healthbar, xpbar, inventory;
+
+        public static Texture2D placeHolder;
+
+        static Level currentLevel;
+
 
         public static void Start(Game1 injectedGame)
         {
@@ -39,6 +45,8 @@ namespace Brogue.Engine
             healthcontainer = content.Load<Texture2D>("UI/HealthJar");
             xpbar = content.Load<Texture2D>("UI/XPBar");
             inventory = content.Load<Texture2D>("UI/Inventory");
+
+            placeHolder = content.Load<Texture2D>("levelTileset");
         }
 
         public static void CharacterCreation()
@@ -48,7 +56,7 @@ namespace Brogue.Engine
 
         public static void GenerateLevel()
         {
-
+            currentLevel = LevelGenerator.generate(1337, 20);
         }
 
         public static void StartGame()
@@ -69,14 +77,24 @@ namespace Brogue.Engine
             //Iterate through each AI within maximum AI distance and call its TakeTurn method.
         }
 
-        public static void Draw(Texture2D tex, IntVec destination)
+        public static void Draw(Texture2D tex, IntVec destination )
         {
-            game.spriteBatch.Draw(tex, new Vector2(destination.X * CELLWIDTH, destination.Y * CELLWIDTH), Color.White);
+            Draw(tex, destination, Color.White);
+        }
+
+        public static void Draw(Texture2D tex, IntVec destination, Color color)
+        {
+            game.spriteBatch.Draw(tex, new Vector2(destination.X * CELLWIDTH, destination.Y * CELLWIDTH), color);
         }
 
         public static void Draw(Texture2D tileSheet, IntVec destination, IntVec tilesetSource)
         {
-            game.spriteBatch.Draw(tileSheet, new Vector2(destination.X * CELLWIDTH, destination.Y * CELLWIDTH), new Rectangle(tilesetSource.X * CELLWIDTH, tilesetSource.Y * CELLWIDTH, CELLWIDTH, CELLWIDTH), Color.White);
+            Draw(tileSheet, destination, tilesetSource, Color.White);
+        }
+
+        public static void Draw(Texture2D tileSheet, IntVec destination, IntVec tilesetSource, Color color)
+        {
+            game.spriteBatch.Draw(tileSheet, new Vector2(destination.X * CELLWIDTH, destination.Y * CELLWIDTH), new Rectangle(tilesetSource.X * CELLWIDTH, tilesetSource.Y * CELLWIDTH, CELLWIDTH, CELLWIDTH), color);
         }
 
         public static void DrawUI(SpriteBatch uisb)
@@ -88,6 +106,18 @@ namespace Brogue.Engine
             uisb.Draw(inventory, new Vector2(game.Width / 2 - inventory.Width / 2, game.Height - 100), Color.White);
             uisb.Draw(jar, new Vector2(game.Width - 50 - jar.Width, game.Height / 2 - jar.Height /2 ), Color.White);
             uisb.Draw(bar, new Vector2(game.Width - 50 - jar.Width, game.Height / 2 - bar.Height /2 ), Color.White);
+        }
+
+        public static void Update(GameTime gameTime)
+        {
+            currentLevel.testUpdate();
+            cameraPosition += new IntVec((KeyboardController.IsDown(Keys.Right) ? 1 : 0) - (KeyboardController.IsDown(Keys.Left) ? 1 : 0),
+                (KeyboardController.IsDown(Keys.Down) ? 1 : 0) - (KeyboardController.IsDown(Keys.Up) ? 1 : 0)) * 4;
+        }
+
+        public static void DrawGame(GameTime gameTime)
+        {
+            currentLevel.render();
         }
     }
 }

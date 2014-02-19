@@ -9,25 +9,26 @@ using System.Text;
 
 namespace Brogue.Mapping
 {
-    public class Level : IRenderable
+    public class Level
     {
         Tile[,] tiles;
-        List<IEnvironmentObject> environment;
+        public GridBoundList<IEnvironmentObject> Environment { get; private set; }
+        //List<Tuple<IEnvironmentObject, IntVec>> environment;
         //List<Item> droppedItems;
-        List<GameCharacter> characterEntities;
+        public GridBoundList<GameCharacter> CharacterEntities { get; private set; }
+        //List<Tuple<GameCharacter, IntVec>> characterEntities;
         bool[,] cachedSolid;
         bool needToCache;
 
         static Random statRand = new Random();
 
-        public Level(Tile[,] tiles, List<IEnvironmentObject> environment, List<GameCharacter> characterEntities)
+        public Level(Tile[,] tiles, GridBoundList<IEnvironmentObject> environment, GridBoundList<GameCharacter> characterEntities)
         {
             this.tiles = tiles;
-            this.environment = environment;
-            this.characterEntities = characterEntities;
+            this.Environment = environment;
+            this.CharacterEntities = characterEntities;
             needToCache = true;
             cachedSolid = new bool[tiles.GetLength(0), tiles.GetLength(1)];
-            characterEntities = new List<GameCharacter>();
 
             a = findRandomOpenPosition();
             b = findRandomOpenPosition();
@@ -37,15 +38,7 @@ namespace Brogue.Mapping
 
         public GameCharacter getCharacterAtPosition(IntVec position)
         {
-            GameCharacter result = null;
-
-            foreach (GameCharacter character in characterEntities)
-            {
-                if (character.position.Equals(position))
-                    result = character;
-            }
-
-            return result;
+            return CharacterEntities.FindEntity( position );
         }
 
         //public Iinteractable getInteractableAtPosition(IntVec position)
@@ -148,24 +141,27 @@ namespace Brogue.Mapping
         Direction[] path;
         IntVec[] moveset;
 
-        public void render(SpriteBatch sb)
+        public void render()
         {
             //sb.Draw(Tile.tileset, new Rectangle(0, 0, 48, 48), new Rectangle(0, 0, 48, 48), Color.White);
-            float tileWidth = 640.0f / 50;// Math.Max(tiles.GetLength(0), tiles.GetLength(1));
+            //float tileWidth = 640.0f / 50;// Math.Max(tiles.GetLength(0), tiles.GetLength(1));
 
             for (int x = 0; x < tiles.GetLength(0); x++)
             {
                 for (int y = 0; y < tiles.GetLength(1); y++)
                 {
-                    if( !tiles[x,y].isSolid )
-                        sb.Draw(Tile.tileset, new Rectangle((int)(x * tileWidth), (int)(y * tileWidth), (int)Math.Ceiling(tileWidth), (int)Math.Ceiling(tileWidth)), new Rectangle(0, 0, 48, 48), Color.White);
+                    if (!tiles[x, y].isSolid)
+                    {
+                        //Engine.Engine.Draw(Engine.Engine.placeHolder, new IntVec(x, y), new IntVec(0,0) );
+                    }
                 }
             }
 
-            foreach (IEnvironmentObject env in environment)
-            {
-                env.render(sb);
-            }
+            Environment.Draw();
+            //foreach (Tuple<IEnvironmentObject, IntVec> env in environment)
+            //{
+            //    Engine.Engine.Draw(env.Item1.GetSprite().Texture, env.Item2, env.Item1.GetSprite().SourceTile);
+            //}
 
 
             //foreach (IntVec vec in moveset)
@@ -177,11 +173,11 @@ namespace Brogue.Mapping
             foreach (Direction dir in path)
             {
                 current += dir;
-                sb.Draw(Tile.tileset, new Rectangle((int)(current.X * tileWidth), (int)(current.Y * tileWidth), (int)Math.Ceiling(tileWidth), (int)Math.Ceiling(tileWidth)), new Rectangle(0, 0, 48, 48), Color.Orange);
+                Engine.Engine.Draw(Engine.Engine.placeHolder, new IntVec(current.X, current.Y), Color.Orange); //Orange
             }
 
-            sb.Draw(Tile.tileset, new Rectangle((int)(a.X * tileWidth), (int)(a.Y * tileWidth), (int)Math.Ceiling(tileWidth), (int)Math.Ceiling(tileWidth)), new Rectangle(0, 0, 48, 48), Color.Green);
-            sb.Draw(Tile.tileset, new Rectangle((int)(b.X * tileWidth), (int)(b.Y * tileWidth), (int)Math.Ceiling(tileWidth), (int)Math.Ceiling(tileWidth)), new Rectangle(0, 0, 48, 48), Color.Red);
+            Engine.Engine.Draw(Engine.Engine.placeHolder, new IntVec(a.X, a.Y), Color.Green); //Green
+            Engine.Engine.Draw(Engine.Engine.placeHolder, new IntVec(b.X, b.Y), Color.Red); //Red
 
         }
 
