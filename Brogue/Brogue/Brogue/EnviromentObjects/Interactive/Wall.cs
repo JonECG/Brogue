@@ -9,7 +9,7 @@ namespace Brogue.EnviromentObjects.Interactive
 {
     class Wall
     {
-        static Texture2D sprite;
+        static Texture2D sprite { get; set; }
 
         public bool isSolid;
         public bool isPassable { get; set; }
@@ -56,5 +56,10 @@ namespace Brogue.EnviromentObjects.Interactive
             sprite = content.Load<Texture2D>("levelTileset");
         }
 
+
+        public void actOn()
+        {
+            changeSolid();
+        }
     }
 }

@@ -8,7 +8,7 @@ using Brogue.Items.Consumables;
 
 namespace Brogue.EnviromentObjects.Interactive
 {
-    class Chest : Iinteractable, IRenderable
+    class Chest : Iinteractable
     {
         static Texture2D sprite { get; set; }
 

@@ -65,11 +65,6 @@ namespace Brogue.EnviromentObjects.Interactive
             isPassable = true;
         }
 
-        ~presserPlate()
-        {
-
-        }
-
         public void changeState()
         {
             if (active)
