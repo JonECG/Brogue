@@ -5,9 +5,8 @@ using System.Text;
 
 namespace Brogue.EnviromentObjects.Interactive
 {
-    interface Iinteractable
+    public interface Iinteractable
     {
-        void getsolidity();
-        void changeSolid();
+       void actOn();
     }
 }

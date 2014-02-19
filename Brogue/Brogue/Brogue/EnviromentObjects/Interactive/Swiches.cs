@@ -9,7 +9,7 @@ namespace Brogue.EnviromentObjects.Interactive
 {
     public class Swiches
     {
-        static Texture2D sprite;
+        static Texture2D sprite { get; set; }
         
         public bool active { get; set; }
         public bool isSolid { get; set; }
@@ -38,7 +38,7 @@ namespace Brogue.EnviromentObjects.Interactive
         public void click() 
         {
             changeState();
-            target.changeSolid();
+           
         }
 
         public void LoadContent(ContentManager content)
@@ -85,13 +85,13 @@ namespace Brogue.EnviromentObjects.Interactive
         public void stepOn() 
         {
             changeState();
-            target.changeSolid();
+            target.actOn();
         }
 
         public void stepOff()
         {
             changeState();
-            target.changeSolid();
+            target.actOn();
         }
 
         public void LoadContent(ContentManager content)

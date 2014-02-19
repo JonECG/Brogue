@@ -9,7 +9,7 @@ namespace Brogue.EnviromentObjects.Interactive
 {
     class Door : Iinteractable
     {
-       static Texture2D sprite;
+       static Texture2D sprite { get; set; }
        bool isSolid { get; set; }
        bool isOpen { get; set; }
 
@@ -26,13 +26,15 @@ namespace Brogue.EnviromentObjects.Interactive
 
        public void changeSolid()
        {
-           if(isSolid)
+           if (isSolid)
            {
                isSolid = false;
+               isOpen = true;
            }
-           else if (!isSolid) 
+           else if (!isSolid)
            {
-               isSolid =true;
+               isSolid = true;
+               isOpen = false;
            }
        }
     }
@@ -54,11 +56,23 @@ namespace Brogue.EnviromentObjects.Interactive
             if (isSolid)
             {
                 isSolid = false;
+                isOpen = true;
             }
             else if (!isSolid)
             {
                 isSolid = true;
+                isOpen = false;
             }
+        }
+
+        public bool getsolidity()
+        {
+            return isSolid;
+        }
+
+        public void actOn()
+        {
+            changeSolid();
         }
     }
 }
