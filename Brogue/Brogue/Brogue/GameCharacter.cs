@@ -8,7 +8,7 @@ namespace Brogue
 {
     public abstract class GameCharacter : IRenderable
     {
-        protected int health;
+        public int health;
 		public IntVec position;
         public bool isFriendly;
         abstract public void TakeTurn(Level level);
