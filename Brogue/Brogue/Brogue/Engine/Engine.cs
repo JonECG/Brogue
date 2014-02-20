@@ -86,8 +86,6 @@ namespace Brogue.Engine
 
         public static void Draw(Texture2D tex, IntVec destination, Color color)
         {
-
-            game.effect.Parameters["blendColor"].SetValue(new Vector4(color.R, color.G, color.B, color.A));
             game.spriteBatch.Draw(tex, new Vector2(destination.X * CELLWIDTH, destination.Y * CELLWIDTH), color);
         }
 
@@ -98,7 +96,6 @@ namespace Brogue.Engine
 
         public static void Draw(Texture2D tileSheet, IntVec destination, IntVec tilesetSource, Color color)
         {
-            game.effect.Parameters["blendColor"].SetValue(new Vector4( color.R, color.G, color.B, color.A));
             game.spriteBatch.Draw(tileSheet, new Vector2(destination.X * CELLWIDTH, destination.Y * CELLWIDTH), new Rectangle(tilesetSource.X * CELLWIDTH, tilesetSource.Y * CELLWIDTH, CELLWIDTH, CELLWIDTH), color);
             
         }

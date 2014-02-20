@@ -1,9 +1,8 @@
 sampler s0;
-float4 blendColor;
 
-float4 PixelShaderFunction(float2 coords: TEXCOORD0) : COLOR0  
+float4 PixelShaderFunction(float4 color : COLOR0, float2 coords: TEXCOORD0) : COLOR0  
 {  
-    return tex2D(s0, coords) * blendColor;
+    return tex2D(s0, coords) * color;
 
 }
   
