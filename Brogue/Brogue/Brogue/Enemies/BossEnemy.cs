@@ -28,7 +28,12 @@ namespace Brogue.Enemies
         }
 
         //This method will be called each turn to determine who (if anyone) to attack
-        public abstract bool Aggro(Level level);
+        public abstract void Aggro(Level level);
+
+        public void DeAggro()
+        {
+            targets = null;
+        }
 
         //This method accepts an int i (maybe change to an enum later, talk about it with you guys) which corresponds
         //to the level of difficulty the enemy should be. This will also affect drop table choice.
@@ -36,17 +41,6 @@ namespace Brogue.Enemies
 
         //Drops items and any other needed actions for death
         protected abstract void Die();
-
-        //Attacks the current target
-        protected void Attack(int attackType)
-        {
-            int attack = attacks[attackType];
-
-            foreach (GameCharacter g in targets)
-            {
-                g.TakeDamage(attack, this);
-            }
-        }
 
         //Converts damage based on armour and then removes from health.
         public override void TakeDamage(int damage, GameCharacter attacker)
