@@ -23,5 +23,6 @@ namespace Brogue.EnviromentObjects.Interactive
         {
             sprite = content.Load<Texture2D>("levelTileset");
         }
+
     }
 }
