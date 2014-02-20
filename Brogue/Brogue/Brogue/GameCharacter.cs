@@ -9,6 +9,7 @@ namespace Brogue
     public abstract class GameCharacter : IRenderable
     {
         public int health;
+        public int maxHealth;
 		public IntVec position;
         public bool isFriendly;
         abstract public void TakeTurn(Level level);
