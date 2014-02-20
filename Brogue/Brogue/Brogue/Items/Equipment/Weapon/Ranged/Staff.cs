@@ -9,7 +9,7 @@ namespace Brogue.Items.Equipment.Weapon.Ranged
 {
     public class Staff : RangedWeapon
     {
-        static override Texture2D Texture { get; protected set; }
+        override Texture2D Texture { get; protected set; }
 
         public Staff(int dLevel, int cLevel)
         {

@@ -9,7 +9,7 @@ namespace Brogue.Items.Equipment.Armor.Helm
 {
     public class MailHelm : Helm
     {
-        static override Texture2D Texture { get; protected set; }
+        override Texture2D Texture { get; protected set; }
 
         public MailHelm(int dLevel, int cLevel)
         {

@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Xna.Framework.Graphics;
 using System.Text;
 
 namespace Brogue.Items.Consumables
 {
     public class Potion : Consumable
     {
-        static override Texture2D Texture { get; protected set; }
+        override Texture2D Texture { get; protected set; }
 
         public Potion(int dLevel, int cLevel)
         {

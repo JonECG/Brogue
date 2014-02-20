@@ -9,7 +9,7 @@ namespace Brogue.Items.Equipment.Weapon.Ranged
 {
     public class Kunai : RangedWeapon
     {
-        static override Texture2D Texture { get; protected set; }
+        override Texture2D Texture { get; protected set; }
 
         public Kunai(int dLevel, int cLevel)
         {

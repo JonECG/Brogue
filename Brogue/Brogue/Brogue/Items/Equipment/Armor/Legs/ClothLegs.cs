@@ -9,7 +9,7 @@ namespace Brogue.Items.Equipment.Armor.Legs
 {
     public class ClothLegs : Legs
     {
-        static override Texture2D Texture { get; protected set; }
+        override Texture2D Texture { get; protected set; }
 
         public ClothLegs(int dLevel, int cLevel)
         {

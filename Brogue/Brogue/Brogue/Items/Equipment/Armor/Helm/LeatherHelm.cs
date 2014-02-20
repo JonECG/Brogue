@@ -9,7 +9,7 @@ namespace Brogue.Items.Equipment.Armor.Helm
 {
     public class LeatherHelm : Helm
     {
-        static override Texture2D Texture { get; protected set; }
+        override Texture2D Texture { get; protected set; }
 
         public LeatherHelm(int dLevel, int cLevel)
         {

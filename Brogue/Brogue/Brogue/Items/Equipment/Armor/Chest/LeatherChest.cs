@@ -9,7 +9,7 @@ namespace Brogue.Items.Equipment.Armor.Chest
 {
     public class LeatherChest : Chest
     {
-        static override Texture2D Texture { get; protected set; }
+        override Texture2D Texture { get; protected set; }
 
         public LeatherChest(int dLevel, int cLevel)
         {

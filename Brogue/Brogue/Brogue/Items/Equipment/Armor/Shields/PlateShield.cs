@@ -9,7 +9,7 @@ namespace Brogue.Items.Equipment.Armor.Shields
 {
     public class PlateShield : Shields
     {
-        static override Texture2D Texture { get; protected set; }
+        override Texture2D Texture { get; protected set; }
 
         public PlateShield(int dLevel, int cLevel)
         {

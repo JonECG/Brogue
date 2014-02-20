@@ -9,7 +9,7 @@ namespace Brogue.Items.Equipment.Weapon.Melee
 {
     public class Claws : MeleeWeapon
     {
-        static override Texture2D Texture { get; protected set; }
+        override Texture2D Texture { get; protected set; }
 
         public Claws(int dLevel, int cLevel)
         {
