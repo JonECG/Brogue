@@ -1,1 +1,9 @@
 Content\levelTileset.xnb
+Content\UI\Bar.xnb
+Content\UI\HealthBar.xnb
+Content\UI\HealthJar.xnb
+Content\UI\Inventory.xnb
+Content\UI\Jar.xnb
+Content\UI\XPBar.xnb
+Content\Shader.xnb
+Content\dynamicTileset.xnb
