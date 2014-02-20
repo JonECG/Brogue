@@ -141,6 +141,16 @@ namespace Brogue.Mapping
         Direction[] path;
         IntVec[] moveset;
 
+        private bool checkTileSolid(int x, int y)
+        {
+            bool result = !(x >= 0 && x < tiles.GetLength(0) && y >= 0 && y < tiles.GetLength(1));
+
+            if (!result)
+                result = tiles[x, y].isSolid;
+
+            return result;
+        }
+
         public void render()
         {
             //sb.Draw(Tile.tileset, new Rectangle(0, 0, 48, 48), new Rectangle(0, 0, 48, 48), Color.White);
@@ -150,9 +160,18 @@ namespace Brogue.Mapping
             {
                 for (int y = 0; y < tiles.GetLength(1); y++)
                 {
-                    if (!tiles[x, y].isSolid)
+                    if (tiles[x, y].isSolid)
                     {
-                        //Engine.Engine.Draw(Engine.Engine.placeHolder, new IntVec(x, y), new IntVec(0,0) );
+                        int right = checkTileSolid( x + 1, y ) ? 1 : 0;
+                        int left = checkTileSolid( x - 1, y ) ? 1 : 0;
+                        int up = checkTileSolid( x, y - 1 ) ? 1 : 0;
+                        int down = checkTileSolid( x, y + 1 ) ? 1 : 0;
+
+                        int index = right | (up << 1) | (left << 2) | (down << 3);
+
+                        index = (index % 8) + (( index >= 8) ? 9 : 0);
+
+                        Engine.Engine.Draw(Tile.tileset, new IntVec(x, y), new IntVec(index, 0));
                     }
                 }
             }
@@ -177,7 +196,7 @@ namespace Brogue.Mapping
             }
 
             Engine.Engine.Draw(Engine.Engine.placeHolder, new IntVec(a.X, a.Y), Color.Green); //Green
-            Engine.Engine.Draw(Engine.Engine.placeHolder, new IntVec(b.X, b.Y), Color.Red); //Red
+            Engine.Engine.Draw(Engine.Engine.placeHolder, new IntVec(b.X, b.Y), Color.Blue); //Red
 
         }
 

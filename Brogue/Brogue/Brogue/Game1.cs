@@ -111,14 +111,14 @@ namespace Brogue
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             Matrix transform = Matrix.CreateTranslation(-Engine.Engine.cameraPosition.X * Engine.Engine.CELLWIDTH + graphics.PreferredBackBufferWidth / 2, -Engine.Engine.cameraPosition.Y * Engine.Engine.CELLWIDTH + graphics.PreferredBackBufferHeight / 2, 1.0f) * Matrix.CreateScale(1.0f, 1.0f, 1);
-            spriteBatch.Begin(SpriteSortMode.BackToFront,
+            spriteBatch.Begin(SpriteSortMode.Deferred,
                         BlendState.AlphaBlend,
                         null,
                         null,
                         null,
-                        effect,
+                        null,
                         transform);
-            //Engine.Engine.DrawGame(gameTime);
+            Engine.Engine.DrawGame(gameTime);
             spriteBatch.End();
 
             uiSpriteBatch.Begin();

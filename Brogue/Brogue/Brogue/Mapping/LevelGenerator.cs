@@ -17,7 +17,7 @@ namespace Brogue.Mapping
             Rectangle[] rooms = findRooms(floorPlan);
 
             GridBoundList<IEnvironmentObject> environment = populateEnvironmentObjects(rooms, rand);
-           GridBoundList<GameCharacter> characters = populateGameCharacters(rooms, rand);
+            GridBoundList<GameCharacter> characters = populateGameCharacters(rooms, rand);
 
             Tile[,] tiles = new Tile[floorPlan.GetLength(0), floorPlan.GetLength(1)];
 
@@ -140,12 +140,12 @@ namespace Brogue.Mapping
 
             foreach (Rectangle room in rooms)
             {
-                Color color = new Color((float)rand.NextDouble(), (float)rand.NextDouble(), (float)rand.NextDouble());
+                Color color = new Color((float)(rand.NextDouble() / 2 + .5), (float)(rand.NextDouble() / 2 + .5), (float)(rand.NextDouble() / 2 + .5));
                 for (int x = 0; x < room.Width; x++)
                 {
                     for (int y = 0; y < room.Height; y++)
                     {
-                        environ.Add( new ColorEnvironment(new Color(rand.Next(256),rand.Next(256),rand.Next(256))), new IntVec(room.X + x, room.Y + y) );
+                        environ.Add( new ColorEnvironment( color ) , new IntVec(room.X + x, room.Y + y) );
                     }
                 }
             }

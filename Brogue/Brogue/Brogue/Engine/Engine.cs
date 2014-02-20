@@ -47,6 +47,8 @@ namespace Brogue.Engine
             inventory = content.Load<Texture2D>("UI/Inventory");
 
             placeHolder = content.Load<Texture2D>("levelTileset");
+
+            Tile.tileset = content.Load<Texture2D>("dynamicTileset");
         }
 
         public static void CharacterCreation()
@@ -56,7 +58,7 @@ namespace Brogue.Engine
 
         public static void GenerateLevel()
         {
-            currentLevel = LevelGenerator.generate(1337, 20);
+            currentLevel = LevelGenerator.generate(1337, 50);
         }
 
         public static void StartGame()
@@ -116,7 +118,7 @@ namespace Brogue.Engine
         {
             currentLevel.testUpdate();
             cameraPosition += new IntVec((KeyboardController.IsDown(Keys.Right) ? 1 : 0) - (KeyboardController.IsDown(Keys.Left) ? 1 : 0),
-                (KeyboardController.IsDown(Keys.Down) ? 1 : 0) - (KeyboardController.IsDown(Keys.Up) ? 1 : 0)) * 4;
+                (KeyboardController.IsDown(Keys.Down) ? 1 : 0) - (KeyboardController.IsDown(Keys.Up) ? 1 : 0));
         }
 
         public static void DrawGame(GameTime gameTime)
