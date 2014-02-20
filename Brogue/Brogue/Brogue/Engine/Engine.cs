@@ -58,7 +58,7 @@ namespace Brogue.Engine
 
         public static void GenerateLevel()
         {
-            currentLevel = LevelGenerator.generate(1337, 50);
+            currentLevel = LevelGenerator.generate(1337, 200);
         }
 
         public static void StartGame()

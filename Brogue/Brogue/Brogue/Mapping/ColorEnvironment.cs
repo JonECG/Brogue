@@ -17,7 +17,7 @@ namespace Brogue.Mapping
 
         public bool IsSolid()
         {
-            return true;
+            return false;
         }
 
         public Sprite GetSprite()

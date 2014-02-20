@@ -1,4 +1,5 @@
 ﻿using Brogue.Engine;
+//using Brogue.Items;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -14,6 +15,7 @@ namespace Brogue.Mapping
         Tile[,] tiles;
         public GridBoundList<IEnvironmentObject> Environment { get; private set; }
         //List<Tuple<IEnvironmentObject, IntVec>> environment;
+        //public GridBoundList<Item> DroppedItems { get; private set; }
         //List<Item> droppedItems;
         public GridBoundList<GameCharacter> CharacterEntities { get; private set; }
         //List<Tuple<GameCharacter, IntVec>> characterEntities;
@@ -27,6 +29,7 @@ namespace Brogue.Mapping
             this.tiles = tiles;
             this.Environment = environment;
             this.CharacterEntities = characterEntities;
+            //DroppedItems = new GridBoundList<Item>();
             needToCache = true;
             cachedSolid = new bool[tiles.GetLength(0), tiles.GetLength(1)];
 
@@ -36,23 +39,14 @@ namespace Brogue.Mapping
             moveset = AStar.getPossiblePositionsFrom(this, a, 15);
         }
 
-        public GameCharacter getCharacterAtPosition(IntVec position)
+        public IEnumerable<GameCharacter> GetCharactersIsFriendly(bool isFriendly)
         {
-            return CharacterEntities.FindEntity( position );
+            foreach (GameCharacter character in CharacterEntities.Entities())
+            {
+                if (character.isFriendly == isFriendly)
+                    yield return character;
+            }
         }
-
-        //public Iinteractable getInteractableAtPosition(IntVec position)
-        //{
-        //    GameCharacter result = null;
-
-        //    foreach (GameCharacter character in characterEntities)
-        //    {
-        //        if (character.position.Equals(position))
-        //            result = character;
-        //    }
-
-        //    return result;
-        //}
 
         public IntVec findRandomOpenPosition()
         {
@@ -113,15 +107,15 @@ namespace Brogue.Mapping
                     }
                 }
 
-                //foreach (GameCharacter character in characterEntities)
+                foreach (IntVec position in CharacterEntities.Positions() )
                 {
-                    //cachedSolid[character.x, character.y] = true;
+                    cachedSolid[position.X, position.Y] = true;
                 }
 
-                //foreach (EnvironmentObject enviro in environment)
-                //{
-                //    cachedSolid[enviro.x, enviro.y] = enviro.isSolid;
-                //}
+                foreach ( Tuple<IEnvironmentObject,IntVec> enviro in Environment.Tuples() )
+                {
+                    cachedSolid[enviro.Item2.X, enviro.Item2.Y] = enviro.Item1.IsSolid();
+                }
             }
         }
 
@@ -153,35 +147,34 @@ namespace Brogue.Mapping
 
         public void render()
         {
-            //sb.Draw(Tile.tileset, new Rectangle(0, 0, 48, 48), new Rectangle(0, 0, 48, 48), Color.White);
-            //float tileWidth = 640.0f / 50;// Math.Max(tiles.GetLength(0), tiles.GetLength(1));
-
             for (int x = 0; x < tiles.GetLength(0); x++)
             {
                 for (int y = 0; y < tiles.GetLength(1); y++)
                 {
                     if (tiles[x, y].isSolid)
                     {
-                        int right = checkTileSolid( x + 1, y ) ? 1 : 0;
-                        int left = checkTileSolid( x - 1, y ) ? 1 : 0;
-                        int up = checkTileSolid( x, y - 1 ) ? 1 : 0;
-                        int down = checkTileSolid( x, y + 1 ) ? 1 : 0;
+                        int right = checkTileSolid(x + 1, y) ? 1 : 0;
+                        int left = checkTileSolid(x - 1, y) ? 1 : 0;
+                        int up = checkTileSolid(x, y - 1) ? 1 : 0;
+                        int down = checkTileSolid(x, y + 1) ? 1 : 0;
 
                         int index = right | (up << 1) | (left << 2) | (down << 3);
 
-                        index = (index % 8) + (( index >= 8) ? 9 : 0);
+                        index = (index % 8) + ((index >= 8) ? 9 : 0);
 
                         Engine.Engine.Draw(Tile.tileset, new IntVec(x, y), new IntVec(index, 0));
                     }
+                    else
+                    {
+                        Engine.Engine.Draw(Tile.tileset, new IntVec(x, y), new IntVec(8, 0), Color.Gray);
+                    }
+
                 }
             }
 
-            Environment.Draw();
-            //foreach (Tuple<IEnvironmentObject, IntVec> env in environment)
-            //{
-            //    Engine.Engine.Draw(env.Item1.GetSprite().Texture, env.Item2, env.Item1.GetSprite().SourceTile);
-            //}
-
+            //Environment.Draw();
+            //DroppedItems.Draw();
+            CharacterEntities.Draw();
 
             //foreach (IntVec vec in moveset)
             //{

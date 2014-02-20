@@ -157,7 +157,7 @@ namespace Brogue.Mapping
         private static GridBoundList<GameCharacter> populateGameCharacters(Rectangle[] rooms, Random rand)
         {
             //throw new NotImplementedException();
-            return null;
+            return new GridBoundList<GameCharacter>();
         }
 
         private static bool[,] createFloorPlan(Random rand, int levels)

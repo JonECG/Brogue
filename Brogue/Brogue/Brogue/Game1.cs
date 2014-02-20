@@ -116,7 +116,7 @@ namespace Brogue
                         null,
                         null,
                         null,
-                        null,
+                        effect,
                         transform);
             Engine.Engine.DrawGame(gameTime);
             spriteBatch.End();

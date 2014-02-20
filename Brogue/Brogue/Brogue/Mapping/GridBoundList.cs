@@ -7,6 +7,7 @@ namespace Brogue.Mapping
 {
     public class GridBoundList<T> where T : IRenderable
     {
+        public bool changed;
         List<Tuple<T,IntVec>> list;
 
         public GridBoundList()
@@ -72,6 +73,30 @@ namespace Brogue.Mapping
             {
                 Sprite sp = tup.Item1.GetSprite();
                 Engine.Engine.Draw(sp.Texture, tup.Item2, sp.SourceTile, sp.Blend);
+            }
+        }
+
+        public IEnumerable<T> Entities()
+        {
+            for (int i = 0; i < list.Count; i++)
+            {
+                yield return list.ElementAt(i).Item1;
+            }
+        }
+
+        public IEnumerable<IntVec> Positions()
+        {
+            for (int i = 0; i < list.Count; i++)
+            {
+                yield return list.ElementAt(i).Item2;
+            }
+        }
+
+        public IEnumerable<Tuple<T,IntVec>> Tuples()
+        {
+            for (int i = 0; i < list.Count; i++)
+            {
+                yield return list.ElementAt(i);
             }
         }
     }
