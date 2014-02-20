@@ -15,7 +15,7 @@ namespace Brogue.Engine
 
         public static int CELLWIDTH = 48;
         private static Game1 game;
-        public static IntVec cameraPosition = new IntVec(0, 0);
+        public static IntVec cameraPosition = new IntVec(12, 8);
 
         static Texture2D jar, bar, healthcontainer, healthbar, xpbar, inventory;
 
@@ -84,6 +84,8 @@ namespace Brogue.Engine
 
         public static void Draw(Texture2D tex, IntVec destination, Color color)
         {
+
+            game.effect.Parameters["blendColor"].SetValue(new Vector4(color.R, color.G, color.B, color.A));
             game.spriteBatch.Draw(tex, new Vector2(destination.X * CELLWIDTH, destination.Y * CELLWIDTH), color);
         }
 
@@ -94,11 +96,14 @@ namespace Brogue.Engine
 
         public static void Draw(Texture2D tileSheet, IntVec destination, IntVec tilesetSource, Color color)
         {
+            game.effect.Parameters["blendColor"].SetValue(new Vector4( color.R, color.G, color.B, color.A));
             game.spriteBatch.Draw(tileSheet, new Vector2(destination.X * CELLWIDTH, destination.Y * CELLWIDTH), new Rectangle(tilesetSource.X * CELLWIDTH, tilesetSource.Y * CELLWIDTH, CELLWIDTH, CELLWIDTH), color);
+            
         }
 
         public static void DrawUI(SpriteBatch uisb)
         {
+            game.effect.Parameters["blendColor"].SetValue(new Vector4(1f, 0f, 0f, 1f));
             uisb.Draw(healthcontainer, new Vector2(50, game.Height / 2 - healthcontainer.Height / 2), Color.White);
             uisb.Draw(healthcontainer, new Vector2(80, game.Height / 2 - healthcontainer.Height / 2), Color.White);
             uisb.Draw(healthbar, new Vector2(50, game.Height / 2 - healthbar.Height / 2), Color.White);

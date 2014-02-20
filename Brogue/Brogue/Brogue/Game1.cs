@@ -18,7 +18,7 @@ namespace Brogue
     {
         GraphicsDeviceManager graphics;
         
-        Effect effect;
+        public Effect effect;
 
         public SpriteBatch spriteBatch;
         private SpriteBatch uiSpriteBatch;
@@ -110,7 +110,7 @@ namespace Brogue
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            Matrix transform = Matrix.CreateTranslation(-Engine.Engine.cameraPosition.X + graphics.PreferredBackBufferWidth / 2, -Engine.Engine.cameraPosition.Y + graphics.PreferredBackBufferHeight / 2, 1.0f) * Matrix.CreateScale(1.0f, 1.0f, 1);
+            Matrix transform = Matrix.CreateTranslation(-Engine.Engine.cameraPosition.X * Engine.Engine.CELLWIDTH + graphics.PreferredBackBufferWidth / 2, -Engine.Engine.cameraPosition.Y * Engine.Engine.CELLWIDTH + graphics.PreferredBackBufferHeight / 2, 1.0f) * Matrix.CreateScale(1.0f, 1.0f, 1);
             spriteBatch.Begin(SpriteSortMode.BackToFront,
                         BlendState.AlphaBlend,
                         null,
@@ -118,7 +118,7 @@ namespace Brogue
                         null,
                         effect,
                         transform);
-            Engine.Engine.DrawGame(gameTime);
+            //Engine.Engine.DrawGame(gameTime);
             spriteBatch.End();
 
             uiSpriteBatch.Begin();
