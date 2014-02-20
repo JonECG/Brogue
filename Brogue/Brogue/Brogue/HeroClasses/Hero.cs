@@ -1,4 +1,5 @@
-﻿
+﻿using Brogue.Inventories;
+using Brogue.Equipment;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,12 +13,14 @@ namespace Brogue.HeroClasses
 
     public abstract class Hero : GameCharacter
     {
+        public static int maxHealth { get; protected set; }
+        public static int currentHealth { get; protected set; }
         protected int numAbilities;
         protected int spacesPerTurn;
         protected float directionFacing;
-        //Ability[] abilities;
-        //Item currentlyEquippedItem;
-        //Inventory inventory;
+        protected Ability[] abilities;
+        protected Gear[] currentlyEquippedItems;
+        protected Inventory inventory;
 
         public void move(direction dir, bool canMove)
         {
@@ -43,11 +46,38 @@ namespace Brogue.HeroClasses
             }
         }
 
+        public override void TakeDamage(int damage, GameCharacter attacker)
+        {
+
+        }
+
+        public override void TakeTurn(Mapping.Level level)
+        {
+            throw new NotImplementedException();
+        }
+
         //public void castAbility(int ability)
         //public void attack();
         //public void useItem();
-        //public void equipItem();
-        //public void pickupItem();
-        //public void dropItem();
+        public void equipItem(int itemToEquip, int currentItemIndex = 0)
+        {
+            Item temp = currentlyEquippedItems[currentItemIndex];
+            currentlyEquippedItems[currentItemIndex] = inventory.stored[itemToEquip].item;
+        }
+
+        public void swapItems(int itemOne, int itemTwo)
+        {
+            inventory.swapItem(itemOne, itemTwo);
+        }
+
+        public void pickupItem(Item item)
+        {
+            inventory.addItem(item);
+        }
+
+        public void dropItem(int whichItem, int count)
+        {
+            inventory.removeItem(whichItem, count);
+        }
     }
 }
