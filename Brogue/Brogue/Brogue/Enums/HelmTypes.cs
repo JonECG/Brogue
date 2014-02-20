@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Brogue.Enums
 {
-    enum HTypes
+    public enum HTypes
     {
         ClothHelm,
         LeatherHelm,

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Brogue.Enums
 {
-    enum Slots
+    public enum Slots
     {
         Head,
         Chest,

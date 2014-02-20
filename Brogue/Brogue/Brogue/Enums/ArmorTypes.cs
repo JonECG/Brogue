@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Brogue.Enums
 {
-    enum ArTypes
+    public enum ArTypes
     {
         Helm,
         Chest,

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Brogue.Enums
 {
-    enum Class
+    public enum Class
     {
         Warrior,
         Mage,

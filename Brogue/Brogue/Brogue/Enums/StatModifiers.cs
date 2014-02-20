@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Brogue.Enums
 {
-    enum Modifiers
+    public enum Modifiers
     {
         Health,
         Damage,

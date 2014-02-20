@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Brogue.Enums
 {
-    enum ITypes
+    public enum ITypes
     {
         Consumable,
         Accessory,

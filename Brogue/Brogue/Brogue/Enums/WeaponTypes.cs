@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Brogue.Enums
 {
-    enum WTypes
+    public enum WTypes
     {
         MeleeWeapon,
         RangedWeapon

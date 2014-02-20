@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Brogue.Enums
 {
-    enum MWTypes
+    public enum MWTypes
     {
         Axe,
         BastardSword,

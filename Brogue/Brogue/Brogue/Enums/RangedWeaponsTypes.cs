@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Brogue.Enums
 {
-    enum RWTypes
+    public enum RWTypes
     {
         Boomerang,
         Kunai,

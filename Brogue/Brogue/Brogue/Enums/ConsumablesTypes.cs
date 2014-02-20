@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Brogue.Enums
 {
-    enum CoTypes
+    public enum CoTypes
     {
         Potion
     }

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Brogue.Enums
 {
-   enum AcTypes
+   public enum AcTypes
     {
        Ring,
        Necklace

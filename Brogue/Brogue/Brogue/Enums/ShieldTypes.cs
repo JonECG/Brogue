@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Brogue.Enums
 {
-    enum STypes
+    public enum STypes
     {
         WoodenShield,
         PlateShield

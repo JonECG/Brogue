@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Brogue.Enums
 {
-    enum ChTypes
+    public enum ChTypes
     {
         ClothChest,
         LeatherChest,
