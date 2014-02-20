@@ -147,6 +147,7 @@
     <Compile Include="Items\Item.cs" />
     <Compile Include="Mapping\KeyboardController.cs" />
     <Compile Include="Mapping\LevelGenerator.cs" />
+    <Compile Include="Sprite.cs" />
     <Compile Include="TestCases\JonTest.cs" />
     <Compile Include="Enemies\Enemy.cs" />
     <Compile Include="GameCharacter.cs" />
