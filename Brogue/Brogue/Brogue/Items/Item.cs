@@ -19,7 +19,7 @@ namespace Brogue.Items
     public abstract class Item : IRenderable
     {
         public string Name { get; protected set; }
-        static public Texture2D Texture { get; protected set; }
+        static virtual public Texture2D Texture { get; protected set; }
 
         public static void LoadContent(ContentManager content)
         {

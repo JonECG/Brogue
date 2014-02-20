@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework.Graphics;
 using Brogue.Enums;
 
 namespace Brogue.Items.Equipment.Weapon.Ranged
 {
     public class Staff : RangedWeapon
     {
+        static override Texture2D Texture { get; protected set; }
+
         public Staff(int dLevel, int cLevel)
         {
             Name = "Staff";
