@@ -1,5 +1,6 @@
 ﻿using Brogue;
 using Brogue.Engine;
+using Brogue.Mapping;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,6 @@ namespace Brogue.Abilities
         public bool isCasting { get; protected set; }
 
         abstract public IntVec cast(int heroDamage, int heroLevel, Direction directionFacing);
-        abstract public int viewCastRange();
+        abstract public IntVec[] viewCastRange(Level level, IntVec start);
     }
 }

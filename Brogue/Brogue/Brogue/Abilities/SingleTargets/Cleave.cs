@@ -1,6 +1,7 @@
 ﻿using Brogue;
 using Brogue.Engine;
 using Brogue.HeroClasses;
+using Brogue.Mapping;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +14,10 @@ namespace Brogue.Abilities.Damaging.SingleTargets
     {
         private int baseDamage = 5;
 
-        public override int viewCastRange()
+        public override IntVec[] viewCastRange(Level level, IntVec start)
         {
             radius = 1;
-            return radius;
+            return AStar.getPossiblePositionsFrom(level, start, radius);
         }
 
         public override IntVec cast(int heroDamage, int heroLevel, Direction directionFacing)
