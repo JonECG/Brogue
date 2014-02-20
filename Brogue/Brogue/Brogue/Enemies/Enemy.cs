@@ -26,22 +26,8 @@ namespace Brogue
         //Movement method, moves a single square
         public void Move(Direction d)
         {
-            if (d == Direction.UP)
-            {
-                position.Y = position.Y + 1;
-            }
-            if (d == Direction.DOWN)
-            {
-                position.Y = position.Y - 1;
-            }
-            if (d == Direction.LEFT)
-            {
-                position.X = position.X - 1;
-            }
-            if (d == Direction.RIGHT)
-            {
-                position.X = position.X + 1;
-            }
+            position.X += d.X;
+            position.Y += d.Y;
         }
 
         //This method will be called each turn to determine who (if anyone) to attack
