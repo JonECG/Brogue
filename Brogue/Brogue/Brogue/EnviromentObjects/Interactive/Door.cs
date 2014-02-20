@@ -37,6 +37,11 @@ namespace Brogue.EnviromentObjects.Interactive
                isOpen = false;
            }
        }
+
+       public void actOn()
+       {
+           changeSolid();
+       }
     }
 
     class secretDoor : Iinteractable

@@ -33,5 +33,10 @@ namespace Brogue.EnviromentObjects.Decorative
             return new Sprite(sprite);
         }
 
+
+        //public bool getSolidity()
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }

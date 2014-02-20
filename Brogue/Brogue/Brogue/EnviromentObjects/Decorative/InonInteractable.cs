@@ -7,6 +7,6 @@ namespace Brogue.EnviromentObjects.Decorative
 {
     interface InonInteractable
     {
-        bool getSolidity();
+        //bool getSolidity();
     }
 }
