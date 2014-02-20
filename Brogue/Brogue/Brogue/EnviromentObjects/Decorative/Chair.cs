@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Brogue.Mapping;
 using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
+
 
 namespace Brogue.EnviromentObjects.Decorative
 {

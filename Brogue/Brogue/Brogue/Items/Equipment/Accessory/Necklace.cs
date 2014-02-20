@@ -9,7 +9,12 @@ namespace Brogue.Items.Equipment.Accessory
 {
     public class Necklace : Accessory
     {
-        override Texture2D Texture { get; protected set; }
+        public static Texture2D Texture { get; set; }
+
+        public override Texture2D GetTexture()
+        {
+            return Texture;
+        }
 
         public Necklace(int dLevel, int cLevel)
         {

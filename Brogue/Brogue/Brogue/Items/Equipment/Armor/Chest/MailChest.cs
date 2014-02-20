@@ -9,7 +9,12 @@ namespace Brogue.Items.Equipment.Armor.Chest
 {
     public class MailChest : Chest
     {
-        override Texture2D Texture { get; protected set; }
+        public static Texture2D Texture { get; set; }
+
+        public override Texture2D GetTexture()
+        {
+            return Texture;
+        }
 
         public MailChest(int dLevel, int cLevel)
         {

@@ -145,6 +145,10 @@
     <Compile Include="Items\Consumables\Consumable.cs" />
     <Compile Include="Items\Consumables\Potion.cs" />
     <Compile Include="Items\Item.cs" />
+    <Compile Include="Mapping\AStar.cs" />
+    <Compile Include="Mapping\ColorEnvironment.cs" />
+    <Compile Include="Mapping\EnvironmentObject.cs" />
+    <Compile Include="Mapping\GridBoundList.cs" />
     <Compile Include="Mapping\KeyboardController.cs" />
     <Compile Include="Mapping\LevelGenerator.cs" />
     <Compile Include="Sprite.cs" />

@@ -9,7 +9,12 @@ namespace Brogue.Items.Equipment.Weapon.Melee
 {
     public class GreatAxe : MeleeWeapon
     {
-        override Texture2D Texture { get; protected set; }
+        public static Texture2D Texture { get; set; }
+
+        public override Texture2D GetTexture()
+        {
+            return Texture;
+        }
 
         public GreatAxe(int dLevel, int cLevel)
         {
