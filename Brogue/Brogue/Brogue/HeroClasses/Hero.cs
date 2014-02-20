@@ -1,6 +1,5 @@
 ﻿using Brogue.InventorySystem;
 using Brogue.Abilities;
-using Brogue.Inventories;
 using Brogue.Items;
 using Brogue.Items.Equipment;
 using Microsoft.Xna.Framework.Content;
@@ -22,7 +21,7 @@ namespace Brogue.HeroClasses
         protected int numAbilities;
         protected int spacesPerTurn;
         protected float directionFacing;
-        //protected Ability[] abilities;
+        protected Ability[] abilities;
         static Texture2D tex;
         static Sprite sprite;
         protected Item[] currentlyEquippedItems;
@@ -127,8 +126,8 @@ namespace Brogue.HeroClasses
 
         public void equipItem(int itemToEquip, int currentItemIndex = 0)
         {
-            //Item temp = currentlyEquippedItems[currentItemIndex];
-            //currentlyEquippedItems[currentItemIndex] = inventory.stored[itemToEquip].item;
+            Item temp = currentlyEquippedItems[currentItemIndex];
+            currentlyEquippedItems[currentItemIndex] = inventory.stored[itemToEquip].item;
             inventory.stored[itemToEquip].item = temp;
         }
 
