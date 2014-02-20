@@ -6,12 +6,12 @@ using Brogue.Enums;
 
 namespace Brogue.Items.Equipment.Armor.Shields
 {
-    class WoodenShield : Shields
+    public class WoodenShield : Shields
     {
-        public WoodenShield(int dLevel)
+        public WoodenShield(int dLevel, int cLevel)
         {
             Name = "Wooden Shield";
-            LevelReq = findLevelReq(dLevel);
+            LevelReq = findLevelReq(dLevel, cLevel);
             UsedBy = new List<Class> { Class.Warrior };
             TypeBonus = 2;
             ArmorValue = findArmorValue(BaseArmor, dLevel, LevelReq, TypeBonus);

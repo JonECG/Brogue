@@ -6,14 +6,14 @@ using Brogue.Enums;
 
 namespace Brogue.Items.Equipment.Weapon.Melee
 {
-    class WarHammer : MeleeWeapon
+    public class WarHammer : MeleeWeapon
     {
-        public WarHammer(int dLevel)
+        public WarHammer(int dLevel, int cLevel)
         {
             Name = "WarHammer";
             UsedBy = new List<Class> { Class.Warrior };
             EquipableIn = new List<Slots> { Slots.Hand_Both };
-            LevelReq = findLevelReq(dLevel);
+            LevelReq = findLevelReq(dLevel, cLevel);
             Damage = findDamage(BaseDamage, dLevel, LevelReq);
         }
     }

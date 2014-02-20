@@ -16,7 +16,7 @@ using Brogue.Enums;
 
 namespace Brogue.Items
 {
-    abstract class Item : IRenderable
+    public abstract class Item : IRenderable
     {
         public string Name { get; protected set; }
         static public Texture2D Texture { get; protected set; }
@@ -57,7 +57,7 @@ namespace Brogue.Items
             Items.Equipment.Accessory.Ring.Texture = content.Load<Texture2D>("Items/Sword");
         }
 
-        public static Item randomItem(int dLevel)
+        public static Item randomItem(int dLevel, int cLevel)
         {
             int findItem;
             Random rand = new Random();
@@ -69,7 +69,7 @@ namespace Brogue.Items
                 findItem = rand.Next(Enum.GetNames(typeof(CoTypes)).Length);
                 if ((CoTypes)findItem == CoTypes.Potion)
                 {
-                    return new Potion(dLevel);
+                    return new Potion(dLevel, cLevel);
                 }
             }
             #endregion
@@ -79,11 +79,11 @@ namespace Brogue.Items
                 findItem = rand.Next(Enum.GetNames(typeof(AcTypes)).Length);
                 if ((AcTypes)findItem == AcTypes.Necklace)
                 {
-                    return new Necklace(dLevel);
+                    return new Necklace(dLevel, cLevel);
                 }
                 else if ((AcTypes)findItem == AcTypes.Ring)
                 {
-                    return new Ring(dLevel);
+                    return new Ring(dLevel, cLevel);
                 }
             }
             #endregion
@@ -96,31 +96,31 @@ namespace Brogue.Items
                     findItem = rand.Next(Enum.GetNames(typeof(MWTypes)).Length);
                     if ((MWTypes)findItem == MWTypes.Axe)
                     {
-                        return new Axe(dLevel);
+                        return new Axe(dLevel, cLevel);
                     }
                     else if ((MWTypes)findItem == MWTypes.BastardSword)
                     {
-                        return new BastardSword(dLevel);
+                        return new BastardSword(dLevel, cLevel);
                     }
                     else if ((MWTypes)findItem == MWTypes.Claws)
                     {
-                        return new Claws(dLevel);
+                        return new Claws(dLevel, cLevel);
                     }
                     else if ((MWTypes)findItem == MWTypes.Dagger)
                     {
-                        return new Dagger(dLevel);
+                        return new Dagger(dLevel, cLevel);
                     }
                     else if ((MWTypes)findItem == MWTypes.GreatAxe)
                     {
-                        return new GreatAxe(dLevel);
+                        return new GreatAxe(dLevel, cLevel);
                     }
                     else if ((MWTypes)findItem == MWTypes.Sword)
                     {
-                        return new Sword(dLevel);
+                        return new Sword(dLevel, cLevel);
                     }
                     else if ((MWTypes)findItem == MWTypes.WarHammer)
                     {
-                        return new WarHammer(dLevel);
+                        return new WarHammer(dLevel, cLevel);
                     }
                 }
                 else if ((WTypes)findItem == WTypes.RangedWeapon)
@@ -128,19 +128,19 @@ namespace Brogue.Items
                     findItem = rand.Next(Enum.GetNames(typeof(RWTypes)).Length);
                     if ((RWTypes)findItem == RWTypes.Boomerang)
                     {
-                        return new Boomerang(dLevel);
+                        return new Boomerang(dLevel, cLevel);
                     }
                     else if ((RWTypes)findItem == RWTypes.Kunai)
                     {
-                        return new Kunai(dLevel);
+                        return new Kunai(dLevel, cLevel);
                     }
                     else  if ((RWTypes)findItem == RWTypes.Staff)
                     {
-                        return new Staff(dLevel);
+                        return new Staff(dLevel, cLevel);
                     }
                     else if ((RWTypes)findItem == RWTypes.ThrowingKnives)
                     {
-                        return new ThrowingKnives(dLevel);
+                        return new ThrowingKnives(dLevel, cLevel);
                     }
                 }
             }
@@ -154,15 +154,15 @@ namespace Brogue.Items
                     findItem = rand.Next(Enum.GetNames(typeof(ChTypes)).Length);
                     if ((ChTypes)findItem == ChTypes.ClothChest)
                     {
-                        return new ClothChest(dLevel);
+                        return new ClothChest(dLevel,cLevel);
                     }
                     else if ((ChTypes)findItem == ChTypes.LeatherChest)
                     {
-                        return new LeatherChest(dLevel);
+                        return new LeatherChest(dLevel, cLevel);
                     }
                     else if ((ChTypes)findItem == ChTypes.MailChest)
                     {
-                        return new MailChest(dLevel);
+                        return new MailChest(dLevel, cLevel);
                     }
                 }
                 else if ((ArTypes)findItem == ArTypes.Helm)
@@ -170,15 +170,15 @@ namespace Brogue.Items
                     findItem = rand.Next(Enum.GetNames(typeof(HTypes)).Length);
                     if ((HTypes)findItem == HTypes.ClothHelm)
                     {
-                        return new ClothHelm(dLevel);
+                        return new ClothHelm(dLevel, cLevel);
                     }
                     else if ((HTypes)findItem == HTypes.LeatherHelm)
                     {
-                        return new LeatherHelm(dLevel);
+                        return new LeatherHelm(dLevel, cLevel);
                     }
                     else if ((HTypes)findItem == HTypes.MailHelm)
                     {
-                        return new MailHelm(dLevel);
+                        return new MailHelm(dLevel, cLevel);
                     }
                 }
                 else if ((ArTypes)findItem == ArTypes.Legs)
@@ -186,15 +186,15 @@ namespace Brogue.Items
                     findItem = rand.Next(Enum.GetNames(typeof(LTypes)).Length);
                     if ((LTypes)findItem == LTypes.ClothLegs)
                     {
-                        return new ClothLegs(dLevel);
+                        return new ClothLegs(dLevel, cLevel);
                     }
                     else if ((LTypes)findItem == LTypes.LeatherLegs)
                     {
-                        return new LeatherLegs(dLevel);
+                        return new LeatherLegs(dLevel, cLevel);
                     }
                     else if ((LTypes)findItem == LTypes.MailLegs)
                     {
-                        return new MailLegs(dLevel);
+                        return new MailLegs(dLevel, cLevel);
                     }
                 }
                 else if ((ArTypes)findItem == ArTypes.Shields)
@@ -202,18 +202,18 @@ namespace Brogue.Items
                     findItem = rand.Next(Enum.GetNames(typeof(STypes)).Length);
                     if ((STypes)findItem == STypes.PlateShield)
                     {
-                        return new PlateShield(dLevel);
+                        return new PlateShield(dLevel, cLevel);
                     }
                     else if ((STypes)findItem == STypes.WoodenShield)
                     {
-                        return new WoodenShield(dLevel);
+                        return new WoodenShield(dLevel, cLevel);
                     }
                 }
             }
 
             #endregion
             #endregion
-            return new Potion(dLevel);
+            return new Potion(dLevel, cLevel);
         }
 
         public Sprite GetSprite()

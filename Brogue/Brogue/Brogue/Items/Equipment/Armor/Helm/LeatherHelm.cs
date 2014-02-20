@@ -6,12 +6,12 @@ using Brogue.Enums;
 
 namespace Brogue.Items.Equipment.Armor.Helm
 {
-    class LeatherHelm : Helm
+    public class LeatherHelm : Helm
     {
-        public LeatherHelm(int dLevel)
+        public LeatherHelm(int dLevel, int cLevel)
         {
             Name = "Leather Helm";
-            LevelReq = findLevelReq(dLevel);
+            LevelReq = findLevelReq(dLevel, cLevel);
             UsedBy = new List<Class> { Class.Rogue };
             TypeBonus = 3;
             ArmorValue = findArmorValue(BaseArmor, dLevel, LevelReq, TypeBonus);

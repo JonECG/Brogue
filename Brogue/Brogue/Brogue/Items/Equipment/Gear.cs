@@ -6,7 +6,7 @@ using Brogue.Enums;
 
 namespace Brogue.Items.Equipment
 {
-    abstract class Gear : Item
+    public abstract class Gear : Item
     {
        public int LevelReq { get; protected set; }
        public List<Class> UsedBy { get; protected set; }

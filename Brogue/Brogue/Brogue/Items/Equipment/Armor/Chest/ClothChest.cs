@@ -6,12 +6,12 @@ using Brogue.Enums;
 
 namespace Brogue.Items.Equipment.Armor.Chest
 {
-    class ClothChest : Chest
+    public class ClothChest : Chest
     {
-        public ClothChest(int dLevel)
+        public ClothChest(int dLevel, int cLevel)
         {
             Name = "Cloth Chest";
-            LevelReq = findLevelReq(dLevel);
+            LevelReq = findLevelReq(dLevel, cLevel);
             UsedBy = new List<Class> { Class.Mage };
             TypeBonus = 1;
             ArmorValue = findArmorValue(BaseArmor, dLevel, LevelReq, TypeBonus);

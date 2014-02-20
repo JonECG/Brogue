@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Brogue.Items.Equipment.Armor
 {
-    abstract class Armor : Gear
+    public abstract class Armor : Gear
     {
         public int BaseArmor { get; protected set; }
         public int ArmorValue { get; protected set; }

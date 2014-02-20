@@ -6,12 +6,12 @@ using Brogue.Enums;
 
 namespace Brogue.Items.Equipment.Accessory
 {
-    class Necklace : Accessory
+    public class Necklace : Accessory
     {
-        public Necklace(int dLevel)
+        public Necklace(int dLevel, int cLevel)
         {
             Name = "Necklace";
-            LevelReq = findLevelReq(dLevel);
+            LevelReq = findLevelReq(dLevel, cLevel);
             UsedBy = new List<Class> { Class.Mage, Class.Rogue, Class.Warrior };
             EquipableIn = new List<Slots> { Slots.Neck };
             StatIncreased = new List<Modifiers> { findStatIncreased() };

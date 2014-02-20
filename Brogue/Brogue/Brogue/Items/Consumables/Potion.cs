@@ -5,9 +5,9 @@ using System.Text;
 
 namespace Brogue.Items.Consumables
 {
-    class Potion : Consumable
+    public class Potion : Consumable
     {
-        public Potion(int dLevel)
+        public Potion(int dLevel, int cLevel)
         {
             Name = "Potion";
             BaseAmount = 50;

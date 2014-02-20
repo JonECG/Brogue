@@ -6,7 +6,7 @@ using Brogue.Enums;
 
 namespace Brogue.Items.Equipment.Armor.Chest
 {
-    abstract class Chest : Armor
+    public abstract class Chest : Armor
     {
         Random rand = new Random();
 

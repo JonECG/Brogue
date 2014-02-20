@@ -6,14 +6,14 @@ using Brogue.Enums;
 
 namespace Brogue.Items.Equipment.Weapon.Ranged
 {
-    class Boomerang : RangedWeapon
+    public class Boomerang : RangedWeapon
     {
-        public Boomerang(int dLevel)
+        public Boomerang(int dLevel, int cLevel)
         {
             Name = "Boomerang";
             UsedBy = new List<Class> { Class.Rogue };
             EquipableIn = new List<Slots> { Slots.Hand_Auxillary };
-            LevelReq = findLevelReq(dLevel);
+            LevelReq = findLevelReq(dLevel, cLevel);
             Damage = findDamage(BaseDamage, dLevel, LevelReq);
         }
     }

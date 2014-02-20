@@ -7,12 +7,12 @@ using Brogue.Enums;
 
 namespace Brogue.Items.Equipment.Armor.Legs
 {
-    class LeatherLegs : Legs
+    public class LeatherLegs : Legs
     {
-        public LeatherLegs(int dLevel)
+        public LeatherLegs(int dLevel, int cLevel)
         {
             Name = "Leather Legs";
-            LevelReq = findLevelReq(dLevel);
+            LevelReq = findLevelReq(dLevel, cLevel);
             UsedBy = new List<Class> { Class.Rogue };
             TypeBonus = 3;
             ArmorValue = findArmorValue(BaseArmor, dLevel, LevelReq, TypeBonus);

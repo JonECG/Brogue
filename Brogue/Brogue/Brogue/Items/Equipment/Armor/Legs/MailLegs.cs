@@ -6,12 +6,12 @@ using Brogue.Enums;
 
 namespace Brogue.Items.Equipment.Armor.Legs
 {
-    class MailLegs : Legs
+    public class MailLegs : Legs
     {
-        public MailLegs(int dLevel)
+        public MailLegs(int dLevel, int cLevel)
         {
             Name = "Mail Legs";
-            LevelReq = findLevelReq(dLevel);
+            LevelReq = findLevelReq(dLevel, cLevel);
             UsedBy = new List<Class> { Class.Warrior };
             TypeBonus = 5;
             ArmorValue = findArmorValue(BaseArmor, dLevel, LevelReq, TypeBonus);
