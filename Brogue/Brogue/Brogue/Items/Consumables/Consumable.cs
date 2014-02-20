@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Brogue.Items.Consumables
 {
-    abstract class Consumable : Item
+    public abstract class Consumable : Item
     {
         public int RestoreAmount { get; protected set; }
         public int BaseAmount { get; protected set; }

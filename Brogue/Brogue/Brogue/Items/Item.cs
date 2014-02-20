@@ -218,7 +218,7 @@ namespace Brogue.Items
 
         public Sprite GetSprite()
         {
-            throw new NotImplementedException();
+            return new Sprite(Texture);
         }
     }
 }
