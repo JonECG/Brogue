@@ -1,7 +1,8 @@
 ﻿//using Brogue.Inventories;
-using Brogue.Equipment;
+//using Brogue.Equipment;
 using Brogue.Inventories;
 using Brogue.Items;
+using Brogue.Items.Equipment;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;

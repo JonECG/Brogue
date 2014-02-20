@@ -1,4 +1,5 @@
 ﻿using Brogue.Inventories;
+using Brogue.Items;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ namespace Brogue.Inventories
 {
     public class Inventory
     {
-        static const int MAX_ITEM_COUNT = 16;
+        static int MAX_ITEM_COUNT = 16;
         public InventorySlot[] stored {get; protected set;}
 
         public Inventory()
