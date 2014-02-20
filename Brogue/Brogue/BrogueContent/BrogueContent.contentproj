@@ -83,17 +83,24 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Items\Sword1.png">
-      <Name>Sword1</Name>
+    <Compile Include="Hero\Hero.png">
+      <Name>Hero</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Hero\Hero.png">
-      <Name>Hero</Name>
+    <Compile Include="Items\Sword.png">
+      <Name>Sword</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="UI\Font.spritefont">
+      <Name>Font</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

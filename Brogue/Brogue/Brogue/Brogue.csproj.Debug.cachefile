@@ -7,5 +7,6 @@ Content\UI\Jar.xnb
 Content\UI\XPBar.xnb
 Content\dynamicTileset.xnb
 Content\Shader.xnb
-Content\Items\Sword1.xnb
 Content\Hero\Hero.xnb
+Content\Items\Sword.xnb
+Content\UI\Font.xnb
