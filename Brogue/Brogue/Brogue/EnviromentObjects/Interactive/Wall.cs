@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Brogue.Mapping;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Brogue.EnviromentObjects.Interactive
 {
-    class Wall
+    class Wall : IEnvironmentObject
     {
         static Texture2D sprite { get; set; }
 
@@ -25,9 +26,19 @@ namespace Brogue.EnviromentObjects.Interactive
             sprite = content.Load<Texture2D>("levelTileset");
         }
 
+
+        public bool IsSolid()
+        {
+            return isSolid;
+        }
+
+        public Sprite GetSprite()
+        {
+            return new Sprite(sprite);
+        }
     }
 
-    class SecretWall : Iinteractable
+    class SecretWall : Iinteractable, IEnvironmentObject
     {
         static Texture2D sprite;
         public bool isSolid { get; set; }
@@ -60,6 +71,16 @@ namespace Brogue.EnviromentObjects.Interactive
         public void actOn()
         {
             changeSolid();
+        }
+
+        public bool IsSolid()
+        {
+            return isSolid;
+        }
+
+        public Sprite GetSprite()
+        {
+            return new Sprite(sprite);
         }
     }
 }

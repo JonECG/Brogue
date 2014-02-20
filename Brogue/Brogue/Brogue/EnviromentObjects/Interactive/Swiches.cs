@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Brogue.Mapping;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Brogue.EnviromentObjects.Interactive
 {
-    public class Swiches
+    public class Swiches : IEnvironmentObject, Iinteractable
     {
         static Texture2D sprite { get; set; }
         
@@ -45,10 +46,24 @@ namespace Brogue.EnviromentObjects.Interactive
         {
             sprite = content.Load<Texture2D>("levelTileset");
         }
+        
+        public void actOn()
+        {
+            throw new NotImplementedException();
+        }
 
+        public bool IsSolid()
+        {
+            return isSolid;
+        }
+
+        public Sprite GetSprite()
+        {
+            return new Sprite(sprite);
+        }
     }
 
-    public class presserPlate
+    public class presserPlate : IEnvironmentObject, Iinteractable
     {
         public bool active { get; set; }
         public bool isPassable { get; set; }
@@ -93,7 +108,22 @@ namespace Brogue.EnviromentObjects.Interactive
         {
             sprite = content.Load<Texture2D>("levelTileset");
         }
-        
+
+        public bool IsSolid()
+        {
+            return isSolid;
+        }
+
+        public Sprite GetSprite()
+        {
+            return new Sprite(sprite);
+        }
+
+
+        public void actOn()
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }

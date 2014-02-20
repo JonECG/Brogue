@@ -2,17 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Brogue.Mapping;
+using Brogue.Items;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Brogue.Items.Consumables;
 
 namespace Brogue.EnviromentObjects.Interactive
 {
-    class Chest : Iinteractable
+    class Chest : Iinteractable, IEnvironmentObject
     {
         static Texture2D sprite { get; set; }
 
-        //List<> contents = new List<>;
+        int chestSize = 10;
+
+        public Item[] contents;
 
         public bool isSolid { get; set; }
         public bool isOpen { get; set; }
@@ -20,16 +24,28 @@ namespace Brogue.EnviromentObjects.Interactive
         public Chest()
         {
             isSolid = false;
-            //contents.add();
+            contents = new Item[chestSize];
         }
 
         public void fillChest()
         {
+            throw new NotImplementedException();
+            //Item randomIteam;
+            //for (int i = 0; i < chestSize; i++)
+            //{
+                
+            //}
+        }
+
+        public void putInChest(Item newIteam)
+        {
+            throw new NotImplementedException();
             //place contents in to chest
         }
 
         public void spewOutIteams()
         {
+            throw new NotImplementedException();
             //send array of iteams
         }
 
@@ -57,7 +73,19 @@ namespace Brogue.EnviromentObjects.Interactive
 
         public void actOn()
         {
+            throw new NotImplementedException();
             //spewOutIteams();
         }
+
+        public bool IsSolid()
+        {
+            return isSolid;
+        }
+
+        public Sprite GetSprite()
+        {
+            return new Sprite(sprite);
+        }
+
     }
 }

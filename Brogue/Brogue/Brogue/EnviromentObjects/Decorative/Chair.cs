@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Brogue.Mapping;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Brogue.EnviromentObjects.Decorative
 {
-    class Chair : InonInteractable
+    class Chair : InonInteractable, IEnvironmentObject
     {
         static Texture2D sprite { get; set; }
         bool isSolid { get; set; }
@@ -22,9 +23,15 @@ namespace Brogue.EnviromentObjects.Decorative
             sprite = content.Load<Texture2D>("levelTileset");
         }
 
-        public bool getSolidity()
+        public bool IsSolid()
         {
             return isSolid;
         }
+
+        public Sprite GetSprite()
+        {
+            return new Sprite(sprite);
+        }
+
     }
 }
