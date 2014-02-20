@@ -13,7 +13,6 @@ namespace Brogue
         protected GameCharacter target;
         protected int attack;
         protected int defense;
-        protected int health;
         protected int moveSpeed;
         protected int range;
         protected int aggroRange;

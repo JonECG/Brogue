@@ -12,7 +12,6 @@ namespace Brogue.Enemies
         protected List<GameCharacter> targets;
         protected List<int> attacks;
         protected int defense;
-        protected int health;
         protected int moveSpeed;
         protected int attackRange1, attackRange2, attackRange3;
 

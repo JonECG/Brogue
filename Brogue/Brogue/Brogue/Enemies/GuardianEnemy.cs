@@ -33,6 +33,11 @@ namespace Brogue.Enemies
             }
         }
 
+        public override bool Aggro(Level level)
+        {
+            throw new NotImplementedException();
+        }
+
         public override void BuildEnemy(int i)
         {
             if (i > 10)
