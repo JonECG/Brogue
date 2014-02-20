@@ -63,7 +63,7 @@ namespace Brogue.Enemies
             return targetFound;
         }
 
-        public override void buildEnemy(int i)
+        public override void BuildEnemy(int i)
         {
             if(i > 10)
             {
@@ -82,7 +82,7 @@ namespace Brogue.Enemies
             moveSpeed = 3 + (2 * i);
         }
 
-        protected override void die()
+        protected override void Die()
         {
             //ItemDropper once created
         }
