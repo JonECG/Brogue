@@ -42,21 +42,14 @@ namespace Brogue.Enemies
 
             IEnumerable<GameCharacter> chars = level.GetCharactersIsFriendly(true);
 
-            if (target != null && (AStar.getCost(AStar.getPathBetween(level, this.position, target.position)) < aggroRange + 5))
+            foreach (GameCharacter g in chars)
             {
-                targetFound = true;
-            }
-            else
-            {
-                foreach (GameCharacter g in chars)
-                {
-                    int gRange = AStar.getCost(AStar.getPathBetween(level, this.position, g.position));
+                int gRange = AStar.getCost(AStar.getPathBetween(level, this.position, g.position));
 
-                    if (gRange < aggroRange && gRange < AStar.getCost(AStar.getPathBetween(level, this.position, target.position)))
-                    {
-                        target = level.CharacterEntities.FindEntity(g.position);
-                        targetFound = true;
-                    }
+                if (gRange < aggroRange && gRange < AStar.getCost(AStar.getPathBetween(level, this.position, target.position)))
+                {
+                    target = level.CharacterEntities.FindEntity(g.position);
+                    targetFound = true;
                 }
             }
 
