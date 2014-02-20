@@ -103,7 +103,6 @@ namespace Brogue.Engine
 
         public static void DrawUI(SpriteBatch uisb)
         {
-            game.effect.Parameters["blendColor"].SetValue(new Vector4(1f, 0f, 0f, 1f));
             uisb.Draw(healthcontainer, new Vector2(50, game.Height / 2 - healthcontainer.Height / 2), Color.White);
             uisb.Draw(healthcontainer, new Vector2(80, game.Height / 2 - healthcontainer.Height / 2), Color.White);
             uisb.Draw(healthbar, new Vector2(50, game.Height / 2 - healthbar.Height / 2), Color.White);
