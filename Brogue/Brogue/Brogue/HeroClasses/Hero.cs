@@ -1,5 +1,9 @@
-﻿using Brogue.Inventories;
+﻿//using Brogue.Inventories;
 using Brogue.Equipment;
+using Brogue.Inventories;
+using Brogue.Items;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,14 +15,16 @@ namespace Brogue.HeroClasses
 
     public enum direction { LEFT, RIGHT, UP, DOWN };
 
-    public abstract class Hero : GameCharacter
+    public abstract class Hero : GameCharacter, IRenderable
     {
         public static int maxHealth { get; protected set; }
         public static int currentHealth { get; protected set; }
         protected int numAbilities;
         protected int spacesPerTurn;
         protected float directionFacing;
-        protected Ability[] abilities;
+        //protected Ability[] abilities;
+        static Texture2D tex;
+        static Sprite sprite;
         protected Gear[] currentlyEquippedItems;
         protected Inventory inventory;
 
@@ -50,7 +56,11 @@ namespace Brogue.HeroClasses
         {
 
         }
-
+        public static void LoadContent(ContentManager content)
+        {
+            tex = content.Load<Texture2D>("Hero/Hero");
+            sprite = new Sprite(tex);
+        }
         public override void TakeTurn(Mapping.Level level)
         {
             throw new NotImplementedException();
@@ -61,8 +71,8 @@ namespace Brogue.HeroClasses
         //public void useItem();
         public void equipItem(int itemToEquip, int currentItemIndex = 0)
         {
-            Item temp = currentlyEquippedItems[currentItemIndex];
-            currentlyEquippedItems[currentItemIndex] = inventory.stored[itemToEquip].item;
+            //Item temp = currentlyEquippedItems[currentItemIndex];
+            //currentlyEquippedItems[currentItemIndex] = inventory.stored[itemToEquip].item;
         }
 
         public void swapItems(int itemOne, int itemTwo)
@@ -78,6 +88,11 @@ namespace Brogue.HeroClasses
         public void dropItem(int whichItem, int count)
         {
             inventory.removeItem(whichItem, count);
+        }
+
+        Sprite IRenderable.GetSprite()
+        {
+            return sprite;
         }
     }
 }

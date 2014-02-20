@@ -15,5 +15,10 @@ namespace Brogue.HeroClasses
             position = new IntVec(0, 0);
             spacesPerTurn = 2;
         }
+
+        public override void Heal(int heal)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
