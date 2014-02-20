@@ -40,18 +40,23 @@ namespace Brogue.Enemies
         {
             bool targetFound = false;
 
-            if (target != null)
+            IEnumerable<GameCharacter> chars = level.GetCharactersIsFriendly(true);
+
+            if (target != null && (AStar.getCost(AStar.getPathBetween(level, this.position, target.position)) < aggroRange + 5))
             {
-                if (AStar.getCost(AStar.getPathBetween(level, this.position, level.getPlayer().position)) < aggroRange + 3)
-                {
-                    target = level.getPlayer();
-                }
+                targetFound = true;
             }
             else
             {
-                if (AStar.getCost(AStar.getPathBetween(level, this.position, level.getPlayer().position)) < aggroRange)
+                foreach (GameCharacter g in chars)
                 {
-                    target = level.getPlayer();
+                    int gRange = AStar.getCost(AStar.getPathBetween(level, this.position, g.position));
+
+                    if (gRange < aggroRange && gRange < AStar.getCost(AStar.getPathBetween(level, this.position, target.position)))
+                    {
+                        target = level.CharacterEntities.FindEntity(g.position);
+                        targetFound = true;
+                    }
                 }
             }
 
