@@ -16,15 +16,45 @@ using Brogue.Enums;
 
 namespace Brogue.Items
 {
-    abstract class Item
+    abstract class Item : IRenderable
     {
         public string Name { get; protected set; }
-        public string Image { get; protected set; }
-        public Texture2D Texture { get; protected set; }
+        static public Texture2D Texture { get; protected set; }
 
-        public static Texture2D LoadContent(ContentManager content, string imgLocation)
+        public static void LoadContent(ContentManager content)
         {
-            return content.Load <Texture2D>(imgLocation);
+            Items.Consumables.Potion.Texture = content.Load<Texture2D>("Items/Sword");
+
+            Items.Equipment.Weapon.Melee.Axe.Texture = content.Load<Texture2D>("Items/Sword");
+            Items.Equipment.Weapon.Melee.Sword.Texture = content.Load<Texture2D>("Items/Sword");
+            Items.Equipment.Weapon.Melee.GreatAxe.Texture = content.Load<Texture2D>("Items/Sword");
+            Items.Equipment.Weapon.Melee.BastardSword.Texture = content.Load<Texture2D>("Items/Sword");
+            Items.Equipment.Weapon.Melee.Dagger.Texture = content.Load<Texture2D>("Items/Sword");
+            Items.Equipment.Weapon.Melee.WarHammer.Texture = content.Load<Texture2D>("Items/Sword");
+            Items.Equipment.Weapon.Melee.Claws.Texture = content.Load<Texture2D>("Items/Sword");
+
+            Items.Equipment.Weapon.Ranged.Boomerang.Texture = content.Load<Texture2D>("Items/Sword");
+            Items.Equipment.Weapon.Ranged.Kunai.Texture = content.Load<Texture2D>("Items/Sword");
+            Items.Equipment.Weapon.Ranged.Staff.Texture = content.Load<Texture2D>("Items/Sword");
+            Items.Equipment.Weapon.Ranged.ThrowingKnives.Texture = content.Load<Texture2D>("Items/Sword");
+
+            Items.Equipment.Armor.Chest.ClothChest.Texture = content.Load<Texture2D>("Items/Sword");
+            Items.Equipment.Armor.Chest.LeatherChest.Texture = content.Load<Texture2D>("Items/Sword");
+            Items.Equipment.Armor.Chest.MailChest.Texture = content.Load<Texture2D>("Items/Sword");
+
+            Items.Equipment.Armor.Legs.ClothLegs.Texture = content.Load<Texture2D>("Items/Sword");
+            Items.Equipment.Armor.Legs.LeatherLegs.Texture = content.Load<Texture2D>("Items/Sword");
+            Items.Equipment.Armor.Legs.MailLegs.Texture = content.Load<Texture2D>("Items/Sword");
+
+            Items.Equipment.Armor.Helm.ClothHelm.Texture = content.Load<Texture2D>("Itms/Sword");
+            Items.Equipment.Armor.Helm.LeatherHelm.Texture = content.Load<Texture2D>("Itms/Sword");
+            Items.Equipment.Armor.Helm.MailHelm.Texture = content.Load<Texture2D>("Itms/Sword");
+
+            Items.Equipment.Armor.Shields.PlateShield.Texture = content.Load<Texture2D>("Items/Sword");
+            Items.Equipment.Armor.Shields.WoodenShield.Texture = content.Load<Texture2D>("Items/Sword");
+
+            Items.Equipment.Accessory.Necklace.Texture = content.Load<Texture2D>("Items/Sword");
+            Items.Equipment.Accessory.Ring.Texture = content.Load<Texture2D>("Items/Sword");
         }
 
         public static Item randomItem(int dLevel)
@@ -184,6 +214,11 @@ namespace Brogue.Items
             #endregion
             #endregion
             return new Potion(dLevel);
+        }
+
+        public Sprite GetSprite()
+        {
+            throw new NotImplementedException();
         }
     }
 }
