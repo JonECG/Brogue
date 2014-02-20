@@ -23,7 +23,6 @@ namespace Brogue.Engine
 
         static Level currentLevel;
 
-
         public static void Start(Game1 injectedGame)
         {
             game = injectedGame;
@@ -49,6 +48,8 @@ namespace Brogue.Engine
             placeHolder = content.Load<Texture2D>("levelTileset");
 
             Tile.tileset = content.Load<Texture2D>("dynamicTileset");
+            HeroClasses.Hero.LoadContent(content);
+            
         }
 
         public static void CharacterCreation()
@@ -59,6 +60,7 @@ namespace Brogue.Engine
         public static void GenerateLevel()
         {
             currentLevel = LevelGenerator.generate(1337, 200);
+            currentLevel.CharacterEntities.Add(new HeroClasses.Mage(), currentLevel.findRandomOpenPosition());
         }
 
         public static void StartGame()
