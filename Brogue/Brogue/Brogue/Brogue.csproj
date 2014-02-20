@@ -74,7 +74,7 @@
   <ItemGroup>
     <Compile Include="Enemies\BossEnemy.cs" />
     <Compile Include="Enemies\Enemy.cs" />
-    <Compile Include="Enemies\GaurdianEnemy.cs" />
+    <Compile Include="Enemies\GuardianEnemy.cs" />
     <Compile Include="Enemies\MageEnemy.cs" />
     <Compile Include="Enemies\MeleeEnemy.cs" />
     <Compile Include="Enemies\RangedEnemy.cs" />
