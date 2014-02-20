@@ -72,9 +72,11 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abilities\Ability.cs" />
+    <Compile Include="Abilities\AOE\AreaOfEffect.cs" />
+    <Compile Include="Abilities\SingleTargets\Cleave.cs" />
+    <Compile Include="Abilities\SingleTargets\SingleTarget.cs" />
     <Compile Include="Enemies\BossEnemy.cs" />
-    <Compile Include="Enemies\Enemy.cs" />
-    <Compile Include="Enemies\GuardianEnemy.cs" />
     <Compile Include="Enemies\MageEnemy.cs" />
     <Compile Include="Enemies\MeleeEnemy.cs" />
     <Compile Include="Enemies\RangedEnemy.cs" />
@@ -94,26 +96,13 @@
     <Compile Include="Enums\ShieldTypes.cs" />
     <Compile Include="Enums\StatModifiers.cs" />
     <Compile Include="Enums\WeaponTypes.cs" />
-    <Compile Include="EnviromentObjects\Decorative\Chair.cs" />
-    <Compile Include="EnviromentObjects\Decorative\ILightsource.cs" />
-    <Compile Include="EnviromentObjects\Decorative\InonInteractable.cs" />
-    <Compile Include="EnviromentObjects\Decorative\Plant.cs" />
-    <Compile Include="EnviromentObjects\Decorative\Tourch.cs" />
     <Compile Include="EnviromentObjects\Interactive\Chest.cs" />
     <Compile Include="EnviromentObjects\Interactive\Door.cs" />
-    <Compile Include="EnviromentObjects\Interactive\HiddenPassage.cs" />
     <Compile Include="EnviromentObjects\Interactive\Iinteractable.cs" />
     <Compile Include="EnviromentObjects\Interactive\Swiches.cs" />
     <Compile Include="EnviromentObjects\Interactive\Wall.cs" />
-    <Compile Include="HeroClasses\Hero.cs" />
-    <Compile Include="HeroClasses\Mage.cs" />
-    <Compile Include="HeroClasses\Rogue.cs" />
-    <Compile Include="HeroClasses\Warrior.cs" />
-    <Compile Include="IntVec.cs" />
-    <Compile Include="Inventories\Inventory.cs" />
-    <Compile Include="Inventories\InventorySlot.cs" />
-    <Compile Include="Items\Consumables\Consumable.cs" />
-    <Compile Include="Items\Consumables\Potion.cs" />
+    <Compile Include="InventorySystem\Inventory.cs" />
+    <Compile Include="InventorySystem\InventorySlot.cs" />
     <Compile Include="Items\Equipment\Accessory\Accessory.cs" />
     <Compile Include="Items\Equipment\Accessory\Necklace.cs" />
     <Compile Include="Items\Equipment\Accessory\Ring.cs" />
@@ -144,19 +133,22 @@
     <Compile Include="Items\Equipment\Weapon\Melee\WarHammer.cs" />
     <Compile Include="Items\Equipment\Weapon\Ranged\Boomerang.cs" />
     <Compile Include="Items\Equipment\Weapon\Ranged\Kunai.cs" />
-    <Compile Include="Items\Equipment\Weapon\Ranged\RangedWeapon.cs" />
     <Compile Include="Items\Equipment\Weapon\Ranged\Staff.cs" />
     <Compile Include="Items\Equipment\Weapon\Ranged\ThrowingKnives.cs" />
+    <Compile Include="Items\Equipment\Weapon\Ranged\RangedWeapon.cs" />
     <Compile Include="Items\Equipment\Weapon\Weapon.cs" />
+    <Compile Include="HeroClasses\Hero.cs" />
+    <Compile Include="HeroClasses\Mage.cs" />
+    <Compile Include="HeroClasses\Rogue.cs" />
+    <Compile Include="HeroClasses\Warrior.cs" />
+    <Compile Include="IntVec.cs" />
+    <Compile Include="Items\Consumables\Consumable.cs" />
+    <Compile Include="Items\Consumables\Potion.cs" />
     <Compile Include="Items\Item.cs" />
-    <Compile Include="Mapping\AStar.cs" />
-    <Compile Include="Mapping\ColorEnvironment.cs" />
-    <Compile Include="Mapping\EnvironmentObject.cs" />
-    <Compile Include="Mapping\GridBoundList.cs" />
     <Compile Include="Mapping\KeyboardController.cs" />
     <Compile Include="Mapping\LevelGenerator.cs" />
-    <Compile Include="Sprite.cs" />
     <Compile Include="TestCases\JonTest.cs" />
+    <Compile Include="Enemies\Enemy.cs" />
     <Compile Include="GameCharacter.cs" />
     <Compile Include="IRenderable.cs" />
     <Compile Include="Mapping\Level.cs" />
@@ -199,7 +191,9 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="EnviromentObjects\Decorative\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
   <!--
