@@ -13,9 +13,10 @@ namespace Brogue.Abilities.Damaging.SingleTargets
     {
         private int baseDamage = 5;
 
-        public override void viewCastRange()
+        public override int viewCastRange()
         {
             radius = 1;
+            return radius;
         }
 
         public override IntVec cast(int heroDamage, int heroLevel, Direction directionFacing)

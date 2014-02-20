@@ -60,7 +60,8 @@ namespace Brogue.HeroClasses
             tex = content.Load<Texture2D>("Hero/Hero");
             sprite = new Sprite(tex);
         }
-        public override void TakeTurn(Mapping.Level level)
+
+        public override bool TakeTurn(Mapping.Level level)
         {
             bool canMove = true;
             bool turnOver = false;
@@ -72,44 +73,47 @@ namespace Brogue.HeroClasses
 
             if (!casting)
             {
-
-            }
-
-            else if(Mapping.KeyboardController.IsDown(Keys.A))
-            {
-                if (canMove){
-                    move(Direction.LEFT);
-                    turnOver = true;
-                }
-            }
-
-            else if(Mapping.KeyboardController.IsDown(Keys.W))
-            {
-                if (canMove){
-                    move(Direction.UP);
-                    turnOver = true;
-                }
-            }
-
-            else if(Mapping.KeyboardController.IsDown(Keys.D))
-            {
-                if (canMove){
-                    move(Direction.RIGHT);
-                    turnOver = true;
-                }
-            }
-
-            else if (Mapping.KeyboardController.IsDown(Keys.S))
-            {
-                if (canMove)
+                if (Mapping.KeyboardController.IsDown(Keys.A))
                 {
-                    move(Direction.DOWN);
-                    turnOver = true;
+                    if (canMove)
+                    {
+                        move(Direction.LEFT);
+                        turnOver = true;
+                    }
                 }
 
+                else if (Mapping.KeyboardController.IsDown(Keys.W))
+                {
+                    if (canMove)
+                    {
+                        move(Direction.UP);
+                        turnOver = true;
+                    }
+                }
+
+                else if (Mapping.KeyboardController.IsDown(Keys.D))
+                {
+                    if (canMove)
+                    {
+                        move(Direction.RIGHT);
+                        turnOver = true;
+                    }
+                }
+
+                else if (Mapping.KeyboardController.IsDown(Keys.S))
+                {
+                    if (canMove)
+                    {
+                        move(Direction.DOWN);
+                        turnOver = true;
+                    }
+                }
+
+                else turnOver = (Mapping.KeyboardController.IsDown(Keys.Space));
             }
 
             cooldownAbilities();
+            return turnOver;
         }
 
         //public void castAbility(int ability)

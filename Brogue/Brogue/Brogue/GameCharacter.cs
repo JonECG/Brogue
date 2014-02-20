@@ -12,7 +12,7 @@ namespace Brogue
         public int maxHealth;
 		public IntVec position;
         public bool isFriendly;
-        abstract public void TakeTurn(Level level);
+        abstract public bool TakeTurn(Level level);
         public abstract void TakeDamage(int damage, GameCharacter attacker);
         public void Heal(int heal)
         {
