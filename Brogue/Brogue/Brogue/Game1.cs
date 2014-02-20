@@ -22,7 +22,7 @@ namespace Brogue
 
         public SpriteBatch spriteBatch;
         private SpriteBatch uiSpriteBatch;
-        private int WIDTH = 1366;
+        private int WIDTH = 1344;
         private int HEIGHT = 768;
 
         public int Width
@@ -110,7 +110,8 @@ namespace Brogue
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            Matrix transform = Matrix.CreateTranslation(-Engine.Engine.cameraPosition.X * Engine.Engine.CELLWIDTH + graphics.PreferredBackBufferWidth / 2, -Engine.Engine.cameraPosition.Y * Engine.Engine.CELLWIDTH + graphics.PreferredBackBufferHeight / 2, 1.0f) * Matrix.CreateScale(1.0f, 1.0f, 1);
+            Matrix transform = Matrix.CreateTranslation(-Engine.Engine.cameraPosition.X * Engine.Engine.CELLWIDTH + graphics.PreferredBackBufferWidth / 2, -Engine.Engine.cameraPosition.Y * Engine.Engine.CELLWIDTH + graphics.PreferredBackBufferHeight / 2, 1.0f)
+                * Matrix.CreateScale(2.0f, 2.0f, 1);
             spriteBatch.Begin(SpriteSortMode.Deferred,
                         BlendState.AlphaBlend,
                         null,
