@@ -1,7 +1,6 @@
 ﻿using Brogue.Engine;
-//using Brogue.Items;
+using Brogue.Items;
 using Microsoft.Xna.Framework;
-
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
@@ -15,7 +14,7 @@ namespace Brogue.Mapping
         Tile[,] tiles;
         public GridBoundList<IEnvironmentObject> Environment { get; private set; }
         //List<Tuple<IEnvironmentObject, IntVec>> environment;
-        //public GridBoundList<Item> DroppedItems { get; private set; }
+        public GridBoundList<Item> DroppedItems { get; private set; }
         //List<Item> droppedItems;
         public GridBoundList<GameCharacter> CharacterEntities { get; private set; }
         //List<Tuple<GameCharacter, IntVec>> characterEntities;
@@ -29,7 +28,7 @@ namespace Brogue.Mapping
             this.tiles = tiles;
             this.Environment = environment;
             this.CharacterEntities = characterEntities;
-            //DroppedItems = new GridBoundList<Item>();
+            this.DroppedItems = new GridBoundList<Item>();
             needToCache = true;
             cachedSolid = new bool[tiles.GetLength(0), tiles.GetLength(1)];
 
@@ -37,6 +36,8 @@ namespace Brogue.Mapping
             b = findRandomOpenPosition();
             path = AStar.getPathBetween(this, a, b);
             moveset = AStar.getPossiblePositionsFrom(this, a, 15);
+
+            DroppedItems.Add(Item.randomItem(10, 10), findRandomOpenPosition());
         }
 
         public IEnumerable<GameCharacter> GetCharactersIsFriendly(bool isFriendly)
@@ -173,7 +174,7 @@ namespace Brogue.Mapping
             }
 
             //Environment.Draw();
-            //DroppedItems.Draw();
+            DroppedItems.Draw();
             CharacterEntities.Draw();
 
             //foreach (IntVec vec in moveset)

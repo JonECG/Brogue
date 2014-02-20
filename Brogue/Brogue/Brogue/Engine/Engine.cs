@@ -49,6 +49,7 @@ namespace Brogue.Engine
 
             Tile.tileset = content.Load<Texture2D>("dynamicTileset");
             HeroClasses.Hero.LoadContent(content);
+            Items.Item.LoadContent(content);
             
         }
 

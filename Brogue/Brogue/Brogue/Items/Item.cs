@@ -47,9 +47,9 @@ namespace Brogue.Items
             Items.Equipment.Armor.Legs.LeatherLegs.Texture = content.Load<Texture2D>("Items/Sword");
             Items.Equipment.Armor.Legs.MailLegs.Texture = content.Load<Texture2D>("Items/Sword");
 
-            Items.Equipment.Armor.Helm.ClothHelm.Texture = content.Load<Texture2D>("Itms/Sword");
-            Items.Equipment.Armor.Helm.LeatherHelm.Texture = content.Load<Texture2D>("Itms/Sword");
-            Items.Equipment.Armor.Helm.MailHelm.Texture = content.Load<Texture2D>("Itms/Sword");
+            Items.Equipment.Armor.Helm.ClothHelm.Texture = content.Load<Texture2D>("Items/Sword");
+            Items.Equipment.Armor.Helm.LeatherHelm.Texture = content.Load<Texture2D>("Items/Sword");
+            Items.Equipment.Armor.Helm.MailHelm.Texture = content.Load<Texture2D>("Items/Sword");
 
             Items.Equipment.Armor.Shields.PlateShield.Texture = content.Load<Texture2D>("Items/Sword");
             Items.Equipment.Armor.Shields.WoodenShield.Texture = content.Load<Texture2D>("Items/Sword");
