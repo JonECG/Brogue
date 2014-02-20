@@ -36,7 +36,7 @@ namespace Brogue.HeroClasses
             }
             if (dir == Direction.DOWN)
             {
-                directionFacing = (float)(Math.PI / 2);
+                directionFacing = (float)(3*Math.PI / 2);
                 position.ints[1] = 1;
             }
             if (dir == Direction.RIGHT)
@@ -46,7 +46,7 @@ namespace Brogue.HeroClasses
             }
             if (dir == Direction.UP)
             {
-                directionFacing = (float)(3 * Math.PI / 2);
+                directionFacing = (float)(Math.PI / 2);
                 position.ints[1] = -1 ;
             }
         }

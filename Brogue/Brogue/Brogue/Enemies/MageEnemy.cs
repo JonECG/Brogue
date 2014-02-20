@@ -9,7 +9,7 @@ namespace Brogue.Enemies
 {
     class StillEnemy : Enemy
     {
-        public override void TakeTurn(Level level)
+        public override bool TakeTurn(Level level)
         {
             if (Aggro(level))
             {
@@ -19,6 +19,7 @@ namespace Brogue.Enemies
             {
                 //unimplemented
             }
+            return true;
         }
 
         public override bool Aggro(Level level)

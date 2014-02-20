@@ -5,5 +5,7 @@ Content\UI\HealthJar.xnb
 Content\UI\Inventory.xnb
 Content\UI\Jar.xnb
 Content\UI\XPBar.xnb
-Content\Shader.xnb
 Content\dynamicTileset.xnb
+Content\Shader.xnb
+Content\Items\Sword1.xnb
+Content\Hero\Hero.xnb
