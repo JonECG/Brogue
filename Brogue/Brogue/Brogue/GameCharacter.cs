@@ -18,7 +18,7 @@ namespace Brogue
         {
             health += heal;
         }
-        public Sprite GetSprite()
+        public virtual Sprite GetSprite()
         {
             return new Sprite(Tile.tileset);
         }
