@@ -150,7 +150,7 @@ namespace Brogue.HeroClasses
 
         public void equipArmor(int itemToEquip, int currentItemIndex = 0)
         {
-            if(inventory.stored[itemToEquip].item.MyProperty == ITypes.Armor)
+            if(inventory.stored[itemToEquip].item.ItemType == ITypes.Armor)
             {
                 Item temp = currentlyEquippedItems.equippedArmor[currentItemIndex];
                 currentlyEquippedItems.equippedArmor[currentItemIndex] = (Armor)(inventory.stored[itemToEquip].item);
@@ -160,7 +160,7 @@ namespace Brogue.HeroClasses
 
         public void equipWeapon(int itemToEquip, int currentItemIndex = 0)
         {
-            if (inventory.stored[itemToEquip].item.MyProperty == ITypes.Weapon)
+            if (inventory.stored[itemToEquip].item.ItemType == ITypes.Weapon)
             {
                 Item temp = currentlyEquippedItems.equippedWeapons[currentItemIndex];
                 currentlyEquippedItems.equippedWeapons[currentItemIndex] = (Weapon)(inventory.stored[itemToEquip].item);
