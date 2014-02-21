@@ -37,7 +37,14 @@ namespace Brogue.Mapping
             path = AStar.getPathBetween(this, a, b);
             moveset = AStar.getPossiblePositionsFrom(this, a, 15);
 
-            DroppedItems.Add(Item.randomItem(10, 10), findRandomOpenPosition());
+            for (int i = 0; i < 28; i++)
+            {
+                Item item = Item.randomItem(10, 10);
+
+                Engine.Engine.Log(string.Format("Item Generated: {0}", item.Name));
+
+                DroppedItems.Add(item, findRandomOpenPosition());
+            }
         }
 
         public IEnumerable<GameCharacter> GetCharactersIsFriendly(bool isFriendly)
@@ -192,6 +199,15 @@ namespace Brogue.Mapping
             Engine.Engine.Draw(Engine.Engine.placeHolder, new IntVec(a.X, a.Y), Color.Green); //Green
             Engine.Engine.Draw(Engine.Engine.placeHolder, new IntVec(b.X, b.Y), Color.Blue); //Red
 
+
+            //var nodes = AStar.getPathDrawnBetween(this, a, b, actionsToTake);
+            //foreach (var node in nodes)
+            //{
+            //    Engine.Engine.Draw(Engine.Engine.placeHolder, new IntVec(node.position.X, node.position.Y), Color.BlanchedAlmond);
+            //}
+
+            //Engine.Engine.Draw(Engine.Engine.placeHolder, new IntVec(nodes.Min.position.X, nodes.Min.position.Y), Color.Yellow); 
+
         }
 
         public bool isComplete()
@@ -220,10 +236,13 @@ namespace Brogue.Mapping
             return result;
         }
 
+        int actionsToTake = 10;
+
         internal void testUpdate()
         {
             IntVec aMove = new IntVec((KeyboardController.IsPressed('D') ? 1 : 0) - (KeyboardController.IsPressed('A') ? 1 : 0), (KeyboardController.IsPressed('S') ? 1 : 0) - (KeyboardController.IsPressed('W') ? 1 : 0));
             IntVec bMove = new IntVec((KeyboardController.IsPressed('L') ? 1 : 0) - (KeyboardController.IsPressed('J') ? 1 : 0), (KeyboardController.IsPressed('K') ? 1 : 0) - (KeyboardController.IsPressed('I') ? 1 : 0));
+            actionsToTake += (KeyboardController.IsPressed('2') ? 1 : 0) - (KeyboardController.IsPressed('1') ? 1 : 0);
 
             if (aMove.X != 0 || aMove.Y != 0 || bMove.X != 0 || bMove.Y != 0)
             {
@@ -234,6 +253,7 @@ namespace Brogue.Mapping
                     b += bMove;
 
                 path = AStar.getPathBetween(this, a, b);
+                Engine.Engine.Log(path.Length.ToString());
                 moveset = AStar.getPossiblePositionsFrom(this, a, 15);
             }
             

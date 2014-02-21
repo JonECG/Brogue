@@ -59,7 +59,7 @@ namespace Brogue.Engine
         }
         public static void Log(string input){
             log.Enqueue(input);
-            if (log.Count > 10)
+            if (log.Count > 30)
             {
                 log.Dequeue();
             }
@@ -130,7 +130,7 @@ namespace Brogue.Engine
         public static void Update(GameTime gameTime)
         {
 
-            Log("update " + inctest++);
+            //Log("update " + inctest++);
             currentLevel.testUpdate();
             cameraPosition += new IntVec((KeyboardController.IsDown(Keys.Right) ? 1 : 0) - (KeyboardController.IsDown(Keys.Left) ? 1 : 0),
                 (KeyboardController.IsDown(Keys.Down) ? 1 : 0) - (KeyboardController.IsDown(Keys.Up) ? 1 : 0));

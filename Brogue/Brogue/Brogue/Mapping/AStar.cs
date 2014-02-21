@@ -50,7 +50,7 @@ namespace Brogue.Mapping
         }
 
 
-        private class __AStarNode : IComparable<__AStarNode>
+        public class __AStarNode : IComparable<__AStarNode>
         {
             public IntVec position;
             public int actualCost;
@@ -83,41 +83,51 @@ namespace Brogue.Mapping
                 if (difference == 0)
                     difference = heuristic.CompareTo(other.heuristic);
                 if (difference == 0)
-                    difference = (!position.Equals(other.position) ? 1 : 0);
+                    difference = position.X.CompareTo(other.position.X);
+                if (difference == 0)
+                    difference = position.Y.CompareTo(other.position.Y);
                 return difference;
             }
             
         }
 
-        public static Direction[] getPathBetweenAttempt(Level level, IntVec from, IntVec to)
+        public static Direction[] getPathBetween(Level level, IntVec from, IntVec to)
         {
             bool[,] solid = level.getSolid();
             SortedSet<__AStarNode> nodes = new SortedSet<__AStarNode>( new __AStarNode.__AStarNodeComparer() );
 
             __AStarNode recentNode = new __AStarNode(from);
 
+            nodes.Add(recentNode);
+
             while ( recentNode != null && !recentNode.position.Equals( to ) && !recentNode.expanded )
             {
-                recentNode.expanded = true;
-
-                foreach( Direction dir in Direction.Values )
-                {
-                    IntVec newLocation = recentNode.position + dir;
-
-                    if (!solid[newLocation.X, newLocation.Y])
-                    {
-                        solid[newLocation.X, newLocation.Y] = true;
-                        nodes.Add(new __AStarNode(newLocation, recentNode.actualCost + 10, 10 * calculateHeuristic(newLocation, to), recentNode, dir));
-                    }
-                }
-
                 recentNode = nodes.Min;
-                nodes.Remove(recentNode);
+
+                if (recentNode != null)
+                {
+                    //recentNode.expanded = true;
+
+                    foreach (Direction dir in Direction.Values)
+                    {
+                        IntVec newLocation = recentNode.position + dir;
+
+                        if (!solid[newLocation.X, newLocation.Y])
+                        {
+                            solid[newLocation.X, newLocation.Y] = true;
+                            nodes.Add(new __AStarNode(newLocation, recentNode.actualCost + 10, 10 * calculateHeuristic(newLocation, to), recentNode, dir));
+                        }
+                    }
+
+                    if (!nodes.Remove(recentNode))
+                        throw new NotImplementedException();
+                }
+                
             }
 
             List<Direction> path = new List<Direction>();
 
-            while ( !recentNode.position.Equals(from) )
+            while (!recentNode.position.Equals(from))
             {
                 path.Add(recentNode.directionTaken);
                 recentNode = recentNode.reachedFrom;
@@ -128,10 +138,54 @@ namespace Brogue.Mapping
             return path.ToArray();
         }
 
+        public static SortedSet<__AStarNode> getPathDrawnBetween(Level level, IntVec from, IntVec to, int count)
+        {
+            int actions = 0;
+
+            bool[,] solid = level.getSolid();
+            SortedSet<__AStarNode> nodes = new SortedSet<__AStarNode>(new __AStarNode.__AStarNodeComparer());
+
+            solid[from.X, from.Y] = true;
+
+            __AStarNode recentNode = new __AStarNode(from);
+
+            nodes.Add(recentNode);
+
+            while (recentNode != null && !recentNode.position.Equals(to) && !recentNode.expanded && (actions < count))
+            {
+                recentNode = nodes.Min;
+
+                if (recentNode != null)
+                {
+                    //recentNode.expanded = true;
+
+                    foreach (Direction dir in Direction.Values)
+                    {
+                        
+                        IntVec newLocation = recentNode.position + dir;
+
+                        if (!solid[newLocation.X, newLocation.Y] && ((actions++) < count))
+                        {
+                            solid[newLocation.X, newLocation.Y] = true;
+                            //if (dir == Direction.LEFT)
+                            //    throw new NotImplementedException();
+                            nodes.Add(new __AStarNode(newLocation, recentNode.actualCost + 10, 10 * calculateHeuristic(newLocation, to), recentNode, dir));
+                        }
+                    }
+
+                    if ((actions++) < count)
+                        nodes.Remove(recentNode);
+                }
+
+            }
+
+            return nodes;
+        }
+
         public static int calculateHeuristic( IntVec from, IntVec to )
         {
-            //return (int) Math.Sqrt(Math.Pow(to.X - from.X, 2) + Math.Pow(to.Y - from.Y, 2));
-            return Math.Abs(to.X - from.X) + Math.Abs(to.Y - from.Y);
+            return (int) Math.Round( Math.Sqrt(Math.Pow(to.X - from.X, 2) + Math.Pow(to.Y - from.Y, 2) ));
+            //return Math.Abs(to.X - from.X) + Math.Abs(to.Y - from.Y);
         }
 
         /// <summary>
@@ -141,7 +195,7 @@ namespace Brogue.Mapping
         /// <param name="from">Starting position</param>
         /// <param name="to">Final position</param>
         /// <returns>The moves needed to make the journey, null if not possible</returns>
-        public static Direction[] getPathBetween( Level level, IntVec from, IntVec to)
+        public static Direction[] getPathBetweenOld( Level level, IntVec from, IntVec to)
         {
             bestPath = null;
             return pathBetweenStep(level.getIntSolid(), from, to, 1, new List<Direction>() );
