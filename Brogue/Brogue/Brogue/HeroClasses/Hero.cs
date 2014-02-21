@@ -1,4 +1,5 @@
 ﻿using Brogue.InventorySystem;
+using Brogue.Enums;
 using Brogue.Abilities;
 using Brogue.Items;
 using Brogue.Items.Equipment;
@@ -11,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Input;
 using Brogue.Engine;
+using Brogue.Items.Equipment.Armor;
 
 namespace Brogue.HeroClasses
 {
@@ -19,7 +21,7 @@ namespace Brogue.HeroClasses
     {
         public static int level {get; protected set;}
         protected int numAbilities;
-        protected int spacesPerTurn;
+        protected int armorRating;
         protected float directionFacing;
         protected Ability[] abilities;
         static Texture2D tex;
@@ -53,12 +55,22 @@ namespace Brogue.HeroClasses
 
         public override void TakeDamage(int damage, GameCharacter attacker)
         {
-           
+            int damagePostReduction = damage - armorRating;
+            damagePostReduction = (damagePostReduction < 1) ? 1 : 0;
+            health -= damagePostReduction;
         }
+
         public static void LoadContent(ContentManager content)
         {
             tex = content.Load<Texture2D>("Hero/Hero");
             sprite = new Sprite(tex);
+        }
+
+        private void resetArmor()
+        {
+            for (int i = 0; i < currentlyEquippedItems.Length; i++)
+            {
+            }
         }
 
         public override bool TakeTurn(Mapping.Level level)
@@ -66,6 +78,7 @@ namespace Brogue.HeroClasses
             bool canMove = true;
             bool turnOver = false;
             bool casting = false;
+            resetArmor();
             for (int i = 0; i < numAbilities && !casting; i++)
             {
                 casting = abilities[i].isCasting;
