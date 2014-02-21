@@ -123,10 +123,18 @@ namespace Brogue.HeroClasses
                         turnOver = mapLevel.Move(this, move(Direction.DOWN));
                     }
                 }
-                // JUST FOR TESTING
-                else if (Mapping.KeyboardController.IsDown(Keys.B))
+                // THESE ARE JUST FOR TESTING
+                else if (Mapping.KeyboardController.IsPressed(Keys.B))
                 {
                     level += 1;
+                }
+                else if (Mapping.KeyboardController.IsPressed(Keys.LeftShift))
+                {
+                    pickupItem(Item.randomItem(1, level));
+                }
+                else if (Mapping.KeyboardController.IsPressed(Keys.RightShift))
+                {
+                    dropItem(0);
                 }
 
                 else turnOver = (Mapping.KeyboardController.IsPressed(Keys.Space));
