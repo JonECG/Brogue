@@ -20,7 +20,7 @@ namespace Brogue.HeroClasses
 
     public abstract class Hero : GameCharacter, IRenderable
     {
-        public static int level {get; protected set;}
+        public static int level {get;  set;}
         protected int numAbilities;
         protected int armorRating;
         protected float directionFacing;
@@ -74,10 +74,10 @@ namespace Brogue.HeroClasses
 
         private void resetHealth()
         {
-            maxHealth;
+            maxHealth = 20*level;
         }
 
-        public override bool TakeTurn(Mapping.Level level)
+        public override bool TakeTurn(Mapping.Level mapLevel)
         {
             bool canMove = true;
             bool turnOver = false;
@@ -124,6 +124,11 @@ namespace Brogue.HeroClasses
                         move(Direction.DOWN);
                         turnOver = true;
                     }
+                }
+                // JUST FOR TESTING
+                else if (Mapping.KeyboardController.IsDown(Keys.B))
+                {
+                    level += 1;
                 }
 
                 else turnOver = (Mapping.KeyboardController.IsDown(Keys.Space));
