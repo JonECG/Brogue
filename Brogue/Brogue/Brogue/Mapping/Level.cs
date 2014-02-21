@@ -200,13 +200,13 @@ namespace Brogue.Mapping
             Engine.Engine.Draw(Engine.Engine.placeHolder, new IntVec(b.X, b.Y), Color.Blue); //Red
 
 
-            //var nodes = AStar.getPathDrawnBetween(this, a, b, actionsToTake);
-            //foreach (var node in nodes)
-            //{
-            //    Engine.Engine.Draw(Engine.Engine.placeHolder, new IntVec(node.position.X, node.position.Y), Color.BlanchedAlmond);
-            //}
+            var nodes = AStar.getPathDrawnBetween(this, a, b, actionsToTake);
+            foreach (var node in nodes)
+            {
+                Engine.Engine.Draw(Engine.Engine.placeHolder, new IntVec(node.position.X, node.position.Y), Color.BlanchedAlmond);
+            }
 
-            //Engine.Engine.Draw(Engine.Engine.placeHolder, new IntVec(nodes.Min.position.X, nodes.Min.position.Y), Color.Yellow); 
+            Engine.Engine.Draw(Engine.Engine.placeHolder, new IntVec(nodes.Min.position.X, nodes.Min.position.Y), Color.Yellow); 
 
         }
 
@@ -243,7 +243,7 @@ namespace Brogue.Mapping
         {
             IntVec aMove = new IntVec((KeyboardController.IsPressed('D') ? 1 : 0) - (KeyboardController.IsPressed('A') ? 1 : 0), (KeyboardController.IsPressed('S') ? 1 : 0) - (KeyboardController.IsPressed('W') ? 1 : 0));
             IntVec bMove = new IntVec((KeyboardController.IsPressed('L') ? 1 : 0) - (KeyboardController.IsPressed('J') ? 1 : 0), (KeyboardController.IsPressed('K') ? 1 : 0) - (KeyboardController.IsPressed('I') ? 1 : 0));
-            actionsToTake += (KeyboardController.IsPressed('2') ? 1 : 0) - (KeyboardController.IsPressed('1') ? 1 : 0);
+            actionsToTake += (KeyboardController.IsDown('2') ? 1 : 0) - (KeyboardController.IsDown('1') ? 1 : 0);
 
             if (aMove.X != 0 || aMove.Y != 0 || bMove.X != 0 || bMove.Y != 0)
             {
@@ -254,6 +254,8 @@ namespace Brogue.Mapping
                     b += bMove;
 
                 path = AStar.getPathBetween(this, a, b);
+
+                actionsToTake = 1;
 
                 int movement = Math.Abs(aMove.X) + Math.Abs(aMove.Y) + Math.Abs(bMove.X) + Math.Abs(bMove.Y);
 

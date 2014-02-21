@@ -33,6 +33,19 @@ namespace Brogue.Mapping
             return result;
         }
 
+        private Tuple<T, IntVec> getTupleByPosition(IntVec position)
+        {
+            return null;
+        }
+
+        public void SetPosition(T t, IntVec position)
+        {
+        }
+
+        public void AddPosition(T t, IntVec position)
+        {
+        }
+
         public T FindEntity(IntVec position)
         {
             T result = default(T);
