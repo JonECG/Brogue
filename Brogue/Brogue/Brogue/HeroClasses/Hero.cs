@@ -29,6 +29,16 @@ namespace Brogue.HeroClasses
         protected Equipment currentlyEquippedItems;
         protected Inventory inventory;
 
+        void Hero()
+        {
+            level = 1;
+            numAbilities = 0;
+            armorRating = 0;
+            directionFacing = 0;
+            currentlyEquippedItems = new Equipment();
+            inventory = new Inventory();
+        }
+
         public IntVec move(Direction dir)
         {
             IntVec positionMovement = new IntVec(0,0);
