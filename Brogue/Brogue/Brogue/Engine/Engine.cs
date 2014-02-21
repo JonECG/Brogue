@@ -55,7 +55,7 @@ namespace Brogue.Engine
 
             placeHolder = content.Load<Texture2D>("levelTileset");
 
-            Tile.tileset = content.Load<Texture2D>("dynamicTileset");
+            Level.LoadContent(content);
             HeroClasses.Hero.LoadContent(content);
             Items.Item.LoadContent(content);
 

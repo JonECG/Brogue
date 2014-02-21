@@ -31,5 +31,10 @@ namespace Brogue.Engine
             X = x;
             Y = y;
         }
+
+        public static implicit operator float(Direction dir)
+        {
+            return (float) Math.Atan2(dir.Y, dir.X);
+        }
     }
 }

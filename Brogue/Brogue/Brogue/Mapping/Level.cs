@@ -1,6 +1,8 @@
 ﻿using Brogue.Engine;
 using Brogue.Items;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
@@ -171,26 +173,34 @@ namespace Brogue.Mapping
             {
                 for (int y = 0; y < tiles.GetLength(1); y++)
                 {
-                    if (tiles[x, y].isSolid)
-                    {
-                        int right = checkTileSolid(x + 1, y) ? 1 : 0;
-                        int left = checkTileSolid(x - 1, y) ? 1 : 0;
-                        int up = checkTileSolid(x, y - 1) ? 1 : 0;
-                        int down = checkTileSolid(x, y + 1) ? 1 : 0;
-
-                        int index = right | (up << 1) | (left << 2) | (down << 3);
-
-                        index = (index % 8) + ((index >= 8) ? 9 : 0);
-
-                        Engine.Engine.Draw(Tile.tileset, new IntVec(x, y), new IntVec(index, 0));
-                    }
-                    else
-                    {
-                        Engine.Engine.Draw(Tile.tileset, new IntVec(x, y), new IntVec(8, 0), Color.Gray);
-                    }
-
+                    Engine.Engine.Draw(tiles[x, y].GetSprite(), new IntVec(x, y));
                 }
             }
+
+            //for (int x = 0; x < tiles.GetLength(0); x++)
+            //{
+            //    for (int y = 0; y < tiles.GetLength(1); y++)
+            //    {
+            //        if (tiles[x, y].isSolid)
+            //        {
+            //            int right = checkTileSolid(x + 1, y) ? 1 : 0;
+            //            int left = checkTileSolid(x - 1, y) ? 1 : 0;
+            //            int up = checkTileSolid(x, y - 1) ? 1 : 0;
+            //            int down = checkTileSolid(x, y + 1) ? 1 : 0;
+
+            //            int index = right | (up << 1) | (left << 2) | (down << 3);
+
+            //            index = (index % 8) + ((index >= 8) ? 9 : 0);
+
+            //            Engine.Engine.Draw(Tile.tileset, new IntVec(x, y), new IntVec(index, 0));
+            //        }
+            //        else
+            //        {
+            //            Engine.Engine.Draw(Tile.tileset, new IntVec(x, y), new IntVec(8, 0), Color.Gray);
+            //        }
+
+            //    }
+            //}
 
             //Environment.Draw();
             DroppedItems.Draw();
@@ -280,6 +290,12 @@ namespace Brogue.Mapping
                 previousPathDistance = path.Length;
             }
             
+        }
+
+        internal static void LoadContent(ContentManager content)
+        {
+            Tile.wallTileset = content.Load<Texture2D>("dynamicTileset");
+            Tile.floorTileset = content.Load<Texture2D>("floorTileset");
         }
     }
 }

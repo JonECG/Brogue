@@ -19,7 +19,7 @@ namespace Brogue.Items
     public abstract class Item : IRenderable
     {
         public string Name { get; protected set; }
-        public ITypes MyProperty { get; protected set; }
+        public ITypes ItemType { get; protected set; }
 
         static Random rand = new Random();
 

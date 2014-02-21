@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 
 namespace Brogue.Mapping
 {
-    public class Tile// : IRenderable
+    public class Tile : IRenderable
     {
         public bool isSolid;
         public int solidNeighbors;
@@ -19,6 +20,20 @@ namespace Brogue.Mapping
         {
             this.isSolid = isSolid;
             this.solidNeighbors = solidNeighbors;
+        }
+
+        public Sprite GetSprite()
+        {
+            Sprite result;
+            if (isSolid)
+            {
+                result = new Sprite(wallTileset, new IntVec(0, 0), Color.White);
+            }
+            else
+            {
+                result = new Sprite(floorTileset, new IntVec(0, 0), Color.Gray);
+            }
+            return result;
         }
     }
 }
