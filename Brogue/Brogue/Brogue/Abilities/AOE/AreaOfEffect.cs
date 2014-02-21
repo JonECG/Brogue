@@ -13,6 +13,6 @@ namespace Brogue.Abilities.AOE
     {
         public int width, height;
 
-        public abstract override IntVec cast(int heroDamage, int heroLevel, Direction directionFacing);
+        public abstract override IntVec viewCastingSquares(Direction directionFacing);
     }
 }

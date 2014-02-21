@@ -72,6 +72,11 @@ namespace Brogue.HeroClasses
             armorRating = currentlyEquippedItems.getTotalArmorRating();
         }
 
+        private void resetHealth()
+        {
+            maxHealth;
+        }
+
         public override bool TakeTurn(Mapping.Level level)
         {
             bool canMove = true;

@@ -20,10 +20,8 @@ namespace Brogue.Abilities.Damaging.SingleTargets
             return AStar.getPossiblePositionsFrom(level, start, radius);
         }
 
-        public override IntVec cast(int heroDamage, int heroLevel, Direction directionFacing)
+        public override IntVec viewCastingSquares(Direction directionFacing)
         {
-            int baseSpellDamage = baseDamage * heroLevel;
-            damage = baseSpellDamage + heroDamage;
 
             if (directionFacing == Direction.RIGHT)
             {
@@ -49,8 +47,15 @@ namespace Brogue.Abilities.Damaging.SingleTargets
                 height = 1;
                 startingPoint = new IntVec(0, 1);
             }
-            cooldown = 5;
             return startingPoint;
-        } 
+        }
+
+        public override int finishCastandDealDamage(int heroLevel, int heroDamage)
+        {
+            int baseSpellDamage = baseDamage * heroLevel;
+            damage = baseSpellDamage + heroDamage;
+            cooldown = 5;
+            return damage;
+        }
     }
 }

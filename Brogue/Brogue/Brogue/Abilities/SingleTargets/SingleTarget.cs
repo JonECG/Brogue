@@ -14,6 +14,6 @@ namespace Brogue.Abilities.Damaging
         protected int width, height;
         protected IntVec startingPoint;
 
-        public abstract override IntVec cast(int heroDamage, int heroLevel, Direction directionFacing);
+        public abstract override IntVec viewCastingSquares(Direction directionFacing);
     }
 }

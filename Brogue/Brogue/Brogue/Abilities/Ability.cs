@@ -17,7 +17,8 @@ namespace Brogue.Abilities
         public bool isOnCooldown { get; protected set; }
         public bool isCasting { get; protected set; }
 
-        abstract public IntVec cast(int heroDamage, int heroLevel, Direction directionFacing);
+        abstract public IntVec viewCastingSquares(Direction directionFacing);
         abstract public IntVec[] viewCastRange(Level level, IntVec start);
+        abstract public int finishCastandDealDamage(int heroLevel, int heroDamage);
     }
 }
