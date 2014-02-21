@@ -30,27 +30,31 @@ namespace Brogue.HeroClasses
         protected Equipment currentlyEquippedItems;
         protected Inventory inventory;
 
-        public void move(Direction dir)
+        public void move(Direction dir, Mapping.Level level)
         {
             if (dir == Direction.RIGHT)
             {
                 directionFacing = 0;
-                position.ints[0] = 1;
+                sprite.direction = directionFacing;
+                level.CharacterEntities.AddPosition(this, new IntVec(1, 0));
             }
             if (dir == Direction.DOWN)
             {
-                directionFacing = (float)(3*Math.PI / 2);
-                position.ints[1] = 1;
+                directionFacing = (float)(3 * Math.PI / 2);
+                sprite.direction = directionFacing;
+                level.CharacterEntities.AddPosition(this, new IntVec(0, 1));
             }
             if (dir == Direction.LEFT)
             {
                 directionFacing = (float)(Math.PI);
-                position.ints[0] = -1;
+                sprite.direction = directionFacing;
+                level.CharacterEntities.AddPosition(this, new IntVec(-1, 0));
             }
             if (dir == Direction.UP)
             {
                 directionFacing = (float)(Math.PI / 2);
-                position.ints[1] = -1 ;
+                sprite.direction = directionFacing;
+                level.CharacterEntities.AddPosition(this, new IntVec(0, -1));
             }
         }
 
@@ -82,46 +86,46 @@ namespace Brogue.HeroClasses
             bool canMove = true;
             bool turnOver = false;
             bool casting = false;
-            resetArmor();
-            for (int i = 0; i < numAbilities && !casting; i++)
+            //resetArmor();
+            /*for (int i = 0; i < numAbilities && !casting; i++)
             {
                 casting = abilities[i].isCasting;
-            }
+            }*/
 
             if (!casting)
             {
-                if (Mapping.KeyboardController.IsDown(Keys.A))
+                if (Mapping.KeyboardController.IsPressed(Keys.A))
                 {
                     if (canMove)
                     {
-                        move(Direction.LEFT);
+                        move(Direction.LEFT, level);
                         turnOver = true;
                     }
                 }
 
-                else if (Mapping.KeyboardController.IsDown(Keys.W))
+                else if (Mapping.KeyboardController.IsPressed(Keys.W))
                 {
                     if (canMove)
                     {
-                        move(Direction.UP);
+                        move(Direction.UP, level);
                         turnOver = true;
                     }
                 }
 
-                else if (Mapping.KeyboardController.IsDown(Keys.D))
+                else if (Mapping.KeyboardController.IsPressed(Keys.D))
                 {
                     if (canMove)
                     {
-                        move(Direction.RIGHT);
+                        move(Direction.RIGHT, level);
                         turnOver = true;
                     }
                 }
 
-                else if (Mapping.KeyboardController.IsDown(Keys.S))
+                else if (Mapping.KeyboardController.IsPressed(Keys.S))
                 {
                     if (canMove)
                     {
-                        move(Direction.DOWN);
+                        move(Direction.DOWN, level);
                         turnOver = true;
                     }
                 }
@@ -131,10 +135,10 @@ namespace Brogue.HeroClasses
                     level += 1;
                 }
 
-                else turnOver = (Mapping.KeyboardController.IsDown(Keys.Space));
+                else turnOver = (Mapping.KeyboardController.IsPressed(Keys.Space));
             }
 
-            cooldownAbilities();
+            //cooldownAbilities();
             return turnOver;
         }
 

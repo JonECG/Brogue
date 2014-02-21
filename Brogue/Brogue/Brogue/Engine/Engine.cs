@@ -40,7 +40,7 @@ namespace Brogue.Engine
 
         public static void End()
         {
-            
+
         }
 
         public static void LoadContent(ContentManager content)
@@ -58,9 +58,10 @@ namespace Brogue.Engine
             Tile.tileset = content.Load<Texture2D>("dynamicTileset");
             HeroClasses.Hero.LoadContent(content);
             Items.Item.LoadContent(content);
-            
+
         }
-        public static void Log(string input){
+        public static void Log(string input)
+        {
             log.Enqueue(input);
             if (log.Count > logSize)
             {
@@ -98,7 +99,7 @@ namespace Brogue.Engine
             //Iterate through each AI within maximum AI distance and call its TakeTurn method.
         }
 
-        public static void Draw(Texture2D tex, IntVec destination )
+        public static void Draw(Texture2D tex, IntVec destination)
         {
             Draw(tex, destination, Color.White);
         }
@@ -116,7 +117,12 @@ namespace Brogue.Engine
         public static void Draw(Texture2D tileSheet, IntVec destination, IntVec tilesetSource, Color color)
         {
             game.spriteBatch.Draw(tileSheet, new Vector2(destination.X * CELLWIDTH, destination.Y * CELLWIDTH), new Rectangle(tilesetSource.X * CELLWIDTH, tilesetSource.Y * CELLWIDTH, CELLWIDTH, CELLWIDTH), color);
-            
+
+        }
+
+        public static void Draw(Sprite sprite, IntVec destination)
+        {
+            game.spriteBatch.Draw(sprite.texture, new Rectangle(destination.X * CELLWIDTH, destination.Y * CELLWIDTH, CELLWIDTH, CELLWIDTH), new Rectangle(sprite.sourceTile.X * CELLWIDTH, sprite.sourceTile.Y * CELLWIDTH, CELLWIDTH, CELLWIDTH), sprite.Blend, sprite.direction, new Vector2(CELLWIDTH / 2, CELLWIDTH / 2), SpriteEffects.None, 0);
         }
 
         public static void DrawUI(SpriteBatch uisb)
@@ -126,8 +132,8 @@ namespace Brogue.Engine
             uisb.Draw(healthbar, new Vector2(50, game.Height / 2 - healthbar.Height / 2), Color.White);
             uisb.Draw(xpbar, new Vector2(80, game.Height / 2 - healthbar.Height / 2), Color.White);
             uisb.Draw(inventory, new Vector2(game.Width / 2 - inventory.Width / 2, game.Height - 100), Color.White);
-            uisb.Draw(jar, new Vector2(game.Width - 50 - jar.Width, game.Height / 2 - jar.Height /2 ), Color.White);
-            uisb.Draw(bar, new Vector2(game.Width - 50 - jar.Width, game.Height / 2 - bar.Height /2 ), Color.White);
+            uisb.Draw(jar, new Vector2(game.Width - 50 - jar.Width, game.Height / 2 - jar.Height / 2), Color.White);
+            uisb.Draw(bar, new Vector2(game.Width - 50 - jar.Width, game.Height / 2 - bar.Height / 2), Color.White);
             DrawLog(uisb);
         }
         static int inctest = 0;
@@ -136,24 +142,33 @@ namespace Brogue.Engine
             GameCommands();
             Log("update " + inctest++);
             currentLevel.testUpdate();
-            cameraPosition += new IntVec((KeyboardController.IsDown(Keys.Right) ? 1 : 0) - (KeyboardController.IsDown(Keys.Left) ? 1 : 0),
-                (KeyboardController.IsDown(Keys.Down) ? 1 : 0) - (KeyboardController.IsDown(Keys.Up) ? 1 : 0));
+            //cameraPosition += new IntVec((KeyboardController.IsDown(Keys.Right) ? 1 : 0) - (KeyboardController.IsDown(Keys.Left) ? 1 : 0),
+            //    (KeyboardController.IsDown(Keys.Down) ? 1 : 0) - (KeyboardController.IsDown(Keys.Up) ? 1 : 0));
 
             //Game turns
             if (heroesTurn)
             {
                 heroesTurn = !hero.TakeTurn(currentLevel);
+                cameraPosition = currentLevel.CharacterEntities.FindPosition(hero);
+            }
+            else
+            {
+                //Take next NPCs turn.
+                //When all NPCs have taken their turn...
+                heroesTurn = true;
             }
         }
 
         private static void GameCommands()
         {
-            if (KeyboardController.IsPressed(Keys.OemPlus)){
+            if (KeyboardController.IsPressed(Keys.OemPlus))
+            {
                 logSize += 5;
             }
             if (KeyboardController.IsPressed(Keys.OemMinus))
             {
-                if (logSize > 5){
+                if (logSize > 5)
+                {
                     logSize -= 5;
                     for (int i = 0; i < log.Count - logSize; i++)
                     {
