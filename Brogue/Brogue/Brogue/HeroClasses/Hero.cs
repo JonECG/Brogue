@@ -30,32 +30,31 @@ namespace Brogue.HeroClasses
         protected Equipment currentlyEquippedItems;
         protected Inventory inventory;
 
-        public void move(Direction dir, Mapping.Level level)
+        public IntVec move(Direction dir)
         {
+            IntVec positionMovement = new IntVec(0,0);
             if (dir == Direction.RIGHT)
             {
                 directionFacing = 0;
-                sprite.direction = directionFacing;
-                level.CharacterEntities.AddPosition(this, new IntVec(1, 0));
+                positionMovement = new IntVec(1,0);
             }
             if (dir == Direction.DOWN)
             {
-                directionFacing = (float)(3 * Math.PI / 2);
-                sprite.direction = directionFacing;
-                level.CharacterEntities.AddPosition(this, new IntVec(0, 1));
+                directionFacing = (float)(Math.PI / 2);
+                positionMovement = new IntVec(0, 1);
             }
             if (dir == Direction.LEFT)
             {
                 directionFacing = (float)(Math.PI);
-                sprite.direction = directionFacing;
-                level.CharacterEntities.AddPosition(this, new IntVec(-1, 0));
+                positionMovement = new IntVec(-1, 0);
             }
             if (dir == Direction.UP)
             {
-                directionFacing = (float)(Math.PI / 2);
-                sprite.direction = directionFacing;
-                level.CharacterEntities.AddPosition(this, new IntVec(0, -1));
+                directionFacing = (float)(3*Math.PI / 2);
+                positionMovement = new IntVec(0, -1);
             }
+            sprite.Direction = dir;
+            return positionMovement;
         }
 
         public override void TakeDamage(int damage, GameCharacter attacker)
@@ -65,10 +64,9 @@ namespace Brogue.HeroClasses
             health -= damagePostReduction;
         }
 
-        public static void LoadContent(ContentManager content)
+        public static void loadSprite()
         {
-            tex = content.Load<Texture2D>("Hero/Hero");
-            sprite = new Sprite(tex);
+            sprite = new Sprite(texture);
         }
 
         private void resetArmor()
@@ -98,8 +96,7 @@ namespace Brogue.HeroClasses
                 {
                     if (canMove)
                     {
-                        move(Direction.LEFT, level);
-                        turnOver = true;
+                        turnOver = mapLevel.Move(this, move(Direction.LEFT));
                     }
                 }
 
@@ -107,8 +104,7 @@ namespace Brogue.HeroClasses
                 {
                     if (canMove)
                     {
-                        move(Direction.UP, level);
-                        turnOver = true;
+                        turnOver = mapLevel.Move(this, move(Direction.UP));
                     }
                 }
 
@@ -116,8 +112,7 @@ namespace Brogue.HeroClasses
                 {
                     if (canMove)
                     {
-                        move(Direction.RIGHT, level);
-                        turnOver = true;
+                        turnOver = mapLevel.Move(this, move(Direction.RIGHT));
                     }
                 }
 
@@ -125,8 +120,7 @@ namespace Brogue.HeroClasses
                 {
                     if (canMove)
                     {
-                        move(Direction.DOWN, level);
-                        turnOver = true;
+                        turnOver = mapLevel.Move(this, move(Direction.DOWN));
                     }
                 }
                 // JUST FOR TESTING
