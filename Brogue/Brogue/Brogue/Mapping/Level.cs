@@ -72,6 +72,27 @@ namespace Brogue.Mapping
             return result;
         }
 
+        public IntVec findRandomOpenPosition( IntVec position, int range )
+        {
+            cache();
+
+            IntVec result = null;
+            do
+            {
+                IntVec offset;
+                do
+                {
+                    offset = new IntVec(statRand.Next(-range, range), statRand.Next(-range, range));
+                }
+                while (Math.Abs(offset.X) + Math.Abs(offset.Y) <= range);
+
+                result = position + offset;
+            }
+            while (cachedSolid[result.X, result.Y]);
+
+            return result;
+        }
+
         public bool[,] getSolid()
         {
             cache();
