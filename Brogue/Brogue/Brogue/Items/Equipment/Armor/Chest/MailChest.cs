@@ -22,7 +22,7 @@ namespace Brogue.Items.Equipment.Armor.Chest
             LevelReq = findLevelReq(dLevel, cLevel);
             UsedBy = new List<Class> { Class.Warrior };
             TypeBonus = 5;
-            ArmorValue = findArmorValue(BaseArmor, dLevel, LevelReq, TypeBonus);
+            ArmorValue = findArmorValue(BaseArmor, dLevel, TypeBonus);
         }
     }
 }

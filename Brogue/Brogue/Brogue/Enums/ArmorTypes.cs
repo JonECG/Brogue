@@ -10,6 +10,7 @@ namespace Brogue.Enums
         Helm,
         Chest,
         Legs,
-        Shields
+        Shields,
+        Legendary
     }
 }

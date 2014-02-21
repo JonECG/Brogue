@@ -95,6 +95,8 @@
     <Compile Include="Enums\RangedWeaponsTypes.cs" />
     <Compile Include="Enums\ShieldTypes.cs" />
     <Compile Include="Enums\StatModifiers.cs" />
+    <Compile Include="Enums\UniqueArmor.cs" />
+    <Compile Include="Enums\UniqueWeapons.cs" />
     <Compile Include="Enums\WeaponTypes.cs" />
     <Compile Include="EnviromentObjects\Interactive\Chest.cs" />
     <Compile Include="EnviromentObjects\Interactive\Door.cs" />
@@ -116,6 +118,9 @@
     <Compile Include="Items\Equipment\Armor\Helm\Helm.cs" />
     <Compile Include="Items\Equipment\Armor\Helm\LeatherHelm.cs" />
     <Compile Include="Items\Equipment\Armor\Helm\MailHelm.cs" />
+    <Compile Include="Items\Equipment\Armor\Legendary\LegendaryArmor.cs" />
+    <Compile Include="Items\Equipment\Armor\Legendary\Shields\FirstAvenger.cs" />
+    <Compile Include="Items\Equipment\Armor\Legendary\Shields\LegendaryShield.cs" />
     <Compile Include="Items\Equipment\Armor\Legs\ClothLegs.cs" />
     <Compile Include="Items\Equipment\Armor\Legs\LeatherLegs.cs" />
     <Compile Include="Items\Equipment\Armor\Legs\Legs.cs" />
@@ -124,6 +129,13 @@
     <Compile Include="Items\Equipment\Armor\Shields\Shields.cs" />
     <Compile Include="Items\Equipment\Armor\Shields\WoodenShield.cs" />
     <Compile Include="Items\Equipment\Gear.cs" />
+    <Compile Include="Items\Equipment\Weapon\Legendary\LegendaryWeapon.cs" />
+    <Compile Include="Items\Equipment\Weapon\Legendary\Melee\40k.cs" />
+    <Compile Include="Items\Equipment\Weapon\Legendary\Melee\LegendaryMelee.cs" />
+    <Compile Include="Items\Equipment\Weapon\Legendary\Melee\TheWolverine.cs" />
+    <Compile Include="Items\Equipment\Weapon\Legendary\Ranged\KunaiWithChain.cs" />
+    <Compile Include="Items\Equipment\Weapon\Legendary\Ranged\LegendaryRanged.cs" />
+    <Compile Include="Items\Equipment\Weapon\Legendary\Ranged\RodOfExtending.cs" />
     <Compile Include="Items\Equipment\Weapon\Melee\Axe.cs" />
     <Compile Include="Items\Equipment\Weapon\Melee\BastardSword.cs" />
     <Compile Include="Items\Equipment\Weapon\Melee\Claws.cs" />
@@ -199,9 +211,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="EnviromentObjects\Decorative\" />
-    <Folder Include="Items\Equipment\Unique\Armor\" />
-    <Folder Include="Items\Equipment\Unique\Item\" />
-    <Folder Include="Items\Equipment\Unique\Weapon\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />

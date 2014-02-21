@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Microsoft.Xna.Framework.Graphics;
 using Brogue.Enums;
+using Microsoft.Xna.Framework.Graphics;
 
-namespace Brogue.Items.Equipment.Armor.Helm
+namespace Brogue.Items.Equipment.Armor.Legendary.Shields
 {
-    public class MailHelm : Helm
+    public class FirstAvenger : LegendaryShield
     {
         public static Texture2D Texture { get; set; }
 
@@ -16,12 +16,13 @@ namespace Brogue.Items.Equipment.Armor.Helm
             return Texture;
         }
 
-        public MailHelm(int dLevel, int cLevel)
+        public FirstAvenger(int dLevel, int cLevel)
         {
-            Name = "Mail Helm";
+            Name = "The First Avenger";
+            FlavorText = "I had a date.";
             LevelReq = findLevelReq(dLevel, cLevel);
             UsedBy = new List<Class> { Class.Warrior };
-            TypeBonus = 5;
+            TypeBonus = 15;
             ArmorValue = findArmorValue(BaseArmor, dLevel, TypeBonus);
         }
     }

@@ -10,6 +10,7 @@ namespace Brogue.Enums
         Consumable,
         Accessory,
         Weapon,
-        Armor
+        Armor,
+        Unique
     }
 }

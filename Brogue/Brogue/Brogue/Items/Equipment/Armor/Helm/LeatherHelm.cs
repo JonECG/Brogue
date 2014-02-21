@@ -22,7 +22,7 @@ namespace Brogue.Items.Equipment.Armor.Helm
             LevelReq = findLevelReq(dLevel, cLevel);
             UsedBy = new List<Class> { Class.Rogue };
             TypeBonus = 3;
-            ArmorValue = findArmorValue(BaseArmor, dLevel, LevelReq, TypeBonus);
+            ArmorValue = findArmorValue(BaseArmor, dLevel, TypeBonus);
         }
     }
 }

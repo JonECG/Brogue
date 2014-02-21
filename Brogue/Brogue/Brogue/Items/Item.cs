@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
+using Brogue.Enums;
 using Brogue.Items.Equipment.Weapon.Melee;
 using Brogue.Items.Equipment.Weapon.Ranged;
 using Brogue.Items.Equipment.Armor.Helm;
@@ -12,7 +13,9 @@ using Brogue.Items.Equipment.Armor.Legs;
 using Brogue.Items.Equipment.Armor.Shields;
 using Brogue.Items.Equipment.Accessory;
 using Brogue.Items.Consumables;
-using Brogue.Enums;
+using Brogue.Items.Equipment.Weapon.Legendary.Melee;
+using Brogue.Items.Equipment.Weapon.Legendary.Ranged;
+using Brogue.Items.Equipment.Armor.Legendary.Shields;
 
 namespace Brogue.Items
 {
@@ -20,8 +23,6 @@ namespace Brogue.Items
     {
         public string Name { get; protected set; }
         public ITypes ItemType { get; protected set; }
-
-        static Random rand = new Random();
 
         public abstract Texture2D GetTexture();
 
@@ -36,11 +37,15 @@ namespace Brogue.Items
             Items.Equipment.Weapon.Melee.Dagger.Texture = content.Load<Texture2D>("Items/Sword");
             Items.Equipment.Weapon.Melee.WarHammer.Texture = content.Load<Texture2D>("Items/Sword");
             Items.Equipment.Weapon.Melee.Claws.Texture = content.Load<Texture2D>("Items/Sword");
+            Items.Equipment.Weapon.Legendary.Melee.TheWolverine.Texture = content.Load<Texture2D>("Items/Sword");
+            Items.Equipment.Weapon.Legendary.Melee._40k.Texture = content.Load<Texture2D>("Items/Sword");
 
             Items.Equipment.Weapon.Ranged.Boomerang.Texture = content.Load<Texture2D>("Items/Sword");
             Items.Equipment.Weapon.Ranged.Kunai.Texture = content.Load<Texture2D>("Items/Sword");
             Items.Equipment.Weapon.Ranged.Staff.Texture = content.Load<Texture2D>("Items/Sword");
             Items.Equipment.Weapon.Ranged.ThrowingKnives.Texture = content.Load<Texture2D>("Items/Sword");
+            Items.Equipment.Weapon.Legendary.Ranged.RodOfExtending.Texture = content.Load<Texture2D>("Items/Sword");
+            Items.Equipment.Weapon.Legendary.Ranged.KunaiWithChain.Texture = content.Load<Texture2D>("Items/Sword");
 
             Items.Equipment.Armor.Chest.ClothChest.Texture = content.Load<Texture2D>("Items/Sword");
             Items.Equipment.Armor.Chest.LeatherChest.Texture = content.Load<Texture2D>("Items/Sword");
@@ -56,6 +61,7 @@ namespace Brogue.Items
 
             Items.Equipment.Armor.Shields.PlateShield.Texture = content.Load<Texture2D>("Items/Sword");
             Items.Equipment.Armor.Shields.WoodenShield.Texture = content.Load<Texture2D>("Items/Sword");
+            Items.Equipment.Armor.Legendary.Shields.FirstAvenger.Texture = content.Load<Texture2D>("Items/Sword");
 
             Items.Equipment.Accessory.Necklace.Texture = content.Load<Texture2D>("Items/Sword");
             Items.Equipment.Accessory.Ring.Texture = content.Load<Texture2D>("Items/Sword");
@@ -64,6 +70,12 @@ namespace Brogue.Items
         public static Item randomItem(int dLevel, int cLevel)
         {
             int findItem;
+            int lchance;
+            int chance = 20;
+            int finalChance = 101;
+            int rarity = 2;
+            Random rand = new Random();
+
             #region randomItem generator
             findItem = rand.Next(Enum.GetNames(typeof(ITypes)).Length);
             #region random Consumable
@@ -146,6 +158,51 @@ namespace Brogue.Items
                         return new ThrowingKnives(dLevel, cLevel);
                     }
                 }
+                else if ((WTypes)findItem == WTypes.Legendary)
+                {
+                    lchance = rand.Next(chance + 1);
+                    if (lchance < (chance / rarity))
+                    {
+                        lchance = rand.Next((chance / rarity) + 1);
+                        rarity *=2;
+                        if (lchance > (chance / rarity))
+                        {
+                            lchance = rand.Next(finalChance);
+                            if (lchance < dLevel)
+                            {
+                                findItem = rand.Next(Enum.GetNames(typeof(LegendaryWeapon)).Length);
+                                if ((LegendaryWeapon)findItem == LegendaryWeapon._40k)
+                                {
+                                    return new _40k(dLevel, cLevel);
+                                }
+                                else if ((LegendaryWeapon)findItem == LegendaryWeapon.KuaniWithChain)
+                                {
+                                    return new KunaiWithChain(dLevel, cLevel);
+                                }
+                                else if ((LegendaryWeapon)findItem == LegendaryWeapon.RodOfExtending)
+                                {
+                                    return new RodOfExtending(dLevel, cLevel);
+                                }
+                                else if ((LegendaryWeapon)findItem == LegendaryWeapon.TheWolverine)
+                                {
+                                    return new TheWolverine(dLevel, cLevel);
+                                }
+                            }
+                            else
+                            {
+                                return new Potion(dLevel, cLevel);
+                            }
+                        }
+                        else
+                        {
+                            return new Potion(dLevel, cLevel);
+                        }
+                    }
+                    else
+                    {
+                        return new Potion(dLevel, cLevel);
+                    }
+                }
             }
             #endregion
             #region random Armor
@@ -210,6 +267,39 @@ namespace Brogue.Items
                     else if ((STypes)findItem == STypes.WoodenShield)
                     {
                         return new WoodenShield(dLevel, cLevel);
+                    }
+                }
+                else if ((ArTypes)findItem == ArTypes.Legendary)
+                {
+                    lchance = rand.Next(chance + 1);
+                    if (lchance < (chance / rarity))
+                    {
+                        lchance = rand.Next((chance / rarity) + 1);
+                        rarity *= 2;
+                        if (lchance > (chance / rarity))
+                        {
+                            lchance = rand.Next(finalChance);
+                            if (lchance < dLevel)
+                            {
+                                findItem = rand.Next(Enum.GetNames(typeof(LegendaryArmor)).Length);
+                                if ((LegendaryArmor)findItem == LegendaryArmor.TheFirstAvenger)
+                                {
+                                    return new FirstAvenger(dLevel, cLevel);
+                                }
+                            }
+                            else
+                            {
+                                return new Potion(dLevel, cLevel);
+                            }
+                        }
+                        else
+                        {
+                            return new Potion(dLevel, cLevel);
+                        }
+                    }
+                    else
+                    {
+                        return new Potion(dLevel, cLevel);
                     }
                 }
             }

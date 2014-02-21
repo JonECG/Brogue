@@ -5,10 +5,8 @@ using System.Text;
 
 namespace Brogue.Enums
 {
-    public enum WTypes
+    public enum LegendaryArmor
     {
-        MeleeWeapon,
-        RangedWeapon, 
-        Legendary
+        TheFirstAvenger
     }
 }

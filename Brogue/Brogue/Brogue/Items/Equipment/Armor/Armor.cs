@@ -17,9 +17,9 @@ namespace Brogue.Items.Equipment.Armor
             ItemType = ITypes.Armor;
         }
 
-        public int findArmorValue(int bAmr, int dLevel, int lReq, int tb)
+        public int findArmorValue(int bAmr, int dLevel, int tb)
         {
-            return bAmr * dLevel + lReq + tb;
+            return bAmr + dLevel + tb;
         }
     }
 }
