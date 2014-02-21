@@ -129,7 +129,7 @@ namespace Brogue.HeroClasses
                 }
                 else if (Mapping.KeyboardController.IsPressed(Keys.LeftShift))
                 {
-                    pickupItem(Item.randomItem(1, level));
+                    checkGround(mapLevel);
                 }
                 else if (Mapping.KeyboardController.IsPressed(Keys.RightShift))
                 {
@@ -152,6 +152,17 @@ namespace Brogue.HeroClasses
             for(int i=0; i<numAbilities; i++)
             {
                 abilities[i].cooldown -= (abilities[i].isOnCooldown) ? 1 : 0;
+            }
+        }
+
+        private void checkGround(Mapping.Level mapLevel)
+        {
+            Item temp = mapLevel.DroppedItems.FindEntity(mapLevel.CharacterEntities.FindPosition(this));
+            pickupItem(temp);
+            if (temp != null)
+            {
+                mapLevel.DroppedItems.RemoveEntity(temp);
+                Engine.Engine.Log("item picked up");
             }
         }
 

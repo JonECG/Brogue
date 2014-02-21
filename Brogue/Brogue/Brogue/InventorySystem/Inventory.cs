@@ -19,10 +19,17 @@ namespace Brogue.InventorySystem
 
         public void addItem(Item item)
         {
-            for (int i = 0; i < MAX_ITEM_COUNT; i++)
+            bool itemAdded = false;
+            for (int i = 0; i < MAX_ITEM_COUNT && !itemAdded; i++)
             {
-                stored[i].item = (!stored[i].isFilled) ? item : null;
+                if (!stored[i].isFilled)
+                {
+                    itemAdded = true;
+                    stored[i].item = (!stored[i].isFilled) ? item : null;
+                    stored[i].isFilled = (stored[i].item != null);
+                }
             }
+            
         }
 
         public void removeItem(int index)
