@@ -133,7 +133,12 @@ namespace Brogue.HeroClasses
                 }
                 else if (Mapping.KeyboardController.IsPressed(Keys.RightShift))
                 {
-                    dropItem(0);
+                    IntVec itemPosition = new IntVec(mapLevel.CharacterEntities.FindPosition(this).X, mapLevel.CharacterEntities.FindPosition(this).Y);
+                    Item tempItem = dropItem(0);
+                    if (tempItem != null)
+                    {
+                        mapLevel.DroppedItems.Add(tempItem, itemPosition);
+                    }
                 }
 
                 else turnOver = (Mapping.KeyboardController.IsPressed(Keys.Space));
@@ -159,7 +164,8 @@ namespace Brogue.HeroClasses
         {
             Item temp = mapLevel.DroppedItems.FindEntity(mapLevel.CharacterEntities.FindPosition(this));
             pickupItem(temp);
-            if (temp != null)
+            Engine.Engine.Log(inventory.numItemsStored.ToString());
+            if (temp != null && !inventory.inventoryMaxed())
             {
                 mapLevel.DroppedItems.RemoveEntity(temp);
                 Engine.Engine.Log("item picked up");
@@ -196,9 +202,9 @@ namespace Brogue.HeroClasses
             inventory.addItem(item);
         }
 
-        public void dropItem(int whichItem)
+        public Item dropItem(int whichItem)
         {
-            inventory.removeItem(whichItem);
+            return inventory.removeItem(whichItem);
         }
 
         Sprite IRenderable.GetSprite()

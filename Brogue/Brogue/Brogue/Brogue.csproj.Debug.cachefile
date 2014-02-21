@@ -5,12 +5,12 @@ Content\UI\HealthJar.xnb
 Content\UI\Inventory.xnb
 Content\UI\Jar.xnb
 Content\UI\XPBar.xnb
-Content\Shader.xnb
 Content\dynamicTileset.xnb
+Content\Shader.xnb
 Content\Hero\Hero.xnb
 Content\Items\Sword.xnb
 Content\UI\Font.xnb
 Content\GAME_CHAR.xnb
-Content\floorTileset.xnb
 Content\Enemies\Enemy.xnb
 Content\Enemies\BossEnemy.xnb
+Content\floorTileset.xnb

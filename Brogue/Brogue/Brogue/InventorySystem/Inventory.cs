@@ -15,6 +15,10 @@ namespace Brogue.InventorySystem
         public Inventory()
         {
             stored = new InventorySlot[MAX_ITEM_COUNT];
+            for (int i = 0; i < MAX_ITEM_COUNT; i++)
+            {
+                stored[i] = new InventorySlot();
+            }
         }
 
         public void addItem(Item item)
@@ -32,9 +36,26 @@ namespace Brogue.InventorySystem
             
         }
 
-        public void removeItem(int index)
+        public bool inventoryMaxed()
         {
-            stored[index].item = null;
+            int numItems = 0;
+            for (int i = 0; i < MAX_ITEM_COUNT; i++)
+            {
+                numItems += (stored[i].isFilled) ? 1 : 0;
+            }
+            return numItems == MAX_ITEM_COUNT;
+        }
+
+        public Item removeItem(int index)
+        {
+            Item temp = null;
+            if (stored[index].isFilled)
+            {
+                temp = stored[index].item;
+                stored[index].item = null;
+                stored[index].isFilled = false;
+            }
+            return temp;
         }
 
         public void swapItem(int indexOne, int indexTwo)
