@@ -39,7 +39,7 @@ namespace Brogue.Mapping
 
             foreach (Tuple<T, IntVec> tup in list)
             {
-                if (position.Equals(tup.Item1))
+                if (position.Equals(tup.Item2))
                     result = tup;
             }
 
@@ -52,25 +52,37 @@ namespace Brogue.Mapping
 
             foreach (Tuple<T, IntVec> tup in list)
             {
-                if (t.Equals(tup.Item2))
+                if (t.Equals(tup.Item1))
                     result = tup;
             }
 
             return result;
         }
 
-        public void SetPosition(T t, IntVec position)
+        public bool SetPosition(T t, IntVec position)
         {
+            bool wasFound = false;
             Tuple<T, IntVec> tup = getTupleByEntity(t);
-            tup.Item2.X = position.X;
-            tup.Item2.Y = position.Y;
+            if (tup != null)
+            {
+                wasFound = true;
+                tup.Item2.X = position.X;
+                tup.Item2.Y = position.Y;
+            }
+            return wasFound;
         }
 
-        public void AddPosition(T t, IntVec position)
+        public bool AddPosition(T t, IntVec position)
         {
+            bool wasFound = false;
             Tuple<T, IntVec> tup = getTupleByEntity(t);
-            tup.Item2.X += position.X;
-            tup.Item2.Y += position.Y;
+            if (tup != null)
+            {
+                wasFound = true;
+                tup.Item2.X += position.X;
+                tup.Item2.Y += position.Y;
+            }
+            return wasFound;
         }
 
         
