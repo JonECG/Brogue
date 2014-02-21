@@ -236,20 +236,20 @@ namespace Brogue.Mapping
             foreach (Direction dir in path)
             {
                 current += dir;
-                Engine.Engine.Draw(Engine.Engine.placeHolder, new IntVec(current.X, current.Y), Color.Orange); //Orange
+                Engine.Engine.Draw( new Sprite( Engine.Engine.placeHolder, Color.Orange, dir ), new IntVec(current.X, current.Y) ); //Orange
             }
 
-            Engine.Engine.Draw(Engine.Engine.placeHolder, new IntVec(a.X, a.Y), Color.Green); //Green
-            Engine.Engine.Draw(Engine.Engine.placeHolder, new IntVec(b.X, b.Y), Color.Blue); //Red
+            Engine.Engine.Draw(new Sprite( Engine.Engine.placeHolder, Color.Green ), new IntVec(a.X, a.Y) ); //Green
+            Engine.Engine.Draw(new Sprite( Engine.Engine.placeHolder, Color.Red ), new IntVec(b.X, b.Y) ); //Red
 
 
             var nodes = AStar.getPathDrawnBetween(this, a, b, actionsToTake);
             foreach (var node in nodes)
             {
-                Engine.Engine.Draw(Engine.Engine.placeHolder, new IntVec(node.position.X, node.position.Y), Color.BlanchedAlmond);
+                Engine.Engine.Draw(new Sprite(Engine.Engine.placeHolder, Color.BlanchedAlmond), new IntVec(node.position.X, node.position.Y));
             }
 
-            Engine.Engine.Draw(Engine.Engine.placeHolder, new IntVec(nodes.Min.position.X, nodes.Min.position.Y), Color.Yellow); 
+            Engine.Engine.Draw(new Sprite(Engine.Engine.placeHolder, Color.Yellow), new IntVec(nodes.Min.position.X, nodes.Min.position.Y) ); 
 
         }
 
@@ -284,7 +284,7 @@ namespace Brogue.Mapping
 
         internal void testUpdate()
         {
-            IntVec aMove = new IntVec((KeyboardController.IsPressed('D') ? 1 : 0) - (KeyboardController.IsPressed('A') ? 1 : 0), (KeyboardController.IsPressed('S') ? 1 : 0) - (KeyboardController.IsPressed('W') ? 1 : 0));
+            IntVec aMove = new IntVec((KeyboardController.IsPressed('H') ? 1 : 0) - (KeyboardController.IsPressed('F') ? 1 : 0), (KeyboardController.IsPressed('G') ? 1 : 0) - (KeyboardController.IsPressed('T') ? 1 : 0));
             IntVec bMove = new IntVec((KeyboardController.IsPressed('L') ? 1 : 0) - (KeyboardController.IsPressed('J') ? 1 : 0), (KeyboardController.IsPressed('K') ? 1 : 0) - (KeyboardController.IsPressed('I') ? 1 : 0));
             actionsToTake += (KeyboardController.IsDown('2') ? 1 : 0) - (KeyboardController.IsDown('1') ? 1 : 0);
 

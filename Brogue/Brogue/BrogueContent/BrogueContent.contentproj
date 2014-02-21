@@ -104,15 +104,15 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Enemies\BASIC_ENEMY.png">
-      <Name>BASIC_ENEMY</Name>
+    <Compile Include="Enemies\Enemy.png">
+      <Name>Enemy</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Enemies\BOSS_ENEMY.png">
-      <Name>BOSS_ENEMY</Name>
+    <Compile Include="Enemies\BossEnemy.png">
+      <Name>BossEnemy</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -120,6 +120,13 @@
   <ItemGroup>
     <Compile Include="GAME_CHAR.png">
       <Name>GAME_CHAR</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="floorTileset.png">
+      <Name>floorTileset</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
