@@ -91,7 +91,7 @@ namespace Brogue.HeroClasses
 
             if (!casting)
             {
-                if (Mapping.KeyboardController.IsPressed(Keys.A))
+                if (Mapping.KeyboardController.IsTyped(Keys.A))
                 {
                     if (canMove)
                     {
@@ -99,7 +99,7 @@ namespace Brogue.HeroClasses
                     }
                 }
 
-                else if (Mapping.KeyboardController.IsPressed(Keys.W))
+                else if (Mapping.KeyboardController.IsTyped(Keys.W))
                 {
                     if (canMove)
                     {
@@ -107,7 +107,7 @@ namespace Brogue.HeroClasses
                     }
                 }
 
-                else if (Mapping.KeyboardController.IsPressed(Keys.D))
+                else if (Mapping.KeyboardController.IsTyped(Keys.D))
                 {
                     if (canMove)
                     {
@@ -115,7 +115,7 @@ namespace Brogue.HeroClasses
                     }
                 }
 
-                else if (Mapping.KeyboardController.IsPressed(Keys.S))
+                else if (Mapping.KeyboardController.IsTyped(Keys.S))
                 {
                     if (canMove)
                     {
@@ -123,15 +123,15 @@ namespace Brogue.HeroClasses
                     }
                 }
                 // THESE ARE JUST FOR TESTING
-                else if (Mapping.KeyboardController.IsPressed(Keys.B))
+                else if (Mapping.KeyboardController.IsTyped(Keys.B))
                 {
                     level += 1;
                 }
-                else if (Mapping.KeyboardController.IsPressed(Keys.LeftShift))
+                else if (Mapping.KeyboardController.IsTyped(Keys.LeftShift))
                 {
                     checkGround(mapLevel);
                 }
-                else if (Mapping.KeyboardController.IsPressed(Keys.RightShift))
+                else if (Mapping.KeyboardController.IsTyped(Keys.RightShift))
                 {
                     IntVec itemPosition = new IntVec(mapLevel.CharacterEntities.FindPosition(this).X, mapLevel.CharacterEntities.FindPosition(this).Y);
                     Item tempItem = dropItem(0);
@@ -141,7 +141,7 @@ namespace Brogue.HeroClasses
                     }
                 }
 
-                else turnOver = (Mapping.KeyboardController.IsPressed(Keys.Space));
+                else turnOver = (Mapping.KeyboardController.IsTyped(Keys.Space));
             }
 
             //cooldownAbilities();
