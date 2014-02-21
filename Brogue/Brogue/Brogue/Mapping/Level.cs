@@ -84,7 +84,7 @@ namespace Brogue.Mapping
                 {
                     offset = new IntVec(statRand.Next(-range, range), statRand.Next(-range, range));
                 }
-                while (Math.Abs(offset.X) + Math.Abs(offset.Y) <= range);
+                while (Math.Abs(offset.X) + Math.Abs(offset.Y) > range);
 
                 result = position + offset;
             }
