@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Input;
 using Brogue.Engine;
 using Brogue.Items.Equipment.Armor;
+using Brogue.Items.Equipment.Weapon;
 
 namespace Brogue.HeroClasses
 {
@@ -41,7 +42,7 @@ namespace Brogue.HeroClasses
                 directionFacing = (float)(3*Math.PI / 2);
                 position.ints[1] = 1;
             }
-            if (dir == Direction.RIGHT)
+            if (dir == Direction.LEFT)
             {
                 directionFacing = (float)(Math.PI);
                 position.ints[0] = -1;
@@ -139,11 +140,24 @@ namespace Brogue.HeroClasses
             }
         }
 
-        public void equipItem(int itemToEquip, int currentItemIndex = 0)
+        public void equipArmor(int itemToEquip, int currentItemIndex = 0)
         {
-            Item temp = currentlyEquippedItems[currentItemIndex];
-            currentlyEquippedItems[currentItemIndex] = inventory.stored[itemToEquip].item;
-            inventory.stored[itemToEquip].item = temp;
+            if(inventory.stored[itemToEquip].item.MyProperty == ITypes.Armor)
+            {
+                Item temp = currentlyEquippedItems.equippedArmor[currentItemIndex];
+                currentlyEquippedItems.equippedArmor[currentItemIndex] = (Armor)(inventory.stored[itemToEquip].item);
+                inventory.stored[itemToEquip].item = temp;
+            }
+        }
+
+        public void equipWeapon(int itemToEquip, int currentItemIndex = 0)
+        {
+            if (inventory.stored[itemToEquip].item.MyProperty == ITypes.Weapon)
+            {
+                Item temp = currentlyEquippedItems.equippedWeapons[currentItemIndex];
+                currentlyEquippedItems.equippedWeapons[currentItemIndex] = (Weapon)(inventory.stored[itemToEquip].item);
+                inventory.stored[itemToEquip].item = temp;
+            }
         }
 
         public void swapItems(int itemOne, int itemTwo)
