@@ -113,7 +113,7 @@ namespace Brogue.Mapping
             foreach (Tuple<T, IntVec> tup in list)
             {
                 Sprite sp = tup.Item1.GetSprite();
-                Engine.Engine.Draw(sp.Texture, tup.Item2, sp.SourceTile, sp.Blend);
+                Engine.Engine.Draw(sp, tup.Item2);
             }
         }
 
