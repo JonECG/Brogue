@@ -18,6 +18,7 @@ namespace Brogue.Items.Equipment.Accessory
         public Accessory()
         {
             BaseIncrease = rand.Next(1, 6);
+            ItemType = ITypes.Accessory;
         }
 
         public int findStatIncrease(int bSI, int dLevel, int lReq)

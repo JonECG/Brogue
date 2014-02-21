@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Brogue.Enums;
 
 namespace Brogue.Items.Consumables
 {
@@ -9,6 +10,11 @@ namespace Brogue.Items.Consumables
     {
         public int RestoreAmount { get; protected set; }
         public int BaseAmount { get; protected set; }
+
+        public Consumable()
+        {
+            ItemType = ITypes.Consumable;
+        }
 
         public static int findRestoreAmount(int dLevel, int bAmt)
         {

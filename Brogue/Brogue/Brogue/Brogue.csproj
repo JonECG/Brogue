@@ -198,6 +198,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="EnviromentObjects\Decorative\" />
+    <Folder Include="Items\Equipment\Unique\Armor\" />
+    <Folder Include="Items\Equipment\Unique\Item\" />
+    <Folder Include="Items\Equipment\Unique\Weapon\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />

@@ -12,6 +12,11 @@ namespace Brogue.Items.Equipment.Weapon
         public int Damage { get; protected set; }
         public int Range { get; protected set; }
 
+        public Weapon()
+        {
+            ItemType = ITypes.Weapon;
+        }
+
         public static int findDamage(int bDmg, int dLevel, int lReq)
         {
             return bDmg * dLevel + lReq;
