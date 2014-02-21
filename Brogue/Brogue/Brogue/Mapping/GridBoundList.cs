@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Brogue.Items.Equipment.Weapon.Melee;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,42 +23,57 @@ namespace Brogue.Mapping
 
         public IntVec FindPosition(T t)
         {
-            IntVec result = null;
-
-            foreach (Tuple<T, IntVec> tup in list)
-            {
-                if (t.Equals(tup.Item1))
-                    result = tup.Item2;
-            }
-
-            return result;
-        }
-
-        private Tuple<T, IntVec> getTupleByPosition(IntVec position)
-        {
-            return null;
-        }
-
-        public void SetPosition(T t, IntVec position)
-        {
-        }
-
-        public void AddPosition(T t, IntVec position)
-        {
+            Tuple<T, IntVec> tup = getTupleByEntity(t);
+            return (tup!=null) ? tup.Item2: null;
         }
 
         public T FindEntity(IntVec position)
         {
-            T result = default(T);
+            Tuple<T, IntVec> tup = getTupleByPosition(position);
+            return (tup != null) ? tup.Item1 : default(T);
+        }
+
+        private Tuple<T, IntVec> getTupleByPosition(IntVec position)
+        {
+            Tuple<T, IntVec> result = null;
 
             foreach (Tuple<T, IntVec> tup in list)
             {
-                if (position.Equals(tup.Item2))
-                    result = tup.Item1;
+                if (position.Equals(tup.Item1))
+                    result = tup;
             }
 
             return result;
         }
+
+        private Tuple<T, IntVec> getTupleByEntity(T t)
+        {
+            Tuple<T, IntVec> result = null;
+
+            foreach (Tuple<T, IntVec> tup in list)
+            {
+                if (t.Equals(tup.Item2))
+                    result = tup;
+            }
+
+            return result;
+        }
+
+        public void SetPosition(T t, IntVec position)
+        {
+            Tuple<T, IntVec> tup = getTupleByEntity(t);
+            tup.Item2.X = position.X;
+            tup.Item2.Y = position.Y;
+        }
+
+        public void AddPosition(T t, IntVec position)
+        {
+            Tuple<T, IntVec> tup = getTupleByEntity(t);
+            tup.Item2.X += position.X;
+            tup.Item2.Y += position.Y;
+        }
+
+        
 
         public void RemoveEntity(T t)
         {
