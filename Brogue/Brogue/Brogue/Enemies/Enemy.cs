@@ -1,12 +1,15 @@
 ﻿using Brogue.Engine;
 using Brogue.Mapping;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
 //owned by Jake
-namespace Brogue
+namespace Brogue.Enemies
 {
     abstract class Enemy : GameCharacter
     {
@@ -61,5 +64,7 @@ namespace Brogue
                 Die();
             }
         }
+
+        
     }
 }
