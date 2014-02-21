@@ -99,27 +99,6 @@ namespace Brogue.Engine
             //Iterate through each AI within maximum AI distance and call its TakeTurn method.
         }
 
-        public static void Draw(Texture2D tex, IntVec destination)
-        {
-            Draw(tex, destination, Color.White);
-        }
-
-        public static void Draw(Texture2D tex, IntVec destination, Color color)
-        {
-            game.spriteBatch.Draw(tex, new Vector2(destination.X * CELLWIDTH, destination.Y * CELLWIDTH), color);
-        }
-
-        public static void Draw(Texture2D tileSheet, IntVec destination, IntVec tilesetSource)
-        {
-            Draw(tileSheet, destination, tilesetSource, Color.White);
-        }
-
-        public static void Draw(Texture2D tileSheet, IntVec destination, IntVec tilesetSource, Color color)
-        {
-            game.spriteBatch.Draw(tileSheet, new Vector2(destination.X * CELLWIDTH, destination.Y * CELLWIDTH), new Rectangle(tilesetSource.X * CELLWIDTH, tilesetSource.Y * CELLWIDTH, CELLWIDTH, CELLWIDTH), color);
-
-        }
-
         public static void Draw(Sprite sprite, IntVec destination)
         {
             game.spriteBatch.Draw(sprite.Texture, new Rectangle(destination.X * CELLWIDTH, destination.Y * CELLWIDTH, CELLWIDTH, CELLWIDTH), new Rectangle(sprite.SourceTile.X * CELLWIDTH, sprite.SourceTile.Y * CELLWIDTH, CELLWIDTH, CELLWIDTH), sprite.Blend, sprite.Direction, new Vector2(CELLWIDTH / 2, CELLWIDTH / 2), SpriteEffects.None, 0);
@@ -140,11 +119,7 @@ namespace Brogue.Engine
         public static void Update(GameTime gameTime)
         {
             GameCommands();
-            Log("update " + inctest++);
             currentLevel.testUpdate();
-            //cameraPosition += new IntVec((KeyboardController.IsDown(Keys.Right) ? 1 : 0) - (KeyboardController.IsDown(Keys.Left) ? 1 : 0),
-            //    (KeyboardController.IsDown(Keys.Down) ? 1 : 0) - (KeyboardController.IsDown(Keys.Up) ? 1 : 0));
-
             //Game turns
             if (heroesTurn)
             {
