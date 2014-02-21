@@ -138,15 +138,16 @@ namespace Brogue.Mapping
             return isSolid(position.X, position.Y);
         }
 
-        //public bool Move(GameCharacter character, IntVec position, bool absolute = false)
-        //{
-        //    bool moveWasMade = false;
-        //    if( absolute ) 
-        //        moveWasMade = CharacterEntities.SetPosition(character, position);
-        //    else
-        //        moveWasMade = CharacterEntities.AddPosition(character, position);
-        //    return moveWasMade;
-        //}
+        public bool Move(GameCharacter character, IntVec position, bool absolute = false)
+        {
+            bool moveWasMade = false;
+            if (absolute && !isSolid( position ) )
+                moveWasMade = CharacterEntities.SetPosition(character, position);
+            else
+            if ( !isSolid( CharacterEntities.FindPosition(character) + position ) )
+                moveWasMade = CharacterEntities.AddPosition(character, position);
+            return moveWasMade;
+        }
 
 
         IntVec a;
