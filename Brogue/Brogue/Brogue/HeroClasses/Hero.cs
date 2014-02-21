@@ -21,23 +21,13 @@ namespace Brogue.HeroClasses
     public abstract class Hero : GameCharacter, IRenderable
     {
         public static int level {get;  set;}
-        protected int numAbilities;
+        protected int numAbilities = 0;
         protected int armorRating;
         protected float directionFacing;
         protected Ability[] abilities;
         static Sprite sprite;
-        protected Equipment currentlyEquippedItems;
-        protected Inventory inventory;
-
-        void Hero()
-        {
-            level = 1;
-            numAbilities = 0;
-            armorRating = 0;
-            directionFacing = 0;
-            currentlyEquippedItems = new Equipment();
-            inventory = new Inventory();
-        }
+        protected Equipment currentlyEquippedItems = new Equipment();
+        protected Inventory inventory = new Inventory();
 
         public IntVec move(Direction dir)
         {
