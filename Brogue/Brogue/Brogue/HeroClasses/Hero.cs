@@ -164,7 +164,6 @@ namespace Brogue.HeroClasses
         {
             Item temp = mapLevel.DroppedItems.FindEntity(mapLevel.CharacterEntities.FindPosition(this));
             pickupItem(temp);
-            Engine.Engine.Log(inventory.numItemsStored.ToString());
             if (temp != null && !inventory.inventoryMaxed())
             {
                 mapLevel.DroppedItems.RemoveEntity(temp);
