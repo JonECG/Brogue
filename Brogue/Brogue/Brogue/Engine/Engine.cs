@@ -14,10 +14,13 @@ namespace Brogue.Engine
     class Engine
     {
         public static int CELLWIDTH = 48;
+        private static int logSize = 10;
         private static Game1 game;
         public static IntVec cameraPosition = new IntVec(12, 8);
         private static Queue<String> log = new Queue<string>(10);
         private static Vector2 LogPosition;
+        private static HeroClasses.Hero hero;
+        private static bool heroesTurn = true;
 
         static Texture2D jar, bar, healthcontainer, healthbar, xpbar, inventory;
         static SpriteFont font;
@@ -59,7 +62,7 @@ namespace Brogue.Engine
         }
         public static void Log(string input){
             log.Enqueue(input);
-            if (log.Count > 30)
+            if (log.Count > logSize)
             {
                 log.Dequeue();
             }
@@ -73,7 +76,8 @@ namespace Brogue.Engine
         {
             currentLevel = LevelGenerator.generate(1337, 200);
             Log("Level generated.");
-            currentLevel.CharacterEntities.Add(new HeroClasses.Mage(), currentLevel.findRandomOpenPosition());
+            hero = new HeroClasses.Mage();
+            currentLevel.CharacterEntities.Add(hero, currentLevel.findRandomOpenPosition());
         }
 
         public static void StartGame()
@@ -129,11 +133,34 @@ namespace Brogue.Engine
         static int inctest = 0;
         public static void Update(GameTime gameTime)
         {
-
-            //Log("update " + inctest++);
+            GameCommands();
+            Log("update " + inctest++);
             currentLevel.testUpdate();
             cameraPosition += new IntVec((KeyboardController.IsDown(Keys.Right) ? 1 : 0) - (KeyboardController.IsDown(Keys.Left) ? 1 : 0),
                 (KeyboardController.IsDown(Keys.Down) ? 1 : 0) - (KeyboardController.IsDown(Keys.Up) ? 1 : 0));
+
+            //Game turns
+            if (heroesTurn)
+            {
+                heroesTurn = !hero.TakeTurn(currentLevel);
+            }
+        }
+
+        private static void GameCommands()
+        {
+            if (KeyboardController.IsPressed(Keys.OemPlus)){
+                logSize += 5;
+            }
+            if (KeyboardController.IsPressed(Keys.OemMinus))
+            {
+                if (logSize > 5){
+                    logSize -= 5;
+                    for (int i = 0; i < log.Count - logSize; i++)
+                    {
+                        log.Dequeue();
+                    }
+                }
+            }
         }
 
         public static void DrawLog(SpriteBatch spriteBatch)
