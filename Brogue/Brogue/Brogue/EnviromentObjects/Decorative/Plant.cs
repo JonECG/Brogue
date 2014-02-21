@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Brogue.Mapping;
 using Microsoft.Xna.Framework.Content;
 
 
 namespace Brogue.EnviromentObjects.Decorative
 {
-    class Plant : InonInteractable
+    class Plant : InonInteractable, IEnvironmentObject
     {
         static Texture2D sprite { get; set; }
         bool isSolid { get; set; }
@@ -15,7 +16,6 @@ namespace Brogue.EnviromentObjects.Decorative
         public Plant() 
         {
            isSolid = false;
-           //sprite = new Texture2D
         }
 
         public void LoadContent(ContentManager content)
@@ -26,6 +26,16 @@ namespace Brogue.EnviromentObjects.Decorative
         public bool getSolidity()
         {
             return isSolid;
+        }
+
+        public bool IsSolid()
+        {
+            return isSolid;
+        }
+
+        public Sprite GetSprite()
+        {
+            return new Sprite(sprite);
         }
     }
 }

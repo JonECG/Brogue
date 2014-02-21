@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Brogue.Mapping;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 
 
 namespace Brogue.EnviromentObjects.Interactive
@@ -12,11 +13,11 @@ namespace Brogue.EnviromentObjects.Interactive
     {
         static Texture2D sprite { get; set; }
         IntVec exit { get; set; }
-        bool solidity { get; set; }
+        bool isSolid { get; set; }
 
         HiddenPassage(IntVec pointB)
         {
-            solidity = true;
+            isSolid = true;
             exit = pointB;
         }
 

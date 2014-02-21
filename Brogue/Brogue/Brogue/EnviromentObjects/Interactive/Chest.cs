@@ -16,37 +16,39 @@ namespace Brogue.EnviromentObjects.Interactive
 
         int chestSize = 10;
 
-        public Item[] contents;
+        List<Item> contents;
 
         public bool isSolid { get; set; }
         public bool isOpen { get; set; }
 
-        public Chest()
+        public Chest(Item[] putIntoChest)
         {
             isSolid = false;
-            contents = new Item[chestSize];
+            contents = new List<Item>();
+
+            for (int counter = 0; counter < chestSize; counter++)
+            {
+               contents.Add(putIntoChest[counter]);
+            }
         }
 
-        public void fillChest()
+        public bool putInChest(Item newIteam)
         {
-            throw new NotImplementedException();
-            //Item randomIteam;
-            //for (int i = 0; i < chestSize; i++)
-            //{
-                
-            //}
-        }
-
-        public void putInChest(Item newIteam)
-        {
-            throw new NotImplementedException();
-            //place contents in to chest
+            bool PutinChest = true;
+            if (contents.Count < chestSize)
+            {
+                contents.Add(newIteam);
+            }
+            else
+            {
+                PutinChest = false;
+            }
+            return PutinChest;
         }
 
         public void spewOutIteams()
         {
             throw new NotImplementedException();
-            //send array of iteams
         }
 
         public void changeSolid()
