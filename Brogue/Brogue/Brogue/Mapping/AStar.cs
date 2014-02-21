@@ -93,7 +93,7 @@ namespace Brogue.Mapping
 
         public static Direction[] getPathBetween(Level level, IntVec from, IntVec to)
         {
-            bool[,] solid = level.getSolid();
+            int[,] solid = level.getIntSolid();
             SortedSet<__AStarNode> nodes = new SortedSet<__AStarNode>( new __AStarNode.__AStarNodeComparer() );
 
             __AStarNode recentNode = new __AStarNode(from);
@@ -107,15 +107,18 @@ namespace Brogue.Mapping
                 if (recentNode != null)
                 {
                     //recentNode.expanded = true;
+                    Direction[] closest = closestDirections(to - recentNode.position);
 
-                    foreach (Direction dir in Direction.Values)
+                    for( int i = 0; i < closest.Length; i++ )//foreach (Direction dir in Direction.Values)
                     {
+                        Direction dir = closest[i];
+
                         IntVec newLocation = recentNode.position + dir;
 
-                        if (!solid[newLocation.X, newLocation.Y])
+                        if (solid[newLocation.X, newLocation.Y] < -(recentNode.actualCost + 10))
                         {
-                            solid[newLocation.X, newLocation.Y] = true;
-                            nodes.Add(new __AStarNode(newLocation, recentNode.actualCost + 10, 10 * calculateHeuristic(newLocation, to), recentNode, dir));
+                            solid[newLocation.X, newLocation.Y] = -(recentNode.actualCost + 10);
+                            nodes.Add(new __AStarNode(newLocation, recentNode.actualCost + 10, 10 * calculateHeuristic(newLocation, to) + i, recentNode, dir));
                         }
                     }
 
@@ -166,7 +169,7 @@ namespace Brogue.Mapping
 
                         if (!solid[newLocation.X, newLocation.Y] && ((actions++) < count))
                         {
-                            solid[newLocation.X, newLocation.Y] = true;
+                            //solid[newLocation.X, newLocation.Y] = true;
                             //if (dir == Direction.LEFT)
                             //    throw new NotImplementedException();
                             nodes.Add(new __AStarNode(newLocation, recentNode.actualCost + 10, 10 * calculateHeuristic(newLocation, to), recentNode, dir));
@@ -184,8 +187,8 @@ namespace Brogue.Mapping
 
         public static int calculateHeuristic( IntVec from, IntVec to )
         {
-            return (int) Math.Round( Math.Sqrt(Math.Pow(to.X - from.X, 2) + Math.Pow(to.Y - from.Y, 2) ));
-            //return Math.Abs(to.X - from.X) + Math.Abs(to.Y - from.Y);
+            //return (int) Math.Round( Math.Sqrt(Math.Pow(to.X - from.X, 2) + Math.Pow(to.Y - from.Y, 2) ));
+            return Math.Abs(to.X - from.X) + Math.Abs(to.Y - from.Y);
         }
 
         /// <summary>

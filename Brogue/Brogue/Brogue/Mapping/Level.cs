@@ -237,6 +237,7 @@ namespace Brogue.Mapping
         }
 
         int actionsToTake = 10;
+        int previousPathDistance = -1;
 
         internal void testUpdate()
         {
@@ -253,8 +254,16 @@ namespace Brogue.Mapping
                     b += bMove;
 
                 path = AStar.getPathBetween(this, a, b);
-                Engine.Engine.Log(path.Length.ToString());
+
+                int movement = Math.Abs(aMove.X) + Math.Abs(aMove.Y) + Math.Abs(bMove.X) + Math.Abs(bMove.Y);
+
+                Engine.Engine.Log(string.Format( "New A* path length: {0}", path.Length.ToString()));
+                if (previousPathDistance != -1 && Math.Abs(previousPathDistance - path.Length) > movement)
+                    Engine.Engine.Log(string.Format("<INCONSISTENT PATHFIND; MOVEMENTDELTA={0},PATHDELTA={1}>", movement, Math.Abs(previousPathDistance - path.Length)));
+
                 moveset = AStar.getPossiblePositionsFrom(this, a, 15);
+
+                previousPathDistance = path.Length;
             }
             
         }
