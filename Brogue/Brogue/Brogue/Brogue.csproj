@@ -101,6 +101,7 @@
     <Compile Include="EnviromentObjects\Interactive\Iinteractable.cs" />
     <Compile Include="EnviromentObjects\Interactive\Swiches.cs" />
     <Compile Include="EnviromentObjects\Interactive\Wall.cs" />
+    <Compile Include="HeroClasses\Equipment.cs" />
     <Compile Include="InventorySystem\Inventory.cs" />
     <Compile Include="InventorySystem\InventorySlot.cs" />
     <Compile Include="Items\Equipment\Accessory\Accessory.cs" />

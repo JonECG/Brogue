@@ -26,7 +26,7 @@ namespace Brogue.HeroClasses
         protected Ability[] abilities;
         static Texture2D tex;
         static Sprite sprite;
-        protected Item[] currentlyEquippedItems;
+        protected Equipment currentlyEquippedItems;
         protected Inventory inventory;
 
         public void move(Direction dir)
@@ -68,9 +68,7 @@ namespace Brogue.HeroClasses
 
         private void resetArmor()
         {
-            for (int i = 0; i < currentlyEquippedItems.Length; i++)
-            {
-            }
+            armorRating = currentlyEquippedItems.getTotalArmorRating();
         }
 
         public override bool TakeTurn(Mapping.Level level)
