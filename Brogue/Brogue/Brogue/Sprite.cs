@@ -17,7 +17,7 @@ namespace Brogue
             {
                 return texture;
             }
-            private set
+            set
             {
                 texture = value;
             }
@@ -30,7 +30,7 @@ namespace Brogue
             {
                 return sourceTile;
             }
-            private set
+            set
             {
                 sourceTile = value;
             }
@@ -43,7 +43,7 @@ namespace Brogue
             {
                 return blend;
             }
-            private set
+            set
             {
                 blend = value;
             }
@@ -56,7 +56,7 @@ namespace Brogue
             {
                 return direction;
             }
-            private set
+            set
             {
                 direction = value;
             }
