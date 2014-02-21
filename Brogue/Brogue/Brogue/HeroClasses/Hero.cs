@@ -25,7 +25,6 @@ namespace Brogue.HeroClasses
         protected int armorRating;
         protected float directionFacing;
         protected Ability[] abilities;
-        static Texture2D tex;
         static Sprite sprite;
         protected Equipment currentlyEquippedItems;
         protected Inventory inventory;

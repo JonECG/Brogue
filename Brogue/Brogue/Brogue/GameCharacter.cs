@@ -33,8 +33,8 @@ namespace Brogue
 
         public static void LoadContent(ContentManager content)
         {
-            GameCharacter.texture = content.Load<Texture2D>("Hero/Hero");
-
+            HeroClasses.Hero.texture = content.Load<Texture2D>("Hero/Hero");
+            HeroClasses.Hero.loadSprite();
             Enemies.Enemy.texture = content.Load<Texture2D>("Enemies/Enemy");
             Enemies.MeleeEnemy.texture = content.Load<Texture2D>("Enemies/Enemy");
             Enemies.RangedEnemy.texture = content.Load<Texture2D>("Enemies/Enemy");
