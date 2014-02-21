@@ -11,6 +11,8 @@ namespace Brogue.Mapping
     {
         public bool isSolid;
         public int solidNeighbors;
+        private const int BITMASK = 0xF;
+
         public static Texture2D tileset;
 
         public static Texture2D floorTileset;
@@ -24,14 +26,17 @@ namespace Brogue.Mapping
 
         public Sprite GetSprite()
         {
+            int index = (isSolid) ? solidNeighbors : (~solidNeighbors)&BITMASK;
+            index = (index % 8) + ((index >= 8) ? 9 : 0);
+
             Sprite result;
             if (isSolid)
             {
-                result = new Sprite(wallTileset, new IntVec(0, 0), Color.White);
+                result = new Sprite(wallTileset, new IntVec(index, 0), Color.White);
             }
             else
             {
-                result = new Sprite(floorTileset, new IntVec(0, 0), Color.Gray);
+                result = new Sprite(floorTileset, new IntVec(index, 0), Color.Gray);
             }
             return result;
         }

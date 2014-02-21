@@ -24,6 +24,8 @@ namespace Brogue.Items
         public string Name { get; protected set; }
         public ITypes ItemType { get; protected set; }
 
+        private static Random rand = new Random();
+
         public abstract Texture2D GetTexture();
 
         public static void LoadContent(ContentManager content)
@@ -74,7 +76,6 @@ namespace Brogue.Items
             int chance = 20;
             int finalChance = 101;
             int rarity = 2;
-            Random rand = new Random();
 
             #region randomItem generator
             findItem = rand.Next(Enum.GetNames(typeof(ITypes)).Length);

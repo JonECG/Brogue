@@ -31,6 +31,7 @@ namespace Brogue.Mapping
             this.Environment = environment;
             this.CharacterEntities = characterEntities;
             this.DroppedItems = new GridBoundList<Item>();
+            calculateTiles();
             needToCache = true;
             cachedSolid = new bool[tiles.GetLength(0), tiles.GetLength(1)];
 
@@ -46,6 +47,22 @@ namespace Brogue.Mapping
                 Engine.Engine.Log(string.Format("Item Generated: {0}", item.Name));
 
                 DroppedItems.Add(item, findRandomOpenPosition());
+            }
+        }
+
+        private void calculateTiles()
+        {
+            for (int x = 0; x < tiles.GetLength(0); x++)
+            {
+                for (int y = 0; y < tiles.GetLength(1); y++)
+                {
+                    int right = checkTileSolid(x + 1, y) ? 1 : 0;
+                    int left = checkTileSolid(x - 1, y) ? 1 : 0;
+                    int up = checkTileSolid(x, y - 1) ? 1 : 0;
+                    int down = checkTileSolid(x, y + 1) ? 1 : 0;
+
+                    tiles[x,y].solidNeighbors = right | (up << 1) | (left << 2) | (down << 3);
+                }
             }
         }
 
@@ -198,31 +215,6 @@ namespace Brogue.Mapping
                 }
             }
 
-            //for (int x = 0; x < tiles.GetLength(0); x++)
-            //{
-            //    for (int y = 0; y < tiles.GetLength(1); y++)
-            //    {
-            //        if (tiles[x, y].isSolid)
-            //        {
-            //            int right = checkTileSolid(x + 1, y) ? 1 : 0;
-            //            int left = checkTileSolid(x - 1, y) ? 1 : 0;
-            //            int up = checkTileSolid(x, y - 1) ? 1 : 0;
-            //            int down = checkTileSolid(x, y + 1) ? 1 : 0;
-
-            //            int index = right | (up << 1) | (left << 2) | (down << 3);
-
-            //            index = (index % 8) + ((index >= 8) ? 9 : 0);
-
-            //            Engine.Engine.Draw(Tile.tileset, new IntVec(x, y), new IntVec(index, 0));
-            //        }
-            //        else
-            //        {
-            //            Engine.Engine.Draw(Tile.tileset, new IntVec(x, y), new IntVec(8, 0), Color.Gray);
-            //        }
-
-            //    }
-            //}
-
             //Environment.Draw();
             DroppedItems.Draw();
             CharacterEntities.Draw();
@@ -284,7 +276,7 @@ namespace Brogue.Mapping
 
         internal void testUpdate()
         {
-            IntVec aMove = new IntVec((KeyboardController.IsPressed('H') ? 1 : 0) - (KeyboardController.IsPressed('F') ? 1 : 0), (KeyboardController.IsPressed('G') ? 1 : 0) - (KeyboardController.IsPressed('T') ? 1 : 0));
+            IntVec aMove = new IntVec((KeyboardController.IsTyped('H',0) ? 1 : 0) - (KeyboardController.IsTyped('F',0) ? 1 : 0), (KeyboardController.IsTyped('G',0) ? 1 : 0) - (KeyboardController.IsTyped('T',0) ? 1 : 0));
             IntVec bMove = new IntVec((KeyboardController.IsPressed('L') ? 1 : 0) - (KeyboardController.IsPressed('J') ? 1 : 0), (KeyboardController.IsPressed('K') ? 1 : 0) - (KeyboardController.IsPressed('I') ? 1 : 0));
             actionsToTake += (KeyboardController.IsDown('2') ? 1 : 0) - (KeyboardController.IsDown('1') ? 1 : 0);
 
@@ -309,6 +301,15 @@ namespace Brogue.Mapping
                 moveset = AStar.getPossiblePositionsFrom(this, a, 15);
 
                 previousPathDistance = path.Length;
+            }
+
+            if (KeyboardController.IsPressed('Z'))
+            {
+                Item item = Item.randomItem(80, 10);
+
+                Engine.Engine.Log(string.Format("Item Generated: {0}", item.Name));
+
+                DroppedItems.Add(item, findRandomOpenPosition());
             }
             
         }
