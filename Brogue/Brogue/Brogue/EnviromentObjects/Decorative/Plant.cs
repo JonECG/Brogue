@@ -21,7 +21,7 @@ namespace Brogue.EnviromentObjects.Decorative
 
         public void LoadContent(ContentManager content)
         {
-            sprite = content.Load<Texture2D>("levelTileset");
+            sprite = content.Load<Texture2D>("Plant.png");
         }
 
         public bool getSolidity()

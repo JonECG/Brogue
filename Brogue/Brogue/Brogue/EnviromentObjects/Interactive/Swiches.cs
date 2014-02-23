@@ -10,7 +10,8 @@ namespace Brogue.EnviromentObjects.Interactive
 {
     public class Swiches : IEnvironmentObject, Iinteractable
     {
-        static Texture2D sprite { get; set; }
+        static Texture2D spriteOne { get; set; }
+        static Texture2D spriteTwo { get; set; }
         
         public bool active { get; set; }
         public bool isSolid { get; set; }
@@ -44,7 +45,8 @@ namespace Brogue.EnviromentObjects.Interactive
 
         public void LoadContent(ContentManager content)
         {
-            sprite = content.Load<Texture2D>("levelTileset");
+            spriteOne = content.Load<Texture2D>("SwichUP.png");
+            spriteTwo = content.Load<Texture2D>("SwichDown.png");
         }
         
         public void actOn()
@@ -59,7 +61,16 @@ namespace Brogue.EnviromentObjects.Interactive
 
         public Sprite GetSprite()
         {
-            return new Sprite(sprite);
+            Sprite currentImage = new Sprite();
+            if (active) 
+            {
+                currentImage = new Sprite(spriteOne);
+            }
+            else if (!active)
+            {
+                currentImage = new Sprite(spriteTwo);
+            }
+            return currentImage;
         }
     }
 

@@ -23,7 +23,7 @@ namespace Brogue.EnviromentObjects.Interactive
 
         public void LoadContent(ContentManager content)
         {
-            sprite = content.Load<Texture2D>("levelTileset");
+            sprite = content.Load<Texture2D>("Stairs.png");
         }
 
         public bool IsSolid()
