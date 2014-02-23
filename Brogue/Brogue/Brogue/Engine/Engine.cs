@@ -43,7 +43,7 @@ namespace Brogue.Engine
     class Engine
     {
         public const bool DOLIGHTING = true;
-        public const bool DOAUDIO = true;
+        public const bool DOAUDIO = false;
         public const float sightDistance = 1;
         public static int CELLWIDTH = 48;
         private static int logSize = 10;
@@ -148,7 +148,7 @@ namespace Brogue.Engine
 
         public static void GenerateLevel()
         {
-            currentLevel = LevelGenerator.generate(1337, 2000);
+            currentLevel = LevelGenerator.generate(1337, 500);
             Log("Level generated.");
             hero = new HeroClasses.Mage();
             currentLevel.CharacterEntities.Add(hero, currentLevel.findRandomOpenPosition());
@@ -355,7 +355,12 @@ namespace Brogue.Engine
                 game.spriteBatch.Draw(sightMask, new Vector2((test.X), (test.Y)), new Rectangle(0, 0, sightMask.Width, sightMask.Height), Color.White, 0, new Vector2(sightMask.Width / 2, sightMask.Height / 2), sightDistance, SpriteEffects.None, 0);
 
                 Vector3 test2 = Vector3.Transform(new Vector3(50 * CELLWIDTH, 50 * CELLWIDTH, 0), transform);
-                game.spriteBatch.Draw(lightMask, new Vector2((test2.X), (test2.Y)), new Rectangle(0, 0, lightMask.Width, lightMask.Height), Color.White, 0, new Vector2(lightMask.Width / 2, lightMask.Height / 2), 1.5f + flicker, SpriteEffects.None, 0);
+                foreach (ILightSource l in currentLevel.LightSources.Entities())
+                {
+                    IntVec gridpos = currentLevel.LightSources.FindPosition(l);
+                    Vector3 screenPosition = Vector3.Transform(new Vector3(gridpos.X * CELLWIDTH, gridpos.Y * CELLWIDTH, 0), transform);
+                    game.spriteBatch.Draw(lightMask, new Vector2(screenPosition.X, screenPosition.Y), new Rectangle(0, 0, lightMask.Width, lightMask.Height), l.GetLightColor(), 0, new Vector2(lightMask.Width / 2, lightMask.Height / 2), l.GetLightIntensity() + l.GetCurrentFlicker(), SpriteEffects.None, 0);
+                }
 
                 game.spriteBatch.End();
             }

@@ -255,8 +255,8 @@ namespace Brogue.Mapping
         {
             foreach (var position in room.GetWalls())
             {
-                if ( rand.NextDouble() > 0.97 )
-                    lights.Add(new ColorEnvironment(Color.HotPink, false),position);
+                if ( rand.NextDouble() > 0.98 )
+                    lights.Add(new ColorEnvironment(new Color(255, 255, 220), false),position);
             }
             switch (room.type)
             {
