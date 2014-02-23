@@ -10,12 +10,14 @@ namespace Brogue
 {
     public struct Sprite
     {
+        private static Texture2D nullTexture;
+
         private Texture2D texture;
         public Texture2D Texture
         {
             get
             {
-                return texture;
+                return texture ?? nullTexture;
             }
             set
             {
@@ -125,6 +127,11 @@ namespace Brogue
             this.sourceTile = sourceTile;
             this.blend = color;
             this.direction = direction;
+        }
+
+        internal static void LoadContent(Microsoft.Xna.Framework.Content.ContentManager content)
+        {
+            nullTexture = content.Load<Texture2D>("null");
         }
     }
 }

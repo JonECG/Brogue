@@ -1,4 +1,5 @@
 ﻿using Brogue.Engine;
+using Brogue.EnviromentObjects.Interactive;
 using Brogue.Items;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -16,7 +17,11 @@ namespace Brogue.Mapping
         Tile[,] tiles;
         public GridBoundList<IEnvironmentObject> Environment { get; private set; }
         //List<Tuple<IEnvironmentObject, IntVec>> environment;
+
+        public GridBoundList<Iinteractable> InteractableEnvironment { get; private set; }
         //public GridBoundList<IRenderableIEnvironmentObject> DroppedItems { get; private set; }
+
+        public GridBoundList<ILightSource> LightSources { get; private set; }
 
         public GridBoundList<Item> DroppedItems { get; private set; }
         //List<Item> droppedItems;
@@ -27,11 +32,13 @@ namespace Brogue.Mapping
 
         static Random statRand = new Random();
 
-        public Level(Tile[,] tiles, GridBoundList<IEnvironmentObject> environment, GridBoundList<GameCharacter> characterEntities)
+        public Level(Tile[,] tiles, GridBoundList<IEnvironmentObject> environment, GridBoundList<Iinteractable> interact, GridBoundList<ILightSource> light, GridBoundList<GameCharacter> characterEntities)
         {
             this.tiles = tiles;
             this.Environment = environment;
+            this.InteractableEnvironment = interact;
             this.CharacterEntities = characterEntities;
+            this.LightSources = light;
             this.DroppedItems = new GridBoundList<Item>();
             calculateTiles();
             needToCache = true;
@@ -176,6 +183,16 @@ namespace Brogue.Mapping
                 {
                     cachedSolid[enviro.Item2.X, enviro.Item2.Y] = enviro.Item1.IsSolid();
                 }
+
+                foreach (Tuple<Iinteractable, IntVec> enviro in InteractableEnvironment.Tuples())
+                {
+                    cachedSolid[enviro.Item2.X, enviro.Item2.Y] = enviro.Item1.IsSolid();
+                }
+
+                foreach (Tuple<ILightSource, IntVec> enviro in LightSources.Tuples())
+                {
+                    //cachedSolid[enviro.Item2.X, enviro.Item2.Y] = true;
+                }
                 needToCache = false;
             }
         }
@@ -229,7 +246,8 @@ namespace Brogue.Mapping
             }
 
             Environment.Draw();
-            //LightSources.Draw();
+            InteractableEnvironment.Draw();
+            LightSources.Draw();
             DroppedItems.Draw();
             CharacterEntities.Draw();
 

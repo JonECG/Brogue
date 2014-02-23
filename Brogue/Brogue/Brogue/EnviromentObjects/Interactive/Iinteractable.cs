@@ -6,7 +6,7 @@ using Brogue.Mapping;
 
 namespace Brogue.EnviromentObjects.Interactive
 {
-    public interface Iinteractable
+    public interface Iinteractable : IEnvironmentObject
     {
        void actOn();
     }

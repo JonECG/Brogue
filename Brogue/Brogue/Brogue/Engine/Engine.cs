@@ -114,7 +114,8 @@ namespace Brogue.Engine
             lightMask = content.Load<Texture2D>("lightmask");
             sightMask = content.Load<Texture2D>("lightmask");
 
-            placeHolder = content.Load<Texture2D>("levelTileset");
+            placeHolder = content.Load<Texture2D>("placeholder");
+            Sprite.LoadContent(content);
 
             Level.LoadContent(content);
             HeroClasses.Hero.LoadContent(content);

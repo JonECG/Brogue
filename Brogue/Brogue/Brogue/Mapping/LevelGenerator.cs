@@ -9,6 +9,7 @@ namespace Brogue.Mapping
 {
     static class LevelGenerator
     {
+        #region FLOOR PLAN AND ROOM
         private class __FloorPlan
         {
             public struct __Room
@@ -16,6 +17,8 @@ namespace Brogue.Mapping
                 public enum __RoomType { NOTHING_SPECIAL, DOORWAY, HALLWAY, TREASURE_ROOM, FOYER };
 
                 public __RoomType type;
+
+                bool[,] floorPlan;
 
                 public Rectangle dimensions;
 
@@ -25,6 +28,7 @@ namespace Brogue.Mapping
 
                     type = __RoomType.NOTHING_SPECIAL;
 
+                    this.floorPlan = floorPlan;
 
                     if (dimensions.Width > 5 && dimensions.Height > 5 )
                         type = __RoomType.FOYER;
@@ -38,6 +42,42 @@ namespace Brogue.Mapping
                     if (dimensions.Width == 1 && dimensions.Height == 1
                         && !((floorPlan[dimensions.X + 1, dimensions.Y] ^ floorPlan[dimensions.X - 1, dimensions.Y]) || (floorPlan[dimensions.X, dimensions.Y - 1] ^ floorPlan[dimensions.X, dimensions.Y + 1])))
                         type = __RoomType.DOORWAY;
+                }
+
+                public IEnumerable<IntVec> GetCells()
+                {
+                    for (int i = 0; i < dimensions.Width; i++)
+                    {
+                        for (int j = 0; j < dimensions.Height; j++)
+                        {
+                            yield return new IntVec(dimensions.X + i, dimensions.Y + j);
+                        }
+                    }
+                }
+
+                public IEnumerable<IntVec> GetWalls()
+                {
+                    for (int i = 0; i < dimensions.Height; i++)
+                    {
+                        yield return new IntVec(dimensions.X, dimensions.Y + i);
+                    }
+
+                    for (int i = 0; i < dimensions.Width; i++)
+                    {
+                        yield return new IntVec(dimensions.X + i, dimensions.Y );
+                    }
+
+                    if (dimensions.Width > 1)
+                    for (int i = 0; i < dimensions.Height; i++)
+                    {
+                        yield return new IntVec(dimensions.X + dimensions.Width - 1, dimensions.Y + i);
+                    }
+
+                    if (dimensions.Height != 1)
+                    for (int i = 0; i < dimensions.Width; i++)
+                    {
+                        yield return new IntVec(dimensions.X + i, dimensions.Y + dimensions.Height - 1);
+                    }
                 }
                 
             }
@@ -157,16 +197,28 @@ namespace Brogue.Mapping
                 return new Rectangle(x, y, width, height);
             }
         }
+        #endregion
+
         public static Level generate(int seed, int levels)
         {
             Random rand = new Random(seed);
 
-            __FloorPlan floorPlan = new __FloorPlan( createFloorPlan(rand, levels) );
+            __FloorPlan floorPlan = createFloorPlan(rand, levels);
 
-            GridBoundList<IEnvironmentObject> environment = populateEnvironmentObjects(floorPlan, rand);
-            GridBoundList<GameCharacter> characters = populateGameCharacters(floorPlan, rand);
+            GridBoundList<IEnvironmentObject> environment = new GridBoundList<IEnvironmentObject>();
+            GridBoundList<Iinteractable> interactableEnvironment = new GridBoundList<Iinteractable>();
+            GridBoundList<ILightSource> lightSources = new GridBoundList<ILightSource>();
+            GridBoundList<GameCharacter> characters = new GridBoundList<GameCharacter>();
 
-            Level result = new Level(floorPlan.tiles, environment, characters);
+            foreach (var room in floorPlan.rooms)
+            {
+                populateEnvironmentObjects(room, environment, rand);
+                populateInteractiveEnvironmentObjects(room, interactableEnvironment, rand);
+                populateLightSources(room, lightSources, rand);
+                populateGameCharacters(room, characters, rand);
+            }
+
+            Level result = new Level(floorPlan.tiles, environment, interactableEnvironment, lightSources, characters);
 
             if (!result.isComplete())
             {
@@ -179,38 +231,47 @@ namespace Brogue.Mapping
 
 
 
-        private static GridBoundList<IEnvironmentObject> populateEnvironmentObjects(__FloorPlan floorPlans, Random rand)
+        private static void populateEnvironmentObjects(__FloorPlan.__Room room, GridBoundList<IEnvironmentObject> environ, Random rand)
         {
-            GridBoundList<IEnvironmentObject> environ = new GridBoundList<IEnvironmentObject>();
-
-            foreach (var room in floorPlans.rooms)
+            switch (room.type)
             {
-                if (room.type == __FloorPlan.__Room.__RoomType.DOORWAY)
-                {
-                    //Cell
-                    environ.Add(new ColorEnvironment(Color.Magenta, true), new IntVec(room.dimensions.X, room.dimensions.Y));
-                }
-                //Color color = new Color((float)(rand.NextDouble() / 2 + .5), (float)(rand.NextDouble() / 2 + .5), (float)(rand.NextDouble() / 2 + .5));
-                //for (int x = 0; x < room.Width; x++)
-                //{
-                //    for (int y = 0; y < room.Height; y++)
-                //    {
-                //        environ.Add( new ColorEnvironment( color ) , new IntVec(room.X + x, room.Y + y) );
-                //    }
-                //}
+                //case __FloorPlan.__Room.__RoomType.DOORWAY:
+                //    environ.Add(new ColorEnvironment(Color.Magenta, true), new IntVec(room.dimensions.X, room.dimensions.Y));
+                //    break;
             }
-            //makeDecorations(eviron, rooms, rand);
-
-            return environ;
         }
 
-        private static GridBoundList<GameCharacter> populateGameCharacters(__FloorPlan floorPlans, Random rand)
+        private static void populateInteractiveEnvironmentObjects(__FloorPlan.__Room room, GridBoundList<Iinteractable> interact, Random rand)
         {
-            //throw new NotImplementedException();
-            return new GridBoundList<GameCharacter>();
+            switch (room.type)
+            {
+                case __FloorPlan.__Room.__RoomType.DOORWAY:
+                    interact.Add(new Door(), new IntVec(room.dimensions.X, room.dimensions.Y));
+                    break;
+            }
         }
 
-        private static bool[,] createFloorPlan(Random rand, int levels)
+        private static void populateLightSources(__FloorPlan.__Room room, GridBoundList<ILightSource> lights, Random rand)
+        {
+            foreach (var position in room.GetWalls())
+            {
+                if ( rand.NextDouble() > 0.97 )
+                    lights.Add(new ColorEnvironment(Color.HotPink, false),position);
+            }
+            switch (room.type)
+            {
+            }
+        }
+
+        private static void populateGameCharacters(__FloorPlan.__Room room, GridBoundList<GameCharacter> chars, Random rand)
+        {
+            switch (room.type)
+            {
+            }
+        }
+
+        #region FLOOR PLAN CREATION
+        private static __FloorPlan createFloorPlan(Random rand, int levels)
         {
             const int PADDING = 4;
 
@@ -254,7 +315,7 @@ namespace Brogue.Mapping
             bool[,] cropped = arrayCrop(playGround, left - 1, bottom - 1, right + 1, top + 1);
             //widenFloorPlan(cropped);
 
-            return cropped;
+            return new __FloorPlan( cropped );
         }
 
         private static void createWalls(bool[,] playGround, int roomWidth, int roomHeight, int targetX, int targetY, int anchorX, int anchorY, Random rand)
@@ -403,5 +464,7 @@ namespace Brogue.Mapping
 
             return result;
         }
+
+        #endregion
     }
 }
