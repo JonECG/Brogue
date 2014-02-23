@@ -13,6 +13,8 @@ namespace Brogue.Engine
 {
     class Engine
     {
+        public const bool DOLIGHTING = false;
+        public const float sightDistance = 1;
         public static int CELLWIDTH = 48;
         private static int logSize = 10;
         private static Game1 game;
@@ -21,6 +23,12 @@ namespace Brogue.Engine
         private static Vector2 LogPosition;
         private static HeroClasses.Hero hero;
         private static bool heroesTurn = true;
+        private static RenderTarget2D lightsTarget;
+        private static RenderTarget2D mainTarget;
+        private static Random flickerrand = new Random();
+
+        private static Texture2D lightMask;
+        private static Texture2D sightMask;
 
         static Texture2D jar, bar, healthcontainer, healthbar, xpbar, inventory;
         static SpriteFont font;
@@ -53,11 +61,17 @@ namespace Brogue.Engine
             inventory = content.Load<Texture2D>("UI/Inventory");
             font = content.Load<SpriteFont>("UI/Font");
 
+            lightMask = content.Load<Texture2D>("lightmask");
+            sightMask = content.Load<Texture2D>("lightmask");
+
             placeHolder = content.Load<Texture2D>("levelTileset");
 
             Level.LoadContent(content);
             HeroClasses.Hero.LoadContent(content);
             Items.Item.LoadContent(content);
+
+            lightsTarget = new RenderTarget2D(game.GraphicsDevice, game.Width, game.Height);
+            mainTarget = new RenderTarget2D(game.GraphicsDevice, game.Width, game.Height);
 
         }
         public static void Log(string input)
@@ -115,7 +129,6 @@ namespace Brogue.Engine
             uisb.Draw(bar, new Vector2(game.Width - 50 - jar.Width, game.Height / 2 - bar.Height / 2), Color.White);
             DrawLog(uisb);
         }
-        static int inctest = 0;
         public static void Update(GameTime gameTime)
         {
             GameCommands();
@@ -162,9 +175,80 @@ namespace Brogue.Engine
             }
         }
 
+        static int flickerdelay = 0;
+        static float flicker = 0;
+
         public static void DrawGame(GameTime gameTime)
         {
+            Matrix transform = Matrix.CreateTranslation(-cameraPosition.X * CELLWIDTH + game.Width / 2, -cameraPosition.Y * CELLWIDTH + game.Height / 2, 1.0f)
+                    * Matrix.CreateScale(1.0f, 1.0f, 1);
+            
+
+            //Draw lighting.
+            DrawLighting(transform);
+            
+            //Draw level.
+            game.GraphicsDevice.SetRenderTarget(mainTarget);
+            game.GraphicsDevice.Clear(Color.CornflowerBlue);
+            game.spriteBatch.Begin(SpriteSortMode.Deferred,
+                        BlendState.AlphaBlend,
+                        null,
+                        null,
+                        null,
+                        null,
+                        transform);
             currentLevel.render();
+            game.spriteBatch.End();
+
+            //Draw both to screen.
+            game.GraphicsDevice.SetRenderTarget(null);
+            game.GraphicsDevice.Clear(Color.CornflowerBlue);
+            game.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+            game.effect.Parameters["lightMask"].SetValue(lightsTarget);
+            game.effect.CurrentTechnique.Passes[0].Apply();
+            
+            game.spriteBatch.Draw(mainTarget, Vector2.Zero, Color.White);
+            game.spriteBatch.End();  
+
+
+        }
+
+        private static void DrawLighting(Matrix transform)
+        {
+            if (DOLIGHTING)
+            {
+                game.spriteBatch.Begin(SpriteSortMode.Deferred,
+                        BlendState.Additive);
+                game.GraphicsDevice.SetRenderTarget(lightsTarget);
+                game.GraphicsDevice.Clear(Color.Black);
+
+
+                IntVec charpos = currentLevel.CharacterEntities.FindPosition(hero);
+                Vector3 test = Vector3.Transform(new Vector3(charpos.X * CELLWIDTH, charpos.Y * CELLWIDTH, 0), transform);
+                if (flickerdelay == 0)
+                {
+                    flicker = (float)flickerrand.NextDouble() / 8;
+                    flickerdelay = flickerrand.Next(5);
+                }
+                else
+                {
+                    flickerdelay--;
+                }
+                game.spriteBatch.Draw(sightMask, new Vector2((test.X), (test.Y)), new Rectangle(0, 0, sightMask.Width, sightMask.Height), Color.White, 0, new Vector2(sightMask.Width / 2, sightMask.Height / 2), sightDistance, SpriteEffects.None, 0);
+
+                Vector3 test2 = Vector3.Transform(new Vector3(50 * CELLWIDTH, 50 * CELLWIDTH, 0), transform);
+                game.spriteBatch.Draw(lightMask, new Vector2((test2.X), (test2.Y)), new Rectangle(0, 0, lightMask.Width, lightMask.Height), Color.White, 0, new Vector2(lightMask.Width / 2, lightMask.Height / 2), 1.5f + flicker, SpriteEffects.None, 0);
+
+                game.spriteBatch.End();
+            }
+            else
+            {
+                game.spriteBatch.Begin(SpriteSortMode.Deferred,
+                        BlendState.Additive);
+                game.GraphicsDevice.SetRenderTarget(lightsTarget);
+                game.GraphicsDevice.Clear(Color.White);
+                game.spriteBatch.End();
+            }
         }
     }
 }
