@@ -1,5 +1,6 @@
 ﻿using Brogue.Mapping;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -14,6 +15,7 @@ namespace Brogue.Engine
     class Engine
     {
         public const bool DOLIGHTING = true;
+        public const bool DOAUDIO = true;
         public const float sightDistance = 1;
         public static int CELLWIDTH = 48;
         private static int logSize = 10;
@@ -36,6 +38,10 @@ namespace Brogue.Engine
         public static Texture2D placeHolder;
 
         static Level currentLevel;
+
+
+        private static SoundEffect soundEngine;
+        private static SoundEffectInstance soundEngineInstance;
 
         public static void Start(Game1 injectedGame)
         {
@@ -73,6 +79,14 @@ namespace Brogue.Engine
             lightsTarget = new RenderTarget2D(game.GraphicsDevice, game.Width, game.Height);
             mainTarget = new RenderTarget2D(game.GraphicsDevice, game.Width, game.Height);
 
+            if (DOAUDIO)
+            {
+                soundEngine = content.Load<SoundEffect>("Audio/The Descent");
+                soundEngineInstance = soundEngine.CreateInstance();
+                soundEngineInstance.Volume = .75f;
+                soundEngineInstance.IsLooped = true;
+                soundEngineInstance.Play();
+            }
         }
         public static void Log(string input)
         {
