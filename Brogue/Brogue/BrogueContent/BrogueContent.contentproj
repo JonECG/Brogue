@@ -139,10 +139,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Audio\The Descent.wav">
+    <Compile Include="Audio\The Descent.mp3">
       <Name>The Descent</Name>
-      <Importer>WavImporter</Importer>
-      <Processor>SoundEffectProcessor</Processor>
+      <Importer>Mp3Importer</Importer>
+      <Processor>SongProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

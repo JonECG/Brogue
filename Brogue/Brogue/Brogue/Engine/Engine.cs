@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,8 +41,7 @@ namespace Brogue.Engine
         static Level currentLevel;
 
 
-        private static SoundEffect soundEngine;
-        private static SoundEffectInstance soundEngineInstance;
+        private static Song backgroundSong;
 
         public static void Start(Game1 injectedGame)
         {
@@ -81,11 +81,9 @@ namespace Brogue.Engine
 
             if (DOAUDIO)
             {
-                soundEngine = content.Load<SoundEffect>("Audio/The Descent");
-                soundEngineInstance = soundEngine.CreateInstance();
-                soundEngineInstance.Volume = .75f;
-                soundEngineInstance.IsLooped = true;
-                soundEngineInstance.Play();
+                backgroundSong = content.Load<Song>("Audio/The Descent");
+                MediaPlayer.Play(backgroundSong);
+                MediaPlayer.IsRepeating = true;
             }
         }
         public static void Log(string input)
