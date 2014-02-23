@@ -8,9 +8,8 @@ namespace Brogue
 {
     public interface ILightSource : IRenderable
     {
-        float Intensity { get; set; }
-        int MyProperty { get; set; }
-        Color Color { get; set; }
-        int FlickerWait { get; set; }
+        float GetLightIntensity();
+        Color GetLightColor();
+        int GetLightFlickerWait();
     }
 }
