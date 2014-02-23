@@ -23,6 +23,8 @@ namespace Brogue.HeroClasses
         public static int level {get;  set;}
         protected int numAbilities = 0;
         protected int armorRating;
+        protected int experience = 0;
+        protected int expRequired = 300;
         protected float directionFacing;
         protected Ability[] abilities;
         static Sprite sprite;
@@ -68,6 +70,16 @@ namespace Brogue.HeroClasses
         public static void loadSprite()
         {
             sprite = new Sprite(texture);
+        }
+
+        public void AddExperience(int xp)
+        {
+            experience += xp;
+        }
+        public float GetXpPercent()
+        {
+            float percentage = (float)experience / (float)expRequired;
+            return percentage;
         }
 
         private void resetArmor()

@@ -13,6 +13,33 @@ using System.Text;
 
 namespace Brogue.Engine
 {
+    class XPParticle
+    {
+        public Vector2 screenPosition;
+        float speed;
+        Vector2 direction;
+        float distance;
+        public XPParticle(Vector2 screenPosition, float speed)
+        {
+            this.screenPosition = screenPosition;
+            this.speed = speed;
+            this.direction = new Vector2(Engine.xpBarPosition.X, Engine.xpBarPosition.Y + Engine.enginerand.Next(175)) - screenPosition;
+            distance = direction.Length();
+            this.direction.Normalize();
+        }
+        public bool update()
+        {
+            screenPosition += direction * speed;
+            bool finished = false;
+            distance -= speed;
+            if (distance < 5)
+            {
+                finished = true;
+            }
+            return finished;
+        }
+    }
+
     class Engine
     {
         public const bool DOLIGHTING = true;
@@ -22,18 +49,20 @@ namespace Brogue.Engine
         private static int logSize = 10;
         private static Game1 game;
         public static IntVec cameraPosition = new IntVec(12, 8);
-        private static IntVec torchSoundTest;
-
         private static Queue<String> log = new Queue<string>(10);
         private static Vector2 LogPosition;
         private static HeroClasses.Hero hero;
         private static bool heroesTurn = true;
         private static RenderTarget2D lightsTarget;
         private static RenderTarget2D mainTarget;
-        private static Random flickerrand = new Random();
+        public static Random enginerand = new Random();
+        private static List<XPParticle> xpList = new List<XPParticle>();
+        private static Matrix worldToView;
+        public static Vector2 xpBarPosition;
 
         private static Texture2D lightMask;
         private static Texture2D sightMask;
+        private static Texture2D particleTex;
 
         static Texture2D jar, bar, healthcontainer, healthbar, xpbar, inventory;
         static SpriteFont font;
@@ -42,10 +71,20 @@ namespace Brogue.Engine
 
         static Level currentLevel;
 
+
         private static Song backgroundSong;
 
-        private static SoundEffect torchBurning;
-        private static SoundEffectInstance torchBurningInstance;
+        public static void AddXP(int xp, IntVec gameGrid)
+        {
+            IntVec worldPosition = gameGrid * CELLWIDTH;
+            Vector2 worldVector = Vector2.Transform(new Vector2(worldPosition.X, worldPosition.Y), worldToView);
+
+            for (int i = 0; i < xp; i++)
+            {
+                XPParticle newxp = new XPParticle(new Vector2(worldVector.X + enginerand.Next(CELLWIDTH) - CELLWIDTH/2, worldVector.Y + enginerand.Next(CELLWIDTH) - CELLWIDTH/2), enginerand.Next(10) + 5);
+                xpList.Add(newxp);
+            }
+        }
 
         public static void Start(Game1 injectedGame)
         {
@@ -53,13 +92,7 @@ namespace Brogue.Engine
             CharacterCreation();
             GenerateLevel();
             LogPosition = new Vector2(12, 12);
-            torchSoundTest = new IntVec(currentLevel.CharacterEntities.FindPosition(hero).X,currentLevel.CharacterEntities.FindPosition(hero).Y);
             StartGame();
-        }
-
-        private static double intVecDistance(IntVec x, IntVec y)
-        {
-            return Math.Sqrt((double)Math.Pow(x.X-y.X, 2) + (double)Math.Pow(x.Y-y.Y,2));
         }
 
         public static void End()
@@ -76,6 +109,7 @@ namespace Brogue.Engine
             xpbar = content.Load<Texture2D>("UI/XPBar");
             inventory = content.Load<Texture2D>("UI/Inventory");
             font = content.Load<SpriteFont>("UI/Font");
+            particleTex = content.Load<Texture2D>("UI/exp");
 
             lightMask = content.Load<Texture2D>("lightmask");
             sightMask = content.Load<Texture2D>("lightmask");
@@ -88,19 +122,15 @@ namespace Brogue.Engine
 
             lightsTarget = new RenderTarget2D(game.GraphicsDevice, game.Width, game.Height);
             mainTarget = new RenderTarget2D(game.GraphicsDevice, game.Width, game.Height);
-
+            xpBarPosition = new Vector2(80, game.Height / 2 - healthbar.Height / 2);
             if (DOAUDIO)
             {
                 backgroundSong = content.Load<Song>("Audio/The Descent");
-                MediaPlayer.Volume = .5f;
                 MediaPlayer.Play(backgroundSong);
                 MediaPlayer.IsRepeating = true;
-
-                torchBurning = content.Load<SoundEffect>("Audio/fire");
-                torchBurningInstance = torchBurning.CreateInstance();
-                torchBurningInstance.IsLooped = true;
             }
         }
+
         public static void Log(string input)
         {
             log.Enqueue(input);
@@ -109,9 +139,10 @@ namespace Brogue.Engine
                 log.Dequeue();
             }
         }
+
         public static void CharacterCreation()
         {
-
+             
         }
 
         public static void GenerateLevel()
@@ -147,22 +178,31 @@ namespace Brogue.Engine
 
         public static void DrawUI(SpriteBatch uisb)
         {
+            foreach (XPParticle xp in xpList)
+            {
+                uisb.Draw(particleTex, xp.screenPosition, Color.White);
+            }
             uisb.Draw(healthcontainer, new Vector2(50, game.Height / 2 - healthcontainer.Height / 2), Color.White);
-            uisb.Draw(healthcontainer, new Vector2(80, game.Height / 2 - healthcontainer.Height / 2), Color.White);
-            uisb.Draw(healthbar, new Vector2(50, game.Height / 2 - healthbar.Height / 2), Color.White);
-            uisb.Draw(xpbar, new Vector2(80, game.Height / 2 - healthbar.Height / 2), Color.White);
+            uisb.Draw(healthcontainer, xpBarPosition, Color.White);
+            uisb.Draw(healthbar, new Vector2(50, game.Height / 2 - healthcontainer.Height / 2), Color.White);
+            uisb.Draw(xpbar, new Vector2(xpBarPosition.X + xpbar.Width / 2,xpBarPosition.Y + xpbar.Height / 2) , new Rectangle(0, 0, xpbar.Width, xpbar.Height), Color.White, 0, new Vector2(xpbar.Width / 2, xpbar.Height / 2), new Vector2(1, hero.GetXpPercent()), SpriteEffects.None, 0);
+            //uisb.Draw(xpbar, xpBarPosition, Color.White);
             uisb.Draw(inventory, new Vector2(game.Width / 2 - inventory.Width / 2, game.Height - 100), Color.White);
             uisb.Draw(jar, new Vector2(game.Width - 50 - jar.Width, game.Height / 2 - jar.Height / 2), Color.White);
             uisb.Draw(bar, new Vector2(game.Width - 50 - jar.Width, game.Height / 2 - bar.Height / 2), Color.White);
             DrawLog(uisb);
         }
+
         public static void Update(GameTime gameTime)
         {
-            double heroLightDistance = Math.Pow(intVecDistance(currentLevel.CharacterEntities.FindPosition(hero), torchSoundTest)+2, -1.1)/2;
-            torchBurningInstance.Volume = (float)heroLightDistance;
-            torchBurningInstance.Play();
-
-
+            for (int i = 0; i < xpList.Count; i++)
+            {
+                if (xpList[i].update())
+                {
+                    xpList.RemoveAt(i);
+                    hero.AddExperience(1);
+                }
+            }
             GameCommands();
             currentLevel.testUpdate();
             //Game turns
@@ -177,7 +217,6 @@ namespace Brogue.Engine
                 //When all NPCs have taken their turn...
                 heroesTurn = true;
             }
-
         }
 
         private static void GameCommands()
@@ -210,26 +249,31 @@ namespace Brogue.Engine
 
         static int flickerdelay = 0;
         static float flicker = 0;
-
+        static bool temp = false;
         public static void DrawGame(GameTime gameTime)
         {
-            Matrix transform = Matrix.CreateTranslation(-cameraPosition.X * CELLWIDTH + game.Width / 2, -cameraPosition.Y * CELLWIDTH + game.Height / 2, 1.0f)
+            worldToView = Matrix.CreateTranslation(-cameraPosition.X * CELLWIDTH + game.Width / 2, -cameraPosition.Y * CELLWIDTH + game.Height / 2, 1.0f)
                     * Matrix.CreateScale(1.0f, 1.0f, 1);
+            if (!temp)
+            {
+                AddXP(100, currentLevel.CharacterEntities.FindPosition(hero));
+                temp = true;
+            }
             
 
             //Draw lighting.
-            DrawLighting(transform);
+            DrawLighting(worldToView); 
             
             //Draw level.
             game.GraphicsDevice.SetRenderTarget(mainTarget);
-            game.GraphicsDevice.Clear(Color.CornflowerBlue);
+            game.GraphicsDevice.Clear(Color.Black);
             game.spriteBatch.Begin(SpriteSortMode.Deferred,
                         BlendState.AlphaBlend,
                         null,
                         null,
                         null,
                         null,
-                        transform);
+                        worldToView);
             currentLevel.render();
             game.spriteBatch.End();
 
@@ -260,8 +304,8 @@ namespace Brogue.Engine
                 Vector3 test = Vector3.Transform(new Vector3(charpos.X * CELLWIDTH, charpos.Y * CELLWIDTH, 0), transform);
                 if (flickerdelay == 0)
                 {
-                    flicker = (float)flickerrand.NextDouble() / 8;
-                    flickerdelay = flickerrand.Next(5);
+                    flicker = (float)enginerand.NextDouble() / 8;
+                    flickerdelay = enginerand.Next(5);
                 }
                 else
                 {
