@@ -59,6 +59,9 @@ namespace Brogue.Engine
         private static List<XPParticle> xpList = new List<XPParticle>();
         private static Matrix worldToView;
         public static Vector2 xpBarPosition;
+        public static IntVec windowSizeInTiles;
+        public static int lightMaskWidthInTilesDividedByTwo;
+        private static IntVec modifiedCameraPosition = new IntVec(0, 0);
 
         private static Texture2D lightMask;
         private static Texture2D sightMask;
@@ -92,6 +95,7 @@ namespace Brogue.Engine
             CharacterCreation();
             GenerateLevel();
             LogPosition = new Vector2(12, 12);
+            windowSizeInTiles = new IntVec(game.Width / CELLWIDTH, game.Height / CELLWIDTH);
             StartGame();
         }
 
@@ -113,7 +117,7 @@ namespace Brogue.Engine
 
             lightMask = content.Load<Texture2D>("lightmask");
             sightMask = content.Load<Texture2D>("lightmask");
-
+            lightMaskWidthInTilesDividedByTwo = lightMask.Width / (2 * CELLWIDTH);
             placeHolder = content.Load<Texture2D>("placeholder");
             Sprite.LoadContent(content);
 
@@ -148,7 +152,7 @@ namespace Brogue.Engine
 
         public static void GenerateLevel()
         {
-            currentLevel = LevelGenerator.generate(1337, 500);
+            currentLevel = LevelGenerator.generate(1337, 2000);
             Log("Level generated.");
             hero = new HeroClasses.Mage();
             currentLevel.CharacterEntities.Add(hero, currentLevel.findRandomOpenPosition());
@@ -174,7 +178,10 @@ namespace Brogue.Engine
 
         public static void Draw(Sprite sprite, IntVec destination)
         {
-            game.spriteBatch.Draw(sprite.Texture, new Rectangle(destination.X * CELLWIDTH, destination.Y * CELLWIDTH, CELLWIDTH, CELLWIDTH), new Rectangle(sprite.SourceTile.X * CELLWIDTH, sprite.SourceTile.Y * CELLWIDTH, CELLWIDTH, CELLWIDTH), sprite.Blend, sprite.Direction, new Vector2(CELLWIDTH / 2, CELLWIDTH / 2), SpriteEffects.None, 0);
+            if (IsTileInView(destination))
+            {
+                game.spriteBatch.Draw(sprite.Texture, new Rectangle(destination.X * CELLWIDTH, destination.Y * CELLWIDTH, CELLWIDTH, CELLWIDTH), new Rectangle(sprite.SourceTile.X * CELLWIDTH, sprite.SourceTile.Y * CELLWIDTH, CELLWIDTH, CELLWIDTH), sprite.Blend, sprite.Direction, new Vector2(CELLWIDTH / 2, CELLWIDTH / 2), SpriteEffects.None, 0);
+            }
         }
 
         public static void DrawUI(SpriteBatch uisb)
@@ -249,6 +256,8 @@ namespace Brogue.Engine
             {
                 heroesTurn = !hero.TakeTurn(currentLevel);
                 cameraPosition = currentLevel.CharacterEntities.FindPosition(hero);
+                modifiedCameraPosition.X = cameraPosition.X - (windowSizeInTiles.X / 2);
+                modifiedCameraPosition.Y = cameraPosition.Y - (windowSizeInTiles.Y / 2);
                 currentLevel.InvalidateCache();
             }
             else
@@ -331,6 +340,31 @@ namespace Brogue.Engine
 
         }
 
+
+
+        private static bool IsTileInView(IntVec gridloc)
+        {
+            bool drawthistile = false;
+            if (gridloc.X >= modifiedCameraPosition.X && gridloc.X <= modifiedCameraPosition.X + windowSizeInTiles.X
+                && gridloc.Y >= modifiedCameraPosition.Y && gridloc.Y <= modifiedCameraPosition.Y + windowSizeInTiles.Y)
+            {
+                drawthistile = true;
+            }
+            return drawthistile;
+        }
+
+        private static bool IsLightInView(IntVec gridloc, float intensity)
+        {
+            bool drawThisLight = false;
+            int lightGraceArea = (int)(lightMaskWidthInTilesDividedByTwo * intensity);
+            if (gridloc.X >= modifiedCameraPosition.X - lightGraceArea && gridloc.X <= modifiedCameraPosition.X + windowSizeInTiles.X + lightGraceArea
+                && gridloc.Y >= modifiedCameraPosition.Y - lightGraceArea && gridloc.Y <= modifiedCameraPosition.Y + windowSizeInTiles.Y + lightGraceArea)
+            {
+                drawThisLight = true;
+            }
+            return drawThisLight;
+        }
+
         private static void DrawLighting(Matrix transform)
         {
             if (DOLIGHTING)
@@ -357,9 +391,12 @@ namespace Brogue.Engine
                 Vector3 test2 = Vector3.Transform(new Vector3(50 * CELLWIDTH, 50 * CELLWIDTH, 0), transform);
                 foreach (ILightSource l in currentLevel.LightSources.Entities())
                 {
-                    IntVec gridpos = currentLevel.LightSources.FindPosition(l);
-                    Vector3 screenPosition = Vector3.Transform(new Vector3(gridpos.X * CELLWIDTH, gridpos.Y * CELLWIDTH, 0), transform);
-                    game.spriteBatch.Draw(lightMask, new Vector2(screenPosition.X, screenPosition.Y), new Rectangle(0, 0, lightMask.Width, lightMask.Height), l.GetLightColor(), 0, new Vector2(lightMask.Width / 2, lightMask.Height / 2), l.GetLightIntensity() + l.GetCurrentFlicker(), SpriteEffects.None, 0);
+                    IntVec lightPos = currentLevel.LightSources.FindPosition(l);
+                    if (IsLightInView(lightPos, l.GetLightIntensity()))
+                    {
+                        Vector3 screenPosition = Vector3.Transform(new Vector3(lightPos.X * CELLWIDTH, lightPos.Y * CELLWIDTH, 0), transform);
+                        game.spriteBatch.Draw(lightMask, new Vector2(screenPosition.X, screenPosition.Y), new Rectangle(0, 0, lightMask.Width, lightMask.Height), l.GetLightColor(), 0, new Vector2(lightMask.Width / 2, lightMask.Height / 2), l.GetLightIntensity() + l.GetCurrentFlicker(), SpriteEffects.None, 0);
+                    }
                 }
 
                 game.spriteBatch.End();
