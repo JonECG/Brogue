@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Brogue.EnviromentObjects.Interactive;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,62 +9,106 @@ namespace Brogue.Mapping
 {
     static class LevelGenerator
     {
-        public static Level generate(int seed, int levels)
+        private class __FloorPlan
         {
-            Random rand = new Random(seed);
-
-            bool[,] floorPlan = createFloorPlan(rand, levels);
-            
-            Rectangle[] rooms = findRooms(floorPlan);
-
-            GridBoundList<IEnvironmentObject> environment = populateEnvironmentObjects(rooms, rand);
-            GridBoundList<GameCharacter> characters = populateGameCharacters(rooms, rand);
-
-            Tile[,] tiles = new Tile[floorPlan.GetLength(0), floorPlan.GetLength(1)];
-
-            for (int x = 0; x < floorPlan.GetLength(0); x++)
+            public struct __Room
             {
-                for (int y = 0; y < floorPlan.GetLength(1); y++)
+                public enum __RoomType { NOTHING_SPECIAL, DOORWAY, HALLWAY, TREASURE_ROOM, FOYER };
+
+                public __RoomType type;
+
+                public Rectangle dimensions;
+
+                public __Room(Rectangle dimensions, bool[,] floorPlan)
                 {
-                    tiles[x, y] = new Tile(!floorPlan[x, y]);
+                    this.dimensions = dimensions;
+
+                    type = __RoomType.NOTHING_SPECIAL;
+
+
+                    if (dimensions.Width > 5 && dimensions.Height > 5 )
+                        type = __RoomType.FOYER;
+
+                    if (dimensions.Width > 3 && dimensions.Height > 3 && dimensions.Width < 7 & dimensions.Height < 7)
+                        type = __RoomType.TREASURE_ROOM;
+
+                    if (dimensions.Width == 1 || dimensions.Height == 1)
+                        type = __RoomType.HALLWAY;
+
+                    if (dimensions.Width == 1 && dimensions.Height == 1
+                        && !((floorPlan[dimensions.X + 1, dimensions.Y] ^ floorPlan[dimensions.X - 1, dimensions.Y]) || (floorPlan[dimensions.X, dimensions.Y - 1] ^ floorPlan[dimensions.X, dimensions.Y + 1])))
+                        type = __RoomType.DOORWAY;
                 }
+                
             }
 
-            Level result = new Level(tiles, environment, characters);
+            bool[,] isFloor;
+            public Tile[,] tiles;
+            public __Room[] rooms;
 
-            if (!result.isComplete())
+            public __FloorPlan( bool[,] isFloor )
             {
-                Console.WriteLine( "Level contains places which are impossible to reach from the starting position" );
-            }
+                this.isFloor = isFloor;
+                rooms = findRooms(isFloor);
 
-            return result;
-        }
+                tiles = new Tile[isFloor.GetLength(0), isFloor.GetLength(1)];
 
-        private static Rectangle[] findRooms(bool[,] floorPlan)
-        {
-            bool[,] floorPlanRoom = new bool[floorPlan.GetLength(0), floorPlan.GetLength(1)];
-            for (int x = 0; x < floorPlan.GetLength(0); x++)
-            {
-                for (int y = 0; y < floorPlan.GetLength(1); y++)
+                for (int x = 0; x < isFloor.GetLength(0); x++)
                 {
-                    floorPlanRoom[x, y] = floorPlan[x, y];
-                }
-            }
-
-            List<Rectangle> rooms = new List<Rectangle>();
-
-            //rooms
-            for (int x = 0; x < floorPlanRoom.GetLength(0); x++)
-            {
-                for (int y = 0; y < floorPlanRoom.GetLength(1); y++)
-                {
-                    if (floorPlanRoom[x, y])
+                    for (int y = 0; y < isFloor.GetLength(1); y++)
                     {
-                        Rectangle potentialRoom = fitRectangle(floorPlanRoom, x, y);
+                        tiles[x, y] = new Tile(!isFloor[x, y]);
+                    }
+                }
+            }
 
-                        if (potentialRoom.Width != 1 && potentialRoom.Height != 1)
+            private static __Room[] findRooms(bool[,] floorPlan)
+            {
+                bool[,] floorPlanRoom = new bool[floorPlan.GetLength(0), floorPlan.GetLength(1)];
+                for (int x = 0; x < floorPlan.GetLength(0); x++)
+                {
+                    for (int y = 0; y < floorPlan.GetLength(1); y++)
+                    {
+                        floorPlanRoom[x, y] = floorPlan[x, y];
+                    }
+                }
+
+                List<__Room> rooms = new List<__Room>();
+
+                //rooms
+                for (int x = 0; x < floorPlanRoom.GetLength(0); x++)
+                {
+                    for (int y = 0; y < floorPlanRoom.GetLength(1); y++)
+                    {
+                        if (floorPlanRoom[x, y])
                         {
-                            rooms.Add(potentialRoom);
+                            Rectangle potentialRoom = fitRectangle(floorPlanRoom, x, y);
+
+                            if (potentialRoom.Width != 1 && potentialRoom.Height != 1)
+                            {
+                                rooms.Add(new __Room(potentialRoom, floorPlan));
+                                for (int i = 0; i < potentialRoom.Width; i++)
+                                {
+                                    for (int j = 0; j < potentialRoom.Height; j++)
+                                    {
+                                        floorPlanRoom[x + i, y + j] = false;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                //Hallways and cells
+                for (int x = 0; x < floorPlanRoom.GetLength(0); x++)
+                {
+                    for (int y = 0; y < floorPlanRoom.GetLength(1); y++)
+                    {
+                        if (floorPlanRoom[x, y])
+                        {
+                            Rectangle potentialRoom = fitRectangle(floorPlanRoom, x, y);
+
+                            rooms.Add(new __Room(potentialRoom, floorPlan));
                             for (int i = 0; i < potentialRoom.Width; i++)
                             {
                                 for (int j = 0; j < potentialRoom.Height; j++)
@@ -74,87 +119,92 @@ namespace Brogue.Mapping
                         }
                     }
                 }
+
+                return rooms.ToArray();
             }
 
-            //Hallways and cells
-            for (int x = 0; x < floorPlanRoom.GetLength(0); x++)
+            private static Rectangle fitRectangle(bool[,] floorPlanRoom, int x, int y)
             {
-                for (int y = 0; y < floorPlanRoom.GetLength(1); y++)
+                int width = 1;
+                int height = 1;
+
+                bool canWiden = true;
+                bool canHeighten = true;
+
+                while (canHeighten || canWiden)
                 {
-                    if (floorPlanRoom[x, y])
-                    {
-                        Rectangle potentialRoom = fitRectangle(floorPlanRoom, x, y);
-                        
-                        rooms.Add( potentialRoom );
-                        for (int i = 0; i < potentialRoom.Width; i++)
-                        {
-                            for (int j = 0; j < potentialRoom.Height; j++)
-                            {
-                                floorPlanRoom[x + i, y + j] = false;
-                            }
-                        }
-                    }
-                }
-            }
-
-            return rooms.ToArray();
-        }
-
-        private static Rectangle fitRectangle(bool[,] floorPlanRoom, int x, int y)
-        {
-            int width = 1;
-            int height = 1;
-
-            bool canWiden = true;
-            bool canHeighten = true;
-
-            while (canHeighten || canWiden)
-            {
-                if (canWiden)
-                {
-                    for (int i = 0; i < height; i++)
-                    {
-                        canWiden = canWiden && floorPlanRoom[x + width, y + i];
-                    }
                     if (canWiden)
-                        width++;
+                    {
+                        for (int i = 0; i < height; i++)
+                        {
+                            canWiden = canWiden && floorPlanRoom[x + width, y + i];
+                        }
+                        if (canWiden)
+                            width++;
+                    }
+
+                    if (canHeighten)
+                    {
+                        for (int i = 0; i < width; i++)
+                        {
+                            canHeighten = canHeighten && floorPlanRoom[x + i, y + height];
+                        }
+                        if (canHeighten)
+                            height++;
+                    }
                 }
 
-                if (canHeighten)
-                {
-                    for (int i = 0; i < width; i++)
-                    {
-                        canHeighten = canHeighten && floorPlanRoom[x + i, y + height];
-                    }
-                    if (canHeighten)
-                        height++;
-                }
+                return new Rectangle(x, y, width, height);
+            }
+        }
+        public static Level generate(int seed, int levels)
+        {
+            Random rand = new Random(seed);
+
+            __FloorPlan floorPlan = new __FloorPlan( createFloorPlan(rand, levels) );
+
+            GridBoundList<IEnvironmentObject> environment = populateEnvironmentObjects(floorPlan, rand);
+            GridBoundList<GameCharacter> characters = populateGameCharacters(floorPlan, rand);
+
+            Level result = new Level(floorPlan.tiles, environment, characters);
+
+            if (!result.isComplete())
+            {
+                Engine.Engine.Log( "Level contains places which are impossible to reach from the starting position" );
             }
 
-            return new Rectangle(x, y, width, height);
+            return result;
         }
 
-        private static GridBoundList<IEnvironmentObject> populateEnvironmentObjects(Rectangle[] rooms, Random rand)
+
+
+
+        private static GridBoundList<IEnvironmentObject> populateEnvironmentObjects(__FloorPlan floorPlans, Random rand)
         {
             GridBoundList<IEnvironmentObject> environ = new GridBoundList<IEnvironmentObject>();
 
-            foreach (Rectangle room in rooms)
+            foreach (var room in floorPlans.rooms)
             {
-                Color color = new Color((float)(rand.NextDouble() / 2 + .5), (float)(rand.NextDouble() / 2 + .5), (float)(rand.NextDouble() / 2 + .5));
-                for (int x = 0; x < room.Width; x++)
+                if (room.type == __FloorPlan.__Room.__RoomType.DOORWAY)
                 {
-                    for (int y = 0; y < room.Height; y++)
-                    {
-                        environ.Add( new ColorEnvironment( color ) , new IntVec(room.X + x, room.Y + y) );
-                    }
+                    //Cell
+                    environ.Add(new ColorEnvironment(Color.Magenta, true), new IntVec(room.dimensions.X, room.dimensions.Y));
                 }
+                //Color color = new Color((float)(rand.NextDouble() / 2 + .5), (float)(rand.NextDouble() / 2 + .5), (float)(rand.NextDouble() / 2 + .5));
+                //for (int x = 0; x < room.Width; x++)
+                //{
+                //    for (int y = 0; y < room.Height; y++)
+                //    {
+                //        environ.Add( new ColorEnvironment( color ) , new IntVec(room.X + x, room.Y + y) );
+                //    }
+                //}
             }
             //makeDecorations(eviron, rooms, rand);
 
             return environ;
         }
 
-        private static GridBoundList<GameCharacter> populateGameCharacters(Rectangle[] rooms, Random rand)
+        private static GridBoundList<GameCharacter> populateGameCharacters(__FloorPlan floorPlans, Random rand)
         {
             //throw new NotImplementedException();
             return new GridBoundList<GameCharacter>();

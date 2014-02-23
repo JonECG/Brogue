@@ -140,5 +140,14 @@ namespace Brogue.Mapping
                 yield return list.ElementAt(i);
             }
         }
+
+        public void InvokeOnAll(Action<T, IntVec> func)
+        {
+            for (int i = 0; i < list.Count; i++)
+            {
+                Tuple<T,IntVec> tup = list.ElementAt(i);
+                func.Invoke(tup.Item1, tup.Item2);
+            }
+        }
     }
 }

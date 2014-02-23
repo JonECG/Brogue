@@ -147,7 +147,7 @@ namespace Brogue.Engine
 
         public static void GenerateLevel()
         {
-            currentLevel = LevelGenerator.generate(1337, 200);
+            currentLevel = LevelGenerator.generate(1337, 2000);
             Log("Level generated.");
             hero = new HeroClasses.Mage();
             currentLevel.CharacterEntities.Add(hero, currentLevel.findRandomOpenPosition());
@@ -190,7 +190,45 @@ namespace Brogue.Engine
             uisb.Draw(inventory, new Vector2(game.Width / 2 - inventory.Width / 2, game.Height - 100), Color.White);
             uisb.Draw(jar, new Vector2(game.Width - 50 - jar.Width, game.Height / 2 - jar.Height / 2), Color.White);
             uisb.Draw(bar, new Vector2(game.Width - 50 - jar.Width, game.Height / 2 - bar.Height / 2), Color.White);
+            DrawMiniMap(uisb);
             DrawLog(uisb);
+        }
+
+        private static void DrawMiniMap(SpriteBatch uisb)
+        {
+            IntVec offset = new IntVec( game.Width/4*3, 20 );
+            IntVec size = new IntVec(2, 2);
+
+            for (int x = 0; x < currentLevel.GetWidth(); x++)
+            {
+                for (int y = 0; y < currentLevel.GetHeight(); y++)
+                {
+                    IntVec position = new IntVec( x, y );
+                    DrawPoint(uisb, offset + position*2, size, currentLevel.isSolid(position) ? Color.Gray : Color.DarkGray );
+                }
+            }
+
+            foreach (IntVec position in currentLevel.Environment.Positions())
+            {
+                //DrawPoint(uisb, offset + position*2, size, Color.Magenta);
+            }
+
+            foreach (IntVec position in currentLevel.DroppedItems.Positions())
+            {
+                DrawPoint(uisb, offset + position*2, size, Color.Green);
+            }            
+
+            foreach (IntVec position in currentLevel.CharacterEntities.Positions())
+            {
+                DrawPoint(uisb, offset + position*2, size, Color.Red);
+            }
+
+            DrawPoint(uisb, offset + currentLevel.CharacterEntities.FindPosition(hero) * 2, size, Color.Gold);
+        }
+
+        private static void DrawPoint(SpriteBatch uisb, IntVec position, IntVec size, Color color)
+        {
+            uisb.Draw(Tile.tileset, new Rectangle(position.X, position.Y, size.X, size.Y), new Rectangle(5, 5, 1, 1), color);
         }
 
         public static void Update(GameTime gameTime)
@@ -210,12 +248,14 @@ namespace Brogue.Engine
             {
                 heroesTurn = !hero.TakeTurn(currentLevel);
                 cameraPosition = currentLevel.CharacterEntities.FindPosition(hero);
+                currentLevel.InvalidateCache();
             }
             else
             {
                 //Take next NPCs turn.
                 //When all NPCs have taken their turn...
                 heroesTurn = true;
+                currentLevel.InvalidateCache();
             }
         }
 

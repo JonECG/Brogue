@@ -10,14 +10,16 @@ namespace Brogue.Mapping
     class ColorEnvironment : IEnvironmentObject
     {
         Color color;
-        public ColorEnvironment( Color color )
+        bool solid;
+        public ColorEnvironment( Color color, bool solid = false )
         {
             this.color = color;
+            this.solid = solid;
         }
 
         public bool IsSolid()
         {
-            return false;
+            return solid;
         }
 
         public Sprite GetSprite()

@@ -16,6 +16,8 @@ namespace Brogue.Mapping
         Tile[,] tiles;
         public GridBoundList<IEnvironmentObject> Environment { get; private set; }
         //List<Tuple<IEnvironmentObject, IntVec>> environment;
+        //public GridBoundList<IRenderableIEnvironmentObject> DroppedItems { get; private set; }
+
         public GridBoundList<Item> DroppedItems { get; private set; }
         //List<Item> droppedItems;
         public GridBoundList<GameCharacter> CharacterEntities { get; private set; }
@@ -143,6 +145,16 @@ namespace Brogue.Mapping
             return result;
         }
 
+        public int GetWidth()
+        {
+            return tiles.GetLength(0);
+        }
+
+        public int GetHeight()
+        {
+            return tiles.GetLength(1);
+        }
+
         private void cache()
         {
             if (needToCache)
@@ -164,6 +176,7 @@ namespace Brogue.Mapping
                 {
                     cachedSolid[enviro.Item2.X, enviro.Item2.Y] = enviro.Item1.IsSolid();
                 }
+                needToCache = false;
             }
         }
 
@@ -215,14 +228,30 @@ namespace Brogue.Mapping
                 }
             }
 
-            //Environment.Draw();
+            Environment.Draw();
+            //LightSources.Draw();
             DroppedItems.Draw();
             CharacterEntities.Draw();
+
+            //CharacterEntities.InvokeOnAll( (GameCharacter character, IntVec position) =>
+            //{
+            //    position.X += character.GetSprite().Direction.X;
+            //    position.Y += character.GetSprite().Direction.Y;
+            //});
+
+            //foreach (var pair in CharacterEntities.Tuples())
+            //{
+            //    pair.Item2.X += pair.Item1.GetSprite().Direction.X;
+            //    pair.Item2.Y += pair.Item1.GetSprite().Direction.Y;
+            //}
 
             //foreach (IntVec vec in moveset)
             //{
             //    sb.Draw(Tile.tileset, new Rectangle((int)(vec.X * tileWidth), (int)(vec.Y * tileWidth), (int)Math.Ceiling(tileWidth), (int)Math.Ceiling(tileWidth)), new Rectangle(0, 0, 48, 48), Color.Blue);
             //}
+
+
+            path = AStar.getPathBetween(this, a, b);
 
             IntVec current = new IntVec(a.X, a.Y);
             foreach (Direction dir in path)
@@ -235,13 +264,13 @@ namespace Brogue.Mapping
             Engine.Engine.Draw(new Sprite( Engine.Engine.placeHolder, Color.Red ), new IntVec(b.X, b.Y) ); //Red
 
 
-            var nodes = AStar.getPathDrawnBetween(this, a, b, actionsToTake);
-            foreach (var node in nodes)
-            {
-                Engine.Engine.Draw(new Sprite(Engine.Engine.placeHolder, Color.BlanchedAlmond), new IntVec(node.position.X, node.position.Y));
-            }
+            //var nodes = AStar.getPathDrawnBetween(this, a, b, actionsToTake);
+            //foreach (var node in nodes)
+            //{
+            //    Engine.Engine.Draw(new Sprite(Engine.Engine.placeHolder, Color.BlanchedAlmond), new IntVec(node.position.X, node.position.Y));
+            //}
 
-            Engine.Engine.Draw(new Sprite(Engine.Engine.placeHolder, Color.Yellow), new IntVec(nodes.Min.position.X, nodes.Min.position.Y) ); 
+            //Engine.Engine.Draw(new Sprite(Engine.Engine.placeHolder, Color.Yellow), new IntVec(nodes.Min.position.X, nodes.Min.position.Y) ); 
 
         }
 
@@ -318,6 +347,12 @@ namespace Brogue.Mapping
         {
             Tile.wallTileset = content.Load<Texture2D>("dynamicTileset");
             Tile.floorTileset = content.Load<Texture2D>("floorTileset");
+            Tile.tileset = content.Load<Texture2D>("levelTileset");
+        }
+
+        internal void InvalidateCache()
+        {
+            needToCache = true;
         }
     }
 }

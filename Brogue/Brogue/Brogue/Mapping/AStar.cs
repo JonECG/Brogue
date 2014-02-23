@@ -96,7 +96,8 @@ namespace Brogue.Mapping
             int[,] solid = level.getIntSolid();
             SortedSet<__AStarNode> nodes = new SortedSet<__AStarNode>( new __AStarNode.__AStarNodeComparer() );
 
-            __AStarNode recentNode = new __AStarNode(from);
+            __AStarNode recentNode = new __AStarNode(from,0,10*calculateHeuristic(from,to));
+            __AStarNode bestNode = recentNode;
 
             nodes.Add(recentNode);
 
@@ -108,6 +109,12 @@ namespace Brogue.Mapping
                 {
                     //recentNode.expanded = true;
                     Direction[] closest = closestDirections(to - recentNode.position);
+
+                    if (recentNode.heuristic.CompareTo(bestNode.heuristic) <= 0)
+                    {
+                        //Console.Write("test");
+                        bestNode = recentNode;
+                    }
 
                     for( int i = 0; i < closest.Length; i++ )//foreach (Direction dir in Direction.Values)
                     {
@@ -122,6 +129,8 @@ namespace Brogue.Mapping
                         }
                     }
 
+                    
+
                     if (!nodes.Remove(recentNode))
                         throw new NotImplementedException();
                 }
@@ -130,7 +139,9 @@ namespace Brogue.Mapping
 
             List<Direction> path = new List<Direction>();
 
-            while (!recentNode.position.Equals(from))
+            recentNode = recentNode ?? bestNode;
+
+            while (recentNode != null && !recentNode.position.Equals(from))
             {
                 path.Add(recentNode.directionTaken);
                 recentNode = recentNode.reachedFrom;
