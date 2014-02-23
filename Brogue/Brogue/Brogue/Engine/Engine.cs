@@ -13,7 +13,7 @@ namespace Brogue.Engine
 {
     class Engine
     {
-        public const bool DOLIGHTING = false;
+        public const bool DOLIGHTING = true;
         public const float sightDistance = 1;
         public static int CELLWIDTH = 48;
         private static int logSize = 10;

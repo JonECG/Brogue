@@ -28,6 +28,8 @@ namespace Brogue.HeroClasses
         static Sprite sprite;
         protected Equipment currentlyEquippedItems = new Equipment();
         protected Inventory inventory = new Inventory();
+        //Variable for testing, delete
+        private static int testHealth;
 
         public IntVec move(Direction dir)
         {
@@ -76,6 +78,11 @@ namespace Brogue.HeroClasses
         private void resetHealth()
         {
             maxHealth = 20*level;
+            if (testHealth != maxHealth)
+            {
+                Engine.Engine.Log("Character's health increased to: " + maxHealth);
+            }
+            testHealth = maxHealth;
         }
 
         public override bool TakeTurn(Mapping.Level mapLevel)
@@ -88,7 +95,8 @@ namespace Brogue.HeroClasses
             {
                 casting = abilities[i].isCasting;
             }*/
-
+            resetArmor();
+            resetHealth();
             if (!casting)
             {
                 if (Mapping.KeyboardController.IsTyped(Keys.A))
@@ -131,6 +139,7 @@ namespace Brogue.HeroClasses
                 {
                     checkGround(mapLevel);
                 }
+
                 else if (Mapping.KeyboardController.IsTyped(Keys.RightShift))
                 {
                     IntVec itemPosition = new IntVec(mapLevel.CharacterEntities.FindPosition(this).X, mapLevel.CharacterEntities.FindPosition(this).Y);
@@ -151,14 +160,13 @@ namespace Brogue.HeroClasses
         //public void castAbility(int ability)
         //public void attack();
         //public void useItem();
-
-        public void cooldownAbilities()
-        {
-            for(int i=0; i<numAbilities; i++)
-            {
-                abilities[i].cooldown -= (abilities[i].isOnCooldown) ? 1 : 0;
-            }
-        }
+        //public void cooldownAbilities()
+        //{
+        //    for(int i=0; i<numAbilities; i++)
+        //    {
+        //        abilities[i].cooldown -= (abilities[i].isOnCooldown) ? 1 : 0;
+        //    }
+        //}
 
         private void checkGround(Mapping.Level mapLevel)
         {

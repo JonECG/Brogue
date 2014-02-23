@@ -19,7 +19,10 @@ namespace Brogue.HeroClasses
             int totalArmor = 0;
             for (int i = 0; i < equippedArmor.Length; i++)
             {
-                totalArmor += equippedArmor[i].ArmorValue;
+                if (equippedArmor[i] != null)
+                {
+                    totalArmor += equippedArmor[i].ArmorValue;
+                }
             }
             return totalArmor;
         }
@@ -29,7 +32,10 @@ namespace Brogue.HeroClasses
             int totalDamage = 0;
             for (int i = 0; i < equippedWeapons.Length; i++)
             {
-                totalDamage += equippedWeapons[i].Damage;
+                if (equippedWeapons[i] != null)
+                {
+                    totalDamage += equippedWeapons[i].Damage;
+                }
             }
             return totalDamage;
         }
