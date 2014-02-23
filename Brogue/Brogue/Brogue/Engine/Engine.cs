@@ -22,6 +22,8 @@ namespace Brogue.Engine
         private static int logSize = 10;
         private static Game1 game;
         public static IntVec cameraPosition = new IntVec(12, 8);
+        private static IntVec torchSoundTest;
+
         private static Queue<String> log = new Queue<string>(10);
         private static Vector2 LogPosition;
         private static HeroClasses.Hero hero;
@@ -40,8 +42,10 @@ namespace Brogue.Engine
 
         static Level currentLevel;
 
-
         private static Song backgroundSong;
+
+        private static SoundEffect torchBurning;
+        private static SoundEffectInstance torchBurningInstance;
 
         public static void Start(Game1 injectedGame)
         {
@@ -49,7 +53,13 @@ namespace Brogue.Engine
             CharacterCreation();
             GenerateLevel();
             LogPosition = new Vector2(12, 12);
+            torchSoundTest = new IntVec(currentLevel.CharacterEntities.FindPosition(hero).X,currentLevel.CharacterEntities.FindPosition(hero).Y);
             StartGame();
+        }
+
+        private static double intVecDistance(IntVec x, IntVec y)
+        {
+            return Math.Sqrt((double)Math.Pow(x.X-y.X, 2) + (double)Math.Pow(x.Y-y.Y,2));
         }
 
         public static void End()
@@ -82,8 +92,13 @@ namespace Brogue.Engine
             if (DOAUDIO)
             {
                 backgroundSong = content.Load<Song>("Audio/The Descent");
+                MediaPlayer.Volume = .5f;
                 MediaPlayer.Play(backgroundSong);
                 MediaPlayer.IsRepeating = true;
+
+                torchBurning = content.Load<SoundEffect>("Audio/fire");
+                torchBurningInstance = torchBurning.CreateInstance();
+                torchBurningInstance.IsLooped = true;
             }
         }
         public static void Log(string input)
@@ -143,6 +158,11 @@ namespace Brogue.Engine
         }
         public static void Update(GameTime gameTime)
         {
+            double heroLightDistance = Math.Pow(intVecDistance(currentLevel.CharacterEntities.FindPosition(hero), torchSoundTest)+2, -1.1)/2;
+            torchBurningInstance.Volume = (float)heroLightDistance;
+            torchBurningInstance.Play();
+
+
             GameCommands();
             currentLevel.testUpdate();
             //Game turns
@@ -157,6 +177,7 @@ namespace Brogue.Engine
                 //When all NPCs have taken their turn...
                 heroesTurn = true;
             }
+
         }
 
         private static void GameCommands()
