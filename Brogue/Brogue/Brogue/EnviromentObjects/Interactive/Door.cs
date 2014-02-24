@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Brogue;
 using Brogue.Mapping;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 
 namespace Brogue.EnviromentObjects.Interactive
 {
-    class Door : Iinteractable, IEnvironmentObject
+    class Door : Iinteractable, IEnvironmentObject, IRenderable
     {
        static Texture2D sprite { get; set; }
        bool isSolid { get; set; }
@@ -16,13 +17,13 @@ namespace Brogue.EnviromentObjects.Interactive
 
        public Door() 
        {
-           isSolid = false;
+           isSolid = true;
            isOpen = false;
        }
 
        public void LoadContent(ContentManager content)
        {
-           sprite = content.Load<Texture2D>("levelTileset");
+           sprite = content.Load<Texture2D>("Enviroment/Door");
        }
 
        public void changeSolid()
@@ -101,5 +102,11 @@ namespace Brogue.EnviromentObjects.Interactive
         {
             return new Sprite(sprite);
         }
+
+        public void LoadContent(ContentManager content)
+        {
+            sprite = content.Load<Texture2D>("Enviroment/Door");
+        }
+
     }
 }

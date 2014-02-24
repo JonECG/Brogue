@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Brogue;
 using Brogue.Mapping;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Brogue.EnviromentObjects.Interactive
 {
-    public class Swiches : IEnvironmentObject, Iinteractable
+    public class Swiches : IEnvironmentObject, Iinteractable, IRenderable
     {
         static Texture2D spriteOne { get; set; }
         static Texture2D spriteTwo { get; set; }

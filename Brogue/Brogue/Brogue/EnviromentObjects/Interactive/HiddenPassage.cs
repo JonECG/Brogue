@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Brogue.EnviromentObjects.Interactive
 {
-    class HiddenPassage : IEnvironmentObject
+    class HiddenPassage : IEnvironmentObject, IRenderable
     {
         static Texture2D sprite { get; set; }
         IntVec exit { get; set; }
@@ -23,7 +23,7 @@ namespace Brogue.EnviromentObjects.Interactive
 
         public void LoadContent(ContentManager content)
         {
-            sprite = content.Load<Texture2D>("Stairs.png");
+            sprite = content.Load<Texture2D>("Enviroment/Stairs");
         }
 
         public bool IsSolid()

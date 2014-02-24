@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Brogue;
 using Brogue.Mapping;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -9,7 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Brogue.EnviromentObjects.Decorative
 {
-    class Chair : InonInteractable, IEnvironmentObject
+    class Chair : InonInteractable, IEnvironmentObject, IRenderable
     {
         static Texture2D sprite { get; set; }
         bool isSolid { get; set; }
@@ -21,7 +22,7 @@ namespace Brogue.EnviromentObjects.Decorative
 
         public void LoadContent(ContentManager content)
         {
-            sprite = content.Load<Texture2D>("Chair.png");
+            sprite = content.Load<Texture2D>("Enviroment/Chair");
         }
 
         public bool IsSolid()

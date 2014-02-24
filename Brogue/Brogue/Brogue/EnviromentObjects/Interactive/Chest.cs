@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Brogue.Mapping;
+using Brogue;
 using Brogue.Items;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -10,7 +11,7 @@ using Brogue.Items.Consumables;
 
 namespace Brogue.EnviromentObjects.Interactive
 {
-    class Chest : Iinteractable, IEnvironmentObject
+    class Chest : Iinteractable, IEnvironmentObject, IRenderable
     {
         static Texture2D sprite { get; set; }
 
@@ -26,10 +27,14 @@ namespace Brogue.EnviromentObjects.Interactive
             isSolid = false;
             contents = new List<Item>();
 
-            for (int counter = 0; counter < chestSize; counter++)
+            foreach (Item i in putIntoChest)
             {
-               contents.Add(putIntoChest[counter]);
+                if (contents.Count <= chestSize)
+                {
+                    contents.Add(i);
+                }
             }
+
         }
 
         public bool putInChest(Item newIteam)
@@ -65,7 +70,7 @@ namespace Brogue.EnviromentObjects.Interactive
 
         public void LoadContent(ContentManager content)
         {
-            sprite = content.Load<Texture2D>("levelTileset");
+            sprite = content.Load<Texture2D>("Enviroment/Chest");
         }
 
         public bool getsolidity()
