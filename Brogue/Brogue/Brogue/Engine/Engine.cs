@@ -74,7 +74,7 @@ namespace Brogue.Engine
 
         public static Texture2D placeHolder;
 
-        static Level currentLevel;
+        public static Level currentLevel;
 
 
         private static Song backgroundSong;
