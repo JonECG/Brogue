@@ -14,13 +14,14 @@ using Microsoft.Xna.Framework.Input;
 using Brogue.Engine;
 using Brogue.Items.Equipment.Armor;
 using Brogue.Items.Equipment.Weapon;
+using Brogue.Abilities.Damaging.SingleTargets;
 
 namespace Brogue.HeroClasses
 {
 
     public abstract class Hero : GameCharacter, IRenderable
     {
-        public static int level {get;  set;}
+        public static int level { get; set; }
         protected int numAbilities = 0;
         protected int armorRating;
         protected int experience = 0;
@@ -28,18 +29,21 @@ namespace Brogue.HeroClasses
         protected float directionFacing;
         protected Ability[] abilities;
         static Sprite sprite;
+        static Sprite castingSprite;
+        public static Texture2D abilitySprite;
         protected Equipment currentlyEquippedItems = new Equipment();
         protected Inventory inventory = new Inventory();
         //Variable for testing, delete
         private static int testHealth;
+        private static bool viewingCast = false;
 
         public IntVec move(Direction dir)
         {
-            IntVec positionMovement = new IntVec(0,0);
+            IntVec positionMovement = new IntVec(0, 0);
             if (dir == Direction.RIGHT)
             {
                 directionFacing = 0;
-                positionMovement = new IntVec(1,0);
+                positionMovement = new IntVec(1, 0);
             }
             if (dir == Direction.DOWN)
             {
@@ -53,7 +57,7 @@ namespace Brogue.HeroClasses
             }
             if (dir == Direction.UP)
             {
-                directionFacing = (float)(3*Math.PI / 2);
+                directionFacing = (float)(3 * Math.PI / 2);
                 positionMovement = new IntVec(0, -1);
             }
             sprite.Direction = dir;
@@ -70,12 +74,14 @@ namespace Brogue.HeroClasses
         public static void loadSprite()
         {
             sprite = new Sprite(texture);
+            castingSprite = new Sprite(abilitySprite);
         }
 
         public void AddExperience(int xp)
         {
             experience += xp;
         }
+
         public float GetXpPercent()
         {
             float percentage = (float)experience / (float)expRequired;
@@ -89,7 +95,7 @@ namespace Brogue.HeroClasses
 
         private void resetHealth()
         {
-            maxHealth = 20*level;
+            maxHealth = 20 * level;
             if (testHealth != maxHealth)
             {
                 Engine.Engine.Log("Character's health increased to: " + maxHealth);
@@ -99,7 +105,6 @@ namespace Brogue.HeroClasses
 
         public override bool TakeTurn(Mapping.Level mapLevel)
         {
-            bool canMove = true;
             bool turnOver = false;
             bool casting = false;
             //resetArmor();
@@ -109,38 +114,31 @@ namespace Brogue.HeroClasses
             }*/
             resetArmor();
             resetHealth();
-            if (!casting)
+            if (!casting && !viewingCast)
             {
                 if (Mapping.KeyboardController.IsTyped(Keys.A))
                 {
-                    if (canMove)
-                    {
-                        turnOver = mapLevel.Move(this, move(Direction.LEFT));
-                    }
+                    turnOver = mapLevel.Move(this, move(Direction.LEFT));
                 }
 
                 else if (Mapping.KeyboardController.IsTyped(Keys.W))
                 {
-                    if (canMove)
-                    {
-                        turnOver = mapLevel.Move(this, move(Direction.UP));
-                    }
+                    turnOver = mapLevel.Move(this, move(Direction.UP));
+
                 }
 
                 else if (Mapping.KeyboardController.IsTyped(Keys.D))
                 {
-                    if (canMove)
-                    {
-                        turnOver = mapLevel.Move(this, move(Direction.RIGHT));
-                    }
+
+                    turnOver = mapLevel.Move(this, move(Direction.RIGHT));
+
                 }
 
                 else if (Mapping.KeyboardController.IsTyped(Keys.S))
                 {
-                    if (canMove)
-                    {
-                        turnOver = mapLevel.Move(this, move(Direction.DOWN));
-                    }
+
+                    turnOver = mapLevel.Move(this, move(Direction.DOWN));
+
                 }
                 // THESE ARE JUST FOR TESTING
                 else if (Mapping.KeyboardController.IsTyped(Keys.B))
@@ -162,7 +160,23 @@ namespace Brogue.HeroClasses
                     }
                 }
 
+                else if (Mapping.KeyboardController.IsPressed(Keys.D1))
+                {
+                    abilities = new Ability[2];
+                    viewingCast = true;
+                    abilities[0] = new Cleave();
+                }
+
                 else turnOver = (Mapping.KeyboardController.IsTyped(Keys.Space));
+            }
+
+            if (viewingCast)
+            {
+                IntVec[] castSquares = abilities[0].viewCastRange(mapLevel, mapLevel.CharacterEntities.FindPosition(this));
+                for (int i = 0; i < castSquares.Length; i++)
+                {
+                    Engine.Engine.Draw(castingSprite, castSquares[i]);
+                }
             }
 
             //cooldownAbilities();
@@ -193,7 +207,7 @@ namespace Brogue.HeroClasses
 
         public void equipArmor(int itemToEquip, int currentItemIndex = 0)
         {
-            if(inventory.stored[itemToEquip].item.ItemType == ITypes.Armor)
+            if (inventory.stored[itemToEquip].item.ItemType == ITypes.Armor)
             {
                 Item temp = currentlyEquippedItems.equippedArmor[currentItemIndex];
                 currentlyEquippedItems.equippedArmor[currentItemIndex] = (Armor)(inventory.stored[itemToEquip].item);

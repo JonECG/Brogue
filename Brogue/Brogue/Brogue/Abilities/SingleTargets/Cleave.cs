@@ -16,8 +16,9 @@ namespace Brogue.Abilities.Damaging.SingleTargets
 
         public override IntVec[] viewCastRange(Level level, IntVec start)
         {
-            radius = 1;
-            return AStar.getPossiblePositionsFrom(level, start, radius);
+            radius = 5;
+            IntVec[] test = AStar.getPossiblePositionsFrom(level, start, radius);
+            return test;
         }
 
         public override IntVec viewCastingSquares(Direction directionFacing)
