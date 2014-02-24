@@ -1,4 +1,5 @@
 ﻿using Brogue.EnviromentObjects.Interactive;
+using Brogue.Items;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace Brogue.Mapping
         {
             public struct __Room
             {
-                public enum __RoomType { NOTHING_SPECIAL, DOORWAY, HALLWAY, TREASURE_ROOM, FOYER };
+                public enum __RoomType { EMPTY, NOTHING_SPECIAL, DOORWAY, HALLWAY, TREASURE_ROOM, FOYER };
 
                 public __RoomType type;
 
@@ -42,6 +43,11 @@ namespace Brogue.Mapping
                     if (dimensions.Width == 1 && dimensions.Height == 1
                         && !((floorPlan[dimensions.X + 1, dimensions.Y] ^ floorPlan[dimensions.X - 1, dimensions.Y]) || (floorPlan[dimensions.X, dimensions.Y - 1] ^ floorPlan[dimensions.X, dimensions.Y + 1])))
                         type = __RoomType.DOORWAY;
+                }
+
+                public IntVec GetCenter()
+                {
+                    return new IntVec(dimensions.X + dimensions.Width / 2, dimensions.Y + dimensions.Height / 2);
                 }
 
                 public IEnumerable<IntVec> GetCells()
@@ -210,6 +216,15 @@ namespace Brogue.Mapping
             GridBoundList<ILightSource> lightSources = new GridBoundList<ILightSource>();
             GridBoundList<GameCharacter> characters = new GridBoundList<GameCharacter>();
 
+            int entryRoom = rand.Next( floorPlan.rooms.Length );
+            __FloorPlan.__Room start = floorPlan.rooms[entryRoom];
+            IntVec startPoint = start.GetCenter();
+            start.type = __FloorPlan.__Room.__RoomType.EMPTY;
+            __FloorPlan.__Room end = floorPlan.rooms[(entryRoom + floorPlan.rooms.Length / 2) % floorPlan.rooms.Length ];
+            end.type = __FloorPlan.__Room.__RoomType.EMPTY;
+            interactableEnvironment.Add( new ColorEnvironment(Color.Blue, true), end.GetCenter());
+
+
             foreach (var room in floorPlan.rooms)
             {
                 populateEnvironmentObjects(room, environment, rand);
@@ -218,7 +233,7 @@ namespace Brogue.Mapping
                 populateGameCharacters(room, characters, rand);
             }
 
-            Level result = new Level(floorPlan.tiles, environment, interactableEnvironment, lightSources, characters);
+            Level result = new Level( startPoint, floorPlan.tiles, environment, interactableEnvironment, lightSources, characters);
 
             if (!result.isComplete())
             {
@@ -248,6 +263,15 @@ namespace Brogue.Mapping
                 case __FloorPlan.__Room.__RoomType.DOORWAY:
                     interact.Add(new Door(), new IntVec(room.dimensions.X, room.dimensions.Y));
                     break;
+                case __FloorPlan.__Room.__RoomType.TREASURE_ROOM:
+                    Item[] items = new Item[ rand.Next( 2, 8 ) ];
+                    for (int i = 0; i < items.Length; i++)
+                    {
+                        items[i] = Item.randomItem(10, 10);
+                    }
+                    //interact.Add(new Chest(items), room.GetCenter());
+                    interact.Add(new ColorEnvironment( Color.Brown, true ), room.GetCenter());
+                    break;
             }
         }
 
@@ -256,7 +280,7 @@ namespace Brogue.Mapping
             foreach (var position in room.GetWalls())
             {
                 if ( rand.NextDouble() > 0.98 )
-                    lights.Add(new ColorEnvironment(new Color(255, 255, 220), false),position);
+                    lights.Add(new ColorEnvironment(new Color(rand.Next(100,256), rand.Next(100,256), rand.Next(100,256)), false), position);
             }
             switch (room.type)
             {

@@ -55,15 +55,17 @@ namespace Brogue.Mapping
             public IntVec position;
             public int actualCost;
             public int heuristic;
+            public int pseudoMoveCost;
             public __AStarNode reachedFrom;
             public Direction directionTaken;
             public bool expanded;
 
-            public __AStarNode(IntVec position, int actualCost = 0, int heuristic = 0, __AStarNode reachedFrom = null, Direction directionTaken = null)
+            public __AStarNode(IntVec position, int actualCost = 0, int heuristic = 0, int pseudoMoveCost = 0, __AStarNode reachedFrom = null, Direction directionTaken = null)
             {
                 this.position = position;
                 this.actualCost = actualCost;
                 this.heuristic = heuristic;
+                this.pseudoMoveCost = pseudoMoveCost;
                 this.reachedFrom = reachedFrom;
                 this.directionTaken = directionTaken;
                 expanded = false;
@@ -82,6 +84,8 @@ namespace Brogue.Mapping
                 int difference = (actualCost + heuristic) - (other.actualCost + other.heuristic);
                 if (difference == 0)
                     difference = heuristic.CompareTo(other.heuristic);
+                if (difference == 0)
+                    difference = pseudoMoveCost.CompareTo(other.pseudoMoveCost);
                 if (difference == 0)
                     difference = position.X.CompareTo(other.position.X);
                 if (difference == 0)
@@ -125,7 +129,7 @@ namespace Brogue.Mapping
                         if (solid[newLocation.X, newLocation.Y] < -(recentNode.actualCost + 10))
                         {
                             solid[newLocation.X, newLocation.Y] = -(recentNode.actualCost + 10);
-                            nodes.Add(new __AStarNode(newLocation, recentNode.actualCost + 10, 10 * calculateHeuristic(newLocation, to) + i, recentNode, dir));
+                            nodes.Add(new __AStarNode(newLocation, recentNode.actualCost + 10, 10 * calculateHeuristic(newLocation, to), i, recentNode, dir));
                         }
                     }
 
@@ -156,14 +160,16 @@ namespace Brogue.Mapping
         {
             int actions = 0;
 
+
             int[,] solid = level.getIntSolid();
             SortedSet<__AStarNode> nodes = new SortedSet<__AStarNode>(new __AStarNode.__AStarNodeComparer());
 
-            __AStarNode recentNode = new __AStarNode(from);
+            __AStarNode recentNode = new __AStarNode(from, 0, 10 * calculateHeuristic(from, to));
+            __AStarNode bestNode = recentNode;
 
             nodes.Add(recentNode);
 
-            while (recentNode != null && !recentNode.position.Equals(to) && !recentNode.expanded && (actions < count) )
+            while (recentNode != null && !recentNode.position.Equals(to) && !recentNode.expanded && (actions < count))
             {
                 recentNode = nodes.Min;
 
@@ -171,6 +177,12 @@ namespace Brogue.Mapping
                 {
                     //recentNode.expanded = true;
                     Direction[] closest = closestDirections(to - recentNode.position);
+
+                    if (recentNode.heuristic.CompareTo(bestNode.heuristic) <= 0)
+                    {
+                        //Console.Write("test");
+                        bestNode = recentNode;
+                    }
 
                     for (int i = 0; i < closest.Length; i++)//foreach (Direction dir in Direction.Values)
                     {
@@ -181,11 +193,13 @@ namespace Brogue.Mapping
                         if (solid[newLocation.X, newLocation.Y] < -(recentNode.actualCost + 10) && (actions++ < count))
                         {
                             solid[newLocation.X, newLocation.Y] = -(recentNode.actualCost + 10);
-                            nodes.Add(new __AStarNode(newLocation, recentNode.actualCost + 10, 10 * calculateHeuristic(newLocation, to) + i, recentNode, dir));
+                            nodes.Add(new __AStarNode(newLocation, recentNode.actualCost + 10, 10 * calculateHeuristic(newLocation, to), i, recentNode, dir));
                         }
                     }
 
-                    if ( (actions++ < count) && !nodes.Remove(recentNode))
+
+
+                    if ((actions++ < count) && !nodes.Remove(recentNode))
                         throw new NotImplementedException();
                 }
 

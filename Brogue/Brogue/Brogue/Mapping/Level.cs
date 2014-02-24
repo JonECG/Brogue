@@ -29,12 +29,14 @@ namespace Brogue.Mapping
         //List<Tuple<GameCharacter, IntVec>> characterEntities;
         bool[,] cachedSolid;
         bool needToCache;
+        IntVec startPoint;
 
         static Random statRand = new Random();
 
-        public Level(Tile[,] tiles, GridBoundList<IEnvironmentObject> environment, GridBoundList<Iinteractable> interact, GridBoundList<ILightSource> light, GridBoundList<GameCharacter> characterEntities)
+        public Level(IntVec startPoint, Tile[,] tiles, GridBoundList<IEnvironmentObject> environment, GridBoundList<Iinteractable> interact, GridBoundList<ILightSource> light, GridBoundList<GameCharacter> characterEntities)
         {
             this.tiles = tiles;
+            this.startPoint = startPoint;
             this.Environment = environment;
             this.InteractableEnvironment = interact;
             this.CharacterEntities = characterEntities;
@@ -57,6 +59,11 @@ namespace Brogue.Mapping
 
                 DroppedItems.Add(item, findRandomOpenPosition());
             }
+        }
+
+        public IntVec GetStartPoint()
+        {
+            return startPoint;
         }
 
         private void calculateTiles()
@@ -181,12 +188,12 @@ namespace Brogue.Mapping
 
                 foreach ( Tuple<IEnvironmentObject,IntVec> enviro in Environment.Tuples() )
                 {
-                    cachedSolid[enviro.Item2.X, enviro.Item2.Y] = enviro.Item1.IsSolid();
+                    cachedSolid[enviro.Item2.X, enviro.Item2.Y] |= enviro.Item1.IsSolid();
                 }
 
                 foreach (Tuple<Iinteractable, IntVec> enviro in InteractableEnvironment.Tuples())
                 {
-                    cachedSolid[enviro.Item2.X, enviro.Item2.Y] = enviro.Item1.IsSolid();
+                    cachedSolid[enviro.Item2.X, enviro.Item2.Y] |= enviro.Item1.IsSolid();
                 }
 
                 foreach (Tuple<ILightSource, IntVec> enviro in LightSources.Tuples())
@@ -282,13 +289,13 @@ namespace Brogue.Mapping
             Engine.Engine.Draw(new Sprite( Engine.Engine.placeHolder, Color.Red ), new IntVec(b.X, b.Y) ); //Red
 
 
-            //var nodes = AStar.getPathDrawnBetween(this, a, b, actionsToTake);
-            //foreach (var node in nodes)
-            //{
-            //    Engine.Engine.Draw(new Sprite(Engine.Engine.placeHolder, Color.BlanchedAlmond), new IntVec(node.position.X, node.position.Y));
-            //}
+            var nodes = AStar.getPathDrawnBetween(this, a, b, actionsToTake);
+            foreach (var node in nodes)
+            {
+                Engine.Engine.Draw(new Sprite(Engine.Engine.placeHolder, Color.BlanchedAlmond), new IntVec(node.position.X, node.position.Y));
+            }
 
-            //Engine.Engine.Draw(new Sprite(Engine.Engine.placeHolder, Color.Yellow), new IntVec(nodes.Min.position.X, nodes.Min.position.Y) ); 
+            Engine.Engine.Draw(new Sprite(Engine.Engine.placeHolder, Color.Yellow), new IntVec(nodes.Min.position.X, nodes.Min.position.Y)); 
 
         }
 
