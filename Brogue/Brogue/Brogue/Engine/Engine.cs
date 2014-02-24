@@ -69,6 +69,7 @@ namespace Brogue.Engine
 
         static Texture2D jar, bar, healthcontainer, healthbar, xpbar, inventory;
         static SpriteFont font;
+        static List<IntVec> gridSelection = new List<IntVec>();
 
         public static Texture2D placeHolder;
 
@@ -86,6 +87,18 @@ namespace Brogue.Engine
             {
                 XPParticle newxp = new XPParticle(new Vector2(worldVector.X + enginerand.Next(CELLWIDTH) - CELLWIDTH/2, worldVector.Y + enginerand.Next(CELLWIDTH) - CELLWIDTH/2), enginerand.Next(10) + 5);
                 xpList.Add(newxp);
+            }
+        }
+
+        public static void ClearGridSelections()
+        {
+            gridSelection.Clear();
+        }
+
+        public static void AddGridSelections(IntVec[] gridSpaces)
+        {
+            foreach (IntVec iv in gridSpaces){
+                gridSelection.Add(iv);
             }
         }
 
