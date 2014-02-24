@@ -31,7 +31,7 @@ namespace Brogue.Mapping
 
         private static void possiblePositionsFromStep(List<IntVec> positions, int[,] used, IntVec start, IntVec position, int budget, bool straight)
         {
-            if (budget != 0 && used[position.X, position.Y] < budget && (!straight || lineIsFree(used, start, position))) 
+            if (budget != 0 && (!straight || lineIsFree(used, start, position))) 
             {
                 used[position.X, position.Y] = budget;
 
@@ -39,7 +39,9 @@ namespace Brogue.Mapping
 
                 foreach (Direction dir in Direction.Values)
                 {
-                    possiblePositionsFromStep(positions, used, start, position + dir, budget - 1, straight);
+                    IntVec target = position + dir;
+                    if ( used[target.X, target.Y] < budget - 1)
+                        possiblePositionsFromStep(positions, used, start, target, budget - 1, straight);
                 }
             }
         }

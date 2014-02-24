@@ -270,10 +270,11 @@ namespace Brogue.Mapping
             //    pair.Item2.Y += pair.Item1.GetSprite().Direction.Y;
             //}
 
-            //foreach (IntVec vec in moveset)
-            //{
-            //    sb.Draw(Tile.tileset, new Rectangle((int)(vec.X * tileWidth), (int)(vec.Y * tileWidth), (int)Math.Ceiling(tileWidth), (int)Math.Ceiling(tileWidth)), new Rectangle(0, 0, 48, 48), Color.Blue);
-            //}
+            foreach (IntVec vec in moveset)
+            {
+                Engine.Engine.Draw(new Sprite(Engine.Engine.placeHolder, Color.Bisque), vec); //Orange
+                //sb.Draw(Tile.tileset, new Rectangle((int)(vec.X * tileWidth), (int)(vec.Y * tileWidth), (int)Math.Ceiling(tileWidth), (int)Math.Ceiling(tileWidth)), new Rectangle(0, 0, 48, 48), Color.Blue);
+            }
 
 
             path = AStar.getPathBetween(this, a, b);
@@ -289,13 +290,13 @@ namespace Brogue.Mapping
             Engine.Engine.Draw(new Sprite( Engine.Engine.placeHolder, Color.Red ), new IntVec(b.X, b.Y) ); //Red
 
 
-            var nodes = AStar.getPathDrawnBetween(this, a, b, actionsToTake);
-            foreach (var node in nodes)
-            {
-                Engine.Engine.Draw(new Sprite(Engine.Engine.placeHolder, Color.BlanchedAlmond), new IntVec(node.position.X, node.position.Y));
-            }
+            //var nodes = AStar.getPathDrawnBetween(this, a, b, actionsToTake);
+            //foreach (var node in nodes)
+            //{
+            //    Engine.Engine.Draw(new Sprite(Engine.Engine.placeHolder, Color.BlanchedAlmond), new IntVec(node.position.X, node.position.Y));
+            //}
 
-            Engine.Engine.Draw(new Sprite(Engine.Engine.placeHolder, Color.Yellow), new IntVec(nodes.Min.position.X, nodes.Min.position.Y)); 
+            //Engine.Engine.Draw(new Sprite(Engine.Engine.placeHolder, Color.Yellow), new IntVec(nodes.Min.position.X, nodes.Min.position.Y)); 
 
         }
 
