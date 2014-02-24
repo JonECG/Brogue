@@ -173,10 +173,9 @@ namespace Brogue.HeroClasses
             {
                 IntVec test = new IntVec(mapLevel.CharacterEntities.FindPosition(this).X+1, mapLevel.CharacterEntities.FindPosition(this).Y);
                 IntVec[] castSquares = abilities[0].viewCastRange(mapLevel, test);
-                for (int i = 0; i < castSquares.Length; i++)
-                {
-                    Engine.Engine.Draw(castingSprite, castSquares[i]);
-                }
+                Engine.Engine.ClearGridSelections();
+                Engine.Engine.AddGridSelections(castSquares);
+                
                 if (Mapping.KeyboardController.IsPressed(Keys.D2))
                 {
                     viewingCast = !viewingCast;
