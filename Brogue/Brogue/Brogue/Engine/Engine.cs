@@ -66,6 +66,7 @@ namespace Brogue.Engine
         private static Texture2D lightMask;
         private static Texture2D sightMask;
         private static Texture2D particleTex;
+        private static Texture2D gridSelectionOverlay;
 
         static Texture2D jar, bar, healthcontainer, healthbar, xpbar, inventory;
         static SpriteFont font;
@@ -127,7 +128,7 @@ namespace Brogue.Engine
             inventory = content.Load<Texture2D>("UI/Inventory");
             font = content.Load<SpriteFont>("UI/Font");
             particleTex = content.Load<Texture2D>("UI/exp");
-
+            gridSelectionOverlay = content.Load<Texture2D>("abilityOverlay");
             lightMask = content.Load<Texture2D>("lightmask");
             sightMask = content.Load<Texture2D>("lightmask");
             lightMaskWidthInTilesDividedByTwo = lightMask.Width / (2 * CELLWIDTH);
@@ -211,6 +212,7 @@ namespace Brogue.Engine
             uisb.Draw(inventory, new Vector2(game.Width / 2 - inventory.Width / 2, game.Height - 100), Color.White);
             uisb.Draw(jar, new Vector2(game.Width - 50 - jar.Width, game.Height / 2 - jar.Height / 2), Color.White);
             uisb.Draw(bar, new Vector2(game.Width - 50 - jar.Width, game.Height / 2 - bar.Height / 2), Color.White);
+
             DrawMiniMap(uisb);
             DrawLog(uisb);
         }
@@ -338,6 +340,11 @@ namespace Brogue.Engine
                         null,
                         worldToView);
             currentLevel.render();
+            foreach (IntVec iv in gridSelection)
+            {
+                game.spriteBatch.Draw(gridSelectionOverlay, new Rectangle(iv.X * CELLWIDTH, iv.Y * CELLWIDTH, CELLWIDTH, CELLWIDTH), 
+                    new Rectangle(0, 0, CELLWIDTH, CELLWIDTH), Color.White, 0, new Vector2(CELLWIDTH / 2, CELLWIDTH / 2), SpriteEffects.None, 0);
+            }
             game.spriteBatch.End();
 
             //Draw both to screen.
