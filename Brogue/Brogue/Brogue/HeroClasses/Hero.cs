@@ -159,7 +159,6 @@ namespace Brogue.HeroClasses
                         mapLevel.DroppedItems.Add(tempItem, itemPosition);
                     }
                 }
-
                 else if (Mapping.KeyboardController.IsPressed(Keys.D1))
                 {
                     abilities = new Ability[2];
@@ -172,10 +171,15 @@ namespace Brogue.HeroClasses
 
             if (viewingCast)
             {
-                IntVec[] castSquares = abilities[0].viewCastRange(mapLevel, mapLevel.CharacterEntities.FindPosition(this));
+                IntVec test = new IntVec(mapLevel.CharacterEntities.FindPosition(this).X+1, mapLevel.CharacterEntities.FindPosition(this).Y);
+                IntVec[] castSquares = abilities[0].viewCastRange(mapLevel, test);
                 for (int i = 0; i < castSquares.Length; i++)
                 {
                     Engine.Engine.Draw(castingSprite, castSquares[i]);
+                }
+                if (Mapping.KeyboardController.IsPressed(Keys.D2))
+                {
+                    viewingCast = !viewingCast;
                 }
             }
 
