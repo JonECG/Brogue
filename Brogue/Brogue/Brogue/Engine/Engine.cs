@@ -155,7 +155,7 @@ namespace Brogue.Engine
             currentLevel = LevelGenerator.generate(1337, 20);
             Log("Level generated.");
             hero = new HeroClasses.Mage();
-            currentLevel.CharacterEntities.Add(hero, currentLevel.findRandomOpenPosition());
+            currentLevel.CharacterEntities.Add(hero, currentLevel.GetStartPoint());
         }
 
         public static void StartGame()
