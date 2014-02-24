@@ -233,12 +233,12 @@ namespace Brogue.Mapping
 
         private static void populateEnvironmentObjects(__FloorPlan.__Room room, GridBoundList<IEnvironmentObject> environ, Random rand)
         {
-            switch (room.type)
-            {
-                //case __FloorPlan.__Room.__RoomType.DOORWAY:
-                //    environ.Add(new ColorEnvironment(Color.Magenta, true), new IntVec(room.dimensions.X, room.dimensions.Y));
-                //    break;
-            }
+            //switch (room.type)
+            //{
+            //    //case __FloorPlan.__Room.__RoomType.DOORWAY:
+            //    //    environ.Add(new ColorEnvironment(Color.Magenta, true), new IntVec(room.dimensions.X, room.dimensions.Y));
+            //    //    break;
+            //}
         }
 
         private static void populateInteractiveEnvironmentObjects(__FloorPlan.__Room room, GridBoundList<Iinteractable> interact, Random rand)
