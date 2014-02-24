@@ -46,8 +46,8 @@ namespace Brogue.EnviromentObjects.Interactive
 
         public void LoadContent(ContentManager content)
         {
-            spriteOne = content.Load<Texture2D>("SwichUP.png");
-            spriteTwo = content.Load<Texture2D>("SwichDown.png");
+            spriteOne = content.Load<Texture2D>("Enviroment/SwichUP");
+            spriteTwo = content.Load<Texture2D>("Enviroment/SwichDown");
         }
         
         public void actOn()
@@ -118,7 +118,7 @@ namespace Brogue.EnviromentObjects.Interactive
 
         public void LoadContent(ContentManager content)
         {
-            sprite = content.Load<Texture2D>("levelTileset");
+            sprite = content.Load<Texture2D>("Enviroment/Presser Plate");
         }
 
         public bool IsSolid()
