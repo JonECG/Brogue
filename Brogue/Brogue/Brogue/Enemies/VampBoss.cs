@@ -35,6 +35,7 @@ namespace Brogue.Enemies
                 foreach (GameCharacter g in targets)
                 {
                     g.TakeDamage(attacks[1], this);
+                    health = (health * 4) / 5;
                 }
             }
             else
@@ -42,6 +43,8 @@ namespace Brogue.Enemies
                 targets[0].TakeDamage(attacks[0], this);
                 Heal(attacks[0] / 10);
             }
+
+            
         }
 
         public override void Aggro(Level level)
@@ -58,34 +61,18 @@ namespace Brogue.Enemies
 
         public override void BuildBoss(int i)
         {
-            throw new NotImplementedException();
+            health = 50 + 20 * i;
+            maxHealth = health;
+            defense = 10 + 5 * i;
+            if (defense > 50)
+                defense = 50;
+            attacks.Add(10 + i * 2);
+            attacks.Add(10 + i * 3);
         }
 
         protected override void Die()
         {
             throw new NotImplementedException();
-        }
-
-        private IntVec FindNearestTarget(IEnumerable<GameCharacter> chars, Level level)
-        {
-            IntVec target = null;
-
-            foreach (GameCharacter g in chars)
-            {
-                int gRange = AStar.getCost(AStar.getPathBetween(level, this.position, g.position));
-                int targetRange = AStar.getCost(AStar.getPathBetween(level, this.position, target));
-
-                if (target != null && gRange < targetRange)
-                {
-                    target = g.position;
-                }
-                else
-                {
-                    target = g.position;
-                }
-            }
-
-            return target;
         }
     }
 }

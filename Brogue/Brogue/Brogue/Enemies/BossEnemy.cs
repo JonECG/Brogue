@@ -11,9 +11,9 @@ namespace Brogue.Enemies
     {
         protected List<GameCharacter> targets;
         protected List<int> attacks;
+        protected List<int> attackranges;
         protected int defense;
         protected int moveSpeed;
-        protected int attackRange1, attackRange2, attackRange3;
 
         public bool IsAggro
         {
@@ -57,6 +57,29 @@ namespace Brogue.Enemies
                 health = 0;
                 Die();
             }
+        }
+
+        //Boss specific method
+        protected IntVec FindNearestTarget(IEnumerable<GameCharacter> chars, Level level)
+        {
+            IntVec target = null;
+
+            foreach (GameCharacter g in chars)
+            {
+                int gRange = AStar.getCost(AStar.getPathBetween(level, this.position, g.position));
+                int targetRange = AStar.getCost(AStar.getPathBetween(level, this.position, target));
+
+                if (target != null && gRange < targetRange)
+                {
+                    target = g.position;
+                }
+                else
+                {
+                    target = g.position;
+                }
+            }
+
+            return target;
         }
     }
 }
