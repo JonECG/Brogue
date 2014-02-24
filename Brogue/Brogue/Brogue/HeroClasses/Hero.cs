@@ -178,6 +178,7 @@ namespace Brogue.HeroClasses
                 
                 if (Mapping.KeyboardController.IsPressed(Keys.D2))
                 {
+                    Engine.Engine.ClearGridSelections();
                     viewingCast = !viewingCast;
                 }
             }
