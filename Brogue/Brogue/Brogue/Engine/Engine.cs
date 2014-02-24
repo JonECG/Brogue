@@ -40,7 +40,7 @@ namespace Brogue.Engine
         }
     }
 
-    class Engine
+    partial class Engine
     {
         public const bool DOLIGHTING = true;
         public const bool DOAUDIO = true;
@@ -166,7 +166,7 @@ namespace Brogue.Engine
 
         public static void GenerateLevel()
         {
-            currentLevel = LevelGenerator.generate(802, 200);
+            currentLevel = LevelGenerator.generate(802, 2000);
             Log("Level generated.");
             hero = new HeroClasses.Mage();
             currentLevel.CharacterEntities.Add(hero, currentLevel.GetStartPoint());
