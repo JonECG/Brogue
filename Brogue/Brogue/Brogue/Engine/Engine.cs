@@ -166,7 +166,7 @@ namespace Brogue.Engine
 
         public static void GenerateLevel()
         {
-            currentLevel = LevelGenerator.generate(1337, 20);
+            currentLevel = LevelGenerator.generate(802, 200);
             Log("Level generated.");
             hero = new HeroClasses.Mage();
             currentLevel.CharacterEntities.Add(hero, currentLevel.GetStartPoint());
@@ -231,9 +231,9 @@ namespace Brogue.Engine
                 }
             }
 
-            foreach (IntVec position in currentLevel.Environment.Positions())
+            foreach (IntVec position in currentLevel.InteractableEnvironment.Positions())
             {
-                //DrawPoint(uisb, offset + position*2, size, Color.Magenta);
+                DrawPoint(uisb, offset + position*2, size, Color.Magenta);
             }
 
             foreach (IntVec position in currentLevel.DroppedItems.Positions())

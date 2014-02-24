@@ -55,7 +55,7 @@ namespace Brogue.Mapping
             {
                 Item item = Item.randomItem(10, 10);
 
-                Engine.Engine.Log(string.Format("Item Generated: {0}", item.Name));
+                //Engine.Engine.Log(string.Format("Item Generated: {0}", item.Name));
 
                 DroppedItems.Add(item, findRandomOpenPosition());
             }
@@ -270,24 +270,24 @@ namespace Brogue.Mapping
             //    pair.Item2.Y += pair.Item1.GetSprite().Direction.Y;
             //}
 
-            foreach (IntVec vec in moveset)
-            {
-                Engine.Engine.Draw(new Sprite(Engine.Engine.placeHolder, Color.Bisque), vec); //Orange
-                //sb.Draw(Tile.tileset, new Rectangle((int)(vec.X * tileWidth), (int)(vec.Y * tileWidth), (int)Math.Ceiling(tileWidth), (int)Math.Ceiling(tileWidth)), new Rectangle(0, 0, 48, 48), Color.Blue);
-            }
+            //foreach (IntVec vec in moveset)
+            //{
+            //    Engine.Engine.Draw(new Sprite(Engine.Engine.placeHolder, Color.Bisque), vec); //Orange
+            //    //sb.Draw(Tile.tileset, new Rectangle((int)(vec.X * tileWidth), (int)(vec.Y * tileWidth), (int)Math.Ceiling(tileWidth), (int)Math.Ceiling(tileWidth)), new Rectangle(0, 0, 48, 48), Color.Blue);
+            //}
 
 
-            path = AStar.getPathBetween(this, a, b);
+            //path = AStar.getPathBetween(this, a, b);
 
-            IntVec current = new IntVec(a.X, a.Y);
-            foreach (Direction dir in path)
-            {
-                current += dir;
-                Engine.Engine.Draw( new Sprite( Engine.Engine.placeHolder, Color.Orange, dir ), new IntVec(current.X, current.Y) ); //Orange
-            }
+            //IntVec current = new IntVec(a.X, a.Y);
+            //foreach (Direction dir in path)
+            //{
+            //    current += dir;
+            //    Engine.Engine.Draw( new Sprite( Engine.Engine.placeHolder, Color.Orange, dir ), new IntVec(current.X, current.Y) ); //Orange
+            //}
 
-            Engine.Engine.Draw(new Sprite( Engine.Engine.placeHolder, Color.Green ), new IntVec(a.X, a.Y) ); //Green
-            Engine.Engine.Draw(new Sprite( Engine.Engine.placeHolder, Color.Red ), new IntVec(b.X, b.Y) ); //Red
+            //Engine.Engine.Draw(new Sprite( Engine.Engine.placeHolder, Color.Green ), new IntVec(a.X, a.Y) ); //Green
+            //Engine.Engine.Draw(new Sprite( Engine.Engine.placeHolder, Color.Red ), new IntVec(b.X, b.Y) ); //Red
 
 
             //var nodes = AStar.getPathDrawnBetween(this, a, b, actionsToTake);

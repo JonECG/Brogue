@@ -92,6 +92,8 @@ namespace Brogue.Mapping
             public Tile[,] tiles;
             public __Room[] rooms;
 
+            public int hallstart;
+
             public __FloorPlan( bool[,] isFloor )
             {
                 this.isFloor = isFloor;
@@ -105,6 +107,12 @@ namespace Brogue.Mapping
                     {
                         tiles[x, y] = new Tile(!isFloor[x, y]);
                     }
+                }
+
+                for (int i = 0; i < rooms.Length; i++)
+                {
+                    if (rooms[i].type != __Room.__RoomType.DOORWAY && rooms[i].type != __Room.__RoomType.HALLWAY)
+                        hallstart = i;
                 }
             }
 
@@ -216,12 +224,24 @@ namespace Brogue.Mapping
             GridBoundList<ILightSource> lightSources = new GridBoundList<ILightSource>();
             GridBoundList<GameCharacter> characters = new GridBoundList<GameCharacter>();
 
-            int entryRoom = rand.Next( floorPlan.rooms.Length );
+            int entryRoom = rand.Next( floorPlan.hallstart );
+            while (/*floorPlan.rooms[entryRoom].type != __FloorPlan.__Room.__RoomType.FOYER &&*/ floorPlan.rooms[entryRoom].type != __FloorPlan.__Room.__RoomType.TREASURE_ROOM )
+            {
+                entryRoom = (entryRoom + 1) % floorPlan.hallstart;
+            }
             __FloorPlan.__Room start = floorPlan.rooms[entryRoom];
             IntVec startPoint = start.GetCenter();
-            start.type = __FloorPlan.__Room.__RoomType.EMPTY;
-            __FloorPlan.__Room end = floorPlan.rooms[(entryRoom + floorPlan.rooms.Length / 2) % floorPlan.rooms.Length ];
-            end.type = __FloorPlan.__Room.__RoomType.EMPTY;
+            Engine.Engine.Log( string.Format( "Start point: <{0}, {1}>", startPoint.X, startPoint.Y) );
+            floorPlan.rooms[entryRoom].type = __FloorPlan.__Room.__RoomType.EMPTY;
+
+            int endRoom = (entryRoom + floorPlan.hallstart / 2) % floorPlan.hallstart;
+            while (/*floorPlan.rooms[endRoom].type != __FloorPlan.__Room.__RoomType.FOYER &&*/ floorPlan.rooms[endRoom].type != __FloorPlan.__Room.__RoomType.TREASURE_ROOM)
+            {
+                endRoom = (endRoom + 1) % floorPlan.hallstart;
+            }
+            __FloorPlan.__Room end = floorPlan.rooms[ endRoom ];
+            floorPlan.rooms[endRoom].type = __FloorPlan.__Room.__RoomType.EMPTY;
+            Engine.Engine.Log(string.Format("End point: <{0}, {1}>", end.GetCenter().X, end.GetCenter().Y));
             interactableEnvironment.Add( new ColorEnvironment(Color.Blue, true), end.GetCenter());
 
 
