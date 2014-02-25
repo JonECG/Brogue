@@ -53,7 +53,7 @@ namespace Brogue.TestCases
             spriteBatch = new SpriteBatch(GraphicsDevice);
             Random rand = new Random();
             currentLevel = LevelGenerator.generate(rand.Next(), 10);
-            Tile.tileset = Content.Load<Texture2D>("levelTileset");
+            //Tile.tileset = Content.Load<Texture2D>("levelTileset");
             
             // TODO: use this.Content to load your game content here
         }

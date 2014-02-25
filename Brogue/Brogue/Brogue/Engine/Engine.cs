@@ -195,7 +195,7 @@ namespace Brogue.Engine
 
         public static void Draw(Sprite sprite, IntVec destination)
         {
-            if (IsTileInView(destination) && sprite.IsVisible && sprite.Texture.texture == null)
+            if (IsTileInView(destination) && sprite.IsVisible && sprite.Texture.texture != null)
             {
                 game.spriteBatch.Draw(sprite.Texture.texture, new Rectangle(destination.X * CELLWIDTH, destination.Y * CELLWIDTH, CELLWIDTH, CELLWIDTH), new Rectangle(sprite.SourceTile.X * CELLWIDTH, sprite.SourceTile.Y * CELLWIDTH, CELLWIDTH, CELLWIDTH), sprite.Blend, sprite.Direction, new Vector2(CELLWIDTH / 2, CELLWIDTH / 2), SpriteEffects.None, 0);
             }

@@ -57,14 +57,8 @@ namespace Brogue
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            try
-            {
-                Engine.Engine.Start(this);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine( e.InnerException );
-            }
+            
+            Engine.Engine.Start(this);
 
             base.Initialize();
         }
