@@ -310,7 +310,7 @@ namespace Brogue.Engine
             currentLevel.render();
             foreach (IntVec iv in gridSelection)
             {
-                game.spriteBatch.Draw(gridSelectionOverlay, new Rectangle(iv.X * CELLWIDTH, iv.Y * CELLWIDTH, CELLWIDTH, CELLWIDTH), 
+                game.spriteBatch.Draw(gridSelectionOverlay.texture, new Rectangle(iv.X * CELLWIDTH, iv.Y * CELLWIDTH, CELLWIDTH, CELLWIDTH), 
                     new Rectangle(0, 0, CELLWIDTH, CELLWIDTH), Color.White, 0, new Vector2(CELLWIDTH / 2, CELLWIDTH / 2), SpriteEffects.None, 0);
             }
             game.spriteBatch.End();
