@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Brogue.Mapping
 {
-    class ColorEnvironment : IEnvironmentObject, Iinteractable, ILightSource
+    class ColorEnvironment : IEnvironmentObject, IInteractable, ILightSource
     {
         Color color;
         bool solid;
@@ -24,7 +24,7 @@ namespace Brogue.Mapping
             return solid;
         }
 
-        public void actOn()
+        public void actOn( GameCharacter character )
         {
             color = new Color(color.G, color.B, color.R);
         }

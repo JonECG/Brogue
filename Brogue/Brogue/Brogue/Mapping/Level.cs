@@ -18,7 +18,7 @@ namespace Brogue.Mapping
         public GridBoundList<IEnvironmentObject> Environment { get; private set; }
         //List<Tuple<IEnvironmentObject, IntVec>> environment;
 
-        public GridBoundList<Iinteractable> InteractableEnvironment { get; private set; }
+        public GridBoundList<IInteractable> InteractableEnvironment { get; private set; }
         //public GridBoundList<IRenderableIEnvironmentObject> DroppedItems { get; private set; }
 
         public GridBoundList<ILightSource> LightSources { get; private set; }
@@ -33,7 +33,7 @@ namespace Brogue.Mapping
 
         static Random statRand = new Random();
 
-        public Level(IntVec startPoint, Tile[,] tiles, GridBoundList<IEnvironmentObject> environment, GridBoundList<Iinteractable> interact, GridBoundList<ILightSource> light, GridBoundList<GameCharacter> characterEntities)
+        public Level(IntVec startPoint, Tile[,] tiles, GridBoundList<IEnvironmentObject> environment, GridBoundList<IInteractable> interact, GridBoundList<ILightSource> light, GridBoundList<GameCharacter> characterEntities)
         {
             this.tiles = tiles;
             this.startPoint = startPoint;
@@ -191,7 +191,7 @@ namespace Brogue.Mapping
                     cachedSolid[enviro.Item2.X, enviro.Item2.Y] |= enviro.Item1.IsSolid();
                 }
 
-                foreach (Tuple<Iinteractable, IntVec> enviro in InteractableEnvironment.Tuples())
+                foreach (Tuple<IInteractable, IntVec> enviro in InteractableEnvironment.Tuples())
                 {
                     cachedSolid[enviro.Item2.X, enviro.Item2.Y] |= enviro.Item1.IsSolid();
                 }

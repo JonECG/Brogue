@@ -220,7 +220,7 @@ namespace Brogue.Mapping
             __FloorPlan floorPlan = createFloorPlan(rand, levels);
 
             GridBoundList<IEnvironmentObject> environment = new GridBoundList<IEnvironmentObject>();
-            GridBoundList<Iinteractable> interactableEnvironment = new GridBoundList<Iinteractable>();
+            GridBoundList<IInteractable> interactableEnvironment = new GridBoundList<IInteractable>();
             GridBoundList<ILightSource> lightSources = new GridBoundList<ILightSource>();
             GridBoundList<GameCharacter> characters = new GridBoundList<GameCharacter>();
 
@@ -276,7 +276,7 @@ namespace Brogue.Mapping
             //}
         }
 
-        private static void populateInteractiveEnvironmentObjects(__FloorPlan.__Room room, GridBoundList<Iinteractable> interact, Random rand)
+        private static void populateInteractiveEnvironmentObjects(__FloorPlan.__Room room, GridBoundList<IInteractable> interact, Random rand)
         {
             switch (room.type)
             {

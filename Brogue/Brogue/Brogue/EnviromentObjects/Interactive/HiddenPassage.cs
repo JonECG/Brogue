@@ -6,6 +6,7 @@ using Brogue;
 using Brogue.Mapping;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Brogue.Engine;
 
 
 namespace Brogue.EnviromentObjects.Interactive
