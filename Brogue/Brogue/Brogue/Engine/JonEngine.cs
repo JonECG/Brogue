@@ -48,22 +48,27 @@ namespace Brogue.Engine
         //    uisb.Draw(Tile.tileset, new Rectangle(position.X, position.Y, size.X, size.Y), new Rectangle(5, 5, 1, 1), color);
         //}
 
-        static Dictionary<string, DynamicTexture> textureDictionary = new Dictionary<string, DynamicTexture>();
-        static List<string> subscribed = new List<string>();
 
+        static Dictionary<string, DynamicTexture> textureDictionary;
+        static List<string> subscribed;
 
         public static DynamicTexture GetTexture(string path)
         {
+            textureDictionary = textureDictionary ?? new Dictionary<string, DynamicTexture>();
+            subscribed = subscribed ?? new List<string>();
+
             DynamicTexture result = null;
-            if (contentManager == null)
+
+            if (!textureDictionary.TryGetValue(path, out result))
             {
-                result = new DynamicTexture();
-                textureDictionary.Add(path, result);
-                subscribed.Add(path);
-            }
-            else
-            {
-                if (!textureDictionary.TryGetValue(path, out result))
+                if (contentManager == null)
+                {
+
+                    result = new DynamicTexture();
+                    textureDictionary.Add(path, result);
+                    subscribed.Add(path);
+                }
+                else
                 {
                     textureDictionary.Add(path, new DynamicTexture(contentManager.Load<Texture2D>(path)));
                 }

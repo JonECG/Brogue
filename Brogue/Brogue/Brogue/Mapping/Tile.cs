@@ -17,7 +17,7 @@ namespace Brogue.Mapping
         public static DynamicTexture tileset = Engine.Engine.GetTexture("levelTileset");
 
         public static DynamicTexture floorTileset = Engine.Engine.GetTexture("floorTileset");
-        public static DynamicTexture wallTileset = Engine.Engine.GetTexture("wallTileset");
+        public static DynamicTexture wallTileset = Engine.Engine.GetTexture("dynamicTileset");
 
         public Tile(bool isSolid = false, int solidNeighbors = 0)
         {
