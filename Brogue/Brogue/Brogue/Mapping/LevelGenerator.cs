@@ -1,4 +1,6 @@
-﻿using Brogue.EnviromentObjects.Interactive;
+﻿using Brogue.Engine;
+using Brogue.EnviromentObjects.Decorative;
+using Brogue.EnviromentObjects.Interactive;
 using Brogue.Items;
 using Microsoft.Xna.Framework;
 using System;
@@ -289,8 +291,8 @@ namespace Brogue.Mapping
                     {
                         items[i] = Item.randomItem(10, 10);
                     }
-                    //interact.Add(new Chest(items), room.GetCenter());
-                    interact.Add(new ColorEnvironment( Color.Brown, true ), room.GetCenter());
+                    interact.Add(new Chest(items), room.GetCenter());
+                    //interact.Add(new ColorEnvironment( Color.Brown, true ), room.GetCenter());
                     break;
             }
         }
@@ -299,8 +301,9 @@ namespace Brogue.Mapping
         {
             foreach (var position in room.GetWalls())
             {
-                if ( rand.NextDouble() > 0.98 )
-                    lights.Add(new ColorEnvironment(new Color(rand.Next(100,256), rand.Next(100,256), rand.Next(100,256)), false), position);
+                if (rand.NextDouble() > 0.98)
+                    lights.Add(new Tourch(Direction.RIGHT, new Color(255,155,55)),position);
+                    //lights.Add(new ColorEnvironment(new Color(rand.Next(100,256), rand.Next(100,256), rand.Next(100,256)), false), position);
             }
             switch (room.type)
             {
