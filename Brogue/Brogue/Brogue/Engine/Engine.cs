@@ -75,7 +75,7 @@ namespace Brogue.Engine
         static SpriteFont font;
         static List<IntVec> gridSelection = new List<IntVec>();
 
-        public static Texture2D placeHolder;
+        public static DynamicTexture placeHolder = GetTexture("placeholder");
 
         public static Level currentLevel;
 
@@ -213,7 +213,7 @@ namespace Brogue.Engine
             uisb.Draw(jar, new Vector2(game.Width - 50 - jar.Width, game.Height / 2 - jar.Height / 2), Color.White);
             uisb.Draw(bar, new Vector2(game.Width - 50 - jar.Width, game.Height / 2 - bar.Height / 2), Color.White);
 
-            DrawMiniMap(uisb);
+            //DrawMiniMap(uisb);
             DrawLog(uisb);
         }
 
