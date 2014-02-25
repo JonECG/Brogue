@@ -19,7 +19,7 @@ namespace Brogue.Enemies
                 {
                     for (int i = 0; i < path.Length - range; i++)
                     {
-                        Move(path[i]);
+                        Move(path[i], level);
                     }
                     Attack();
                 }
@@ -27,7 +27,7 @@ namespace Brogue.Enemies
                 {
                     for (int i = 0; i < moveSpeed; i++)
                     {
-                        Move(path[i]);
+                        Move(path[i], level);
                     }
                 }
             }

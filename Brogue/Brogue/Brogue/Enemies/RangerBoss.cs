@@ -38,7 +38,11 @@ namespace Brogue.Enemies
                     }
                 }
             }
-            position = targetPos;
+            Direction[] path = AStar.getPathBetween(level, position, targetPos);
+            foreach (Direction d in path)
+            {
+                Move(d, level);
+            }
         }
 
         public override void Aggro(Level level)

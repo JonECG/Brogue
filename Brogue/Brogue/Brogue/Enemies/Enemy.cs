@@ -26,8 +26,9 @@ namespace Brogue.Enemies
         }
 
         //Movement method, moves a single square
-        public void Move(Direction d)
+        public void Move(Direction d, Level level)
         {
+            level.Move(this, d);
             position.X += d.X;
             position.Y += d.Y;
         }

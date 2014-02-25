@@ -26,8 +26,7 @@ namespace Brogue.Enemies
                     {
                         if (!(position.X + d.X == targets[0].position.X && position.Y + d.Y == targets[0].position.Y))
                         {
-                            position.X += d.X;
-                            position.Y += d.Y;
+                            Move(d, level);
                         }
                     }
                     targets[0].TakeDamage(attacks[1], this);
@@ -36,8 +35,7 @@ namespace Brogue.Enemies
                 {
                     for (int i = 0; i < moveSpeed; i++)
                     {
-                        position.X += path[i].X;
-                        position.Y += path[i].Y;
+                        Move(path[i], level);
                     }
                 }
             }

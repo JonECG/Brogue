@@ -44,7 +44,7 @@ namespace Brogue.Enemies
                 Heal(attacks[0] / 10);
             }
 
-            position = level.findRandomOpenPosition(this.position, 6);
+            level.Move(this, level.findRandomOpenPosition(this.position, 4), true);
         }
 
         public override void Aggro(Level level)
