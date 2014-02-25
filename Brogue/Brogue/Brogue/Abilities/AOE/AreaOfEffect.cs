@@ -11,8 +11,6 @@ namespace Brogue.Abilities.AOE
 {
     public abstract class AreaOfEffect : Ability
     {
-        public int width, height;
 
-        public abstract override IntVec viewCastingSquares(Direction directionFacing);
     }
 }

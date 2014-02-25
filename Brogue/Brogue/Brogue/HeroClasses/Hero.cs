@@ -25,39 +25,42 @@ namespace Brogue.HeroClasses
         protected int numAbilities = 0;
         protected int armorRating;
         protected int experience = 0;
-        protected int expRequired = 300;
-        protected float directionFacing;
+        protected int expRequired = 100;
         protected Ability[] abilities;
         static Sprite sprite;
         static Sprite castingSprite;
-        public static Texture2D abilitySprite;
+        public static DynamicTexture abilitySprite;
         protected Equipment currentlyEquippedItems = new Equipment();
         protected Inventory inventory = new Inventory();
         //Variable for testing, delete
         private static int testHealth;
         private static bool viewingCast = false;
 
+        public Hero()
+        {
+            level = 1;
+            numAbilities = 0;
+            experience = 0;
+            expRequired = 100;
+        }
+
         public IntVec move(Direction dir)
         {
             IntVec positionMovement = new IntVec(0, 0);
             if (dir == Direction.RIGHT)
             {
-                directionFacing = 0;
                 positionMovement = new IntVec(1, 0);
             }
             if (dir == Direction.DOWN)
             {
-                directionFacing = (float)(Math.PI / 2);
                 positionMovement = new IntVec(0, 1);
             }
             if (dir == Direction.LEFT)
             {
-                directionFacing = (float)(Math.PI);
                 positionMovement = new IntVec(-1, 0);
             }
             if (dir == Direction.UP)
             {
-                directionFacing = (float)(3 * Math.PI / 2);
                 positionMovement = new IntVec(0, -1);
             }
             sprite.Direction = dir;
@@ -103,6 +106,17 @@ namespace Brogue.HeroClasses
             testHealth = maxHealth;
         }
 
+        private void resetLevel()
+        {
+            if (experience >= expRequired)
+            {
+                int addedExp = experience - expRequired;
+                level += 1;
+                experience = 0 + addedExp;
+                expRequired = 1000 + 50 * (level-1);
+            }
+        }
+
         public override bool TakeTurn(Mapping.Level mapLevel)
         {
             bool turnOver = false;
@@ -114,6 +128,7 @@ namespace Brogue.HeroClasses
             }*/
             resetArmor();
             resetHealth();
+            resetLevel();
             if (!casting && !viewingCast)
             {
                 if (Mapping.KeyboardController.IsTyped(Keys.A))
@@ -171,12 +186,11 @@ namespace Brogue.HeroClasses
 
             if (viewingCast)
             {
-                IntVec test = new IntVec(mapLevel.CharacterEntities.FindPosition(this).X+1, mapLevel.CharacterEntities.FindPosition(this).Y);
-                IntVec[] castSquares = abilities[0].viewCastRange(mapLevel, test);
+                IntVec[] castSquares = abilities[0].viewCastRange(mapLevel, mapLevel.CharacterEntities.FindPosition(this));
                 Engine.Engine.ClearGridSelections();
                 Engine.Engine.AddGridSelections(castSquares);
                 
-                if (Mapping.KeyboardController.IsPressed(Keys.D2))
+                if (Mapping.KeyboardController.IsReleased(Keys.D1))
                 {
                     Engine.Engine.ClearGridSelections();
                     viewingCast = !viewingCast;
@@ -188,7 +202,10 @@ namespace Brogue.HeroClasses
         }
 
         //public void castAbility(int ability)
-        //public void attack();
+        public void attack()
+        {
+
+        }
         //public void useItem();
         //public void cooldownAbilities()
         //{

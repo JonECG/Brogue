@@ -13,43 +13,29 @@ namespace Brogue.Abilities.Damaging.SingleTargets
     class Cleave : SingleTarget
     {
         private int baseDamage = 5;
+        IntVec[] castSquares = new IntVec[3];
 
         public override IntVec[] viewCastRange(Level level, IntVec start)
         {
+            foreach (IntVec vec in castSquares)
+                castSquares = null;
             radius = 2;
             IntVec[] test = AStar.getPossiblePositionsFrom(level, start, radius);
             return test;
         }
 
-        public override IntVec viewCastingSquares(Direction directionFacing)
-        {
-
-            if (directionFacing == Direction.RIGHT)
-            {
-                width = 1;
-                height = 3;
-                startingPoint = new IntVec(1,0);
-            }
-            if (directionFacing == Direction.DOWN)
-            {
-                width = 3;
-                height = 1;
-                startingPoint = new IntVec(0, -1);
-            }
-            if (directionFacing == Direction.LEFT)
-            {
-                width = 1;
-                height = 3;
-                startingPoint = new IntVec(-1, 0);
-            }
-            if (directionFacing == Direction.UP)
-            {
-                width = 3;
-                height = 1;
-                startingPoint = new IntVec(0, 1);
-            }
-            return startingPoint;
-        }
+        //public override IntVec viewCastingSquares(Mouse cursorPosition)
+        //{
+        //    IntVec mouse = new IntVec(cursorPosition.X, cursorPosition.Y);
+        //    for (int i = 0; i < castSquares.Length; i++)
+        //    {
+        //        if (castSquares[i] == null && !castSquares.Contains(mouse))
+        //        {
+        //            castSquares[i] = mouse;
+        //        }
+        //    }
+        //    return startingPoint;
+        //}
 
         public override int finishCastandDealDamage(int heroLevel, int heroDamage)
         {

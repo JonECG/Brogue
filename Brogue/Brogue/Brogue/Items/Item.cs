@@ -29,7 +29,7 @@ namespace Brogue.Items
 
         public abstract DynamicTexture GetTexture();
 
-        static public Item()
+        static Item()
         {
             Items.Consumables.Potion.Texture = Engine.Engine.GetTexture("Items/Potion");
 

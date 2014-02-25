@@ -11,7 +11,6 @@ namespace Brogue.HeroClasses
         public Warrior()
         {
             numAbilities = 2;
-            directionFacing = (float)(3*Math.PI/2);
             position = new IntVec(0, 0);
         }
     }
