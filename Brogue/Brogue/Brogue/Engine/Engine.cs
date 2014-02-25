@@ -9,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Brogue.EnviromentObjects.Interactive;
+using Brogue.EnviromentObjects.Decorative;
 
 
 namespace Brogue.Engine
@@ -69,6 +71,7 @@ namespace Brogue.Engine
         private static Texture2D gridSelectionOverlay;
 
         static Texture2D jar, bar, healthcontainer, healthbar, xpbar, inventory;
+        
         static SpriteFont font;
         static List<IntVec> gridSelection = new List<IntVec>();
 
@@ -76,6 +79,9 @@ namespace Brogue.Engine
 
         public static Level currentLevel;
 
+        //static Texture2D door, tourch, plant, chest;//Enviroment Objects
+        public Door door;
+        public Tourch tourch;
 
         private static Song backgroundSong;
 
@@ -133,8 +139,14 @@ namespace Brogue.Engine
             sightMask = content.Load<Texture2D>("lightmask");
             lightMaskWidthInTilesDividedByTwo = lightMask.Width / (2 * CELLWIDTH);
             placeHolder = content.Load<Texture2D>("placeholder");
-            Sprite.LoadContent(content);
 
+            Door.LoadContent(content);
+            Tourch.LoadContent(content);
+            Chair.LoadContent(content);
+            Plant.LoadContent(content);
+            Chest.LoadContent(content);
+
+            Sprite.LoadContent(content);
             Level.LoadContent(content);
             HeroClasses.Hero.LoadContent(content);
             Items.Item.LoadContent(content);
