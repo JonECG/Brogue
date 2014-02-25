@@ -14,20 +14,40 @@ namespace Brogue.Enemies
             if (Aggro(level))
             {
                 Direction[] path = AStar.getPathBetween(level, this.position, target.position);
-                if (path.Length - range <= moveSpeed)
+                if (path != null)
                 {
-                    for (int i = 0; i < path.Length - range; i++)
+                    if (path.Length - range <= moveSpeed)
                     {
-                        Move(path[i], level);
+                        for (int i = 0; i < path.Length - range; i++)
+                        {
+                            Move(path[i], level);
+                        }
+                        Attack();
                     }
-                    Attack();
+                    else
+                    {
+                        for (int i = 0; i < moveSpeed; i++)
+                        {
+                            Move(path[i], level);
+                        }
+                    }
                 }
                 else
                 {
-                    for (int i = 0; i < moveSpeed; i++)
+                    IntVec[] possible = AStar.getPossiblePositionsFrom(level, position, moveSpeed);
+                    IntVec targetPos = null;
+                    foreach (IntVec pos in possible)
                     {
-                        Move(path[i], level);
+                        if (targetPos == null)
+                        {
+                            targetPos = pos;
+                        }
+                        else if (AStar.getCost(AStar.getPathBetween(level, position, targetPos)) > AStar.getCost(AStar.getPathBetween(level, position, pos)))
+                        {
+                            targetPos = pos;
+                        }
                     }
+                    level.Move(this, targetPos, true);
                 }
             }
             else
@@ -74,6 +94,7 @@ namespace Brogue.Enemies
             attack = 5 + (4 * i);
             health = 10 + (7 * i);
             moveSpeed = 5 + (2 * i);
+            exp = 7 + 3 * i;
         }
 
         protected override void Die()

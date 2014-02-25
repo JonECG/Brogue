@@ -19,6 +19,7 @@ namespace Brogue.Enemies
         protected int moveSpeed;
         protected int range;
         protected int aggroRange;
+        protected int exp;
 
         public bool IsAggro
         {

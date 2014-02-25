@@ -66,6 +66,7 @@ namespace Brogue.Enemies
             attack = 8 + (8 * i);
             health = 5 + (5 * i);
             moveSpeed = 0;
+            exp = 10 + 3 * i;
         }
 
         protected override void Die()

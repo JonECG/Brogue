@@ -17,54 +17,53 @@ namespace Brogue.Enemies
 
             Aggro(level);
 
-            if (turnCounter % 3 == 0)
+            if (AStar.getPathBetween(level, position, targets[0].position) == null)
             {
-                Direction[] path = AStar.getPathBetween(level, this.position, targets[0].position);
-                if (AStar.getCost(path) <= moveSpeed+1)
+                if (turnCounter % 3 == 0)
                 {
-                    foreach (Direction d in path)
+                    Direction[] path = AStar.getPathBetween(level, this.position, targets[0].position);
+                    if (AStar.getCost(path) <= moveSpeed + 1)
                     {
-                        if (!(position.X + d.X == targets[0].position.X && position.Y + d.Y == targets[0].position.Y))
+                        foreach (Direction d in path)
                         {
-                            Move(d, level);
+                            if (!(position.X + d.X == targets[0].position.X && position.Y + d.Y == targets[0].position.Y))
+                            {
+                                Move(d, level);
+                            }
+                        }
+                        targets[0].TakeDamage(attacks[1], this);
+                    }
+                    else
+                    {
+                        for (int i = 0; i < moveSpeed; i++)
+                        {
+                            Move(path[i], level);
                         }
                     }
-                    targets[0].TakeDamage(attacks[1], this);
                 }
                 else
                 {
-                    for (int i = 0; i < moveSpeed; i++)
+                    Direction[] path = AStar.getPathBetween(level, this.position, targets[0].position);
+                    if (AStar.getCost(path) <= moveSpeed + 1)
                     {
-                        Move(path[i], level);
-                    }
-                }
-            }
-            else
-            {
-                Direction[] path = AStar.getPathBetween(level, this.position, targets[0].position);
-                if (AStar.getCost(path) <= moveSpeed + 1)
-                {
-                    foreach (Direction d in path)
-                    {
-                        if (!(position.X + d.X == targets[0].position.X && position.Y + d.Y == targets[0].position.Y))
+                        foreach (Direction d in path)
                         {
-                            position.X += d.X;
-                            position.Y += d.Y;
+                            if (!(position.X + d.X == targets[0].position.X && position.Y + d.Y == targets[0].position.Y))
+                            {
+                                Move(d, level);
+                            }
+                        }
+                        targets[0].TakeDamage(attacks[0], this);
+                    }
+                    else
+                    {
+                        for (int i = 0; i < moveSpeed; i++)
+                        {
+                            Move(path[i], level);
                         }
                     }
-                    targets[0].TakeDamage(attacks[0], this);
-                }
-                else
-                {
-                    for (int i = 0; i < moveSpeed; i++)
-                    {
-                        position.X += path[i].X;
-                        position.Y += path[i].Y;
-                    }
                 }
             }
-
-            level.findRandomOpenPosition();
         }
 
         public override void Aggro(Level level)

@@ -15,20 +15,40 @@ namespace Brogue.Enemies
             {
                 Direction[] path = AStar.getPathBetween(level, this.position, target.position);
 
-                if (path.Length - range <= moveSpeed)
+                if (path != null)
                 {
-                    for (int i = 0; i < path.Length - range; i++)
+                    if (path.Length - range <= moveSpeed)
                     {
-                        Move(path[i], level);
+                        for (int i = 0; i < path.Length - range; i++)
+                        {
+                            Move(path[i], level);
+                        }
+                        Attack();
                     }
-                    Attack();
+                    else
+                    {
+                        for (int i = 0; i < moveSpeed; i++)
+                        {
+                            Move(path[i], level);
+                        }
+                    }
                 }
                 else
                 {
-                    for (int i = 0; i < moveSpeed; i++)
+                    IntVec[] possible = AStar.getPossiblePositionsFrom(level, position, moveSpeed);
+                    IntVec targetPos = null;
+                    foreach (IntVec pos in possible)
                     {
-                        Move(path[i], level);
+                        if (targetPos == null)
+                        {
+                            targetPos = pos;
+                        }
+                        else if (AStar.getCost(AStar.getPathBetween(level, position, targetPos)) > AStar.getCost(AStar.getPathBetween(level, position, pos)))
+                        {
+                            targetPos = pos;
+                        }
                     }
+                    level.Move(this, targetPos, true);
                 }
             }
         }
@@ -54,6 +74,7 @@ namespace Brogue.Enemies
             attack = 5 + (5 * i);
             health = 15 + (15 * i);
             moveSpeed = 5 + i / 2;
+            exp = 20 + 5 * i;
         }
 
         protected override void Die()

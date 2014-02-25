@@ -16,38 +16,41 @@ namespace Brogue.Enemies
 
             Aggro(level);
 
-            if (turnCounter % 9 == 0)
+            if(AStar.getPathBetween(level, position, targets[0].position) == null)
             {
-                foreach(GameCharacter g in targets)
+                if (turnCounter % 9 == 0)
                 {
-                    if (g.maxHealth / g.health > 4)
+                    foreach (GameCharacter g in targets)
                     {
-                        g.TakeDamage(9001, this);
-                    }
-                    else
-                    {
-                        g.Heal(g.maxHealth / 5);
+                        if (g.maxHealth / g.health > 4)
+                        {
+                            g.TakeDamage(9001, this);
+                        }
+                        else
+                        {
+                            g.Heal(g.maxHealth / 5);
+                        }
                     }
                 }
-            }
-            else if (turnCounter % 3 == 0)
-            {
-                foreach (GameCharacter g in targets)
+                else if (turnCounter % 3 == 0)
                 {
-                    g.TakeDamage(attacks[1], this);
-                    health = (health * 4) / 5;
+                    foreach (GameCharacter g in targets)
+                    {
+                        g.TakeDamage(attacks[1], this);
+                        health = (health * 4) / 5;
+                    }
                 }
-            }
-            else
-            {
-                targets[0].TakeDamage(attacks[0], this);
-                Heal(attacks[0] / 10);
-            }
-            IntVec[] possible = AStar.getPossiblePositionsFrom(level, position, 5);
-            Random gen = new Random();
-            IntVec choice = possible[gen.Next(0, possible.Length)];
+                else
+                {
+                    targets[0].TakeDamage(attacks[0], this);
+                    Heal(attacks[0] / 10);
+                }
+                IntVec[] possible = AStar.getPossiblePositionsFrom(level, position, 5);
+                Random gen = new Random();
+                IntVec choice = possible[gen.Next(0, possible.Length)];
 
-            level.Move(this, choice, true);
+                level.Move(this, choice, true);
+            }
         }
 
         public override void Aggro(Level level)

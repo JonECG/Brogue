@@ -17,31 +17,34 @@ namespace Brogue.Enemies
 
             Aggro(level);
 
-            if (turnCounter % 2 == 0)
+            if (AStar.getPathBetween(level, position, targets[0].position) == null)
             {
-                targets[0].TakeDamage(attacks[0], this);
-            }
-
-            IntVec[] possible = AStar.getPossiblePositionsFrom(level, position, 5);
-            IntVec targetPos = null;
-            foreach (IntVec i in possible)
-            {
-                if (targetPos == null)
+                if (turnCounter % 2 == 0)
                 {
-                    targetPos = i;
+                    targets[0].TakeDamage(attacks[0], this);
                 }
-                else
+
+                IntVec[] possible = AStar.getPossiblePositionsFrom(level, position, 5);
+                IntVec targetPos = null;
+                foreach (IntVec i in possible)
                 {
-                    if (AStar.getCost(AStar.getPathBetween(level, targetPos, targets[0].position)) < AStar.getCost(AStar.getPathBetween(level, i, targets[0].position)))
+                    if (targetPos == null)
                     {
                         targetPos = i;
                     }
+                    else
+                    {
+                        if (AStar.getCost(AStar.getPathBetween(level, targetPos, targets[0].position)) < AStar.getCost(AStar.getPathBetween(level, i, targets[0].position)))
+                        {
+                            targetPos = i;
+                        }
+                    }
                 }
-            }
-            Direction[] path = AStar.getPathBetween(level, position, targetPos);
-            foreach (Direction d in path)
-            {
-                Move(d, level);
+                Direction[] path = AStar.getPathBetween(level, position, targetPos);
+                foreach (Direction d in path)
+                {
+                    Move(d, level);
+                }
             }
         }
 
