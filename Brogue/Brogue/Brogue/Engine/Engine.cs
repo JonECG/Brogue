@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Brogue.EnviromentObjects.Interactive;
-using Brogue.EnviromentObjects.Decorative;
 
 
 namespace Brogue.Engine
@@ -59,18 +58,26 @@ namespace Brogue.Engine
         private static RenderTarget2D mainTarget;
         public static Random enginerand = new Random();
         private static List<XPParticle> xpList = new List<XPParticle>();
-        private static Matrix worldToView;
+        public static Matrix worldToView;
         public static Vector2 xpBarPosition;
         public static IntVec windowSizeInTiles;
         public static int lightMaskWidthInTilesDividedByTwo;
         private static IntVec modifiedCameraPosition = new IntVec(0, 0);
 
-        private static Texture2D lightMask;
-        private static Texture2D sightMask;
-        private static Texture2D particleTex;
-        private static Texture2D gridSelectionOverlay;
+        private static DynamicTexture
+            lightMask = GetTexture("lightmask")
+        , sightMask = GetTexture("lightmask")
+        , particleTex = GetTexture("UI/exp")
+        , gridSelectionOverlay = GetTexture("abilityOverlay")
+        ;
 
-        static Texture2D jar, bar, healthcontainer, healthbar, xpbar, inventory;
+        static DynamicTexture
+            jar = GetTexture("UI/Jar"),
+            bar = GetTexture("UI/Bar"), 
+            healthcontainer = GetTexture("UI/HealthJar"),
+            healthbar = GetTexture("UI/HealthBar"), 
+            xpbar = GetTexture("UI/XPBar"), 
+            inventory = GetTexture("UI/Inventory");
         
         static SpriteFont font;
         static List<IntVec> gridSelection = new List<IntVec>();
@@ -78,11 +85,7 @@ namespace Brogue.Engine
         public static DynamicTexture placeHolder = GetTexture("placeholder");
 
         public static Level currentLevel;
-
-        //static Texture2D door, tourch, plant, chest;//Enviroment Objects
-        public Door door;
-        public Tourch tourch;
-
+        
         private static Song backgroundSong;
 
         public static void AddXP(int xp, IntVec gameGrid)
@@ -127,19 +130,19 @@ namespace Brogue.Engine
 
         //public static void LoadContent(ContentManager content)
         //{
-        //    jar = content.Load<Texture2D>("UI/Jar");
-        //    bar = content.Load<Texture2D>("UI/Bar");
-        //    healthbar = content.Load<Texture2D>("UI/HealthBar");
-        //    healthcontainer = content.Load<Texture2D>("UI/HealthJar");
-        //    xpbar = content.Load<Texture2D>("UI/XPBar");
-        //    inventory = content.Load<Texture2D>("UI/Inventory");
+        //    jar = content.Load<DynamicTexture>("UI/Jar");
+        //    bar = content.Load<DynamicTexture>("UI/Bar");
+        //    healthbar = content.Load<DynamicTexture>("UI/HealthBar");
+        //    healthcontainer = content.Load<DynamicTexture>("UI/HealthJar");
+        //    xpbar = content.Load<DynamicTexture>("UI/XPBar");
+        //    inventory = content.Load<DynamicTexture>("UI/Inventory");
         //    font = content.Load<SpriteFont>("UI/Font");
-        //    particleTex = content.Load<Texture2D>("UI/exp");
-        //    gridSelectionOverlay = content.Load<Texture2D>("abilityOverlay");
-        //    lightMask = content.Load<Texture2D>("lightmask");
-        //    sightMask = content.Load<Texture2D>("lightmask");
+        //    particleTex = content.Load<DynamicTexture>("UI/exp");
+        //    gridSelectionOverlay = content.Load<DynamicTexture>("abilityOverlay");
+        //    lightMask = content.Load<DynamicTexture>("lightmask");
+        //    sightMask = content.Load<DynamicTexture>("lightmask");
         //    lightMaskWidthInTilesDividedByTwo = lightMask.Width / (2 * CELLWIDTH);
-        //    placeHolder = content.Load<Texture2D>("placeholder");
+        //    placeHolder = content.Load<DynamicTexture>("placeholder");
 
         //    Door.LoadContent(content);
         //    Tourch.LoadContent(content);
@@ -192,9 +195,9 @@ namespace Brogue.Engine
 
         public static void Draw(Sprite sprite, IntVec destination)
         {
-            if (IsTileInView(destination))
+            if (IsTileInView(destination) && sprite.IsVisible && sprite.Texture.texture == null)
             {
-                game.spriteBatch.Draw(sprite.Texture, new Rectangle(destination.X * CELLWIDTH, destination.Y * CELLWIDTH, CELLWIDTH, CELLWIDTH), new Rectangle(sprite.SourceTile.X * CELLWIDTH, sprite.SourceTile.Y * CELLWIDTH, CELLWIDTH, CELLWIDTH), sprite.Blend, sprite.Direction, new Vector2(CELLWIDTH / 2, CELLWIDTH / 2), SpriteEffects.None, 0);
+                game.spriteBatch.Draw(sprite.Texture.texture, new Rectangle(destination.X * CELLWIDTH, destination.Y * CELLWIDTH, CELLWIDTH, CELLWIDTH), new Rectangle(sprite.SourceTile.X * CELLWIDTH, sprite.SourceTile.Y * CELLWIDTH, CELLWIDTH, CELLWIDTH), sprite.Blend, sprite.Direction, new Vector2(CELLWIDTH / 2, CELLWIDTH / 2), SpriteEffects.None, 0);
             }
         }
 
@@ -202,18 +205,18 @@ namespace Brogue.Engine
         {
             foreach (XPParticle xp in xpList)
             {
-                uisb.Draw(particleTex, xp.screenPosition, Color.White);
+                uisb.Draw(particleTex.texture, xp.screenPosition, Color.White);
             }
-            uisb.Draw(healthcontainer, new Vector2(50, game.Height / 2 - healthcontainer.Height / 2), Color.White);
-            uisb.Draw(healthcontainer, xpBarPosition, Color.White);
-            uisb.Draw(healthbar, new Vector2(50, game.Height / 2 - healthcontainer.Height / 2), Color.White);
-            uisb.Draw(xpbar, new Vector2(xpBarPosition.X + xpbar.Width / 2,xpBarPosition.Y + xpbar.Height / 2) , new Rectangle(0, 0, xpbar.Width, xpbar.Height), Color.White, 0, new Vector2(xpbar.Width / 2, xpbar.Height / 2), new Vector2(1, hero.GetXpPercent()), SpriteEffects.None, 0);
+            uisb.Draw(healthcontainer.texture, new Vector2(50, game.Height / 2 - healthcontainer.texture.Height / 2), Color.White);
+            uisb.Draw(healthcontainer.texture, xpBarPosition, Color.White);
+            uisb.Draw(healthbar.texture, new Vector2(50, game.Height / 2 - healthcontainer.texture.Height / 2), Color.White);
+            uisb.Draw(xpbar.texture, new Vector2(xpBarPosition.X + xpbar.texture.Width / 2, xpBarPosition.Y + xpbar.texture.Height / 2), new Rectangle(0, 0, xpbar.texture.Width, xpbar.texture.Height), Color.White, 0, new Vector2(xpbar.texture.Width / 2, xpbar.texture.Height / 2), new Vector2(1, hero.GetXpPercent()), SpriteEffects.None, 0);
             //uisb.Draw(xpbar, xpBarPosition, Color.White);
-            uisb.Draw(inventory, new Vector2(game.Width / 2 - inventory.Width / 2, game.Height - 100), Color.White);
-            uisb.Draw(jar, new Vector2(game.Width - 50 - jar.Width, game.Height / 2 - jar.Height / 2), Color.White);
-            uisb.Draw(bar, new Vector2(game.Width - 50 - jar.Width, game.Height / 2 - bar.Height / 2), Color.White);
+            uisb.Draw(inventory.texture, new Vector2(game.Width / 2 - inventory.texture.Width / 2, game.Height - 100), Color.White);
+            uisb.Draw(jar.texture, new Vector2(game.Width - 50 - jar.texture.Width, game.Height / 2 - jar.texture.Height / 2), Color.White);
+            uisb.Draw(bar.texture, new Vector2(game.Width - 50 - jar.texture.Width, game.Height / 2 - bar.texture.Height / 2), Color.White);
 
-            //DrawMiniMap(uisb);
+            
             DrawLog(uisb);
         }
 
