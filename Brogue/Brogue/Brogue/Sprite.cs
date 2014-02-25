@@ -10,10 +10,10 @@ namespace Brogue
 {
     public struct Sprite
     {
-        private static Texture2D nullTexture;
+        private static DynamicTexture nullTexture = Engine.Engine.GetTexture( "null" );
 
-        private Texture2D texture;
-        public Texture2D Texture
+        private DynamicTexture texture;
+        public DynamicTexture Texture
         {
             get
             {
@@ -64,74 +64,90 @@ namespace Brogue
             }
         }
 
-        public Sprite(Texture2D texture)
+        private bool isVisible;
+        public bool IsVisible
+        {
+            get
+            {
+                return isVisible;
+            }
+            set
+            {
+                isVisible = value;
+            }
+        }
+
+        public Sprite(DynamicTexture texture, bool isVisible = true )
         {
             this.texture = texture;
             this.sourceTile = new IntVec(0, 0);
             this.blend = Color.White;
             this.direction = Direction.RIGHT;
+            this.isVisible = isVisible;
         }
 
-        public Sprite(Texture2D texture, Color color)
+        public Sprite(DynamicTexture texture, Color color, bool isVisible = true)
         {
             this.texture = texture;
             this.sourceTile = new IntVec(0, 0);
             this.blend = color;
             this.direction = Direction.RIGHT;
+            this.isVisible = isVisible;
         }
 
-        public Sprite(Texture2D texture, IntVec sourceTile )
+        public Sprite(DynamicTexture texture, IntVec sourceTile, bool isVisible = true)
         {
             this.texture = texture;
             this.sourceTile = sourceTile;
             this.blend = Color.White;
             this.direction = Direction.RIGHT;
+            this.isVisible = isVisible;
         }
 
-        public Sprite(Texture2D texture, IntVec sourceTile, Color color)
+        public Sprite(DynamicTexture texture, IntVec sourceTile, Color color, bool isVisible = true)
         {
             this.texture = texture;
             this.sourceTile = sourceTile;
             this.blend = color;
             this.direction = Direction.RIGHT;
+            this.isVisible = isVisible;
         }
 
 
-        public Sprite(Texture2D texture, Direction direction)
+        public Sprite(DynamicTexture texture, Direction direction, bool isVisible = true)
         {
             this.texture = texture;
             this.sourceTile = new IntVec(0, 0);
             this.blend = Color.White;
             this.direction = direction;
+            this.isVisible = isVisible;
         }
 
-        public Sprite(Texture2D texture, Color color, Direction direction)
+        public Sprite(DynamicTexture texture, Color color, Direction direction, bool isVisible = true)
         {
             this.texture = texture;
             this.sourceTile = new IntVec(0, 0);
             this.blend = color;
             this.direction = direction;
+            this.isVisible = isVisible;
         }
 
-        public Sprite(Texture2D texture, IntVec sourceTile, Direction direction)
+        public Sprite(DynamicTexture texture, IntVec sourceTile, Direction direction, bool isVisible = true)
         {
             this.texture = texture;
             this.sourceTile = sourceTile;
             this.blend = Color.White;
             this.direction = direction;
+            this.isVisible = isVisible;
         }
 
-        public Sprite(Texture2D texture, IntVec sourceTile, Color color, Direction direction)
+        public Sprite(DynamicTexture texture, IntVec sourceTile, Color color, Direction direction, bool isVisible = true)
         {
             this.texture = texture;
             this.sourceTile = sourceTile;
             this.blend = color;
             this.direction = direction;
-        }
-
-        internal static void LoadContent(Microsoft.Xna.Framework.Content.ContentManager content)
-        {
-            nullTexture = content.Load<Texture2D>("null");
+            this.isVisible = isVisible;
         }
     }
 }

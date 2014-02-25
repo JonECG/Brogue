@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using Brogue.Engine;
 
 namespace Brogue.Mapping
 {
@@ -13,10 +14,10 @@ namespace Brogue.Mapping
         public int solidNeighbors;
         private const int BITMASK = 0xF;
 
-        public static Texture2D tileset;
+        public static DynamicTexture tileset = Engine.Engine.GetTexture("floorTileset");
 
-        public static Texture2D floorTileset;
-        public static Texture2D wallTileset;
+        public static DynamicTexture floorTileset = Engine.Engine.GetTexture("floorTileset");
+        public static DynamicTexture wallTileset = Engine.Engine.GetTexture("wallTileset");
 
         public Tile(bool isSolid = false, int solidNeighbors = 0)
         {

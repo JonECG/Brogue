@@ -21,6 +21,23 @@ namespace Brogue.Mapping
             list.Add(Tuple.Create(t, position));
         }
 
+        public void Remove(T t)
+        {
+            int index = -1;
+            for (int i = 0; i < list.Count; i++ )
+            {
+                if ( list.ElementAt(i).Item1.Equals( t ) )
+                {
+                    index = i;
+                }
+            }
+
+            if (index != -1)
+            {
+                list.RemoveAt(index);
+            }
+        }
+
         public IntVec FindPosition(T t)
         {
             Tuple<T, IntVec> tup = getTupleByEntity(t);
