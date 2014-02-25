@@ -10,7 +10,7 @@ namespace Brogue.Enemies
     {
         int turnCounter = 0;
 
-        public override void TakeTurn(Level level)
+        public override bool TakeTurn(Level level)
         {
             turnCounter++;
 
@@ -51,6 +51,7 @@ namespace Brogue.Enemies
 
                 level.Move(this, choice, true);
             }
+            return true;
         }
 
         public override void Aggro(Level level)

@@ -9,7 +9,7 @@ namespace Brogue.Enemies
 {
     class GuardianEnemy : Enemy
     {
-        public override void TakeTurn(Level level)
+        public override bool TakeTurn(Level level)
         {
             if (IsAggro)
             {
@@ -51,6 +51,7 @@ namespace Brogue.Enemies
                     level.Move(this, targetPos, true);
                 }
             }
+            return true;
         }
 
         public override bool Aggro(Level level)
