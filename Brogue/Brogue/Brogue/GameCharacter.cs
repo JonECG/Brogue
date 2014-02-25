@@ -1,4 +1,5 @@
-﻿using Brogue.Mapping;
+﻿using Brogue.Engine;
+using Brogue.Mapping;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -16,32 +17,19 @@ namespace Brogue
         public bool isFriendly;
         abstract public bool TakeTurn(Level level);
         public abstract void TakeDamage(int damage, GameCharacter attacker);
-        public static Texture2D texture;
+        public static DynamicTexture texture;
         public void Heal(int heal)
         {
             health += heal;
         }
-        public virtual Sprite GetSprite()
+        public Sprite GetSprite()
         {
             return new Sprite(GetTexture());
         }
 
-        public Texture2D GetTexture()
+        public virtual DynamicTexture GetTexture()
         {
-            return texture;
-        }
-
-        public static void LoadContent(ContentManager content)
-        {
-            HeroClasses.Hero.texture = content.Load<Texture2D>("Hero/Hero");
-            HeroClasses.Hero.abilitySprite = content.Load<Texture2D>("abilityOverlay");
-            HeroClasses.Hero.loadSprite();
-            Enemies.Enemy.texture = content.Load<Texture2D>("Enemies/Enemy");
-            Enemies.MeleeEnemy.texture = content.Load<Texture2D>("Enemies/Enemy");
-            Enemies.RangedEnemy.texture = content.Load<Texture2D>("Enemies/Enemy");
-            Enemies.MageEnemy.texture = content.Load<Texture2D>("Enemies/Enemy");
-
-            Enemies.BossEnemy.texture = content.Load<Texture2D>("Enemies/BossEnemy");
+            return Engine.Engine.GetTexture("GameCharacter");
         }
     }
 }
