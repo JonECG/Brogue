@@ -30,7 +30,6 @@ namespace Brogue.EnviromentObjects.Decorative
 
         public Tourch(Direction setDirection, Microsoft.Xna.Framework.Color setColor)
         {
-            
             directionFacing = setDirection;
             flickerWait = 8;
             intensity = 1;
