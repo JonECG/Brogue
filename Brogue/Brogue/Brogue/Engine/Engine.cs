@@ -128,31 +128,6 @@ namespace Brogue.Engine
 
         }
 
-        //public static void LoadContent(ContentManager content)
-        //{
-        //    jar = content.Load<DynamicTexture>("UI/Jar");
-        //    bar = content.Load<DynamicTexture>("UI/Bar");
-        //    healthbar = content.Load<DynamicTexture>("UI/HealthBar");
-        //    healthcontainer = content.Load<DynamicTexture>("UI/HealthJar");
-        //    xpbar = content.Load<DynamicTexture>("UI/XPBar");
-        //    inventory = content.Load<DynamicTexture>("UI/Inventory");
-        //    font = content.Load<SpriteFont>("UI/Font");
-        //    particleTex = content.Load<DynamicTexture>("UI/exp");
-        //    gridSelectionOverlay = content.Load<DynamicTexture>("abilityOverlay");
-        //    lightMask = content.Load<DynamicTexture>("lightmask");
-        //    sightMask = content.Load<DynamicTexture>("lightmask");
-        //    lightMaskWidthInTilesDividedByTwo = lightMask.Width / (2 * CELLWIDTH);
-        //    placeHolder = content.Load<DynamicTexture>("placeholder");
-
-        //    Door.LoadContent(content);
-        //    Tourch.LoadContent(content);
-        //    Chair.LoadContent(content);
-        //    Plant.LoadContent(content);
-        //    Chest.LoadContent(content);
-
-        //    Sprite.LoadContent(content);
-        //}
-
         public static void Log(string input)
         {
             log.Enqueue(input);
@@ -188,6 +163,22 @@ namespace Brogue.Engine
 
         }
 
+        public static void ContentLoaded(ContentManager content)
+        {
+            lightsTarget = new RenderTarget2D(game.GraphicsDevice, game.Width, game.Height);
+            mainTarget = new RenderTarget2D(game.GraphicsDevice, game.Width, game.Height);
+
+            xpBarPosition = new Vector2(80, game.Height / 2 - healthbar.texture.Height / 2);
+            font = content.Load<SpriteFont>("UI/Font");
+
+            if (DOAUDIO)
+            {
+                backgroundSong = content.Load<Song>("Audio/The Descent");
+                MediaPlayer.Play(backgroundSong);
+                MediaPlayer.IsRepeating = true;
+            }
+        }
+
         private static void AITurn()
         {
             //Iterate through each AI within maximum AI distance and call its TakeTurn method.
@@ -215,6 +206,7 @@ namespace Brogue.Engine
             uisb.Draw(inventory.texture, new Vector2(game.Width / 2 - inventory.texture.Width / 2, game.Height - 100), Color.White);
             uisb.Draw(jar.texture, new Vector2(game.Width - 50 - jar.texture.Width, game.Height / 2 - jar.texture.Height / 2), Color.White);
             uisb.Draw(bar.texture, new Vector2(game.Width - 50 - jar.texture.Width, game.Height / 2 - bar.texture.Height / 2), Color.White);
+            DrawMiniMap(uisb);
 
             
             DrawLog(uisb);
