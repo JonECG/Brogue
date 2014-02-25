@@ -82,5 +82,10 @@ namespace Brogue.Enemies
 
             return target;
         }
+
+        public override DynamicTexture GetTexture()
+        {
+            return Engine.Engine.GetTexture("Enemies/BossEnemy");
+        }
     }
 }

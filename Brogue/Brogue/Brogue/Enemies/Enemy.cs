@@ -67,6 +67,9 @@ namespace Brogue.Enemies
             }
         }
 
-        
+        public override DynamicTexture GetTexture()
+        {
+            return Engine.Engine.GetTexture("Enemies/Enemy");
+        }
     }
 }
