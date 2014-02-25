@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Brogue;
 using Brogue.Mapping;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -11,19 +12,34 @@ namespace Brogue.EnviromentObjects.Interactive
 {
     class HiddenPassage : IEnvironmentObject, IRenderable
     {
-        static Texture2D sprite { get; set; }
+
+        static DynamicTexture texture = Engine.Engine.GetTexture("Enviroment/Stairs");
         IntVec exit { get; set; }
         bool isSolid { get; set; }
+        bool isVisiable { get; set; }
 
-        HiddenPassage(IntVec pointB)
+        HiddenPassage other = new HiddenPassage();
+
+        HiddenPassage()
         {
             isSolid = true;
-            exit = pointB;
+            isVisiable = false;
         }
 
-        public void LoadContent(ContentManager content)
+        HiddenPassage(HiddenPassage exitPosition)
         {
-            sprite = content.Load<Texture2D>("Enviroment/Stairs");
+            isSolid = true;
+            isVisiable = false;
+            other = exitPosition;
+        }
+
+        private void ChangeState()
+        {
+            if (isSolid)
+            {
+                //isSolid = false;
+                isVisiable = true;
+            }
         }
 
         public bool IsSolid()
@@ -33,7 +49,7 @@ namespace Brogue.EnviromentObjects.Interactive
 
         public Sprite GetSprite()
         {
-            return new Sprite(sprite);
+            return new Sprite(texture);
         }
 
     }

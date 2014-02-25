@@ -4,20 +4,24 @@ using System.Linq;
 using System.Text;
 using Brogue;
 using Brogue.Mapping;
+using Brogue.Engine;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Brogue.EnviromentObjects.Interactive
 {
-    public class Swiches : IEnvironmentObject, Iinteractable, IRenderable
+    public class Swiches : IEnvironmentObject, IInteractable, IRenderable
     {
-        static Texture2D spriteOne { get; set; }
-        static Texture2D spriteTwo { get; set; }
+
+        static DynamicTexture texture1 = Engine.Engine.GetTexture("Enviroment/SwichUP");
+        static DynamicTexture texture2 = Engine.Engine.GetTexture("Enviroment/SwichDown");
+
+        Direction directionFacing { get; set; }
         
         public bool active { get; set; }
         public bool isSolid { get; set; }
         public bool isPassable { get; set; }
-        public Iinteractable target { get; set; }
+        public IInteractable target { get; set; }
 
         public Swiches() 
         {
@@ -44,17 +48,6 @@ namespace Brogue.EnviromentObjects.Interactive
            
         }
 
-        public void LoadContent(ContentManager content)
-        {
-            spriteOne = content.Load<Texture2D>("Enviroment/SwichUP");
-            spriteTwo = content.Load<Texture2D>("Enviroment/SwichDown");
-        }
-        
-        public void actOn()
-        {
-            throw new NotImplementedException();
-        }
-
         public bool IsSolid()
         {
             return isSolid;
@@ -65,25 +58,32 @@ namespace Brogue.EnviromentObjects.Interactive
             Sprite currentImage = new Sprite();
             if (active) 
             {
-                currentImage = new Sprite(spriteOne);
+                currentImage = new Sprite(texture1);
             }
             else if (!active)
             {
-                currentImage = new Sprite(spriteTwo);
+                currentImage = new Sprite(texture2);
             }
             return currentImage;
         }
+
+        public void actOn(GameCharacter actingCharacter)
+        {
+            throw new NotImplementedException();
+        }
     }
 
-    public class presserPlate : IEnvironmentObject, Iinteractable
+    public class presserPlate : IEnvironmentObject, IInteractable
     {
         public bool active { get; set; }
         public bool isPassable { get; set; }
         public bool isSolid { get; set; }
 
+        static DynamicTexture texture = Engine.Engine.GetTexture("Enviroment/Presser Plate");
+
         static Texture2D sprite;
 
-        public Iinteractable target { get; set; }
+        public IInteractable target { get; set; }
 
         public presserPlate()
         {
@@ -104,21 +104,16 @@ namespace Brogue.EnviromentObjects.Interactive
             }
         }
 
-        public void stepOn() 
+        public void stepOn(GameCharacter actingCharacter) 
         {
             changeState();
-            target.actOn();
+            target.actOn(actingCharacter);
         }
 
-        public void stepOff()
+        public void stepOff(GameCharacter actingCharacter)
         {
             changeState();
-            target.actOn();
-        }
-
-        public void LoadContent(ContentManager content)
-        {
-            sprite = content.Load<Texture2D>("Enviroment/Presser Plate");
+            target.actOn(actingCharacter);
         }
 
         public bool IsSolid()
@@ -128,13 +123,19 @@ namespace Brogue.EnviromentObjects.Interactive
 
         public Sprite GetSprite()
         {
-            return new Sprite(sprite);
+            return new Sprite(texture);
         }
 
-
-        public void actOn()
+        public void actOn(GameCharacter actingCharacter)
         {
-            throw new NotImplementedException();
+            if (!active)
+            {
+                stepOn(actingCharacter);
+            }
+            if (active)
+            {
+                stepOff(actingCharacter);
+            }  
         }
     }
 

@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Brogue.Mapping;
 using Brogue;
+using Brogue.Engine;
+using Brogue.Mapping;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -12,17 +13,13 @@ namespace Brogue.EnviromentObjects.Decorative
 {
     class Plant : InonInteractable, IEnvironmentObject, IRenderable
     {
+        static DynamicTexture texture = Engine.Engine.GetTexture("Enviroment/Stairs");
         static Texture2D sprite { get; set; }
         bool isSolid { get; set; }
 
         public Plant() 
         {
            isSolid = false;
-        }
-
-        public void LoadContent(ContentManager content)
-        {
-            sprite = content.Load<Texture2D>("Enviroment/Plant");
         }
 
         public bool getSolidity()
@@ -37,7 +34,7 @@ namespace Brogue.EnviromentObjects.Decorative
 
         public Sprite GetSprite()
         {
-            return new Sprite(sprite);
+            return new Sprite(texture);
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Brogue.Engine;
 using Brogue.Mapping;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -10,7 +11,7 @@ namespace Brogue.EnviromentObjects.Interactive
 {
     class Wall : IEnvironmentObject
     {
-        static Texture2D sprite { get; set; }
+        static DynamicTexture texture = Engine.Engine.GetTexture("levelTileset");
 
         public bool isSolid;
         public bool isPassable { get; set; }
@@ -21,11 +22,6 @@ namespace Brogue.EnviromentObjects.Interactive
             isPassable = false;
         }
 
-        public void LoadContent(ContentManager content)
-        {
-            sprite = content.Load<Texture2D>("levelTileset");
-        }
-
 
         public bool IsSolid()
         {
@@ -34,13 +30,14 @@ namespace Brogue.EnviromentObjects.Interactive
 
         public Sprite GetSprite()
         {
-            return new Sprite(sprite);
+            return new Sprite(texture);
         }
     }
 
-    class SecretWall : Iinteractable, IEnvironmentObject
+    class SecretWall : IInteractable, IEnvironmentObject
     {
         static Texture2D sprite;
+        static DynamicTexture texture = Engine.Engine.GetTexture("levelTileset");
         public bool isSolid { get; set; }
         public bool isPassable { get; set; }
 
@@ -62,17 +59,6 @@ namespace Brogue.EnviromentObjects.Interactive
             }
         }
 
-        public void LoadContent(ContentManager content)
-        {
-            sprite = content.Load<Texture2D>("levelTileset");
-        }
-
-
-        public void actOn()
-        {
-            changeSolid();
-        }
-
         public bool IsSolid()
         {
             return isSolid;
@@ -80,7 +66,12 @@ namespace Brogue.EnviromentObjects.Interactive
 
         public Sprite GetSprite()
         {
-            return new Sprite(sprite);
+            return new Sprite(texture);
+        }
+
+        public void actOn(GameCharacter actingCharacter)
+        {
+            changeSolid();
         }
     }
 }
