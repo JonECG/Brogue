@@ -82,21 +82,7 @@ namespace Brogue.Engine
             {
                 textureDictionary[path].texture = contentManager.Load<Texture2D>(path);
             }
-
-            jar = Engine.Engine.GetTexture("UI/Jar");
-            bar = Engine.Engine.GetTexture("UI/Bar");
-            healthbar = GetTexture("UI/HealthBar");
-            healthcontainer = Engine.Engine.GetTexture("UI/HealthJar");
-            xpbar = Engine.Engine.GetTexture("UI/XPBar");
-            inventory = Engine.Engine.GetTexture("UI/Inventory");
-            font = content.Load<SpriteFont>("UI/Font");
-            particleTex = Engine.Engine.GetTexture("UI/exp");
-            gridSelectionOverlay = Engine.Engine.GetTexture("abilityOverlay");
-            lightMask = Engine.Engine.GetTexture("lightmask");
-            sightMask = Engine.Engine.GetTexture("lightmask");
-            lightMaskWidthInTilesDividedByTwo = lightMask.Width / (2 * CELLWIDTH);
-            placeHolder = Engine.Engine.GetTexture("placeholder");
-            Sprite.LoadContent(content);
+            
 
             //Level.LoadContent(content);
             //HeroClasses.Hero.LoadContent(content);
