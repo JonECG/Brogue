@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Brogue.Enums;
+using Brogue.Items.Consumables;
 using Brogue.Items.Equipment.Weapon.Melee;
 using Brogue.Items.Equipment.Weapon.Ranged;
 using Brogue.Items.Equipment.Armor.Helm;
@@ -12,7 +13,6 @@ using Brogue.Items.Equipment.Armor.Chest;
 using Brogue.Items.Equipment.Armor.Legs;
 using Brogue.Items.Equipment.Armor.Shields;
 using Brogue.Items.Equipment.Accessory;
-using Brogue.Items.Consumables;
 using Brogue.Items.Equipment.Weapon.Legendary.Melee;
 using Brogue.Items.Equipment.Weapon.Legendary.Ranged;
 using Brogue.Items.Equipment.Armor.Legendary.Shields;
@@ -30,7 +30,7 @@ namespace Brogue.Items
 
         public static void LoadContent(ContentManager content)
         {
-            Items.Consumables.Potion.Texture = content.Load<Texture2D>("Items/Sword");
+            Items.Consumables.Potion.Texture = content.Load<Texture2D>("Items/Potion");
 
             Items.Equipment.Weapon.Melee.Axe.Texture = content.Load<Texture2D>("Items/Sword");
             Items.Equipment.Weapon.Melee.Sword.Texture = content.Load<Texture2D>("Items/Sword");
@@ -176,7 +176,7 @@ namespace Brogue.Items
                                 {
                                     return new _40k(dLevel, cLevel);
                                 }
-                                else if ((LegendaryWeapon)findItem == LegendaryWeapon.KuaniWithChain)
+                                else if ((LegendaryWeapon)findItem == LegendaryWeapon.KunaiWithChain)
                                 {
                                     return new KunaiWithChain(dLevel, cLevel);
                                 }
@@ -313,6 +313,43 @@ namespace Brogue.Items
         public Sprite GetSprite()
         {
             return new Sprite(GetTexture());
+        }
+
+        public static Item randomLegendary(int dLevel, int cLevel)
+        {
+            int findItem;
+
+            findItem = rand.Next(Enum.GetNames(typeof(Legends)).Length);
+            if ((Legends)findItem == Legends.Weapon)
+            {
+                findItem = rand.Next(Enum.GetNames(typeof(LegendaryWeapon)).Length);
+                if ((LegendaryWeapon)findItem == LegendaryWeapon._40k)
+                {
+                    return new _40k(dLevel, cLevel);
+                }
+                if ((LegendaryWeapon)findItem == LegendaryWeapon.KunaiWithChain)
+                {
+                    return new KunaiWithChain(dLevel, cLevel);
+                }
+                if ((LegendaryWeapon)findItem == LegendaryWeapon.RodOfExtending)
+                {
+                    return new RodOfExtending(dLevel, cLevel);
+                }
+                if ((LegendaryWeapon)findItem == LegendaryWeapon.TheWolverine)
+                {
+                    return new TheWolverine(dLevel, cLevel);
+                }
+            }
+            else if ((Legends)findItem == Legends.Armor)
+            {
+                findItem = rand.Next(Enum.GetNames(typeof(LegendaryArmor)).Length);
+                if ((LegendaryArmor)findItem == LegendaryArmor.TheFirstAvenger)
+                {
+                    return new FirstAvenger(dLevel, cLevel);
+                }
+            }
+
+            return new Potion(dLevel, cLevel);
         }
     }
 }
