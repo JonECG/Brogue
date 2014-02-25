@@ -167,7 +167,7 @@ namespace Brogue.Engine
         {
             lightsTarget = new RenderTarget2D(game.GraphicsDevice, game.Width, game.Height);
             mainTarget = new RenderTarget2D(game.GraphicsDevice, game.Width, game.Height);
-
+            lightMaskWidthInTilesDividedByTwo = lightMask.texture.Width / (2 * CELLWIDTH);
             xpBarPosition = new Vector2(80, game.Height / 2 - healthbar.texture.Height / 2);
             font = content.Load<SpriteFont>("UI/Font");
 
