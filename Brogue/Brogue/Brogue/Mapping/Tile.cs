@@ -14,7 +14,7 @@ namespace Brogue.Mapping
         public int solidNeighbors;
         private const int BITMASK = 0xF;
 
-        public static DynamicTexture tileset = Engine.Engine.GetTexture("floorTileset");
+        public static DynamicTexture tileset = Engine.Engine.GetTexture("levelTileset");
 
         public static DynamicTexture floorTileset = Engine.Engine.GetTexture("floorTileset");
         public static DynamicTexture wallTileset = Engine.Engine.GetTexture("wallTileset");

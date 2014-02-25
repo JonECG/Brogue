@@ -369,13 +369,6 @@ namespace Brogue.Mapping
             
         }
 
-        internal static void LoadContent(ContentManager content)
-        {
-            Tile.wallTileset = content.Load<Texture2D>("dynamicTileset");
-            Tile.floorTileset = content.Load<Texture2D>("floorTileset");
-            Tile.tileset = content.Load<Texture2D>("levelTileset");
-        }
-
         internal void InvalidateCache()
         {
             needToCache = true;
