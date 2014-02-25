@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Brogue.Enums;
-using Microsoft.Xna.Framework.Graphics;
+using Brogue.Engine;
 
 namespace Brogue.Items.Equipment.Weapon.Legendary.Melee
 {
     public class _40k : LegendaryMelee
     {
-        public static Texture2D Texture { get; set; }
+        public static DynamicTexture Texture { get; set; }
 
-        public override Texture2D GetTexture()
+        public override DynamicTexture GetTexture()
         {
             return Texture;
         }

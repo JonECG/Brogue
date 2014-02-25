@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Microsoft.Xna.Framework.Graphics;
+using Brogue.Engine;
 using Brogue.Enums;
+
 
 namespace Brogue.Items.Equipment.Weapon.Ranged
 {
     public class ThrowingKnives : RangedWeapon
     {
-        public static Texture2D Texture { get; set; }
+        public static DynamicTexture Texture { get; set; }
 
-        public override Texture2D GetTexture()
+        public override DynamicTexture GetTexture()
         {
             return Texture;
         }

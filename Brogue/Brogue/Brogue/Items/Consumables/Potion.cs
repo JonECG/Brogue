@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Xna.Framework.Graphics;
+using Brogue.Engine;
 using System.Text;
 
 namespace Brogue.Items.Consumables
 {
     public class Potion : Consumable
     {
-        public static Texture2D Texture { get; set; }
+        public static DynamicTexture Texture { get; set; }
 
-        public override Texture2D GetTexture()
+        public override DynamicTexture GetTexture()
         {
             return Texture;
         }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Microsoft.Xna.Framework.Graphics;
+using Brogue.Engine;
 using Microsoft.Xna.Framework.Content;
 using Brogue.Enums;
 using Brogue.Items.Consumables;
@@ -17,6 +17,7 @@ using Brogue.Items.Equipment.Weapon.Legendary.Melee;
 using Brogue.Items.Equipment.Weapon.Legendary.Ranged;
 using Brogue.Items.Equipment.Armor.Legendary.Shields;
 
+
 namespace Brogue.Items
 {
     public abstract class Item : IRenderable
@@ -26,47 +27,47 @@ namespace Brogue.Items
 
         private static Random rand = new Random();
 
-        public abstract Texture2D GetTexture();
+        public abstract DynamicTexture GetTexture();
 
-        public static void LoadContent(ContentManager content)
+        static public Item()
         {
-            Items.Consumables.Potion.Texture = content.Load<Texture2D>("Items/Potion");
+            Items.Consumables.Potion.Texture = Engine.Engine.GetTexture("Items/Potion");
 
-            Items.Equipment.Weapon.Melee.Axe.Texture = content.Load<Texture2D>("Items/Sword");
-            Items.Equipment.Weapon.Melee.Sword.Texture = content.Load<Texture2D>("Items/Sword");
-            Items.Equipment.Weapon.Melee.GreatAxe.Texture = content.Load<Texture2D>("Items/Sword");
-            Items.Equipment.Weapon.Melee.BastardSword.Texture = content.Load<Texture2D>("Items/Sword");
-            Items.Equipment.Weapon.Melee.Dagger.Texture = content.Load<Texture2D>("Items/Sword");
-            Items.Equipment.Weapon.Melee.WarHammer.Texture = content.Load<Texture2D>("Items/Sword");
-            Items.Equipment.Weapon.Melee.Claws.Texture = content.Load<Texture2D>("Items/Sword");
-            Items.Equipment.Weapon.Legendary.Melee.TheWolverine.Texture = content.Load<Texture2D>("Items/Sword");
-            Items.Equipment.Weapon.Legendary.Melee._40k.Texture = content.Load<Texture2D>("Items/Sword");
+            Items.Equipment.Weapon.Melee.Axe.Texture = Engine.Engine.GetTexture("Items/Sword");
+            Items.Equipment.Weapon.Melee.Sword.Texture = Engine.Engine.GetTexture("Items/Sword");
+            Items.Equipment.Weapon.Melee.GreatAxe.Texture = Engine.Engine.GetTexture("Items/Sword");
+            Items.Equipment.Weapon.Melee.BastardSword.Texture = Engine.Engine.GetTexture("Items/Sword");
+            Items.Equipment.Weapon.Melee.Dagger.Texture = Engine.Engine.GetTexture("Items/Sword");
+            Items.Equipment.Weapon.Melee.WarHammer.Texture = Engine.Engine.GetTexture("Items/Sword");
+            Items.Equipment.Weapon.Melee.Claws.Texture = Engine.Engine.GetTexture("Items/Sword");
+            Items.Equipment.Weapon.Legendary.Melee.TheWolverine.Texture = Engine.Engine.GetTexture("Items/Sword");
+            Items.Equipment.Weapon.Legendary.Melee._40k.Texture = Engine.Engine.GetTexture("Items/Sword");
 
-            Items.Equipment.Weapon.Ranged.Boomerang.Texture = content.Load<Texture2D>("Items/Sword");
-            Items.Equipment.Weapon.Ranged.Kunai.Texture = content.Load<Texture2D>("Items/Sword");
-            Items.Equipment.Weapon.Ranged.Staff.Texture = content.Load<Texture2D>("Items/Sword");
-            Items.Equipment.Weapon.Ranged.ThrowingKnives.Texture = content.Load<Texture2D>("Items/Sword");
-            Items.Equipment.Weapon.Legendary.Ranged.RodOfExtending.Texture = content.Load<Texture2D>("Items/Sword");
-            Items.Equipment.Weapon.Legendary.Ranged.KunaiWithChain.Texture = content.Load<Texture2D>("Items/Sword");
+            Items.Equipment.Weapon.Ranged.Boomerang.Texture = Engine.Engine.GetTexture("Items/Sword");
+            Items.Equipment.Weapon.Ranged.Kunai.Texture = Engine.Engine.GetTexture("Items/Sword");
+            Items.Equipment.Weapon.Ranged.Staff.Texture = Engine.Engine.GetTexture("Items/Sword");
+            Items.Equipment.Weapon.Ranged.ThrowingKnives.Texture = Engine.Engine.GetTexture("Items/Sword");
+            Items.Equipment.Weapon.Legendary.Ranged.RodOfExtending.Texture = Engine.Engine.GetTexture("Items/Sword");
+            Items.Equipment.Weapon.Legendary.Ranged.KunaiWithChain.Texture = Engine.Engine.GetTexture("Items/Sword");
 
-            Items.Equipment.Armor.Chest.ClothChest.Texture = content.Load<Texture2D>("Items/Sword");
-            Items.Equipment.Armor.Chest.LeatherChest.Texture = content.Load<Texture2D>("Items/Sword");
-            Items.Equipment.Armor.Chest.MailChest.Texture = content.Load<Texture2D>("Items/Sword");
+            Items.Equipment.Armor.Chest.ClothChest.Texture = Engine.Engine.GetTexture("Items/Sword");
+            Items.Equipment.Armor.Chest.LeatherChest.Texture = Engine.Engine.GetTexture("Items/Sword");
+            Items.Equipment.Armor.Chest.MailChest.Texture = Engine.Engine.GetTexture("Items/Sword");
 
-            Items.Equipment.Armor.Legs.ClothLegs.Texture = content.Load<Texture2D>("Items/Sword");
-            Items.Equipment.Armor.Legs.LeatherLegs.Texture = content.Load<Texture2D>("Items/Sword");
-            Items.Equipment.Armor.Legs.MailLegs.Texture = content.Load<Texture2D>("Items/Sword");
+            Items.Equipment.Armor.Legs.ClothLegs.Texture = Engine.Engine.GetTexture("Items/Sword");
+            Items.Equipment.Armor.Legs.LeatherLegs.Texture = Engine.Engine.GetTexture("Items/Sword");
+            Items.Equipment.Armor.Legs.MailLegs.Texture = Engine.Engine.GetTexture("Items/Sword");
 
-            Items.Equipment.Armor.Helm.ClothHelm.Texture = content.Load<Texture2D>("Items/Sword");
-            Items.Equipment.Armor.Helm.LeatherHelm.Texture = content.Load<Texture2D>("Items/Sword");
-            Items.Equipment.Armor.Helm.MailHelm.Texture = content.Load<Texture2D>("Items/Sword");
+            Items.Equipment.Armor.Helm.ClothHelm.Texture = Engine.Engine.GetTexture("Items/Sword");
+            Items.Equipment.Armor.Helm.LeatherHelm.Texture = Engine.Engine.GetTexture("Items/Sword");
+            Items.Equipment.Armor.Helm.MailHelm.Texture = Engine.Engine.GetTexture("Items/Sword");
 
-            Items.Equipment.Armor.Shields.PlateShield.Texture = content.Load<Texture2D>("Items/Sword");
-            Items.Equipment.Armor.Shields.WoodenShield.Texture = content.Load<Texture2D>("Items/Sword");
-            Items.Equipment.Armor.Legendary.Shields.FirstAvenger.Texture = content.Load<Texture2D>("Items/Sword");
+            Items.Equipment.Armor.Shields.PlateShield.Texture = Engine.Engine.GetTexture("Items/Sword");
+            Items.Equipment.Armor.Shields.WoodenShield.Texture = Engine.Engine.GetTexture("Items/Sword");
+            Items.Equipment.Armor.Legendary.Shields.FirstAvenger.Texture = Engine.Engine.GetTexture("Items/Sword");
 
-            Items.Equipment.Accessory.Necklace.Texture = content.Load<Texture2D>("Items/Sword");
-            Items.Equipment.Accessory.Ring.Texture = content.Load<Texture2D>("Items/Sword");
+            Items.Equipment.Accessory.Necklace.Texture = Engine.Engine.GetTexture("Items/Sword");
+            Items.Equipment.Accessory.Ring.Texture = Engine.Engine.GetTexture("Items/Sword");
         }
 
         public static Item randomItem(int dLevel, int cLevel)
