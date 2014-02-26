@@ -207,8 +207,8 @@ namespace Brogue.Engine
             }
         }
 
-        
-        
+
+        static int charIndex = 0;
 
         public static void Update(GameTime gameTime)
         {
@@ -225,14 +225,20 @@ namespace Brogue.Engine
             {
                 currentLevel.testUpdate();
                 //Game turns
+                
+                if (charIndex < currentLevel.CharacterEntities.Entities().Count<GameCharacter>())
+                {
+                    charIndex += currentLevel.CharacterEntities.Entities().ElementAt<GameCharacter>(charIndex).TakeTurn(currentLevel)? 1: 0;
+                }
+                /*
                 if (heroesTurn)
                 {
-                    heroesTurn = !hero.TakeTurn(currentLevel);
+                    heroesTurn = !hero.TakeTurn(currentLevel);*/
                     cameraPosition = currentLevel.CharacterEntities.FindPosition(hero);
                     modifiedCameraPosition.X = cameraPosition.X - (windowSizeInTiles.X / 2);
                     modifiedCameraPosition.Y = cameraPosition.Y - (windowSizeInTiles.Y / 2);
                     currentLevel.InvalidateCache();
-                }
+               /* }
                 else
                 {
                     //Take next NPCs turn.
@@ -240,6 +246,7 @@ namespace Brogue.Engine
                     heroesTurn = true;
                     currentLevel.InvalidateCache();
                 }
+                */
             }
         }
 
