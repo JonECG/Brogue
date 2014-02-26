@@ -225,28 +225,20 @@ namespace Brogue.Engine
             {
                 currentLevel.testUpdate();
                 //Game turns
-                
+
                 if (charIndex < currentLevel.CharacterEntities.Entities().Count<GameCharacter>())
                 {
-                    charIndex += currentLevel.CharacterEntities.Entities().ElementAt<GameCharacter>(charIndex).TakeTurn(currentLevel)? 1: 0;
+                    charIndex += currentLevel.CharacterEntities.Entities().ElementAt<GameCharacter>(charIndex).TakeTurn(currentLevel) ? 1 : 0;
                 }
-                /*
-                if (heroesTurn)
-                {
-                    heroesTurn = !hero.TakeTurn(currentLevel);*/
-                    cameraPosition = currentLevel.CharacterEntities.FindPosition(hero);
-                    modifiedCameraPosition.X = cameraPosition.X - (windowSizeInTiles.X / 2);
-                    modifiedCameraPosition.Y = cameraPosition.Y - (windowSizeInTiles.Y / 2);
-                    currentLevel.InvalidateCache();
-               /* }
                 else
                 {
-                    //Take next NPCs turn.
-                    //When all NPCs have taken their turn...
-                    heroesTurn = true;
-                    currentLevel.InvalidateCache();
+                    charIndex = 0;
                 }
-                */
+                cameraPosition = currentLevel.CharacterEntities.FindPosition(hero);
+                modifiedCameraPosition.X = cameraPosition.X - (windowSizeInTiles.X / 2);
+                modifiedCameraPosition.Y = cameraPosition.Y - (windowSizeInTiles.Y / 2);
+                currentLevel.InvalidateCache();
+              
             }
         }
 
