@@ -53,11 +53,11 @@ namespace Brogue.Mapping
 
             for (int i = 0; i < 28; i++)
             {
-                Item item = Item.randomItem(10, 10);
+                //Item item = Item.randomItem(10, 10);
 
                 //Engine.Engine.Log(string.Format("Item Generated: {0}", item.Name));
 
-                DroppedItems.Add(item, findRandomOpenPosition());
+                //DroppedItems.Add(item, findRandomOpenPosition());
             }
         }
 
@@ -366,6 +366,18 @@ namespace Brogue.Mapping
                 Engine.Engine.Log(string.Format("Item Generated: {0}", item.Name));
 
                 DroppedItems.Add(item, findRandomOpenPosition());
+            }
+
+            if (KeyboardController.IsPressed('Q'))
+            {
+                for (int i = 0; i < 100; i++ )
+                {
+                    Item item = Item.getDesiredDitem(10, 10);
+
+                    Engine.Engine.Log(string.Format("Item Generated: {0}", item.Name));
+
+                    DroppedItems.Add(item, findRandomOpenPosition());
+                }
             }
             
         }
