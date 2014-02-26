@@ -82,5 +82,18 @@ namespace Brogue.Enemies
         {
             //ItemDropper once created
         }
+
+        public override DynamicTexture GetTexture()
+        {
+            if (IsAggro)
+            {
+                return Engine.Engine.GetTexture("Enemies/GuardianAggressive");
+            }
+            else
+            {
+                return Engine.Engine.GetTexture("Enemies/GuardianPassive");
+            }
+            
+        }
     }
 }

@@ -73,5 +73,10 @@ namespace Brogue.Enemies
         {
             //ItemDropper once created
         }
+
+        public override DynamicTexture GetTexture()
+        {
+            return Engine.Engine.GetTexture("Enemies/MageEnemy");
+        }
     }
 }
