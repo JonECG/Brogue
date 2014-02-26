@@ -22,6 +22,7 @@ namespace Brogue
         {
             HeroClasses.Hero.texture = Engine.Engine.GetTexture("Hero/Hero");
             HeroClasses.Hero.abilitySprite = Engine.Engine.GetTexture("abilityOverlay");
+            HeroClasses.Hero.castingSquareSprite = Engine.Engine.GetTexture("CastingSquareOverlay");
             HeroClasses.Hero.loadSprite();
             Enemies.Enemy.texture = Engine.Engine.GetTexture("Enemies/Enemy");
             Enemies.MeleeEnemy.texture = Engine.Engine.GetTexture("Enemies/Enemy");

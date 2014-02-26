@@ -29,8 +29,10 @@ namespace Brogue.HeroClasses
         protected int expRequired = 100;
         protected Ability[] abilities;
         static Sprite sprite;
+        static Sprite radiusSprite;
         static Sprite castingSprite;
         public static DynamicTexture abilitySprite;
+        public static DynamicTexture castingSquareSprite;
         protected Equipment currentlyEquippedItems = new Equipment();
         protected Inventory inventory = new Inventory();
         //Variable for testing, delete
@@ -78,7 +80,8 @@ namespace Brogue.HeroClasses
         public static void loadSprite()
         {
             sprite = new Sprite(texture);
-            castingSprite = new Sprite(abilitySprite);
+            radiusSprite = new Sprite(abilitySprite);
+            castingSprite = new Sprite(castingSquareSprite);
         }
 
         public void AddExperience(int xp)
@@ -200,7 +203,24 @@ namespace Brogue.HeroClasses
             {
                 IntVec[] castSquares = abilities[0].viewCastRange(mapLevel, mapLevel.CharacterEntities.FindPosition(this));
                 Engine.Engine.ClearGridSelections();
-                Engine.Engine.AddGridSelections(castSquares);
+                Engine.Engine.AddGridSelections(castSquares, abilitySprite);
+                if (abilities[0].getCastingSquares() != null)
+                {
+                    Engine.Engine.AddGridSelections(abilities[0].getCastingSquares(), castingSquareSprite);
+                }
+
+                if (MouseController.LeftClicked())
+                {
+                    bool withinRange = false;
+                    for (int i = 1; i < castSquares.Length && !withinRange; i++)
+                    {
+                        if (MouseController.MouseGridPosition().Equals(castSquares[i]))
+                        {
+                            withinRange = true;
+                            abilities[0].addCastingSquares(MouseController.MouseGridPosition());
+                        }
+                    }
+                }
                 
                 if (Mapping.KeyboardController.IsReleased(Keys.D1))
                 {
