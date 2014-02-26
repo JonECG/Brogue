@@ -13,7 +13,7 @@ namespace Brogue.EnviromentObjects.Decorative
 {
     class Plant : InonInteractable, IEnvironmentObject, IRenderable
     {
-        static DynamicTexture texture = Engine.Engine.GetTexture("Enviroment/Stairs");
+        static DynamicTexture texture = Engine.Engine.GetTexture("Enviroment/Plant");
         static Texture2D sprite { get; set; }
         bool isSolid { get; set; }
 

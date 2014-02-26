@@ -14,7 +14,7 @@ namespace Brogue.EnviromentObjects.Interactive
 {
     class Chest : IInteractable, IEnvironmentObject, IRenderable
     {
-        static DynamicTexture texture = Engine.Engine.GetTexture("Enviroment/Chair");
+        static DynamicTexture texture = Engine.Engine.GetTexture("Enviroment/Chest");
 
         bool isVisable { get; set; }
 
@@ -133,7 +133,6 @@ namespace Brogue.EnviromentObjects.Interactive
         {
             changeSolid();
             spewOutIteams();
-
         }
     }
 }
