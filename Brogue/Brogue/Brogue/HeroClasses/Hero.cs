@@ -265,6 +265,11 @@ namespace Brogue.HeroClasses
             inventory.swapItem(itemOne, itemTwo);
         }
 
+        public Inventory GetInventory()
+        {
+            return inventory;
+        }
+
         public void pickupItem(Item item)
         {
             inventory.addItem(item);

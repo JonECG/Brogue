@@ -46,12 +46,13 @@ namespace Brogue.Engine
         public const bool DOLIGHTING = true;
         public const bool DOAUDIO = false;
         public const float sightDistance = 1;
+        public static bool inventoryOpen = false;
         public static int CELLWIDTH = 48;
         private static int logSize = 10;
         private static Game1 game;
         public static IntVec cameraPosition = new IntVec(12, 8);
         private static Queue<String> log = new Queue<string>(10);
-        private static Vector2 LogPosition;
+        private static Vector2 LogPosition, InvButtonPosition, InventoryPosition;
         private static HeroClasses.Hero hero;
         private static bool heroesTurn = true;
         private static RenderTarget2D lightsTarget;
@@ -76,8 +77,9 @@ namespace Brogue.Engine
             bar = GetTexture("UI/Bar"), 
             healthcontainer = GetTexture("UI/HealthJar"),
             healthbar = GetTexture("UI/HealthBar"), 
-            xpbar = GetTexture("UI/XPBar"), 
-            inventory = GetTexture("UI/Inventory");
+            xpbar = GetTexture("UI/XPBar"),
+            invSlot = GetTexture("UI/InvSlot"),
+            invButton = GetTexture("UI/InventoryIcon");
         
         static SpriteFont font;
         static List<IntVec> gridSelection = new List<IntVec>();
@@ -118,6 +120,8 @@ namespace Brogue.Engine
             CharacterCreation();
             GenerateLevel();
             LogPosition = new Vector2(12, 12);
+            InvButtonPosition = new Vector2(game.Width - 48, game.Height - 48);
+            InventoryPosition = new Vector2(game.Width - 5 * (CELLWIDTH), game.Height - 5 * (CELLWIDTH));
             windowSizeInTiles = new IntVec(game.Width / CELLWIDTH, game.Height / CELLWIDTH);
             game.IsMouseVisible = true;
             StartGame();
@@ -192,26 +196,7 @@ namespace Brogue.Engine
             }
         }
 
-        public static void DrawUI(SpriteBatch uisb)
-        {
-            foreach (XPParticle xp in xpList)
-            {
-                uisb.Draw(particleTex.texture, xp.screenPosition, Color.White);
-            }
-            uisb.Draw(healthcontainer.texture, new Vector2(50, game.Height / 2 - healthcontainer.texture.Height / 2), Color.White);
-            uisb.Draw(healthcontainer.texture, xpBarPosition, Color.White);
-            uisb.Draw(healthbar.texture, new Vector2(50, game.Height / 2 - healthcontainer.texture.Height / 2), Color.White);
-            uisb.Draw(xpbar.texture, new Vector2(xpBarPosition.X + xpbar.texture.Width / 2, xpBarPosition.Y + xpbar.texture.Height / 2), new Rectangle(0, 0, xpbar.texture.Width, xpbar.texture.Height), Color.White, 0, new Vector2(xpbar.texture.Width / 2, xpbar.texture.Height / 2), new Vector2(1, hero.GetXpPercent()), SpriteEffects.None, 0);
-            //uisb.Draw(xpbar, xpBarPosition, Color.White);
-            uisb.Draw(inventory.texture, new Vector2(game.Width / 2 - inventory.texture.Width / 2, game.Height - 100), Color.White);
-            uisb.Draw(jar.texture, new Vector2(game.Width - 50 - jar.texture.Width, game.Height / 2 - jar.texture.Height / 2), Color.White);
-            uisb.Draw(bar.texture, new Vector2(game.Width - 50 - jar.texture.Width, game.Height / 2 - bar.texture.Height / 2), Color.White);
-            DrawMiniMap(uisb);
-
-            
-            DrawLog(uisb);
-        }
-
+        
         
 
         public static void Update(GameTime gameTime)
@@ -225,31 +210,35 @@ namespace Brogue.Engine
                     hero.AddExperience(1);
                 }
             }
-            GameCommands();
-            currentLevel.testUpdate();
-            //Game turns
-            if (heroesTurn)
+            if (!GameCommands())
             {
-                heroesTurn = !hero.TakeTurn(currentLevel);
-                cameraPosition = currentLevel.CharacterEntities.FindPosition(hero);
-                modifiedCameraPosition.X = cameraPosition.X - (windowSizeInTiles.X / 2);
-                modifiedCameraPosition.Y = cameraPosition.Y - (windowSizeInTiles.Y / 2);
-                currentLevel.InvalidateCache();
-            }
-            else
-            {
-                //Take next NPCs turn.
-                //When all NPCs have taken their turn...
-                heroesTurn = true;
-                currentLevel.InvalidateCache();
+                currentLevel.testUpdate();
+                //Game turns
+                if (heroesTurn)
+                {
+                    heroesTurn = !hero.TakeTurn(currentLevel);
+                    cameraPosition = currentLevel.CharacterEntities.FindPosition(hero);
+                    modifiedCameraPosition.X = cameraPosition.X - (windowSizeInTiles.X / 2);
+                    modifiedCameraPosition.Y = cameraPosition.Y - (windowSizeInTiles.Y / 2);
+                    currentLevel.InvalidateCache();
+                }
+                else
+                {
+                    //Take next NPCs turn.
+                    //When all NPCs have taken their turn...
+                    heroesTurn = true;
+                    currentLevel.InvalidateCache();
+                }
             }
         }
 
-        private static void GameCommands()
+        private static bool GameCommands()
         {
+            bool didSomething = false;
             if (KeyboardController.IsPressed(Keys.OemPlus))
             {
                 logSize += 5;
+                didSomething = true;
             }
             if (KeyboardController.IsPressed(Keys.OemMinus))
             {
@@ -261,7 +250,51 @@ namespace Brogue.Engine
                         log.Dequeue();
                     }
                 }
+                didSomething = true;
             }
+            if (KeyboardController.IsPressed(Keys.Escape))
+            {
+                //Replace with menu eventually...
+                //System.Environment.Exit(0);
+                if (inventoryOpen)
+                {
+                    inventoryOpen = false;
+                    Log("Inventory closed.");
+                }
+            }
+            if (MouseController.LeftClicked())
+            {
+                IntVec screenpos = MouseController.MouseScreenPosition();
+                if (screenpos.X >= InvButtonPosition.X && screenpos.X <= InvButtonPosition.X + invButton.texture.Width &&
+                    screenpos.Y >= InvButtonPosition.Y && screenpos.Y <= InvButtonPosition.Y + invButton.texture.Height
+                    )
+                {
+                    //Show inventory menu.
+                    inventoryOpen = !inventoryOpen;
+                    Log(inventoryOpen? "Inventory Opened." : "Inventory Closed.");
+                    didSomething = true;
+                }
+            }
+
+            return didSomething;
+        }
+
+        public static void DrawInventory(SpriteBatch sb)
+        {
+            InventorySystem.Inventory inv = hero.GetInventory();
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    Vector2 curpos = new Vector2(InventoryPosition.X + (invSlot.texture.Width * i), InventoryPosition.Y + (invSlot.texture.Height * j));
+                    sb.Draw(invSlot.texture, curpos, Color.White);
+                    Items.Item item = inv.GetItemAt(j * 4 + i);
+                    if (item != null){
+                        sb.Draw(inv.GetItemAt(j * 4 + i).GetTexture().texture, curpos, Color.White);
+                    }
+                }
+            }
+
         }
 
         public static void DrawLog(SpriteBatch spriteBatch)
@@ -272,15 +305,12 @@ namespace Brogue.Engine
                 spriteBatch.DrawString(font, s, new Vector2(LogPosition.X, LogPosition.Y + 12 * inc++), Color.Red);
             }
         }
-
         
         public static void DrawGame(GameTime gameTime)
         {
             worldToView = Matrix.CreateTranslation(-cameraPosition.X * CELLWIDTH + game.Width / 2, -cameraPosition.Y * CELLWIDTH + game.Height / 2, 1.0f)
                     * Matrix.CreateScale(1.0f, 1.0f, 1);
             
-            
-
             //Draw lighting.
             DrawLighting(worldToView); 
             
@@ -315,7 +345,30 @@ namespace Brogue.Engine
 
         }
 
+        public static void DrawUI(SpriteBatch uisb)
+        {
+            foreach (XPParticle xp in xpList)
+            {
+                uisb.Draw(particleTex.texture, xp.screenPosition, Color.White);
+            }
+            uisb.Draw(healthcontainer.texture, new Vector2(50, game.Height / 2 - healthcontainer.texture.Height / 2), Color.White);
+            uisb.Draw(healthcontainer.texture, xpBarPosition, Color.White);
+            uisb.Draw(healthbar.texture, new Vector2(50, game.Height / 2 - healthcontainer.texture.Height / 2), Color.White);
+            uisb.Draw(xpbar.texture, new Vector2(xpBarPosition.X + xpbar.texture.Width / 2, xpBarPosition.Y + xpbar.texture.Height / 2), new Rectangle(0, 0, xpbar.texture.Width, xpbar.texture.Height), Color.White, 0, new Vector2(xpbar.texture.Width / 2, xpbar.texture.Height / 2), new Vector2(1, hero.GetXpPercent()), SpriteEffects.None, 0);
+            //uisb.Draw(xpbar, xpBarPosition, Color.White);
+            //uisb.Draw(inventory.texture, new Vector2(game.Width / 2 - inventory.texture.Width / 2, game.Height - 100), Color.White);
 
+            uisb.Draw(jar.texture, new Vector2(game.Width - 50 - jar.texture.Width, game.Height / 2 - jar.texture.Height / 2), Color.White);
+            uisb.Draw(bar.texture, new Vector2(game.Width - 50 - jar.texture.Width, game.Height / 2 - bar.texture.Height / 2), Color.White);
+            uisb.Draw(invButton.texture, InvButtonPosition, Color.White);
+            DrawMiniMap(uisb);
+            if (inventoryOpen)
+            {
+                DrawInventory(uisb);
+            }
+
+            DrawLog(uisb);
+        }
 
         private static bool IsTileInView(IntVec gridloc)
         {

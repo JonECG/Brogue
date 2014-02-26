@@ -59,7 +59,7 @@ namespace Brogue.EnviromentObjects.Interactive
         {
             //Engine.Engine.currentLevel
             IntVec chestPosition = Engine.Engine.currentLevel.InteractableEnvironment.FindPosition(this);
-            for (int currentSlot = 0; currentSlot< 10 && contents.Count > 0; currentSlot++)
+            for (int currentSlot = 0; currentSlot< contents.Count && contents.Count > 0; currentSlot++)
             {
                 if (Engine.Engine.currentLevel.isSolid(chestPosition.X - 1, chestPosition.Y - 1))
                 {

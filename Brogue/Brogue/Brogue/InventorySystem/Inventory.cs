@@ -36,6 +36,19 @@ namespace Brogue.InventorySystem
             
         }
 
+        public Item GetItemAt(int index)
+        {
+            Item returnitem = null;
+            if (index >= 0 && index < MAX_ITEM_COUNT)
+            {
+                if (stored[index].isFilled)
+                {
+                    returnitem = stored[index].item;
+                }
+            }
+            return returnitem;
+        }
+
         public bool inventoryMaxed()
         {
             int numItems = 0;

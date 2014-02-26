@@ -12,12 +12,16 @@ namespace Brogue
 
         private static MouseState state, prevstate;
         private static IntVec worldPosition = new IntVec(0, 0);
+        private static IntVec screenPosition = new IntVec(0, 0);
+
 
         public static void Update()
         {
             prevstate = state;
             state = Mouse.GetState();
             Matrix mouseMat = Matrix.Invert(Engine.Engine.worldToView);
+            screenPosition.X = state.X;
+            screenPosition.Y = state.Y;
             Vector3 test = Vector3.Transform(new Vector3(state.X + Engine.Engine.CELLWIDTH / 2, state.Y + Engine.Engine.CELLWIDTH / 2, 0), mouseMat);
             worldPosition.X = (int)(test.X / Engine.Engine.CELLWIDTH);
             worldPosition.Y = (int)(test.Y / Engine.Engine.CELLWIDTH);
@@ -54,6 +58,10 @@ namespace Brogue
         public static IntVec MouseGridPosition()
         {
             return worldPosition;
+        }
+        public static IntVec MouseScreenPosition()
+        {
+            return screenPosition;
         }
     }
 }
