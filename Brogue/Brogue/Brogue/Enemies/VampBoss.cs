@@ -77,10 +77,5 @@ namespace Brogue.Enemies
             attacks.Add(10 + i * 3);
             exp = 10 + 10 * i;
         }
-
-        protected override void Die()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

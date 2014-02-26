@@ -84,10 +84,5 @@ namespace Brogue.Enemies
             moveSpeed = 3 + i;
             exp = 10 + 10 * i;
         }
-
-        protected override void Die()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
