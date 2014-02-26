@@ -10,8 +10,8 @@ namespace Brogue.Enemies
     abstract class BossEnemy : GameCharacter
     {
         protected List<GameCharacter> targets;
-        protected List<int> attacks;
-        protected List<int> attackranges;
+        protected List<int> attacks = new List<int>();
+        protected List<int> attackranges = new List<int>();
         protected int defense;
         protected int moveSpeed;
 
