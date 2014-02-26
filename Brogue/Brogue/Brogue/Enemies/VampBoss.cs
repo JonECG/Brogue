@@ -75,6 +75,7 @@ namespace Brogue.Enemies
                 defense = 50;
             attacks.Add(10 + i * 2);
             attacks.Add(10 + i * 3);
+            exp = 10 + 10 * i;
         }
 
         protected override void Die()

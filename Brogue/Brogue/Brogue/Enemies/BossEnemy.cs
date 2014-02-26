@@ -9,11 +9,12 @@ namespace Brogue.Enemies
 {
     abstract class BossEnemy : GameCharacter
     {
-        protected List<GameCharacter> targets;
+        protected List<GameCharacter> targets = new List<GameCharacter>();
         protected List<int> attacks = new List<int>();
         protected List<int> attackranges = new List<int>();
         protected int defense;
         protected int moveSpeed;
+        protected int exp;
 
         public bool IsAggro
         {
@@ -41,7 +42,11 @@ namespace Brogue.Enemies
         public abstract void BuildBoss(int i);
 
         //Drops items and any other needed actions for death
-        protected abstract void Die();
+        protected virtual void Die()
+        {
+            Engine.Engine.AddXP(exp, Engine.Engine.currentLevel.CharacterEntities.FindPosition(this));
+            Engine.Engine.currentLevel.CharacterEntities.Remove(this);
+        }
 
         //Converts damage based on armour and then removes from health.
         public override void TakeDamage(int damage, GameCharacter attacker)

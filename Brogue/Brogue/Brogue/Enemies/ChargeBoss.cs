@@ -82,6 +82,7 @@ namespace Brogue.Enemies
             attacks.Add(10 + i * 2);
             attacks.Add(20 + i * 3);
             moveSpeed = 3 + i;
+            exp = 10 + 10 * i;
         }
 
         protected override void Die()
