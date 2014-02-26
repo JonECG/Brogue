@@ -48,7 +48,7 @@ namespace Brogue.Enemies
         {
             if (targets.Count == 0)
             {
-                targets[0] = attacker;
+                targets.Add(attacker);
             }
             float tempArmor = (float)defense / 100f;
             damage -= (int)((float)damage * tempArmor);
