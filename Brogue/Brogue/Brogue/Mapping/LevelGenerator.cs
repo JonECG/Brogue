@@ -22,7 +22,7 @@ namespace Brogue.Mapping
 
                 public __RoomType type;
 
-                bool[,] floorPlan;
+                public bool[,] floorPlan;
 
                 public Rectangle dimensions;
 
@@ -408,7 +408,7 @@ namespace Brogue.Mapping
             switch (room.type)
             {
                 case __FloorPlan.__Room.__RoomType.DOORWAY:
-                    interact.Add(new Door(), new IntVec(room.dimensions.X, room.dimensions.Y));
+                    interact.Add(new Door( (room.floorPlan[room.dimensions.X-1,room.dimensions.Y]) ? Direction.RIGHT: Direction.UP ), new IntVec(room.dimensions.X, room.dimensions.Y));
                     break;
                 case __FloorPlan.__Room.__RoomType.TREASURE_ROOM:
                     Item[] items = new Item[ rand.Next( 2, 8 ) ];
@@ -441,24 +441,24 @@ namespace Brogue.Mapping
             switch (room.type)
             {
                 case __FloorPlan.__Room.__RoomType.BOSS_ROOM:
-                    chars.Add(EnemyCreator.GetRandomBoss(9001), room.GetCenter());
+                    chars.Add(EnemyCreator.GetRandomBoss(40), room.GetCenter());
                     break;
                 case __FloorPlan.__Room.__RoomType.NOTHING_SPECIAL:
                     foreach (var pos in room.GetCells())
                     {
                         if (rand.NextDouble() > 0.98)
-                            chars.Add(EnemyCreator.GetRandomEnemy(1,40).ElementAt(0), pos);
+                            chars.Add(EnemyCreator.GetRandomEnemy(1,40)[0], pos);
                         //lights.Add(new ColorEnvironment(new Color(rand.Next(100,256), rand.Next(100,256), rand.Next(100,256)), false), position);
                     }
                     break;
                 case __FloorPlan.__Room.__RoomType.MOB_ROOM:
-                        List<Enemy> enemies = EnemyCreator.GetRandomEnemy(rand.Next(2,6),40 );
+                        Enemy[] enemies = EnemyCreator.GetRandomEnemy(rand.Next(2,6),40 );
                         int dropped = 1;
-                        chars.Add(enemies.ElementAt(0), room.GetCenter() );
+                        chars.Add(enemies[0], room.GetCenter() );
                         foreach (var dir in Direction.Values)
                         {
                             if( dropped < enemies.Count )
-                                chars.Add(enemies.ElementAt(dropped), room.GetCenter() + dir);
+                                chars.Add(enemies[dropped], room.GetCenter() + dir);
                             dropped++;
                         }
                     break;

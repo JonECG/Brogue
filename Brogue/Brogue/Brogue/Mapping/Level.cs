@@ -254,8 +254,9 @@ namespace Brogue.Mapping
 
             Environment.Draw();
             InteractableEnvironment.Draw();
-            LightSources.Draw();
+            
             DroppedItems.Draw();
+            LightSources.Draw();
             CharacterEntities.Draw();
 
             //CharacterEntities.InvokeOnAll( (GameCharacter character, IntVec position) =>
