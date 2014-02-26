@@ -17,20 +17,36 @@ namespace Brogue.Enemies
             switch(rand)
             {
                 case(0):
-                    enemy = new MeleeEnemy();
-                    enemy.BuildEnemy(powerLevel);
+                    for (int i = 0; i < amount; i++)
+                    {
+                        enemy = new MeleeEnemy();
+                        enemy.BuildEnemy(powerLevel);
+                        enemies.Add(enemy);
+                    }
                     break;
                 case (1):
-                    enemy = new RangedEnemy();
-                    enemy.BuildEnemy(powerLevel);
+                    for (int i = 0; i < amount; i++)
+                    {
+                        enemy = new RangedEnemy();
+                        enemy.BuildEnemy(powerLevel);
+                        enemies.Add(enemy);
+                    }
                     break;
                 case (2):
-                    enemy = new MageEnemy();
-                    enemy.BuildEnemy(powerLevel);
+                    for (int i = 0; i < amount; i++)
+                    {
+                        enemy = new MageEnemy();
+                        enemy.BuildEnemy(powerLevel);
+                        enemies.Add(enemy);
+                    }
                     break;
                 case (3):
-                    enemy = new GuardianEnemy();
-                    enemy.BuildEnemy(powerLevel);
+                    for (int i = 0; i < amount; i++)
+                    {
+                        enemy = new GuardianEnemy();
+                        enemy.BuildEnemy(powerLevel);
+                        enemies.Add(enemy);
+                    }
                     break;
             }
 
