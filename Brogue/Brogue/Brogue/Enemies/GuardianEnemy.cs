@@ -93,7 +93,6 @@ namespace Brogue.Enemies
             {
                 return Engine.Engine.GetTexture("Enemies/GuardianPassive");
             }
-            
         }
     }
 }
