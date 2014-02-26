@@ -9,7 +9,7 @@ namespace Brogue.Enemies
     {
         private static Random gen = new Random();
 
-        public static List<Enemy> GetRandomEnemy(int amount, int powerLevel)
+        public static Enemy[] GetRandomEnemy(int amount, int powerLevel)
         {
             Enemy enemy = null;
             List<Enemy> enemies = new List<Enemy>();
@@ -50,12 +50,10 @@ namespace Brogue.Enemies
                     break;
             }
 
-            for (int i = 0; i < amount; i++)
-            {
-                enemies.Add(enemy);
-            }
-            return enemies;
+            return enemies.ToArray();
         }
+
+
 
         public static BossEnemy GetRandomBoss(int powerLevel)
         {
