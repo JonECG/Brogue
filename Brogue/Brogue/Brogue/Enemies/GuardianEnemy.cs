@@ -78,11 +78,6 @@ namespace Brogue.Enemies
             exp = 20 + 5 * i;
         }
 
-        protected override void Die()
-        {
-            //ItemDropper once created
-        }
-
         public override DynamicTexture GetTexture()
         {
             if (IsAggro)

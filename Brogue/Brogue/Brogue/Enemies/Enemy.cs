@@ -42,7 +42,11 @@ namespace Brogue.Enemies
         public abstract void BuildEnemy(int i);
 
         //Drops items and any other needed actions for death
-        protected abstract void Die();
+        protected virtual void Die()
+        {
+            Engine.Engine.AddXP(exp, this.position);
+            Engine.Engine.currentLevel.CharacterEntities.Remove(this);
+        }
         
         //Attacks the current target
         protected void Attack()

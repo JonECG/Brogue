@@ -97,11 +97,6 @@ namespace Brogue.Enemies
             exp = 7 + 3 * i;
         }
 
-        protected override void Die()
-        {
-            //ItemDropper once created
-        }
-
         public override DynamicTexture GetTexture()
         {
             return Engine.Engine.GetTexture("Enemies/RangedEnemy");
