@@ -51,8 +51,8 @@ namespace Brogue.EnviromentObjects.Decorative
         
         public Sprite GetSprite()
         {
-            return new Sprite(texture);
-            //return new Sprite(texture, directionFacing);
+            //return new Sprite(texture);
+            return new Sprite(texture, directionFacing);
         }
 
         public bool IsSolid()

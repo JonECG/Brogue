@@ -17,7 +17,7 @@ namespace Brogue.Mapping
         {
             public struct __Room
             {
-                public enum __RoomType { EMPTY, NOTHING_SPECIAL, DOORWAY, HALLWAY, TREASURE_ROOM, FOYER };
+                public enum __RoomType { EMPTY, NOTHING_SPECIAL, DOORWAY, HALLWAY, TREASURE_ROOM, FOYER, BOSS_ROOM, MOB_ROOM };
 
                 public __RoomType type;
 
@@ -33,10 +33,18 @@ namespace Brogue.Mapping
 
                     this.floorPlan = floorPlan;
 
-                    if (dimensions.Width > 5 && dimensions.Height > 5 )
-                        type = __RoomType.FOYER;
+                    if (dimensions.Width > 5 && dimensions.Height > 5)
+                    {
+                        if (getLargestOpening() == 1)
+                        {
+                            Engine.Engine.Log( string.Format( "BOSS ROOM GENERATED AT <{0}, {1}>", dimensions.X, dimensions.Y ) );
+                            type = __RoomType.BOSS_ROOM;
+                        }
+                        else
+                            type = __RoomType.FOYER;
+                    }
 
-                    if (dimensions.Width > 3 && dimensions.Height > 3 && dimensions.Width < 7 & dimensions.Height < 7)
+                    if (dimensions.Width > 3 && dimensions.Height > 3 && dimensions.Width < 7 && dimensions.Height < 7 && ( getOpenings() <= 7 ) )
                         type = __RoomType.TREASURE_ROOM;
 
                     if (dimensions.Width == 1 || dimensions.Height == 1)
@@ -63,31 +71,121 @@ namespace Brogue.Mapping
                     }
                 }
 
-                public IEnumerable<IntVec> GetWalls()
+                public IEnumerable<Tuple<IntVec,Direction>> GetWalls( bool inside = false )
                 {
+                    int offset = (inside) ? 1 : 0 ;
+                    IntVec pos;
                     for (int i = 0; i < dimensions.Height; i++)
                     {
-                        yield return new IntVec(dimensions.X, dimensions.Y + i);
+                        pos = new IntVec(dimensions.X + offset - 1, dimensions.Y + i);
+                        if (!floorPlan[pos.X - offset, pos.Y])
+                            yield return Tuple.Create<IntVec, Direction>(pos, Direction.RIGHT);
                     }
 
                     for (int i = 0; i < dimensions.Width; i++)
                     {
-                        yield return new IntVec(dimensions.X + i, dimensions.Y );
+                        pos = new IntVec(dimensions.X + i, dimensions.Y + offset - 1);
+                        if (!floorPlan[pos.X, pos.Y-offset])
+                            yield return Tuple.Create<IntVec, Direction>(pos, Direction.DOWN);
                     }
 
                     if (dimensions.Width > 1)
                     for (int i = 0; i < dimensions.Height; i++)
                     {
-                        yield return new IntVec(dimensions.X + dimensions.Width - 1, dimensions.Y + i);
+                        pos = new IntVec(dimensions.X + dimensions.Width - offset, dimensions.Y + i);
+                        if (!floorPlan[pos.X+offset, pos.Y])
+                            yield return Tuple.Create<IntVec, Direction>(pos, Direction.LEFT);
                     }
 
                     if (dimensions.Height != 1)
                     for (int i = 0; i < dimensions.Width; i++)
                     {
-                        yield return new IntVec(dimensions.X + i, dimensions.Y + dimensions.Height - 1);
+                        pos = new IntVec(dimensions.X + i, dimensions.Y + dimensions.Height - offset);
+                        if (!floorPlan[pos.X, pos.Y + offset])
+                            yield return Tuple.Create<IntVec, Direction>(pos, Direction.UP);
                     }
                 }
-                
+
+                public int getOpenings()
+                {
+                    int result = 0;
+                    IntVec pos;
+                    for (int i = 0; i < dimensions.Height; i++)
+                    {
+                        pos = new IntVec(dimensions.X - 1, dimensions.Y + i);
+                        if (floorPlan[pos.X, pos.Y])
+                            result++;
+                    }
+
+                    for (int i = 0; i < dimensions.Width; i++)
+                    {
+                        pos = new IntVec(dimensions.X + i, dimensions.Y - 1);
+                        if (floorPlan[pos.X, pos.Y])
+                            result++;
+                    }
+
+                    for (int i = 0; i < dimensions.Height; i++)
+                    {
+                        pos = new IntVec(dimensions.X + dimensions.Width, dimensions.Y + i);
+                        if (floorPlan[pos.X, pos.Y])
+                            result++;
+                    }
+
+                    for (int i = 0; i < dimensions.Width; i++)
+                    {
+                        pos = new IntVec(dimensions.X + i, dimensions.Y + dimensions.Height);
+                        if (floorPlan[pos.X, pos.Y])
+                            result++;
+                    }
+                    return result;
+                }
+
+                public int getLargestOpening()
+                {
+                    int currentOpening = 0;
+                    int largest = 0;
+                    IntVec pos;
+                    for (int i = 0; i < dimensions.Height; i++)
+                    {
+                        pos = new IntVec(dimensions.X - 1, dimensions.Y + i);
+                        if (floorPlan[pos.X, pos.Y])
+                            currentOpening++;
+                        else
+                            currentOpening = 0;
+                        largest = Math.Max(largest, currentOpening);
+                    }
+
+                    for (int i = 0; i < dimensions.Width; i++)
+                    {
+                        pos = new IntVec(dimensions.X + i, dimensions.Y - 1);
+                        if (floorPlan[pos.X, pos.Y])
+                            currentOpening++;
+                        else
+                            currentOpening = 0;
+                        largest = Math.Max(largest, currentOpening);
+                    }
+
+                    for (int i = 0; i < dimensions.Height; i++)
+                    {
+                        pos = new IntVec(dimensions.X + dimensions.Width, dimensions.Y + i);
+                        if (floorPlan[pos.X, pos.Y])
+                            currentOpening++;
+                        else
+                            currentOpening = 0;
+                        largest = Math.Max(largest, currentOpening);
+                    }
+
+                    for (int i = 0; i < dimensions.Width; i++)
+                    {
+                        pos = new IntVec(dimensions.X + i, dimensions.Y + dimensions.Height);
+                        if (floorPlan[pos.X, pos.Y])
+                            currentOpening++;
+                        else
+                            currentOpening = 0;
+                        largest = Math.Max(largest, currentOpening);
+                    }
+                    return largest;
+                }
             }
 
             bool[,] isFloor;
@@ -227,7 +325,7 @@ namespace Brogue.Mapping
             GridBoundList<GameCharacter> characters = new GridBoundList<GameCharacter>();
 
             int entryRoom = rand.Next( floorPlan.hallstart );
-            while (/*floorPlan.rooms[entryRoom].type != __FloorPlan.__Room.__RoomType.FOYER &&*/ floorPlan.rooms[entryRoom].type != __FloorPlan.__Room.__RoomType.TREASURE_ROOM )
+            while (floorPlan.rooms[entryRoom].type != __FloorPlan.__Room.__RoomType.FOYER && floorPlan.rooms[entryRoom].type != __FloorPlan.__Room.__RoomType.TREASURE_ROOM )
             {
                 entryRoom = (entryRoom + 1) % floorPlan.hallstart;
             }
@@ -237,7 +335,7 @@ namespace Brogue.Mapping
             floorPlan.rooms[entryRoom].type = __FloorPlan.__Room.__RoomType.EMPTY;
 
             int endRoom = (entryRoom + floorPlan.hallstart / 2) % floorPlan.hallstart;
-            while (/*floorPlan.rooms[endRoom].type != __FloorPlan.__Room.__RoomType.FOYER &&*/ floorPlan.rooms[endRoom].type != __FloorPlan.__Room.__RoomType.TREASURE_ROOM)
+            while (floorPlan.rooms[endRoom].type != __FloorPlan.__Room.__RoomType.FOYER && floorPlan.rooms[endRoom].type != __FloorPlan.__Room.__RoomType.TREASURE_ROOM)
             {
                 endRoom = (endRoom + 1) % floorPlan.hallstart;
             }
@@ -270,12 +368,33 @@ namespace Brogue.Mapping
 
         private static void populateEnvironmentObjects(__FloorPlan.__Room room, GridBoundList<IEnvironmentObject> environ, Random rand)
         {
-            //switch (room.type)
-            //{
-            //    //case __FloorPlan.__Room.__RoomType.DOORWAY:
-            //    //    environ.Add(new ColorEnvironment(Color.Magenta, true), new IntVec(room.dimensions.X, room.dimensions.Y));
-            //    //    break;
-            //}
+            Color col = Color.White;
+            switch (room.type)
+            {
+                case __FloorPlan.__Room.__RoomType.BOSS_ROOM:
+                    col = Color.Red;
+                    break;
+                case __FloorPlan.__Room.__RoomType.FOYER:
+                    col = Color.Blue;
+                    break;
+                case __FloorPlan.__Room.__RoomType.TREASURE_ROOM:
+                    col = Color.Yellow;
+                    break;
+                case __FloorPlan.__Room.__RoomType.NOTHING_SPECIAL:
+                    col = Color.Gray;
+                    break;
+                case __FloorPlan.__Room.__RoomType.MOB_ROOM:
+                    col = Color.Green;
+                    break;
+                //case __FloorPlan.__Room.__RoomType.DOORWAY:
+                //    environ.Add(new ColorEnvironment(Color.Magenta, true), new IntVec(room.dimensions.X, room.dimensions.Y));
+                //    break;
+            }
+
+            foreach (IntVec pos in room.GetCells())
+            {
+                environ.Add(new ColorEnvironment(col, false), pos);
+            }
         }
 
         private static void populateInteractiveEnvironmentObjects(__FloorPlan.__Room room, GridBoundList<IInteractable> interact, Random rand)
@@ -299,10 +418,11 @@ namespace Brogue.Mapping
 
         private static void populateLightSources(__FloorPlan.__Room room, GridBoundList<ILightSource> lights, Random rand)
         {
-            foreach (var position in room.GetWalls())
+            if (room.type != __FloorPlan.__Room.__RoomType.DOORWAY)
+            foreach (var wall in room.GetWalls(true))
             {
-                if (rand.NextDouble() > 0.98)
-                    lights.Add(new Tourch(Direction.RIGHT, new Color(255,155,55)),position);
+                if (rand.NextDouble() > 0.94)
+                    lights.Add(new Tourch(wall.Item2, new Color(255, 155, 55)), wall.Item1);
                     //lights.Add(new ColorEnvironment(new Color(rand.Next(100,256), rand.Next(100,256), rand.Next(100,256)), false), position);
             }
             switch (room.type)
@@ -320,7 +440,7 @@ namespace Brogue.Mapping
         #region FLOOR PLAN CREATION
         private static __FloorPlan createFloorPlan(Random rand, int levels)
         {
-            const int PADDING = 4;
+            const int PADDING = 5;
 
             int maxPlayGround = 3500;
             bool[,] playGround = new bool[maxPlayGround, maxPlayGround];
@@ -335,8 +455,8 @@ namespace Brogue.Mapping
 
             for (int level = 0; level < floorComplexity; level++)
             {
-                int roomWidth = rand.Next(10) + 6;
-                int roomHeight = rand.Next(10) + 6;
+                int roomWidth = rand.Next(15) + 6;
+                int roomHeight = rand.Next(15) + 6;
                 int anchorX = rand.Next(roomWidth - PADDING) + PADDING / 2;
                 int anchorY = rand.Next(roomHeight - PADDING) + PADDING / 2;
 
