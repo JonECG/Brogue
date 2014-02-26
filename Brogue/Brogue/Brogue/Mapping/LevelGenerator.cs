@@ -1,4 +1,5 @@
-﻿using Brogue.Engine;
+﻿using Brogue.Enemies;
+using Brogue.Engine;
 using Brogue.EnviromentObjects.Decorative;
 using Brogue.EnviromentObjects.Interactive;
 using Brogue.Items;
@@ -44,8 +45,13 @@ namespace Brogue.Mapping
                             type = __RoomType.FOYER;
                     }
 
-                    if (dimensions.Width > 3 && dimensions.Height > 3 && dimensions.Width < 7 && dimensions.Height < 7 && ( getOpenings() <= 7 ) )
-                        type = __RoomType.TREASURE_ROOM;
+                    if (dimensions.Width > 3 && dimensions.Height > 3 && dimensions.Width < 7 && dimensions.Height < 7)
+                    {
+                        if ( getOpenings() < 6 )
+                            type = __RoomType.TREASURE_ROOM;
+                        else
+                            type = __RoomType.MOB_ROOM;
+                    }
 
                     if (dimensions.Width == 1 || dimensions.Height == 1)
                         type = __RoomType.HALLWAY;
@@ -425,15 +431,37 @@ namespace Brogue.Mapping
                     lights.Add(new Tourch(wall.Item2, new Color(255, 155, 55)), wall.Item1);
                     //lights.Add(new ColorEnvironment(new Color(rand.Next(100,256), rand.Next(100,256), rand.Next(100,256)), false), position);
             }
-            switch (room.type)
-            {
-            }
+            //switch (room.type)
+            //{
+            //}
         }
 
         private static void populateGameCharacters(__FloorPlan.__Room room, GridBoundList<GameCharacter> chars, Random rand)
         {
             switch (room.type)
             {
+                case __FloorPlan.__Room.__RoomType.BOSS_ROOM:
+                    chars.Add(EnemyCreator.GetRandomBoss(9001), room.GetCenter());
+                    break;
+                case __FloorPlan.__Room.__RoomType.NOTHING_SPECIAL:
+                    foreach (var pos in room.GetCells())
+                    {
+                        if (rand.NextDouble() > 0.98)
+                            chars.Add(EnemyCreator.GetRandomEnemy(1,40).ElementAt(0), pos);
+                        //lights.Add(new ColorEnvironment(new Color(rand.Next(100,256), rand.Next(100,256), rand.Next(100,256)), false), position);
+                    }
+                    break;
+                case __FloorPlan.__Room.__RoomType.MOB_ROOM:
+                        List<Enemy> enemies = EnemyCreator.GetRandomEnemy(rand.Next(2,6),40 );
+                        int dropped = 1;
+                        chars.Add(enemies.ElementAt(0), room.GetCenter() );
+                        foreach (var dir in Direction.Values)
+                        {
+                            if( dropped < enemies.Count )
+                                chars.Add(enemies.ElementAt(dropped), room.GetCenter() + dir);
+                            dropped++;
+                        }
+                    break;
             }
         }
 
