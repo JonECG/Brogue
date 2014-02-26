@@ -4,20 +4,22 @@ using System.Linq;
 using System.Text;
 using Brogue;
 using Brogue.Mapping;
+using Brogue.Engine;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Brogue.Engine;
 
 
 namespace Brogue.EnviromentObjects.Interactive
 {
-    class HiddenPassage : IEnvironmentObject, IRenderable
+    class HiddenPassage : IEnvironmentObject, IRenderable, IInteractable
     {
 
         static DynamicTexture texture = Engine.Engine.GetTexture("Enviroment/Stairs");
         IntVec exit { get; set; }
         bool isSolid { get; set; }
         bool isVisiable { get; set; }
+
+        Direction directionFacing { get; set; }
 
         HiddenPassage other = new HiddenPassage();
 
@@ -34,9 +36,15 @@ namespace Brogue.EnviromentObjects.Interactive
             other = exitPosition;
         }
 
+        private void setToNewPosition(GameCharacter actingCharacter)
+        {
+            IntVec exitPosition = Engine.Engine.currentLevel.InteractableEnvironment.FindPosition(other);
+            actingCharacter.position = exitPosition;
+        }
+
         private void ChangeState()
         {
-            if (isSolid)
+            if (!isVisiable)
             {
                 //isSolid = false;
                 isVisiable = true;
@@ -51,6 +59,12 @@ namespace Brogue.EnviromentObjects.Interactive
         public Sprite GetSprite()
         {
             return new Sprite(texture);
+        }
+
+        public void actOn(GameCharacter actingCharacter)
+        {
+            changeState();
+            target.actOn(actingCharacter);
         }
 
     }

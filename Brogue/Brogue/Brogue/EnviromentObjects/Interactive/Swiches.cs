@@ -30,6 +30,19 @@ namespace Brogue.EnviromentObjects.Interactive
             isPassable = false;
         }
 
+        public void link(IInteractable actingOn)
+        {
+            target = actingOn;
+        }
+
+        public Swiches(IInteractable actingOn)
+        {
+            active = false;
+            isSolid = true;
+            isPassable = false;
+            target = actingOn;
+        }
+
         public void changeState()
         {
             if (active)
@@ -69,7 +82,9 @@ namespace Brogue.EnviromentObjects.Interactive
 
         public void actOn(GameCharacter actingCharacter)
         {
-            throw new NotImplementedException();
+            changeState();
+            target.actOn(actingCharacter);
+            //actingCharacter.position = new IntVec()
         }
     }
 
@@ -81,8 +96,6 @@ namespace Brogue.EnviromentObjects.Interactive
 
         static DynamicTexture texture = Engine.Engine.GetTexture("Enviroment/Presser Plate");
 
-        static Texture2D sprite;
-
         public IInteractable target { get; set; }
 
         public presserPlate()
@@ -90,6 +103,19 @@ namespace Brogue.EnviromentObjects.Interactive
             active = false;
             isSolid = true;
             isPassable = true;
+        }
+
+        public presserPlate(IInteractable actingOn)
+        {
+            active = false;
+            isSolid = true;
+            isPassable = true;
+            target = actingOn;
+        }
+
+        public void link(IInteractable actingOn)
+        {
+            target = actingOn;
         }
 
         public void changeState()
