@@ -7,9 +7,10 @@ namespace Brogue.Enemies
 {
     static class EnemyCreator
     {
+        private static Random gen = new Random();
+
         public static List<Enemy> GetRandomEnemy(int amount, int powerLevel)
         {
-            Random gen = new Random();
             Enemy enemy = null;
             List<Enemy> enemies = new List<Enemy>();
             int rand = gen.Next(0, 4);
