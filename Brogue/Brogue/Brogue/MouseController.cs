@@ -18,9 +18,9 @@ namespace Brogue
             prevstate = state;
             state = Mouse.GetState();
             Matrix mouseMat = Matrix.Invert(Engine.Engine.worldToView);
-            Vector3 test = Vector3.Transform(new Vector3(state.X * Engine.Engine.CELLWIDTH, state.Y * Engine.Engine.CELLWIDTH, 0), mouseMat);
-            worldPosition.X = (int)test.X;
-            worldPosition.Y = (int)test.Y;
+            Vector3 test = Vector3.Transform(new Vector3(state.X + Engine.Engine.CELLWIDTH / 2, state.Y + Engine.Engine.CELLWIDTH / 2, 0), mouseMat);
+            worldPosition.X = (int)(test.X / Engine.Engine.CELLWIDTH);
+            worldPosition.Y = (int)(test.Y / Engine.Engine.CELLWIDTH);
         }
 
         public static bool LeftClicked()

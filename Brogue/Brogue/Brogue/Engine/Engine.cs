@@ -44,7 +44,7 @@ namespace Brogue.Engine
     partial class Engine
     {
         public const bool DOLIGHTING = true;
-        public const bool DOAUDIO = true;
+        public const bool DOAUDIO = false;
         public const float sightDistance = 1;
         public static int CELLWIDTH = 48;
         private static int logSize = 10;
@@ -216,6 +216,7 @@ namespace Brogue.Engine
 
         public static void Update(GameTime gameTime)
         {
+            MouseController.Update();
             for (int i = 0; i < xpList.Count; i++)
             {
                 if (xpList[i].update())
@@ -272,18 +273,12 @@ namespace Brogue.Engine
             }
         }
 
-        static int flickerdelay = 0;
-        static float flicker = 0;
-        static bool temp = false;
+        
         public static void DrawGame(GameTime gameTime)
         {
             worldToView = Matrix.CreateTranslation(-cameraPosition.X * CELLWIDTH + game.Width / 2, -cameraPosition.Y * CELLWIDTH + game.Height / 2, 1.0f)
                     * Matrix.CreateScale(1.0f, 1.0f, 1);
-            if (!temp)
-            {
-                AddXP(100, currentLevel.CharacterEntities.FindPosition(hero));
-                temp = true;
-            }
+            
             
 
             //Draw lighting.
@@ -357,15 +352,7 @@ namespace Brogue.Engine
 
                 IntVec charpos = currentLevel.CharacterEntities.FindPosition(hero);
                 Vector3 test = Vector3.Transform(new Vector3(charpos.X * CELLWIDTH, charpos.Y * CELLWIDTH, 0), transform);
-                if (flickerdelay == 0)
-                {
-                    flicker = (float)enginerand.NextDouble() / 8;
-                    flickerdelay = enginerand.Next(5);
-                }
-                else
-                {
-                    flickerdelay--;
-                }
+                
                 game.spriteBatch.Draw(sightMask.texture, new Vector2((test.X), (test.Y)), new Rectangle(0, 0, sightMask.texture.Width, sightMask.texture.Height), Color.White, 0, new Vector2(sightMask.texture.Width / 2, sightMask.texture.Height / 2), sightDistance, SpriteEffects.None, 0);
 
                 Vector3 test2 = Vector3.Transform(new Vector3(50 * CELLWIDTH, 50 * CELLWIDTH, 0), transform);

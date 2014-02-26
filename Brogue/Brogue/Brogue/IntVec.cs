@@ -92,5 +92,10 @@ namespace Brogue
         {
             return new IntVec(vec1.X - vec2.X, vec1.Y - vec2.Y);
         }
+
+        public override string ToString()
+        {
+            return ("" + X + ", " + Y);
+        }
     }
 }

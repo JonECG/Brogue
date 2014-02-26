@@ -15,6 +15,7 @@ using Brogue.Engine;
 using Brogue.Items.Equipment.Armor;
 using Brogue.Items.Equipment.Weapon;
 using Brogue.Abilities.Damaging.SingleTargets;
+using Brogue.EnviromentObjects.Interactive;
 
 namespace Brogue.HeroClasses
 {
@@ -129,6 +130,19 @@ namespace Brogue.HeroClasses
             resetArmor();
             resetHealth();
             resetLevel();
+            if (MouseController.LeftClicked())
+            {
+                Engine.Engine.Log(MouseController.MouseGridPosition().ToString() );
+                Engine.Engine.Log(mapLevel.CharacterEntities.FindPosition(this).ToString());
+               
+                IInteractable interactableObj = mapLevel.InteractableEnvironment.FindEntity(MouseController.MouseGridPosition());
+                if (interactableObj != null)
+                {
+                    Engine.Engine.Log(interactableObj.ToString());
+                    interactableObj.actOn(this);
+                }
+            }
+
             if (!casting && !viewingCast)
             {
                 if (Mapping.KeyboardController.IsTyped(Keys.A))
