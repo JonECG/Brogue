@@ -41,6 +41,17 @@ namespace Brogue.Engine
         }
     }
 
+    class GridSelection
+    {
+        public IntVec gridPos;
+        public DynamicTexture tex;
+        public GridSelection(IntVec iv, DynamicTexture t)
+        {
+            gridPos = iv;
+            tex = t;
+        }
+    }
+
     partial class Engine
     {
         public const bool DOLIGHTING = true;
@@ -82,7 +93,7 @@ namespace Brogue.Engine
             invButton = GetTexture("UI/InventoryIcon");
         
         static SpriteFont font;
-        static List<IntVec> gridSelection = new List<IntVec>();
+        static List<GridSelection> gridSelection = new List<GridSelection>();
 
         public static DynamicTexture placeHolder = GetTexture("placeholder");
 
@@ -97,7 +108,7 @@ namespace Brogue.Engine
 
             for (int i = 0; i < xp; i++)
             {
-                XPParticle newxp = new XPParticle(new Vector2(worldVector.X + enginerand.Next(CELLWIDTH) - CELLWIDTH/2, worldVector.Y + enginerand.Next(CELLWIDTH) - CELLWIDTH/2), enginerand.Next(10) + 5);
+                XPParticle newxp = new XPParticle(new Vector2(worldVector.X + enginerand.Next(CELLWIDTH) - CELLWIDTH/2, worldVector.Y + enginerand.Next(CELLWIDTH) - CELLWIDTH/2), enginerand.Next(20) + 15);
                 xpList.Add(newxp);
             }
         }
@@ -107,15 +118,10 @@ namespace Brogue.Engine
             gridSelection.Clear();
         }
 
-        public static void SetGridSelectionTexture(DynamicTexture tex)
-        {
-            gridSelectionOverlay = tex;
-        }
-
-        public static void AddGridSelections(IntVec[] gridSpaces)
+        public static void AddGridSelections(IntVec[] gridSpaces, DynamicTexture tex)
         {
             foreach (IntVec iv in gridSpaces){
-                gridSelection.Add(iv);
+                gridSelection.Add(new GridSelection(iv, tex));
             }
         }
 
@@ -260,11 +266,15 @@ namespace Brogue.Engine
             if (KeyboardController.IsPressed(Keys.Escape))
             {
                 //Replace with menu eventually...
-                //System.Environment.Exit(0);
+
                 if (inventoryOpen)
                 {
                     inventoryOpen = false;
                     Log("Inventory closed.");
+                }
+                else
+                {
+                    System.Environment.Exit(0);
                 }
             }
             if (MouseController.LeftClicked())
@@ -285,7 +295,7 @@ namespace Brogue.Engine
                 if (gchar != null)
                 {
                     Log(gchar.ToString());
-                    gchar.TakeDamage(1000, hero);
+                    gchar.TakeDamage(50, hero);
                 }
             }
 
@@ -338,9 +348,9 @@ namespace Brogue.Engine
                         null,
                         worldToView);
             currentLevel.render();
-            foreach (IntVec iv in gridSelection)
+            foreach (GridSelection gs in gridSelection)
             {
-                game.spriteBatch.Draw(gridSelectionOverlay.texture, new Rectangle(iv.X * CELLWIDTH, iv.Y * CELLWIDTH, CELLWIDTH, CELLWIDTH), 
+                game.spriteBatch.Draw(gs.tex.texture, new Rectangle(gs.gridPos.X * CELLWIDTH, gs.gridPos.Y * CELLWIDTH, CELLWIDTH, CELLWIDTH), 
                     new Rectangle(0, 0, CELLWIDTH, CELLWIDTH), Color.White, 0, new Vector2(CELLWIDTH / 2, CELLWIDTH / 2), SpriteEffects.None, 0);
             }
             game.spriteBatch.End();
