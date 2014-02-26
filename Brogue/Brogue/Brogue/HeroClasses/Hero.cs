@@ -45,6 +45,8 @@ namespace Brogue.HeroClasses
             numAbilities = 0;
             experience = 0;
             expRequired = 100;
+            abilities = new Ability[2];
+            abilities[0] = new Cleave();
         }
 
         public IntVec move(Direction dir)
@@ -125,7 +127,6 @@ namespace Brogue.HeroClasses
         {
             bool turnOver = false;
             bool casting = false;
-            //resetArmor();
             /*for (int i = 0; i < numAbilities && !casting; i++)
             {
                 casting = abilities[i].isCasting;
@@ -141,6 +142,7 @@ namespace Brogue.HeroClasses
                 {
                     Engine.Engine.Log(interactableObj.ToString());
                     interactableObj.actOn(this);
+                    turnOver = true;
                 }
             }
 
@@ -191,9 +193,11 @@ namespace Brogue.HeroClasses
                 }
                 else if (Mapping.KeyboardController.IsPressed(Keys.D1))
                 {
-                    abilities = new Ability[2];
-                    viewingCast = true;
-                    abilities[0] = new Cleave();
+                    Engine.Engine.Log(abilities[0].cooldown.ToString());
+                    if (abilities[0].cooldown == 0)
+                    {
+                        viewingCast = true;
+                    }
                 }
 
                 else turnOver = (Mapping.KeyboardController.IsTyped(Keys.Space));
@@ -221,15 +225,23 @@ namespace Brogue.HeroClasses
                         }
                     }
                 }
+                if (MouseController.RightClicked())
+                {
+                    abilities[0].removeCastingSquares(MouseController.MouseGridPosition());
+                }
                 
                 if (Mapping.KeyboardController.IsReleased(Keys.D1))
                 {
                     Engine.Engine.ClearGridSelections();
+                    abilities[0].finishCastandDealDamage(level, currentlyEquippedItems.getTotalWeaponDamage());
+                    turnOver = true;
                     viewingCast = !viewingCast;
                 }
             }
-
-            //cooldownAbilities();
+            if (turnOver)
+            {
+                cooldownAbilities();
+            }
             return turnOver;
         }
 
@@ -239,13 +251,21 @@ namespace Brogue.HeroClasses
 
         }
         //public void useItem();
-        //public void cooldownAbilities()
-        //{
-        //    for(int i=0; i<numAbilities; i++)
-        //    {
-        //        abilities[i].cooldown -= (abilities[i].isOnCooldown) ? 1 : 0;
-        //    }
-        //}
+
+        public void cooldownAbilities()
+        {
+            for(int i=0; i<abilities.Length; i++)
+            {
+                if (abilities[i] != null)
+                {
+                    if (!abilities[i].wasJustCast)
+                    {
+                        abilities[i].cooldown -= (abilities[i].cooldown > 0) ? 1 : 0;
+                    }
+                    abilities[i].wasJustCast = false;
+                }
+            }
+        }
 
         private void checkGround(Mapping.Level mapLevel)
         {

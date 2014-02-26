@@ -13,7 +13,7 @@ namespace Brogue.Abilities.Damaging.SingleTargets
     class Cleave : SingleTarget
     {
         private int baseDamage = 5;
-        private IntVec[] castSquares = new IntVec[3];
+        private IntVec[] castSquares = new IntVec[2];
 
         public Cleave()
         {
@@ -43,6 +43,18 @@ namespace Brogue.Abilities.Damaging.SingleTargets
             }
         }
 
+        public override void removeCastingSquares(IntVec cursorPosition)
+        {
+            for (int i = 0; i < castSquares.Length; i++)
+            {
+                if (castSquares[i].Equals(cursorPosition))
+                {
+                    Engine.Engine.Log("Removing grid square");
+                    castSquares[i] = new IntVec(0, 0);
+                }
+            }
+        }
+
         public override IntVec[] getCastingSquares()
         {
             return castSquares;
@@ -53,9 +65,10 @@ namespace Brogue.Abilities.Damaging.SingleTargets
             int baseSpellDamage = baseDamage * heroLevel;
             damage = baseSpellDamage + heroDamage;
             cooldown = 5;
+            wasJustCast = true;
             for (int i = 0; i < castSquares.Length; i++)
             {
-                castSquares[i] = null;
+                castSquares[i] = new IntVec(0,0);
             }
             return damage;
         }

@@ -14,10 +14,11 @@ namespace Brogue.Abilities
         public int damage {get; protected set;}
         public int cooldown {get; set;}
         public int radius {get; protected set;}
-        public bool isOnCooldown { get; protected set; }
         public bool isCasting { get; protected set; }
+        public bool wasJustCast { get; set; }
 
         abstract public void addCastingSquares(IntVec cursorPosition);
+        abstract public void removeCastingSquares(IntVec cursorPosition);
         abstract public IntVec[] getCastingSquares();
         abstract public IntVec[] viewCastRange(Level level, IntVec start);
         abstract public int finishCastandDealDamage(int heroLevel, int heroDamage);
