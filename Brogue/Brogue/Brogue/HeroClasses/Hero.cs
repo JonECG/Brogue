@@ -45,6 +45,7 @@ namespace Brogue.HeroClasses
             numAbilities = 0;
             experience = 0;
             expRequired = 100;
+            isFriendly = true;
             abilities = new Ability[2];
             abilities[0] = new Cleave();
         }
