@@ -44,7 +44,7 @@ namespace Brogue.Enemies
         //Drops items and any other needed actions for death
         protected virtual void Die()
         {
-            Engine.Engine.AddXP(exp, this.position);
+            Engine.Engine.AddXP(exp, Engine.Engine.currentLevel.CharacterEntities.FindPosition(this));
             Engine.Engine.currentLevel.CharacterEntities.Remove(this);
         }
         

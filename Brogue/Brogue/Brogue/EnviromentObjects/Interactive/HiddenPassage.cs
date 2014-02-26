@@ -63,8 +63,8 @@ namespace Brogue.EnviromentObjects.Interactive
 
         public void actOn(GameCharacter actingCharacter)
         {
-            changeState();
-            target.actOn(actingCharacter);
+            ChangeState();
+            //target.actOn(actingCharacter);
         }
 
     }

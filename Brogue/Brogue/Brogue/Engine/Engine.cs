@@ -69,7 +69,7 @@ namespace Brogue.Engine
             lightMask = GetTexture("lightmask")
         , sightMask = GetTexture("lightmask")
         , particleTex = GetTexture("UI/exp")
-        , gridSelectionOverlay = GetTexture("abilityOverlay")
+        , gridSelectionOverlay
         ;
 
         static DynamicTexture
@@ -105,6 +105,11 @@ namespace Brogue.Engine
         public static void ClearGridSelections()
         {
             gridSelection.Clear();
+        }
+
+        public static void SetGridSelectionTexture(DynamicTexture tex)
+        {
+            gridSelectionOverlay = tex;
         }
 
         public static void AddGridSelections(IntVec[] gridSpaces)
@@ -273,6 +278,14 @@ namespace Brogue.Engine
                     inventoryOpen = !inventoryOpen;
                     Log(inventoryOpen? "Inventory Opened." : "Inventory Closed.");
                     didSomething = true;
+                }
+
+                IntVec worldPos = MouseController.MouseGridPosition();
+                GameCharacter gchar = currentLevel.CharacterEntities.FindEntity(worldPos);
+                if (gchar != null)
+                {
+                    Log(gchar.ToString());
+                    gchar.TakeDamage(1000, hero);
                 }
             }
 

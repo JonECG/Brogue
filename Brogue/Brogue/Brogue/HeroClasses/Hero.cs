@@ -132,8 +132,6 @@ namespace Brogue.HeroClasses
             resetLevel();
             if (MouseController.LeftClicked())
             {
-                Engine.Engine.Log(MouseController.MouseGridPosition().ToString() );
-                Engine.Engine.Log(mapLevel.CharacterEntities.FindPosition(this).ToString());
                
                 IInteractable interactableObj = mapLevel.InteractableEnvironment.FindEntity(MouseController.MouseGridPosition());
                 if (interactableObj != null)
