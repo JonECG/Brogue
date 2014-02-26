@@ -457,7 +457,7 @@ namespace Brogue.Mapping
                         chars.Add(enemies[0], room.GetCenter() );
                         foreach (var dir in Direction.Values)
                         {
-                            if( dropped < enemies.Count )
+                            if( dropped < enemies.Length )
                                 chars.Add(enemies[dropped], room.GetCenter() + dir);
                             dropped++;
                         }
