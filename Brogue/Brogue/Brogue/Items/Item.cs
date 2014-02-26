@@ -34,11 +34,11 @@ namespace Brogue.Items
         {
             Items.Consumables.Potion.Texture = Engine.Engine.GetTexture("Items/Potion");
 
-            Items.Equipment.Weapon.Melee.Axe.Texture = Engine.Engine.GetTexture("Items/Sword");
+            Items.Equipment.Weapon.Melee.Axe.Texture = Engine.Engine.GetTexture("Items/Axe");
             Items.Equipment.Weapon.Melee.Sword.Texture = Engine.Engine.GetTexture("Items/Sword");
-            Items.Equipment.Weapon.Melee.GreatAxe.Texture = Engine.Engine.GetTexture("Items/Sword");
-            Items.Equipment.Weapon.Melee.BastardSword.Texture = Engine.Engine.GetTexture("Items/Sword");
-            Items.Equipment.Weapon.Melee.Dagger.Texture = Engine.Engine.GetTexture("Items/Sword");
+            Items.Equipment.Weapon.Melee.GreatAxe.Texture = Engine.Engine.GetTexture("Items/GreatAxe");
+            Items.Equipment.Weapon.Melee.BastardSword.Texture = Engine.Engine.GetTexture("Items/BastardSword");
+            Items.Equipment.Weapon.Melee.Dagger.Texture = Engine.Engine.GetTexture("Items/Dagger");
             Items.Equipment.Weapon.Melee.WarHammer.Texture = Engine.Engine.GetTexture("Items/Sword");
             Items.Equipment.Weapon.Melee.Claws.Texture = Engine.Engine.GetTexture("Items/Sword");
             Items.Equipment.Weapon.Melee.Rapier.Texture = Engine.Engine.GetTexture("Items/Sword");
@@ -354,6 +354,11 @@ namespace Brogue.Items
             }
 
             return new Potion(dLevel, cLevel);
+        }
+
+        public static Item getDesiredDitem(int dLevel, int cLevel)
+        {
+            return new Dagger(dLevel, cLevel);
         }
     }
 }
