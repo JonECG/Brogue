@@ -9,6 +9,18 @@ namespace Brogue.Enums
     {
         Warrior,
         Mage,
-        Rogue
+        Rogue,
+        Brawler,
+        Sentinel,
+        Sorcerer,
+        Magus,
+        Duelist,
+        Ranger,
+        Berserker,
+        Juggernaut,
+        SpellWeaver,
+        SpellBlade,
+        Assassin,
+        Marksman
     };
 }

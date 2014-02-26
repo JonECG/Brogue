@@ -7,9 +7,14 @@ namespace Brogue.Enums
 {
     public enum RWTypes
     {
-        Boomerang,
         Kunai,
         Staff,
-        ThrowingKnives
+        ThrowingKnives,
+        Bow,
+        CrossBow,
+        SniperRifle,
+        Pistol,
+        Wands,
+        Chakram
     }
 }

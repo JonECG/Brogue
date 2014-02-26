@@ -16,6 +16,7 @@ using Brogue.Items.Equipment.Accessory;
 using Brogue.Items.Equipment.Weapon.Legendary.Melee;
 using Brogue.Items.Equipment.Weapon.Legendary.Ranged;
 using Brogue.Items.Equipment.Armor.Legendary.Shields;
+using Brogue.Items.Equipment.Offhand;
 
 
 namespace Brogue.Items
@@ -40,43 +41,55 @@ namespace Brogue.Items
             Items.Equipment.Weapon.Melee.Dagger.Texture = Engine.Engine.GetTexture("Items/Sword");
             Items.Equipment.Weapon.Melee.WarHammer.Texture = Engine.Engine.GetTexture("Items/Sword");
             Items.Equipment.Weapon.Melee.Claws.Texture = Engine.Engine.GetTexture("Items/Sword");
+            Items.Equipment.Weapon.Melee.Rapier.Texture = Engine.Engine.GetTexture("Items/Sword");
+            Items.Equipment.Weapon.Melee.Scythe.Texture = Engine.Engine.GetTexture("Items/Sword");
             Items.Equipment.Weapon.Legendary.Melee.TheWolverine.Texture = Engine.Engine.GetTexture("Items/Sword");
             Items.Equipment.Weapon.Legendary.Melee._40k.Texture = Engine.Engine.GetTexture("Items/Sword");
 
-            Items.Equipment.Weapon.Ranged.Boomerang.Texture = Engine.Engine.GetTexture("Items/Sword");
             Items.Equipment.Weapon.Ranged.Kunai.Texture = Engine.Engine.GetTexture("Items/Sword");
             Items.Equipment.Weapon.Ranged.Staff.Texture = Engine.Engine.GetTexture("Items/Sword");
             Items.Equipment.Weapon.Ranged.ThrowingKnives.Texture = Engine.Engine.GetTexture("Items/Sword");
+            Items.Equipment.Weapon.Ranged.ThrowingKnives.Texture = Engine.Engine.GetTexture("Items/Sword");
+            Items.Equipment.Weapon.Ranged.Bow.Texture = Engine.Engine.GetTexture("Items/Sword");
+            Items.Equipment.Weapon.Ranged.CrossBow.Texture = Engine.Engine.GetTexture("Items/Sword");
+            Items.Equipment.Weapon.Ranged.SniperRifle.Texture = Engine.Engine.GetTexture("Items/Sword");
+            Items.Equipment.Weapon.Ranged.Pistol.Texture = Engine.Engine.GetTexture("Items/Sword");
+            Items.Equipment.Weapon.Ranged.Wands.Texture = Engine.Engine.GetTexture("Items/Sword");
+            Items.Equipment.Weapon.Ranged.Chakrams.Texture = Engine.Engine.GetTexture("Items/Sword");
             Items.Equipment.Weapon.Legendary.Ranged.RodOfExtending.Texture = Engine.Engine.GetTexture("Items/Sword");
             Items.Equipment.Weapon.Legendary.Ranged.KunaiWithChain.Texture = Engine.Engine.GetTexture("Items/Sword");
 
-            Items.Equipment.Armor.Chest.ClothChest.Texture = Engine.Engine.GetTexture("Items/Sword");
-            Items.Equipment.Armor.Chest.LeatherChest.Texture = Engine.Engine.GetTexture("Items/Sword");
-            Items.Equipment.Armor.Chest.MailChest.Texture = Engine.Engine.GetTexture("Items/Sword");
+            Items.Equipment.Armor.Chest.ClothChest.Texture = Engine.Engine.GetTexture("Items/ClothChest");
+            Items.Equipment.Armor.Chest.LeatherChest.Texture = Engine.Engine.GetTexture("Items/LeatherChest");
+            Items.Equipment.Armor.Chest.MailChest.Texture = Engine.Engine.GetTexture("Items/MailChest");
+            Items.Equipment.Armor.Chest.PlateChest.Texture = Engine.Engine.GetTexture("Items/PlateChest");
 
-            Items.Equipment.Armor.Legs.ClothLegs.Texture = Engine.Engine.GetTexture("Items/Sword");
-            Items.Equipment.Armor.Legs.LeatherLegs.Texture = Engine.Engine.GetTexture("Items/Sword");
-            Items.Equipment.Armor.Legs.MailLegs.Texture = Engine.Engine.GetTexture("Items/Sword");
+            Items.Equipment.Armor.Legs.ClothLegs.Texture = Engine.Engine.GetTexture("Items/ClothLegs");
+            Items.Equipment.Armor.Legs.LeatherLegs.Texture = Engine.Engine.GetTexture("Items/LeatherLegs");
+            Items.Equipment.Armor.Legs.MailLegs.Texture = Engine.Engine.GetTexture("Items/MailLegs");
+            Items.Equipment.Armor.Legs.PlateLegs.Texture = Engine.Engine.GetTexture("Items/PlateLegs");
 
-            Items.Equipment.Armor.Helm.ClothHelm.Texture = Engine.Engine.GetTexture("Items/Sword");
-            Items.Equipment.Armor.Helm.LeatherHelm.Texture = Engine.Engine.GetTexture("Items/Sword");
-            Items.Equipment.Armor.Helm.MailHelm.Texture = Engine.Engine.GetTexture("Items/Sword");
+            Items.Equipment.Armor.Helm.ClothHelm.Texture = Engine.Engine.GetTexture("Items/ClothHelm");
+            Items.Equipment.Armor.Helm.LeatherHelm.Texture = Engine.Engine.GetTexture("Items/LeatherHelm");
+            Items.Equipment.Armor.Helm.MailHelm.Texture = Engine.Engine.GetTexture("Items/MailHelm");
+            Items.Equipment.Armor.Helm.PlateHelm.Texture = Engine.Engine.GetTexture("Items/PlateHelm");
 
-            Items.Equipment.Armor.Shields.PlateShield.Texture = Engine.Engine.GetTexture("Items/Sword");
-            Items.Equipment.Armor.Shields.WoodenShield.Texture = Engine.Engine.GetTexture("Items/Sword");
-            Items.Equipment.Armor.Legendary.Shields.FirstAvenger.Texture = Engine.Engine.GetTexture("Items/Sword");
+            Items.Equipment.Armor.Shields.PlateShield.Texture = Engine.Engine.GetTexture("Items/PlateShield");
+            Items.Equipment.Armor.Shields.WoodenShield.Texture = Engine.Engine.GetTexture("Items/WoodenShield");
+            Items.Equipment.Armor.Legendary.Shields.FirstAvenger.Texture = Engine.Engine.GetTexture("Items/PlateShield");
 
-            Items.Equipment.Accessory.Necklace.Texture = Engine.Engine.GetTexture("Items/Sword");
-            Items.Equipment.Accessory.Ring.Texture = Engine.Engine.GetTexture("Items/Sword");
+            Items.Equipment.Accessory.Necklace.Texture = Engine.Engine.GetTexture("Items/Necklace");
+            Items.Equipment.Accessory.Ring.Texture = Engine.Engine.GetTexture("Items/Ring");
+
+            Items.Equipment.Offhand.SpellBook.Texture = Engine.Engine.GetTexture("Items/Spellbook");
         }
 
         public static Item randomItem(int dLevel, int cLevel)
         {
             int findItem;
-            int lchance;
-            int chance = 20;
-            int finalChance = 101;
-            int rarity = 2;
+            int lChance = 101;
+            int lBound = 37;
+            int hBound = 49;
 
             #region randomItem generator
             findItem = rand.Next(Enum.GetNames(typeof(ITypes)).Length);
@@ -139,15 +152,19 @@ namespace Brogue.Items
                     {
                         return new WarHammer(dLevel, cLevel);
                     }
+                    else if ((MWTypes)findItem == MWTypes.Rapier)
+                    {
+                        return new Rapier(dLevel, cLevel);
+                    }
+                    else if ((MWTypes)findItem == MWTypes.Scythe)
+                    {
+                        return new Scythe(dLevel, cLevel);
+                    }
                 }
                 else if ((WTypes)findItem == WTypes.RangedWeapon)
                 {
                     findItem = rand.Next(Enum.GetNames(typeof(RWTypes)).Length);
-                    if ((RWTypes)findItem == RWTypes.Boomerang)
-                    {
-                        return new Boomerang(dLevel, cLevel);
-                    }
-                    else if ((RWTypes)findItem == RWTypes.Kunai)
+                    if ((RWTypes)findItem == RWTypes.Kunai)
                     {
                         return new Kunai(dLevel, cLevel);
                     }
@@ -159,50 +176,29 @@ namespace Brogue.Items
                     {
                         return new ThrowingKnives(dLevel, cLevel);
                     }
-                }
-                else if ((WTypes)findItem == WTypes.Legendary)
-                {
-                    lchance = rand.Next(chance + 1);
-                    if (lchance < (chance / rarity))
+                    else if ((RWTypes)findItem == RWTypes.Bow)
                     {
-                        lchance = rand.Next((chance / rarity) + 1);
-                        rarity *=2;
-                        if (lchance > (chance / rarity))
-                        {
-                            lchance = rand.Next(finalChance);
-                            if (lchance < dLevel)
-                            {
-                                findItem = rand.Next(Enum.GetNames(typeof(LegendaryWeapon)).Length);
-                                if ((LegendaryWeapon)findItem == LegendaryWeapon._40k)
-                                {
-                                    return new _40k(dLevel, cLevel);
-                                }
-                                else if ((LegendaryWeapon)findItem == LegendaryWeapon.KunaiWithChain)
-                                {
-                                    return new KunaiWithChain(dLevel, cLevel);
-                                }
-                                else if ((LegendaryWeapon)findItem == LegendaryWeapon.RodOfExtending)
-                                {
-                                    return new RodOfExtending(dLevel, cLevel);
-                                }
-                                else if ((LegendaryWeapon)findItem == LegendaryWeapon.TheWolverine)
-                                {
-                                    return new TheWolverine(dLevel, cLevel);
-                                }
-                            }
-                            else
-                            {
-                                return new Potion(dLevel, cLevel);
-                            }
-                        }
-                        else
-                        {
-                            return new Potion(dLevel, cLevel);
-                        }
+                        return new Bow(dLevel, cLevel);
                     }
-                    else
+                    else if ((RWTypes)findItem == RWTypes.CrossBow)
                     {
-                        return new Potion(dLevel, cLevel);
+                        return new CrossBow(dLevel, cLevel);
+                    }
+                    else if ((RWTypes)findItem == RWTypes.Pistol)
+                    {
+                        return new Pistol(dLevel, cLevel);
+                    }
+                    else if ((RWTypes)findItem == RWTypes.SniperRifle)
+                    {
+                        return new SniperRifle(dLevel, cLevel);
+                    }
+                    else if ((RWTypes)findItem == RWTypes.Wands)
+                    {
+                        return new Wands(dLevel, cLevel);
+                    }
+                    else if ((RWTypes)findItem == RWTypes.Chakram)
+                    {
+                        return new Chakrams(dLevel, cLevel);
                     }
                 }
             }
@@ -226,6 +222,10 @@ namespace Brogue.Items
                     {
                         return new MailChest(dLevel, cLevel);
                     }
+                    else if ((ChTypes)findItem == ChTypes.PlateChest)
+                    {
+                        return new PlateChest(dLevel, cLevel);
+                    }
                 }
                 else if ((ArTypes)findItem == ArTypes.Helm)
                 {
@@ -241,6 +241,10 @@ namespace Brogue.Items
                     else if ((HTypes)findItem == HTypes.MailHelm)
                     {
                         return new MailHelm(dLevel, cLevel);
+                    }
+                    else if ((HTypes)findItem == HTypes.PlateHelm)
+                    {
+                        return new PlateHelm(dLevel, cLevel);
                     }
                 }
                 else if ((ArTypes)findItem == ArTypes.Legs)
@@ -258,6 +262,10 @@ namespace Brogue.Items
                     {
                         return new MailLegs(dLevel, cLevel);
                     }
+                    else if ((LTypes)findItem == LTypes.PlateLegs)
+                    {
+                        return new PlateLegs(dLevel, cLevel);
+                    }
                 }
                 else if ((ArTypes)findItem == ArTypes.Shields)
                 {
@@ -271,41 +279,36 @@ namespace Brogue.Items
                         return new WoodenShield(dLevel, cLevel);
                     }
                 }
-                else if ((ArTypes)findItem == ArTypes.Legendary)
+            }
+
+            #endregion
+            #region random Offhand
+            else if ((ITypes)findItem == ITypes.Offhand)
+            {
+                findItem = rand.Next(Enum.GetNames(typeof(OTypes)).Length);
+                if ((OTypes)findItem == OTypes.Spellbook)
                 {
-                    lchance = rand.Next(chance + 1);
-                    if (lchance < (chance / rarity))
+                    return new SpellBook(dLevel, cLevel);
+                }
+            }
+            #endregion
+            #region Random Legendary
+            else if ((ITypes)findItem == ITypes.Legendary)
+            {
+                findItem = rand.Next(lChance);
+                if (findItem < ((lChance - 1) / 2))
+                {
+                    findItem = rand.Next(lChance);
+                    if (findItem > ((lChance - 1) / 2))
                     {
-                        lchance = rand.Next((chance / rarity) + 1);
-                        rarity *= 2;
-                        if (lchance > (chance / rarity))
+                        findItem = rand.Next(lChance);
+                        if(findItem > lBound && findItem < hBound)
                         {
-                            lchance = rand.Next(finalChance);
-                            if (lchance < dLevel)
-                            {
-                                findItem = rand.Next(Enum.GetNames(typeof(LegendaryArmor)).Length);
-                                if ((LegendaryArmor)findItem == LegendaryArmor.TheFirstAvenger)
-                                {
-                                    return new FirstAvenger(dLevel, cLevel);
-                                }
-                            }
-                            else
-                            {
-                                return new Potion(dLevel, cLevel);
-                            }
+                            randomLegendary(dLevel, cLevel);
                         }
-                        else
-                        {
-                            return new Potion(dLevel, cLevel);
-                        }
-                    }
-                    else
-                    {
-                        return new Potion(dLevel, cLevel);
                     }
                 }
             }
-
             #endregion
             #endregion
             return new Potion(dLevel, cLevel);

@@ -11,6 +11,5 @@ namespace Brogue.Enums
         Chest,
         Legs,
         Shields,
-        Legendary
     }
 }

@@ -20,8 +20,8 @@ namespace Brogue.Items.Equipment.Weapon.Legendary.Ranged
         {
             Name = "The Rod of Extending";
             FlavorText = "Natural Mage Enhancement";
-            UsedBy = new List<Class> { Class.Mage };
-            EquipableIn = new List<Slots> { Slots.Hand_Both };
+            UsedBy = new List<Class> { Class.Mage, Class.Sorcerer, Class.SpellWeaver };
+            EquipableIn = new List<Slots> { Slots.Hand_Primary };
             LevelReq = findLevelReq(dLevel, cLevel);
             Damage = findDamage(BaseDamage, dLevel, LevelReq);
         }

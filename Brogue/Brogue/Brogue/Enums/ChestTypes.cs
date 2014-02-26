@@ -9,6 +9,7 @@ namespace Brogue.Enums
     {
         ClothChest,
         LeatherChest,
-        MailChest
+        MailChest,
+        PlateChest
     }
 }

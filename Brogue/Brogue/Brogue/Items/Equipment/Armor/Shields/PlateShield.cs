@@ -20,7 +20,7 @@ namespace Brogue.Items.Equipment.Armor.Shields
         {
             Name = "Plate Shield";
             LevelReq = findLevelReq(dLevel, cLevel);
-            UsedBy = new List<Class> { Class.Warrior };
+            UsedBy = new List<Class> { Class.Sentinel, Class.Juggernaut };
             TypeBonus = 5;
             ArmorValue = findArmorValue(BaseArmor, dLevel, TypeBonus);
         }

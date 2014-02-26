@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Brogue.Enums
 {
-    enum Legends
+    public enum Legends
     {
         Weapon,
         Armor

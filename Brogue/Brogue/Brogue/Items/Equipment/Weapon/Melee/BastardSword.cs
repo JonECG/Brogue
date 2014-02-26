@@ -20,7 +20,7 @@ namespace Brogue.Items.Equipment.Weapon.Melee
         public BastardSword(int dLevel, int cLevel)
         {
             Name = "Bastard Sword";
-            UsedBy = new List<Class> { Class.Warrior };
+            UsedBy = new List<Class> { Class.Warrior, Class.Brawler, Class.Berserker };
             EquipableIn = new List<Slots> { Slots.Hand_Both };
             LevelReq = findLevelReq(dLevel, cLevel);
             Damage = findDamage(BaseDamage, dLevel, LevelReq);

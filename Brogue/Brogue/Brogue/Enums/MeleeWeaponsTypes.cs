@@ -13,6 +13,8 @@ namespace Brogue.Enums
         Dagger,
         GreatAxe,
         Sword,
-        WarHammer
+        WarHammer,
+        Scythe,
+        Rapier
     }
 }

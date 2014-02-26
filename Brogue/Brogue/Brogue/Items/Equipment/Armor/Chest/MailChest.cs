@@ -20,7 +20,7 @@ namespace Brogue.Items.Equipment.Armor.Chest
         {
             Name = "Mail Chest";
             LevelReq = findLevelReq(dLevel, cLevel);
-            UsedBy = new List<Class> { Class.Warrior };
+            UsedBy = new List<Class> { Class.Warrior, Class.Brawler, Class.Berserker, Class.Sentinel, Class.Juggernaut };
             TypeBonus = 5;
             ArmorValue = findArmorValue(BaseArmor, dLevel, TypeBonus);
         }

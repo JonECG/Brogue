@@ -9,6 +9,7 @@ namespace Brogue.Enums
     {
         ClothHelm,
         LeatherHelm,
-        MailHelm
+        MailHelm,
+        PlateHelm
     }
 }

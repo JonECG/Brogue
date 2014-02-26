@@ -9,6 +9,5 @@ namespace Brogue.Enums
     {
         MeleeWeapon,
         RangedWeapon, 
-        Legendary
     }
 }

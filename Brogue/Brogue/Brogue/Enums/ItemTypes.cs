@@ -11,6 +11,7 @@ namespace Brogue.Enums
         Accessory,
         Weapon,
         Armor,
-        Unique
+        Offhand,
+        Legendary
     }
 }

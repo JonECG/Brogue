@@ -9,6 +9,7 @@ namespace Brogue.Enums
     {
         ClothLegs,
         LeatherLegs,
-        MailLegs
+        MailLegs,
+        PlateLegs
     }
 }

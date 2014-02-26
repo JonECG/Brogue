@@ -20,7 +20,7 @@ namespace Brogue.Items.Equipment.Weapon.Legendary.Melee
         {
             Name = "The Wolverine";
             FlavorText = "I'm the best there is at what I do. But what I do best isn't very nice.";
-            UsedBy = new List<Class> { Class.Rogue };
+            UsedBy = new List<Class> { Class.Rogue, Class.Assassin, Class.Berserker };
             EquipableIn = new List<Slots> { Slots.Hand_Primary, Slots.Hand_Auxillary };
             LevelReq = findLevelReq(dLevel, cLevel);
             Damage = findDamage(BaseDamage, dLevel, LevelReq);

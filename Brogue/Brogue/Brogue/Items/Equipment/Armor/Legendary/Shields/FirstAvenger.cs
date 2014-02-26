@@ -21,7 +21,7 @@ namespace Brogue.Items.Equipment.Armor.Legendary.Shields
             Name = "The First Avenger";
             FlavorText = "I had a date.";
             LevelReq = findLevelReq(dLevel, cLevel);
-            UsedBy = new List<Class> { Class.Warrior };
+            UsedBy = new List<Class> { Class.Sentinel, Class.Juggernaut };
             TypeBonus = 15;
             ArmorValue = findArmorValue(BaseArmor, dLevel, TypeBonus);
         }

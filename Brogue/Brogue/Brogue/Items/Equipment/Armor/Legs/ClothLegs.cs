@@ -20,7 +20,7 @@ namespace Brogue.Items.Equipment.Armor.Legs
         {
             Name = "Cloth Legs";
             LevelReq = findLevelReq(dLevel, cLevel);
-            UsedBy = new List<Class> { Class.Mage };
+            UsedBy = new List<Class> { Class.Mage, Class.Sorcerer, Class.SpellWeaver, Class.Magus, Class.SpellBlade };
             TypeBonus = 1;
             ArmorValue = findArmorValue(BaseArmor, dLevel, TypeBonus);
         }

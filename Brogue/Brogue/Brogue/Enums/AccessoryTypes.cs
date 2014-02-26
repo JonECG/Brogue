@@ -8,6 +8,6 @@ namespace Brogue.Enums
    public enum AcTypes
     {
        Ring,
-       Necklace
+       Necklace,
     }
 }
