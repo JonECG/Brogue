@@ -352,7 +352,7 @@ namespace Brogue.Items
 
         public static Item getDesiredDitem(int dLevel, int cLevel)
         {
-            return new KunaiWithChain(dLevel, cLevel);
+            return new Scythe(dLevel, cLevel);
         }
     }
 }
