@@ -234,29 +234,39 @@ namespace Brogue.Engine
                 //Game turns
                 
                 //hero.TakeTurn(currentLevel);
-                if (charIndex < currentLevel.CharacterEntities.Entities().Count<GameCharacter>())
+                while (currentLevel.CharacterEntities.Entities().ElementAt<GameCharacter>(charIndex) != hero)
                 {
-                    IntVec enemyPosition = currentLevel.CharacterEntities.FindPosition(currentLevel.CharacterEntities.Entities().ElementAt<GameCharacter>(charIndex));
-                    if (enemyPosition.X > heroPos.X - AIDist &&
-                        enemyPosition.X < heroPos.X + AIDist &&
-                        enemyPosition.Y > heroPos.Y - AIDist &&
-                        enemyPosition.Y < heroPos.Y + AIDist)
+                    if (charIndex < currentLevel.CharacterEntities.Entities().Count<GameCharacter>())
                     {
-                        if (currentLevel.CharacterEntities.Entities().ElementAt<GameCharacter>(charIndex).TakeTurn(currentLevel))
+                        IntVec enemyPosition = currentLevel.CharacterEntities.FindPosition(currentLevel.CharacterEntities.Entities().ElementAt<GameCharacter>(charIndex));
+                        if (enemyPosition.X > heroPos.X - AIDist &&
+                            enemyPosition.X < heroPos.X + AIDist &&
+                            enemyPosition.Y > heroPos.Y - AIDist &&
+                            enemyPosition.Y < heroPos.Y + AIDist)
+                        {
+                            if (currentLevel.CharacterEntities.Entities().ElementAt<GameCharacter>(charIndex).TakeTurn(currentLevel))
+                            {
+                                charIndex++;
+                                heroPos = currentLevel.CharacterEntities.FindPosition(hero);
+                            }
+                        }
+                        else
                         {
                             charIndex++;
-                            heroPos = currentLevel.CharacterEntities.FindPosition(hero);
+
                         }
                     }
-                    else
+                    if (charIndex >= currentLevel.CharacterEntities.Entities().Count<GameCharacter>())
                     {
-                        charIndex++;
+                        charIndex = 0;
                     }
                 }
-                else
+                charIndex += hero.TakeTurn(currentLevel)?1: 0;
+                if (charIndex >= currentLevel.CharacterEntities.Entities().Count<GameCharacter>())
                 {
                     charIndex = 0;
                 }
+
 
                 cameraPosition = currentLevel.CharacterEntities.FindPosition(hero);
                 modifiedCameraPosition.X = cameraPosition.X - (windowSizeInTiles.X / 2);
