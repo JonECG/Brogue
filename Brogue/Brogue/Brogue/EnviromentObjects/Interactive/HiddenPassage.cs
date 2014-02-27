@@ -42,11 +42,10 @@ namespace Brogue.EnviromentObjects.Interactive
             actingCharacter.position = exitPosition;
         }
 
-        private void ChangeState()
+        private void changeState()
         {
             if (!isVisiable)
             {
-                //isSolid = false;
                 isVisiable = true;
             }
         }
@@ -63,7 +62,10 @@ namespace Brogue.EnviromentObjects.Interactive
 
         public void actOn(GameCharacter actingCharacter)
         {
-            ChangeState();
+            changeState();
+            other.actOn(actingCharacter);
+            setToNewPosition(actingCharacter);
+
             //target.actOn(actingCharacter);
         }
 

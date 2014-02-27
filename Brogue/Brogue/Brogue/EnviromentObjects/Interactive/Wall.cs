@@ -36,7 +36,6 @@ namespace Brogue.EnviromentObjects.Interactive
 
     class SecretWall : IInteractable, IEnvironmentObject
     {
-        static Texture2D sprite;
         static DynamicTexture texture = Engine.Engine.GetTexture("levelTileset");
         public bool isSolid { get; set; }
         public bool isPassable { get; set; }

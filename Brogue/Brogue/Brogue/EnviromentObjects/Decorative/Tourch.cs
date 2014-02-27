@@ -44,11 +44,6 @@ namespace Brogue.EnviromentObjects.Decorative
             color = setColor;
         }
 
-        public float getIntensity()
-        {
-            return intensity;
-        }
-        
         public Sprite GetSprite()
         {
             //return new Sprite(texture);
@@ -60,9 +55,10 @@ namespace Brogue.EnviromentObjects.Decorative
             return isSolid;
         }
 
+
         public float GetLightIntensity()
         {
-            return 1;
+            return intensity;
         }
 
         public Microsoft.Xna.Framework.Color GetLightColor()

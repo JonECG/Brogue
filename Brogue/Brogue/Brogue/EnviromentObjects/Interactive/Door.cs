@@ -12,7 +12,6 @@ namespace Brogue.EnviromentObjects.Interactive
 {
     class Door : IInteractable, IEnvironmentObject, IRenderable
     {
-       static Texture2D sprite { get; set; }
        bool isSolid { get; set; }
        bool isOpen { get; set; }
 
@@ -31,11 +30,6 @@ namespace Brogue.EnviromentObjects.Interactive
            isSolid = true;
            isOpen = false;
            directionFacing = setDirection;
-       }
-
-       internal static void LoadContent(ContentManager content)
-       {
-           sprite = content.Load<Texture2D>("Enviroment/Door");
        }
 
        public void changeSolid()
@@ -59,8 +53,8 @@ namespace Brogue.EnviromentObjects.Interactive
 
        public Sprite GetSprite()
        {
+           //return new Sprite(texture);
            return new Sprite(texture);
-           //return new Sprite(sprite, directionFacing);
        }
 
        public void actOn(GameCharacter actingCharacter)
