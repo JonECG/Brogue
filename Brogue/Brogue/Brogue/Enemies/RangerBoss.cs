@@ -13,19 +13,18 @@ namespace Brogue.Enemies
 
         public override bool TakeTurn(Level level)
         {
-            position = Engine.Engine.currentLevel.CharacterEntities.FindPosition(this);
             turnCounter++;
 
             Aggro(level);
 
-            if (AStar.getPathBetween(level, position, targets[0].position) == null)
+            if (AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(targets[0])) != null)
             {
                 if (turnCounter % 2 == 0)
                 {
                     targets[0].TakeDamage(attacks[0], this);
                 }
 
-                IntVec[] possible = AStar.getPossiblePositionsFrom(level, position, 5);
+                IntVec[] possible = AStar.getPossiblePositionsFrom(level, level.CharacterEntities.FindPosition(this), 5);
                 IntVec targetPos = null;
                 foreach (IntVec i in possible)
                 {
@@ -35,13 +34,13 @@ namespace Brogue.Enemies
                     }
                     else
                     {
-                        if (AStar.getCost(AStar.getPathBetween(level, targetPos, targets[0].position)) < AStar.getCost(AStar.getPathBetween(level, i, targets[0].position)))
+                        if (AStar.getCost(AStar.getPathBetween(level, targetPos, level.CharacterEntities.FindPosition(targets[0]))) < AStar.getCost(AStar.getPathBetween(level, i, level.CharacterEntities.FindPosition(targets[0]))))
                         {
                             targetPos = i;
                         }
                     }
                 }
-                Direction[] path = AStar.getPathBetween(level, position, targetPos);
+                Direction[] path = AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), targetPos);
                 foreach (Direction d in path)
                 {
                     Move(d, level);
@@ -52,7 +51,14 @@ namespace Brogue.Enemies
 
         public override void Aggro(Level level)
         {
-            targets[0] = level.CharacterEntities.FindEntity(FindNearestTarget(level.GetCharactersIsFriendly(true), level));
+            if (targets.Count == 0)
+            {
+                targets.Add(level.CharacterEntities.FindEntity(FindNearestTarget(level.GetCharactersIsFriendly(true), level)));
+            }
+            else
+            {
+                targets[0] = level.CharacterEntities.FindEntity(FindNearestTarget(level.GetCharactersIsFriendly(true), level));
+            }
         }
 
         public override void BuildBoss(int i)

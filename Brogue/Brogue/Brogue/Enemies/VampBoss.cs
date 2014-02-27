@@ -12,12 +12,11 @@ namespace Brogue.Enemies
 
         public override bool TakeTurn(Level level)
         {
-            position = level.CharacterEntities.FindPosition(this);
             turnCounter++;
 
             Aggro(level);
 
-            if(AStar.getPathBetween(level, position, targets[0].position) == null)
+            if(AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(targets[0])) != null)
             {
                 if (turnCounter % 9 == 0)
                 {
@@ -46,7 +45,7 @@ namespace Brogue.Enemies
                     targets[0].TakeDamage(attacks[0], this);
                     Heal(attacks[0] / 10);
                 }
-                IntVec[] possible = AStar.getPossiblePositionsFrom(level, position, 5);
+                IntVec[] possible = AStar.getPossiblePositionsFrom(level, level.CharacterEntities.FindPosition(this), 5);
                 Random gen = new Random();
                 IntVec choice = possible[gen.Next(0, possible.Length)];
 

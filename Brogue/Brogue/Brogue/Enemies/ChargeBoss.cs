@@ -13,21 +13,21 @@ namespace Brogue.Enemies
 
         public override bool TakeTurn(Level level)
         {
-            position = Engine.Engine.currentLevel.CharacterEntities.FindPosition(this);
             turnCounter++;
 
             Aggro(level);
 
-            if (AStar.getPathBetween(level, position, targets[0].position) == null)
+            if (AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(targets[0])) != null)
             {
                 if (turnCounter % 3 == 0)
                 {
-                    Direction[] path = AStar.getPathBetween(level, this.position, targets[0].position);
+                    Direction[] path = AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(targets[0]));
                     if (AStar.getCost(path) <= moveSpeed + 1)
                     {
                         foreach (Direction d in path)
                         {
-                            if (!(position.X + d.X == targets[0].position.X && position.Y + d.Y == targets[0].position.Y))
+                            if (!(level.CharacterEntities.FindPosition(this).X + d.X == level.CharacterEntities.FindPosition(targets[0]).X
+                                && level.CharacterEntities.FindPosition(this).Y + d.Y == level.CharacterEntities.FindPosition(targets[0]).Y))
                             {
                                 Move(d, level);
                             }
@@ -44,12 +44,13 @@ namespace Brogue.Enemies
                 }
                 else
                 {
-                    Direction[] path = AStar.getPathBetween(level, this.position, targets[0].position);
+                    Direction[] path = AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(targets[0]));
                     if (AStar.getCost(path) <= moveSpeed + 1)
                     {
                         foreach (Direction d in path)
                         {
-                            if (!(position.X + d.X == targets[0].position.X && position.Y + d.Y == targets[0].position.Y))
+                            if (!(level.CharacterEntities.FindPosition(this).X + d.X == level.CharacterEntities.FindPosition(targets[0]).X
+                                && level.CharacterEntities.FindPosition(this).Y + d.Y == level.CharacterEntities.FindPosition(targets[0]).Y))
                             {
                                 Move(d, level);
                             }
