@@ -39,25 +39,23 @@ namespace Brogue.Items
             Items.Equipment.Weapon.Melee.GreatAxe.Texture = Engine.Engine.GetTexture("Items/GreatAxe");
             Items.Equipment.Weapon.Melee.BastardSword.Texture = Engine.Engine.GetTexture("Items/BastardSword");
             Items.Equipment.Weapon.Melee.Dagger.Texture = Engine.Engine.GetTexture("Items/Dagger");
-            Items.Equipment.Weapon.Melee.WarHammer.Texture = Engine.Engine.GetTexture("Items/Sword");
-            Items.Equipment.Weapon.Melee.Claws.Texture = Engine.Engine.GetTexture("Items/Sword");
-            Items.Equipment.Weapon.Melee.Rapier.Texture = Engine.Engine.GetTexture("Items/Sword");
-            Items.Equipment.Weapon.Melee.Scythe.Texture = Engine.Engine.GetTexture("Items/Sword");
-            Items.Equipment.Weapon.Legendary.Melee.TheWolverine.Texture = Engine.Engine.GetTexture("Items/Sword");
-            Items.Equipment.Weapon.Legendary.Melee._40k.Texture = Engine.Engine.GetTexture("Items/Sword");
+            Items.Equipment.Weapon.Melee.WarHammer.Texture = Engine.Engine.GetTexture("Items/Warhammer");
+            Items.Equipment.Weapon.Melee.Claws.Texture = Engine.Engine.GetTexture("Items/Claws");
+            Items.Equipment.Weapon.Melee.Rapier.Texture = Engine.Engine.GetTexture("Items/Rapier");
+            Items.Equipment.Weapon.Melee.Scythe.Texture = Engine.Engine.GetTexture("Items/Scythe");
+            Items.Equipment.Weapon.Legendary.Melee.TheWolverine.Texture = Engine.Engine.GetTexture("Items/Claws");
+            Items.Equipment.Weapon.Legendary.Melee._40k.Texture = Engine.Engine.GetTexture("Items/Warhammer");
 
-            Items.Equipment.Weapon.Ranged.Kunai.Texture = Engine.Engine.GetTexture("Items/Sword");
-            Items.Equipment.Weapon.Ranged.Staff.Texture = Engine.Engine.GetTexture("Items/Sword");
-            Items.Equipment.Weapon.Ranged.ThrowingKnives.Texture = Engine.Engine.GetTexture("Items/Sword");
-            Items.Equipment.Weapon.Ranged.ThrowingKnives.Texture = Engine.Engine.GetTexture("Items/Sword");
-            Items.Equipment.Weapon.Ranged.Bow.Texture = Engine.Engine.GetTexture("Items/Sword");
-            Items.Equipment.Weapon.Ranged.CrossBow.Texture = Engine.Engine.GetTexture("Items/Sword");
-            Items.Equipment.Weapon.Ranged.SniperRifle.Texture = Engine.Engine.GetTexture("Items/Sword");
-            Items.Equipment.Weapon.Ranged.Pistol.Texture = Engine.Engine.GetTexture("Items/Sword");
-            Items.Equipment.Weapon.Ranged.Wands.Texture = Engine.Engine.GetTexture("Items/Sword");
-            Items.Equipment.Weapon.Ranged.Chakrams.Texture = Engine.Engine.GetTexture("Items/Sword");
-            Items.Equipment.Weapon.Legendary.Ranged.RodOfExtending.Texture = Engine.Engine.GetTexture("Items/Sword");
-            Items.Equipment.Weapon.Legendary.Ranged.KunaiWithChain.Texture = Engine.Engine.GetTexture("Items/Sword");
+            Items.Equipment.Weapon.Ranged.Kunai.Texture = Engine.Engine.GetTexture("Items/Kunai");
+            Items.Equipment.Weapon.Ranged.Staff.Texture = Engine.Engine.GetTexture("Items/Staff");
+            Items.Equipment.Weapon.Ranged.Bow.Texture = Engine.Engine.GetTexture("Items/Bow");
+            Items.Equipment.Weapon.Ranged.CrossBow.Texture = Engine.Engine.GetTexture("Items/Crossbow");
+            Items.Equipment.Weapon.Ranged.SniperRifle.Texture = Engine.Engine.GetTexture("Items/SniperRifle");
+            Items.Equipment.Weapon.Ranged.Pistol.Texture = Engine.Engine.GetTexture("Items/Pistol");
+            Items.Equipment.Weapon.Ranged.Wands.Texture = Engine.Engine.GetTexture("Items/Wand");
+            Items.Equipment.Weapon.Ranged.Chakrams.Texture = Engine.Engine.GetTexture("Items/Chakram");
+            Items.Equipment.Weapon.Legendary.Ranged.RodOfExtending.Texture = Engine.Engine.GetTexture("Items/Staff");
+            Items.Equipment.Weapon.Legendary.Ranged.KunaiWithChain.Texture = Engine.Engine.GetTexture("Items/Kunai");
 
             Items.Equipment.Armor.Chest.ClothChest.Texture = Engine.Engine.GetTexture("Items/ClothChest");
             Items.Equipment.Armor.Chest.LeatherChest.Texture = Engine.Engine.GetTexture("Items/LeatherChest");
@@ -171,10 +169,6 @@ namespace Brogue.Items
                     else  if ((RWTypes)findItem == RWTypes.Staff)
                     {
                         return new Staff(dLevel, cLevel);
-                    }
-                    else if ((RWTypes)findItem == RWTypes.ThrowingKnives)
-                    {
-                        return new ThrowingKnives(dLevel, cLevel);
                     }
                     else if ((RWTypes)findItem == RWTypes.Bow)
                     {
@@ -358,7 +352,7 @@ namespace Brogue.Items
 
         public static Item getDesiredDitem(int dLevel, int cLevel)
         {
-            return new Dagger(dLevel, cLevel);
+            return new KunaiWithChain(dLevel, cLevel);
         }
     }
 }

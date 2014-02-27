@@ -21,7 +21,7 @@ namespace Brogue.Items.Equipment.Weapon.Ranged
             Name = "Chakrams";
             LevelReq = findLevelReq(dLevel, cLevel);
             UsedBy = new List<Class> { Class.Magus, Class.SpellBlade };
-            EquipableIn = new List<Slots> { Slots.Hand_Primary };
+            EquipableIn = new List<Slots> { Slots.Hand_Auxillary };
             Damage = findDamage(BaseDamage, dLevel, LevelReq);
         }
     }

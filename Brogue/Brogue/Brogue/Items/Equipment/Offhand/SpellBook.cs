@@ -18,7 +18,7 @@ namespace Brogue.Items.Equipment.Offhand
         {
             Name = "Spellbook";
             LevelReq = findLevelReq(dLevel, cLevel);
-            UsedBy = new List<Class> { Class.Mage, Class.Sorcerer, Class.SpellWeaver, Class.Magus, Class.SpellBlade };
+            UsedBy = new List<Class> { Class.Mage, Class.Sorcerer, Class.SpellWeaver };
             Element = new List<ElementAttributes> { findElement() };
         }
     }

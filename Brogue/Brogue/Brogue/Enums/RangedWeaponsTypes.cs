@@ -9,7 +9,6 @@ namespace Brogue.Enums
     {
         Kunai,
         Staff,
-        ThrowingKnives,
         Bow,
         CrossBow,
         SniperRifle,
