@@ -68,6 +68,7 @@ namespace Brogue.Engine
         private static bool heroesTurn = true;
         private static RenderTarget2D lightsTarget;
         private static RenderTarget2D mainTarget;
+        private const int AIDist = 15;
         public static Random enginerand = new Random();
         private static List<XPParticle> xpList = new List<XPParticle>();
         public static Matrix worldToView;
@@ -159,7 +160,7 @@ namespace Brogue.Engine
 
         public static void GenerateLevel()
         {
-            currentLevel = LevelGenerator.generate(802, 200);
+            currentLevel = LevelGenerator.generate(802, 50);
             Log("Level generated.");
             hero = new HeroClasses.Mage();
             currentLevel.CharacterEntities.Add(hero, currentLevel.GetStartPoint());
@@ -209,9 +210,15 @@ namespace Brogue.Engine
 
 
         static int charIndex = 0;
+        static IntVec heroPos;
 
         public static void Update(GameTime gameTime)
         {
+            if (heroPos == null)
+            {
+                heroPos = currentLevel.CharacterEntities.FindPosition(hero);
+                
+            }
             MouseController.Update();
             for (int i = 0; i < xpList.Count; i++)
             {
@@ -223,23 +230,51 @@ namespace Brogue.Engine
             }
             if (!GameCommands())
             {
-                currentLevel.testUpdate();
+                //currentLevel.testUpdate();
                 //Game turns
-
+                
+                //hero.TakeTurn(currentLevel);
                 if (charIndex < currentLevel.CharacterEntities.Entities().Count<GameCharacter>())
                 {
-                    charIndex += currentLevel.CharacterEntities.Entities().ElementAt<GameCharacter>(charIndex).TakeTurn(currentLevel) ? 1 : 0;
+                    IntVec enemyPosition = currentLevel.CharacterEntities.FindPosition(currentLevel.CharacterEntities.Entities().ElementAt<GameCharacter>(charIndex));
+                    if (enemyPosition.X > heroPos.X - AIDist &&
+                        enemyPosition.X < heroPos.X + AIDist &&
+                        enemyPosition.Y > heroPos.Y - AIDist &&
+                        enemyPosition.Y < heroPos.Y + AIDist)
+                    {
+                        if (currentLevel.CharacterEntities.Entities().ElementAt<GameCharacter>(charIndex).TakeTurn(currentLevel))
+                        {
+                            charIndex++;
+                            heroPos = currentLevel.CharacterEntities.FindPosition(hero);
+                        }
+                    }
+                    else
+                    {
+                        charIndex++;
+                    }
                 }
                 else
                 {
                     charIndex = 0;
                 }
+
                 cameraPosition = currentLevel.CharacterEntities.FindPosition(hero);
                 modifiedCameraPosition.X = cameraPosition.X - (windowSizeInTiles.X / 2);
                 modifiedCameraPosition.Y = cameraPosition.Y - (windowSizeInTiles.Y / 2);
                 currentLevel.InvalidateCache();
               
             }
+        }
+
+        private static IntVec[] GetEnemyPositions()
+        {
+            int count = currentLevel.CharacterEntities.Entities().Count<GameCharacter>();
+            IntVec[] poses = new IntVec[count];
+            for (int i = 0; i < count; i++)
+            {
+                poses[i] = currentLevel.CharacterEntities.FindPosition(currentLevel.CharacterEntities.Entities().ElementAt<GameCharacter>(i));
+            }
+            return poses;
         }
 
         private static bool GameCommands()
