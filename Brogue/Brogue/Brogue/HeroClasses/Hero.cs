@@ -16,6 +16,9 @@ using Brogue.Items.Equipment.Armor;
 using Brogue.Items.Equipment.Weapon;
 using Brogue.Abilities.Damaging.SingleTargets;
 using Brogue.EnviromentObjects.Interactive;
+using Brogue.Mapping;
+using Brogue.Items.Equipment.Weapon.Melee;
+using Brogue.Items.Equipment.Weapon.Ranged;
 
 namespace Brogue.HeroClasses
 {
@@ -23,11 +26,13 @@ namespace Brogue.HeroClasses
     public abstract class Hero : GameCharacter, IRenderable
     {
         public static int level { get; set; }
+        public static int MaxJarBarAmount;
         protected int numAbilities = 0;
         protected int armorRating;
         protected int experience = 0;
         protected int expRequired = 100;
         protected Ability[] abilities;
+        private int jarBarAmount;
         static Sprite sprite;
         static Sprite radiusSprite;
         static Sprite castingSprite;
@@ -45,9 +50,12 @@ namespace Brogue.HeroClasses
             numAbilities = 0;
             experience = 0;
             expRequired = 100;
+            MaxJarBarAmount = 50;
+            jarBarAmount = 0;
             isFriendly = true;
             abilities = new Ability[2];
             abilities[0] = new Cleave();
+            currentlyEquippedItems.equipWeapon(new Sword(1, 1));
         }
 
         public IntVec move(Direction dir)
@@ -153,25 +161,21 @@ namespace Brogue.HeroClasses
                 {
                     turnOver = mapLevel.Move(this, move(Direction.LEFT));
                 }
-
                 else if (Mapping.KeyboardController.IsTyped(Keys.W))
                 {
                     turnOver = mapLevel.Move(this, move(Direction.UP));
-
                 }
-
                 else if (Mapping.KeyboardController.IsTyped(Keys.D))
                 {
-
                     turnOver = mapLevel.Move(this, move(Direction.RIGHT));
-
                 }
-
                 else if (Mapping.KeyboardController.IsTyped(Keys.S))
                 {
-
                     turnOver = mapLevel.Move(this, move(Direction.DOWN));
-
+                }
+                else if (MouseController.LeftClicked())
+                {
+                    attack(mapLevel);
                 }
                 // THESE ARE JUST FOR TESTING
                 else if (Mapping.KeyboardController.IsTyped(Keys.B))
@@ -247,9 +251,42 @@ namespace Brogue.HeroClasses
         }
 
         //public void castAbility(int ability)
-        public void attack()
+        public void attack(Level mapLevel)
         {
+            Enemies.Enemy testEnemy = (Enemies.Enemy)mapLevel.CharacterEntities.FindEntity(MouseController.MouseGridPosition());
+            if (testEnemy != null)
+            {
+                int weaponRange1 = currentlyEquippedItems.equippedWeapons[0].Range;
+                int weaponRange2 = (currentlyEquippedItems.equippedWeapons[1] != null) ? currentlyEquippedItems.equippedWeapons[1].Range : -1;
+                damageEnemyIfInRange(testEnemy, mapLevel.CharacterEntities.FindPosition(this), currentlyEquippedItems.equippedWeapons[0].Damage, weaponRange1);
+                if (weaponRange2 != -1)
+                {
+                    damageEnemyIfInRange(testEnemy, mapLevel.CharacterEntities.FindPosition(this), currentlyEquippedItems.equippedWeapons[1].Damage, weaponRange2);
+                }
+            }
+        }
 
+        private void damageEnemyIfInRange(Enemies.Enemy testEnemy, IntVec heroPosition, int damage, int range)
+        {
+            Engine.Engine.Log(IsInRange(testEnemy.position, heroPosition, range).ToString());
+            if (IsInRange(testEnemy.position, heroPosition, range))
+            {
+                Engine.Engine.Log("I'm called");
+                testEnemy.TakeDamage(damage, this);
+            }
+        }
+
+        private IntVec[] seeWeaponRange(Level mapLevel, int weaponIndex)
+        {
+            int totalWeaponRange = currentlyEquippedItems.equippedWeapons[weaponIndex].Range + 1;
+            return AStar.getPossiblePositionsFrom(mapLevel, mapLevel.CharacterEntities.FindPosition(this), totalWeaponRange);
+        }
+
+        private bool IsInRange(IntVec firstPosition, IntVec secondPosition, int range)
+        {
+            int gridSquaresAway = Math.Abs(firstPosition.X - secondPosition.X) + Math.Abs(firstPosition.Y - secondPosition.Y);
+            Engine.Engine.Log(gridSquaresAway.ToString());
+            return (gridSquaresAway <= range);
         }
         //public void useItem();
 

@@ -13,6 +13,15 @@ namespace Brogue.HeroClasses
         const int MAX_WEAPON_SLOTS = 2;
         public Armor[] equippedArmor = new Armor[MAX_ARMOR_SLOTS];
         public Weapon[] equippedWeapons =new Weapon[MAX_WEAPON_SLOTS];
+        public int slotsOpen = 2;
+
+        public Equipment()
+        {
+            for (int i = 0; i < MAX_WEAPON_SLOTS; i++)
+            {
+                equippedWeapons[i] = null;
+            }
+        }
 
         public int getTotalArmorRating()
         {
@@ -38,6 +47,31 @@ namespace Brogue.HeroClasses
                 }
             }
             return totalDamage;
+        }
+
+        public void equipWeapon(Weapon weapon)
+        {
+            int handsTaken = (weapon.EquipableIn.Contains(Enums.Slots.Hand_Both))? 2: 1;
+            if (slotsOpen >= handsTaken)
+            {
+                bool found = false;
+                for (int i = 0; i < equippedWeapons.Length && !found; i++)
+                {
+                    if (equippedWeapons[i] == null)
+                    {
+                        found = true;
+                        equippedWeapons[i] = weapon;
+                        slotsOpen -= handsTaken;
+                    }
+                }
+            }
+        }
+
+        public void removeWeapon(int index)
+        {
+            int handsTaken = (equippedWeapons[index].EquipableIn.Contains(Enums.Slots.Hand_Both))? 2: 1;
+            equippedWeapons[index] = null;
+            slotsOpen += handsTaken;
         }
     }
 }
