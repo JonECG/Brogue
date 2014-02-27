@@ -13,7 +13,7 @@ namespace Brogue.Enemies
         {
             if (Aggro(level))
             {
-                Direction[] path = AStar.getPathBetween(level, this.position, target.position);
+                Direction[] path = AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(target));
                 if (path != null)
                 {
                     if (path.Length - range <= moveSpeed)
@@ -34,7 +34,7 @@ namespace Brogue.Enemies
                 }
                 else
                 {
-                    IntVec[] possible = AStar.getPossiblePositionsFrom(level, position, moveSpeed);
+                    IntVec[] possible = AStar.getPossiblePositionsFrom(level, level.CharacterEntities.FindPosition(this), moveSpeed);
                     IntVec targetPos = null;
                     foreach (IntVec pos in possible)
                     {
@@ -65,12 +65,29 @@ namespace Brogue.Enemies
 
             foreach (GameCharacter g in chars)
             {
-                int gRange = AStar.getCost(AStar.getPathBetween(level, this.position, g.position));
+                int gRange = AStar.getCost(AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(g)));
 
-                if (gRange < aggroRange && gRange < AStar.getCost(AStar.getPathBetween(level, this.position, target.position)))
+                if (target == null)
                 {
-                    target = level.CharacterEntities.FindEntity(g.position);
-                    targetFound = true;
+                    if (gRange <= aggroRange)
+                    {
+                        target = g;
+                        targetFound = true;
+                    }
+                }
+                else
+                {
+                    int tRange = AStar.getCost(AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(target)));
+
+                    if (g.Equals(target) && tRange <= aggroRange)
+                    {
+                        targetFound = true;
+                    }
+                    else if (gRange < tRange)
+                    {
+                        target = g;
+                        targetFound = true;
+                    }
                 }
             }
 

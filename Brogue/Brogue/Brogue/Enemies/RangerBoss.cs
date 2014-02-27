@@ -13,6 +13,7 @@ namespace Brogue.Enemies
 
         public override bool TakeTurn(Level level)
         {
+            position = Engine.Engine.currentLevel.CharacterEntities.FindPosition(this);
             turnCounter++;
 
             Aggro(level);

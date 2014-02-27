@@ -30,8 +30,6 @@ namespace Brogue.Enemies
         public void Move(Direction d, Level level)
         {
             level.Move(this, d);
-            position.X += d.X;
-            position.Y += d.Y;
         }
 
         //This method will be called each turn to determine who (if anyone) to attack

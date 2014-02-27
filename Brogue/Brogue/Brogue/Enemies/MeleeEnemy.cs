@@ -11,9 +11,10 @@ namespace Brogue.Enemies
     {
         public override bool TakeTurn(Level level)
         {
+            position = Engine.Engine.currentLevel.CharacterEntities.FindPosition(this);
             if (Aggro(level))
             {
-                Direction[] path = AStar.getPathBetween(level, this.position, target.position);
+                Direction[] path = AStar.getPathBetween(level, this.position, level.CharacterEntities.FindPosition(target));
 
                 if (path != null)
                 {
@@ -64,19 +65,29 @@ namespace Brogue.Enemies
 
             IEnumerable<GameCharacter> chars = level.GetCharactersIsFriendly(true);
 
-            if (target != null && (AStar.getCost(AStar.getPathBetween(level, this.position, target.position)) < aggroRange + 3))
+            foreach (GameCharacter g in chars)
             {
-                targetFound = true;
-            }
-            else
-            {
-                foreach (GameCharacter g in chars)
-                {
-                    int gRange = AStar.getCost(AStar.getPathBetween(level, this.position, g.position));
+                int gRange = AStar.getCost(AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(g)));
 
-                    if (gRange < aggroRange && gRange < AStar.getCost(AStar.getPathBetween(level, this.position, target.position)))
+                if (target == null)
+                {
+                    if (gRange <= aggroRange)
                     {
-                        target = level.CharacterEntities.FindEntity(g.position);
+                        target = g;
+                        targetFound = true;
+                    }
+                }
+                else
+                {
+                    int tRange = AStar.getCost(AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(target)));
+
+                    if (g.Equals(target) && tRange <= aggroRange)
+                    {
+                        targetFound = true;
+                    }
+                    else if (gRange < tRange)
+                    {
+                        target = g;
                         targetFound = true;
                     }
                 }
@@ -103,6 +114,7 @@ namespace Brogue.Enemies
             health = 15 + (10 * i);
             moveSpeed = 3 + (2 * i);
             exp = 5 + 3 * i;
+            
         }
 
         public override DynamicTexture GetTexture()

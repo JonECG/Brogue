@@ -11,6 +11,7 @@ namespace Brogue.Enemies
     {
         public override bool TakeTurn(Level level)
         {
+            position = Engine.Engine.currentLevel.CharacterEntities.FindPosition(this);
             if (IsAggro)
             {
                 Direction[] path = AStar.getPathBetween(level, this.position, target.position);

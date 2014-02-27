@@ -25,17 +25,10 @@ namespace Brogue.Enemies
         public void Move(Direction d, Level level)
         {
             level.Move(this, d);
-            position.X += d.X;
-            position.Y += d.Y;
         }
 
         //This method will be called each turn to determine who (if anyone) to attack
         public abstract void Aggro(Level level);
-
-        public void DeAggro()
-        {
-            targets = null;
-        }
 
         //This method accepts an int i (maybe change to an enum later, talk about it with you guys) which corresponds
         //to the level of difficulty the enemy should be. This will also affect drop table choice.
@@ -72,17 +65,24 @@ namespace Brogue.Enemies
 
             foreach (GameCharacter g in chars)
             {
-                int gRange = AStar.getCost(AStar.getPathBetween(level, this.position, g.position));
-                int targetRange = AStar.getCost(AStar.getPathBetween(level, this.position, target));
+                if (target == null)
+                {
+                    target = level.CharacterEntities.FindPosition(g);
+                }
+                else 
+                {
+                    int gRange = AStar.getCost(AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(g)));
+                    int targetRange = AStar.getCost(AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), target));
+                    if (gRange < targetRange)
+                    {
+                        target = level.CharacterEntities.FindPosition(g);
+                    }
+                }
+            }
 
-                if (target != null && gRange < targetRange)
-                {
-                    target = g.position;
-                }
-                else
-                {
-                    target = g.position;
-                }
+            if (target == null)
+            {
+                throw new Exception("The level does not contain any friendly units or a Hero.");
             }
 
             return target;

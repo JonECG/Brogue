@@ -13,6 +13,7 @@ namespace Brogue.Enemies
 
         public override bool TakeTurn(Level level)
         {
+            position = Engine.Engine.currentLevel.CharacterEntities.FindPosition(this);
             turnCounter++;
 
             Aggro(level);
@@ -69,7 +70,14 @@ namespace Brogue.Enemies
 
         public override void Aggro(Level level)
         {
-            targets[0] = level.CharacterEntities.FindEntity(FindNearestTarget(level.GetCharactersIsFriendly(true), level));
+            if (targets.Count == 0)
+            {
+                targets.Add(level.CharacterEntities.FindEntity(FindNearestTarget(level.GetCharactersIsFriendly(true), level)));
+            }
+            else
+            {
+                targets[0] = level.CharacterEntities.FindEntity(FindNearestTarget(level.GetCharactersIsFriendly(true), level));
+            }
         }
 
         public override void BuildBoss(int i)
