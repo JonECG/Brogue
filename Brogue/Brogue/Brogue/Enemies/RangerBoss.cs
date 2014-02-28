@@ -24,7 +24,7 @@ namespace Brogue.Enemies
                     targets[0].TakeDamage(attacks[0], this);
                 }
 
-                IntVec[] possible = AStar.getPossiblePositionsFrom(level, level.CharacterEntities.FindPosition(this), 5);
+                IntVec[] possible = AStar.getPossiblePositionsFrom(level, level.CharacterEntities.FindPosition(this), 1);
                 IntVec targetPos = null;
                 foreach (IntVec i in possible)
                 {
@@ -69,7 +69,7 @@ namespace Brogue.Enemies
             if (defense > 30)
                 defense = 30;
             attacks.Add(30 + i * 5);
-            exp = 10 + 10 * i;
+            exp = 30 + 30 * i;
         }
     }
 }

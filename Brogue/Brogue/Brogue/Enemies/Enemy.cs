@@ -16,7 +16,7 @@ namespace Brogue.Enemies
         protected GameCharacter target;
         protected int attack;
         protected int defense;
-        protected int moveSpeed;
+        protected int moveSpeed = 1;
         protected int range;
         protected int aggroRange;
         protected int exp;
@@ -26,33 +26,55 @@ namespace Brogue.Enemies
             get { return (target != null); }
         }
 
-        //Movement method, moves a single square
+        /// <summary>
+        /// Moves a single square based on a Direction
+        /// </summary>
+        /// <param name="d">Direction</param>
+        /// <param name="level">The current level</param>
         public void Move(Direction d, Level level)
         {
             level.Move(this, d);
         }
 
-        //This method will be called each turn to determine who (if anyone) to attack
+        /// <summary>
+        /// Determines whether or not this enemy is able to aggro any targets
+        /// </summary>
+        /// <param name="level">The current level</param>
+        /// <returns>whether or not this enemy has found a target</returns>
         public abstract bool Aggro(Level level);
 
-        //This method accepts an int i (maybe change to an enum later, talk about it with you guys) which corresponds
-        //to the level of difficulty the enemy should be. This will also affect drop table choice.
+        /// <summary>
+        /// Essentially a constructor that is seperate from the actual constructor to allow for 0 argument construction for testing
+        /// </summary>
+        /// <param name="i">The dungeon level or the character level</param>
         public abstract void BuildEnemy(int i);
 
-        //Drops items and any other needed actions for death
+        /// <summary>
+        /// Actions to perform on death (EXP rewarding, item dropping, enemy removal)
+        /// </summary>
         protected virtual void Die()
         {
+            Level level = Engine.Engine.currentLevel;
             Engine.Engine.AddXP(exp, Engine.Engine.currentLevel.CharacterEntities.FindPosition(this));
-            Engine.Engine.currentLevel.CharacterEntities.Remove(this);
+            level.CharacterEntities.Remove(this);
+
+            //CURRENTLY USING DUNGEON LEVEL OF 1 AND CHARACTER LEVEL OF 2. NEED ACCESS.
+            level.DroppedItems.Add(Items.Item.randomItem(1, 2), level.CharacterEntities.FindPosition(this));
         }
         
-        //Attacks the current target
+        /// <summary>
+        /// Attacks the current target based on its attack
+        /// </summary>
         protected void Attack()
         {
             target.TakeDamage(attack, this);
         }
 
-        //Converts damage based on armour and then removes from health.
+        /// <summary>
+        /// Converts damage input into the enemy to a lower damage based on this enemy's defense,  and then deals it and calls Die() if health is less than 0
+        /// </summary>
+        /// <param name="damage">The damage the attacker dealt</param>
+        /// <param name="attacker">The GameCharacter that attacked this enemy (used for aggro)</param>
         public override void TakeDamage(int damage, GameCharacter attacker)
         {
             if (target == null)

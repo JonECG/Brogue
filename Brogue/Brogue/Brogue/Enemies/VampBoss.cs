@@ -45,7 +45,7 @@ namespace Brogue.Enemies
                     targets[0].TakeDamage(attacks[0], this);
                     Heal(attacks[0] / 10);
                 }
-                IntVec[] possible = AStar.getPossiblePositionsFrom(level, level.CharacterEntities.FindPosition(this), 5);
+                IntVec[] possible = AStar.getPossiblePositionsFrom(level, level.CharacterEntities.FindPosition(this), 2);
                 Random gen = new Random();
                 IntVec choice = possible[gen.Next(0, possible.Length)];
 
@@ -85,7 +85,7 @@ namespace Brogue.Enemies
                 defense = 50;
             attacks.Add(10 + i * 2);
             attacks.Add(10 + i * 3);
-            exp = 10 + 10 * i;
+            exp = 30 + 30 * i;
         }
     }
 }
