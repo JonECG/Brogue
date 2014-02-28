@@ -19,16 +19,16 @@ namespace Brogue.EnviromentObjects.Interactive
         bool isVisable { get; set; }
         bool empty { get; set; }
 
+        public bool isSolid { get; set; }
+        public bool isOpen { get; set; }
+
         int chestSize = 10;
 
         List<Item> contents;
 
-        public bool isSolid { get; set; }
-        public bool isOpen { get; set; }
-
         public Chest(Item[] putIntoChest)
         {
-            isSolid = false;
+            isSolid = true;
             isVisable = true;
             contents = new List<Item>();
             empty = false;
@@ -196,13 +196,13 @@ namespace Brogue.EnviromentObjects.Interactive
         {
            if(isSolid)
            {
-               isSolid = true;
-               isVisable = true;
+               isSolid = false;
+               isVisable = false;
            }
            else if (!isSolid) 
            {
-               isSolid = false;
-               isVisable = false;
+               isSolid = true;
+               isVisable = true;
            }
         }
 
