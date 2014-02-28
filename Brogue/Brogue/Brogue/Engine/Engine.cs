@@ -371,12 +371,6 @@ namespace Brogue.Engine
                     didSomething = true;
                 }
 
-                GameCharacter gchar = currentLevel.CharacterEntities.FindEntity(worldPos);
-                if (gchar != null)
-                {
-                    Log(gchar.ToString());
-                    gchar.TakeDamage(50, hero);
-                }
 
                 if (!didSomething)
                 {
