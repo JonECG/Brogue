@@ -24,7 +24,8 @@ namespace Brogue.Items.Consumables
 
         public override Item PickUpEffect(Hero player)
         {
-            
+
+            player.jarBarAmount += this.RestoreAmount;
             return null;
         }
     }
