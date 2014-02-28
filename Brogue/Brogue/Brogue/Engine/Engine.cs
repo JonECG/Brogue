@@ -234,7 +234,7 @@ namespace Brogue.Engine
                 game.spriteBatch.Draw(sprite.Texture.texture, new Rectangle(destination.X * CELLWIDTH, destination.Y * CELLWIDTH, CELLWIDTH, CELLWIDTH), new Rectangle(sprite.SourceTile.X * CELLWIDTH, sprite.SourceTile.Y * CELLWIDTH, CELLWIDTH, CELLWIDTH), sprite.Blend, sprite.Direction, new Vector2(CELLWIDTH / 2, CELLWIDTH / 2), SpriteEffects.None, 0);
             }
         }
-
+        
 
         static int charIndex = 0;
         static IntVec heroPos;
@@ -277,6 +277,7 @@ namespace Brogue.Engine
                         {
                             if (currentLevel.CharacterEntities.Entities().ElementAt<GameCharacter>(charIndex).TakeTurn(currentLevel))
                             {
+                                currentLevel.InvalidateCache();
                                 charIndex++;
                                 heroPos = currentLevel.CharacterEntities.FindPosition(hero);
                             }
@@ -318,12 +319,12 @@ namespace Brogue.Engine
         private static bool GameCommands()
         {
             bool didSomething = false;
-            //if (KeyboardController.IsPressed(Keys.U))
-            //{
-            //    SaveGame();
-            //    didSomething = true;
+            if (KeyboardController.IsPressed(Keys.U))
+            {
+                SaveGame();
+                didSomething = true;
                 
-            //}
+            }
 
             if (KeyboardController.IsPressed(Keys.OemPlus))
             {
@@ -488,8 +489,7 @@ namespace Brogue.Engine
             game.effect.CurrentTechnique.Passes[0].Apply();
             
             game.spriteBatch.Draw(mainTarget, Vector2.Zero, Color.White);
-            game.spriteBatch.End();  
-
+            game.spriteBatch.End();
 
         }
 
