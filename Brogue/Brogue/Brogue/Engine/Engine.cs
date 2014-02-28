@@ -235,6 +235,10 @@ namespace Brogue.Engine
                 //Game turns
                 
                 //hero.TakeTurn(currentLevel);
+                if (charIndex >= currentLevel.CharacterEntities.Entities().Count<GameCharacter>())
+                {
+                    charIndex = 0;
+                }
                 while (currentLevel.CharacterEntities.Entities().ElementAt<GameCharacter>(charIndex) != hero)
                 {
                     if (charIndex < currentLevel.CharacterEntities.Entities().Count<GameCharacter>())
@@ -263,10 +267,7 @@ namespace Brogue.Engine
                     }
                 }
                 charIndex += hero.TakeTurn(currentLevel)?1: 0;
-                if (charIndex >= currentLevel.CharacterEntities.Entities().Count<GameCharacter>())
-                {
-                    charIndex = 0;
-                }
+                
 
 
                 cameraPosition = currentLevel.CharacterEntities.FindPosition(hero);
