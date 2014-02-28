@@ -20,16 +20,19 @@ namespace Brogue.Mapping
         /// <param name="budget">How many movements it can make (-1 is infinite)</param>
         /// <param name="straight">Whether the positions should be in direct view</param>
         /// <returns>An unordered array of positions</returns>
-        public static IntVec[] getPossiblePositionsFrom( Level level, IntVec start, int budget = -1, bool straight = false )
+        public static IntVec[] getPossiblePositionsFrom( Level level, IntVec start, int budget = -1, bool targetCharacters = false, bool straight = false )
         {
             List<IntVec> positions = new List<IntVec>();
-            
-            possiblePositionsFromStep( positions, level.getIntSolid(), start, start, budget, straight );
+
+            int[,] used = level.getIntSolid();
+            used[start.X, start.Y] = int.MaxValue - 1;
+
+            possiblePositionsFromStep(level, positions, used, start, start, budget, targetCharacters, straight, true);
 
             return positions.ToArray<IntVec>();
         }
 
-        private static void possiblePositionsFromStep(List<IntVec> positions, int[,] used, IntVec start, IntVec position, int budget, bool straight)
+        private static void possiblePositionsFromStep(Level level, List<IntVec> positions, int[,] used, IntVec start, IntVec position, int budget, bool targetCharacters, bool straight, bool expand)
         {
             if (budget != 0 && (!straight || lineIsFree(used, start, position))) 
             {
@@ -37,11 +40,14 @@ namespace Brogue.Mapping
 
                 positions.Add(position);
 
+                if (expand)
                 foreach (Direction dir in Direction.Values)
                 {
                     IntVec target = position + dir;
-                    if ( used[target.X, target.Y] < budget - 1)
-                        possiblePositionsFromStep(positions, used, start, target, budget - 1, straight);
+                    if (used[target.X, target.Y] < budget - 1 || (used[target.X, target.Y] == int.MaxValue && targetCharacters && level.CharacterEntities.FindEntity(target) != null))
+                    {
+                        possiblePositionsFromStep(level, positions, used, start, target, budget - 1, targetCharacters, straight, !(used[target.X, target.Y] == int.MaxValue) );
+                    }
                 }
             }
         }

@@ -1,0 +1,478 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{BD9530F8-BDBF-4FDD-AD10-9A1B29C98202}</ProjectGuid>
+    <ProjectTypeGuids>{6D335F3A-9D43-41b4-9D22-F6F17C4BE596};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Brogue</RootNamespace>
+    <AssemblyName>Brogue</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <XnaFrameworkVersion>v4.0</XnaFrameworkVersion>
+    <XnaPlatform>Windows</XnaPlatform>
+    <XnaProfile>Reach</XnaProfile>
+    <XnaCrossPlatformGroupID>076c6122-56a4-4bde-85c3-0639c3c89b3c</XnaCrossPlatformGroupID>
+    <XnaOutputType>Game</XnaOutputType>
+    <ApplicationIcon>Game.ico</ApplicationIcon>
+    <Thumbnail>GameThumbnail.png</Thumbnail>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\x86\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;WINDOWS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <PlatformTarget>x86</PlatformTarget>
+    <XnaCompressContent>false</XnaCompressContent>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\x86\Release</OutputPath>
+    <DefineConstants>TRACE;WINDOWS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <PlatformTarget>x86</PlatformTarget>
+    <XnaCompressContent>true</XnaCompressContent>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
+    <Reference Include="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
+    <Reference Include="Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
+    <Reference Include="Microsoft.Xna.Framework.GamerServices, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Net" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Abilities\Ability.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Abilities\AOE\AreaOfEffect.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Abilities\SingleTargets\Cleave.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Abilities\SingleTargets\SingleTarget.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enemies\BossEnemy.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enemies\ChargeBoss.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enemies\Enemy.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enemies\EnemyCreator.cs" />
+    <Compile Include="Enemies\GuardianEnemy.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enemies\MageEnemy.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enemies\MeleeEnemy.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enemies\RangedEnemy.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enemies\RangerBoss.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enemies\VampBoss.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Direction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\DynamicTexture.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Engine.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\JonEngine.cs" />
+    <Compile Include="Enums\AccessoryTypes.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\ArmorTypes.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\ChestTypes.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\Classes.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\ConsumablesTypes.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\Elements.cs" />
+    <Compile Include="Enums\EquipmentSlots.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\HelmTypes.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\ItemTypes.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\Legendaries.cs" />
+    <Compile Include="Enums\LegTypes.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\MeleeWeaponsTypes.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\OffhandTypes.cs" />
+    <Compile Include="Enums\RangedWeaponsTypes.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\ShieldTypes.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\StatModifiers.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\UniqueArmor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\UniqueWeapons.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\WeaponTypes.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EnviromentObjects\Decorative\Chair.cs" />
+    <Compile Include="EnviromentObjects\Decorative\ILightsource.cs" />
+    <Compile Include="EnviromentObjects\Decorative\InonInteractable.cs" />
+    <Compile Include="EnviromentObjects\Decorative\Plant.cs" />
+    <Compile Include="EnviromentObjects\Decorative\Tourch.cs" />
+    <Compile Include="EnviromentObjects\EnviromentObjects.cs" />
+    <Compile Include="EnviromentObjects\Interactive\Chest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EnviromentObjects\Interactive\Door.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EnviromentObjects\Interactive\HiddenPassage.cs" />
+    <Compile Include="EnviromentObjects\Interactive\Iinteractable.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EnviromentObjects\Interactive\Swiches.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EnviromentObjects\Interactive\Wall.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Game1.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GameCharacter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HeroClasses\Equipment.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HeroClasses\Hero.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HeroClasses\Mage.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HeroClasses\Rogue.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HeroClasses\Warrior.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ILightSource.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IntVec.cs" />
+    <Compile Include="InventorySystem\Inventory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="InventorySystem\InventorySlot.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="InventorySystem\ItemCount.cs" />
+    <Compile Include="IRenderable.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Consumables\Consumable.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Consumables\Potion.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Equipment\Accessory\Accessory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Equipment\Accessory\Necklace.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Equipment\Accessory\Ring.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Equipment\Armor\Armor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Equipment\Armor\Chest\Chest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Equipment\Armor\Chest\ClothChest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Equipment\Armor\Chest\LeatherChest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Equipment\Armor\Chest\MailChest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Equipment\Armor\Chest\PlateChest.cs" />
+    <Compile Include="Items\Equipment\Armor\Helm\ClothHelm.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Equipment\Armor\Helm\Helm.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Equipment\Armor\Helm\LeatherHelm.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Equipment\Armor\Helm\MailHelm.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Equipment\Armor\Helm\PlateHelm.cs" />
+    <Compile Include="Items\Equipment\Armor\Legendary\LegendaryArmor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Equipment\Armor\Legendary\Shields\FirstAvenger.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Equipment\Armor\Legendary\Shields\LegendaryShield.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Equipment\Armor\Legs\ClothLegs.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Equipment\Armor\Legs\LeatherLegs.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Equipment\Armor\Legs\Legs.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Equipment\Armor\Legs\MailLegs.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Equipment\Armor\Legs\PlateLegs.cs" />
+    <Compile Include="Items\Equipment\Armor\Shields\PlateShield.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Equipment\Armor\Shields\Shields.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Equipment\Armor\Shields\WoodenShield.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Equipment\Gear.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Equipment\Offhand\Offhand.cs" />
+    <Compile Include="Items\Equipment\Offhand\SpellBook.cs" />
+    <Compile Include="Items\Equipment\Weapon\Legendary\LegendaryWeapon.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Equipment\Weapon\Legendary\Melee\40k.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Equipment\Weapon\Legendary\Melee\LegendaryMelee.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Equipment\Weapon\Legendary\Melee\TheWolverine.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Equipment\Weapon\Legendary\Ranged\KunaiWithChain.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Equipment\Weapon\Legendary\Ranged\LegendaryRanged.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Equipment\Weapon\Legendary\Ranged\RodOfExtending.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Equipment\Weapon\Melee\Axe.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Equipment\Weapon\Melee\BastardSword.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Equipment\Weapon\Melee\Claws.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Equipment\Weapon\Melee\Dagger.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Equipment\Weapon\Melee\GreatAxe.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Equipment\Weapon\Melee\MeleeWeapon.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Equipment\Weapon\Melee\Rapier.cs" />
+    <Compile Include="Items\Equipment\Weapon\Melee\Scythe.cs" />
+    <Compile Include="Items\Equipment\Weapon\Melee\Sword.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Equipment\Weapon\Melee\WarHammer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Equipment\Weapon\Ranged\Bow.cs" />
+    <Compile Include="Items\Equipment\Weapon\Ranged\Chakrams.cs" />
+    <Compile Include="Items\Equipment\Weapon\Ranged\CrossBow.cs" />
+    <Compile Include="Items\Equipment\Weapon\Ranged\Kunai.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Equipment\Weapon\Ranged\Pistol.cs" />
+    <Compile Include="Items\Equipment\Weapon\Ranged\RangedWeapon.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Equipment\Weapon\Ranged\SniperRifle.cs" />
+    <Compile Include="Items\Equipment\Weapon\Ranged\Staff.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Equipment\Weapon\Ranged\Wands.cs" />
+    <Compile Include="Items\Equipment\Weapon\Weapon.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Item.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Mapping\AStar.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Mapping\ColorEnvironment.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Mapping\EnvironmentObject.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Mapping\GridBoundList.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Mapping\KeyboardController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Mapping\Level.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Mapping\LevelGenerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Mapping\Tile.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MouseController.cs" />
+    <Compile Include="Program.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Sprite.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Enemies\EnemySprites\BASIC_ENEMY.png" />
+    <Content Include="Enemies\EnemySprites\BOSS_ENEMY.png" />
+    <Content Include="EnviromentObjects\Interactive\Images\Chest.png" />
+    <Content Include="EnviromentObjects\Interactive\Images\Door.png" />
+    <Content Include="EnviromentObjects\Interactive\Images\SwichDown.png" />
+    <Content Include="EnviromentObjects\Interactive\Images\SwichUP.png" />
+    <Content Include="Game.ico" />
+    <Content Include="GameThumbnail.png">
+      <XnaPlatformSpecific>true</XnaPlatformSpecific>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BrogueContent\BrogueContent.contentproj">
+      <Name>BrogueContent</Name>
+      <XnaReferenceType>Content</XnaReferenceType>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 Client Profile %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.4.5">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 4.5</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="EnviromentObjects\Decorative\Images\Source\Chair.pdn" />
+    <None Include="EnviromentObjects\Decorative\Images\Source\Plant.pdn" />
+    <None Include="EnviromentObjects\Decorative\Images\Source\Stairs.pdn" />
+    <None Include="EnviromentObjects\Decorative\Images\Source\Tourch.pdn" />
+    <None Include="EnviromentObjects\Interactive\Images\Source\Chest.pdn" />
+    <None Include="EnviromentObjects\Interactive\Images\Source\Door Project.pdn" />
+    <None Include="EnviromentObjects\Interactive\Images\Source\Swich.pdn" />
+    <None Include="EnviromentObjects\XP.pdn" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Items\Equipment\Unique\Armor\" />
+    <Folder Include="Items\Equipment\Unique\Item\" />
+    <Folder Include="Items\Equipment\Unique\Weapon\" />
+    <Folder Include="TestCases\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
+  <!--
+      To modify your build process, add your task inside one of the targets below and uncomment it. 
+      Other similar extension points exist, see Microsoft.Common.targets.
+      <Target Name="BeforeBuild">
+      </Target>
+      <Target Name="AfterBuild">
+      </Target>
+    -->
+</Project>

@@ -257,6 +257,7 @@ namespace Brogue.Mapping
             }
 
             Environment.Draw();
+            drawAStar();
             InteractableEnvironment.Draw();
             
             DroppedItems.Draw();
@@ -275,11 +276,16 @@ namespace Brogue.Mapping
             //    pair.Item2.Y += pair.Item1.GetSprite().Direction.Y;
             //}
 
-            //foreach (IntVec vec in moveset)
-            //{
-            //    Engine.Engine.Draw(new Sprite(Engine.Engine.placeHolder, Color.Bisque), vec); //Orange
-            //    //sb.Draw(Tile.tileset, new Rectangle((int)(vec.X * tileWidth), (int)(vec.Y * tileWidth), (int)Math.Ceiling(tileWidth), (int)Math.Ceiling(tileWidth)), new Rectangle(0, 0, 48, 48), Color.Blue);
-            //}
+
+        }
+
+        public void drawAStar()
+        {
+            foreach (IntVec vec in moveset)
+            {
+                Engine.Engine.Draw(new Sprite(Engine.Engine.placeHolder, Color.Salmon), vec); //Orange
+                //sb.Draw(Tile.tileset, new Rectangle((int)(vec.X * tileWidth), (int)(vec.Y * tileWidth), (int)Math.Ceiling(tileWidth), (int)Math.Ceiling(tileWidth)), new Rectangle(0, 0, 48, 48), Color.Blue);
+            }
 
 
             //path = AStar.getPathBetween(this, a, b);
@@ -302,7 +308,6 @@ namespace Brogue.Mapping
             //}
 
             //Engine.Engine.Draw(new Sprite(Engine.Engine.placeHolder, Color.Yellow), new IntVec(nodes.Min.position.X, nodes.Min.position.Y)); 
-
         }
 
         public bool isComplete()
@@ -358,7 +363,7 @@ namespace Brogue.Mapping
                 if (previousPathDistance != -1 && Math.Abs(previousPathDistance - path.Length) > movement)
                     Engine.Engine.Log(string.Format("<INCONSISTENT PATHFIND; MOVEMENTDELTA={0},PATHDELTA={1}>", movement, Math.Abs(previousPathDistance - path.Length)));
 
-                moveset = AStar.getPossiblePositionsFrom(this, a, 15);
+                moveset = AStar.getPossiblePositionsFrom(this, a, 5, true);
 
                 previousPathDistance = path.Length;
             }
