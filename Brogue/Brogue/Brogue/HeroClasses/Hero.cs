@@ -173,6 +173,7 @@ namespace Brogue.HeroClasses
                 else if (MouseController.LeftClicked())
                 {
                     attack(mapLevel);
+                    turnOver = true;
                 }
                 // THESE ARE JUST FOR TESTING
                 else if (Mapping.KeyboardController.IsTyped(Keys.B))
@@ -213,12 +214,19 @@ namespace Brogue.HeroClasses
                 if (MouseController.LeftClicked())
                 {
                     bool withinRange = false;
-                    for (int i = 1; i < castSquares.Length && !withinRange; i++)
+                    for (int i = 0; i < castSquares.Length && !withinRange; i++)
                     {
                         if (MouseController.MouseGridPosition().Equals(castSquares[i]))
                         {
                             withinRange = true;
                             abilities[0].addCastingSquares(MouseController.MouseGridPosition());
+                            if (abilities[0].filledSquares())
+                            {
+                                turnOver = true;
+                                abilities[0].finishCastandDealDamage(level, currentlyEquippedItems.getTotalWeaponDamage());
+                                Engine.Engine.ClearGridSelections();
+                                viewingCast = false;
+                            }
                         }
                     }
                 }
@@ -230,8 +238,6 @@ namespace Brogue.HeroClasses
                 if (Mapping.KeyboardController.IsReleased(Keys.D1))
                 {
                     Engine.Engine.ClearGridSelections();
-                    abilities[0].finishCastandDealDamage(level, currentlyEquippedItems.getTotalWeaponDamage());
-                    turnOver = true;
                     viewingCast = !viewingCast;
                 }
             }
