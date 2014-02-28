@@ -12,7 +12,7 @@ using Brogue.Items.Consumables;
 
 namespace Brogue.EnviromentObjects.Interactive
 {
-    class Chest : IInteractable, IEnvironmentObject, IRenderable
+    [Serializable] class Chest : IInteractable, IEnvironmentObject, IRenderable
     {
         static DynamicTexture texture = Engine.Engine.GetTexture("Enviroment/Chest");
 
@@ -62,6 +62,7 @@ namespace Brogue.EnviromentObjects.Interactive
             
         }
 
+        [Serializable]
         private class PositionCheck
         {
             public IntVec position;

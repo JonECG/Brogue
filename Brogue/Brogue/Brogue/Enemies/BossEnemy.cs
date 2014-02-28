@@ -7,6 +7,7 @@ using System.Text;
 
 namespace Brogue.Enemies
 {
+    [Serializable]
     abstract class BossEnemy : GameCharacter
     {
         protected List<GameCharacter> targets = new List<GameCharacter>();

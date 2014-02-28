@@ -7,7 +7,7 @@ using Brogue.Engine;
 
 namespace Brogue.Items.Equipment.Armor.Legendary.Shields
 {
-    public class FirstAvenger : LegendaryShield
+    [Serializable] public class FirstAvenger : LegendaryShield
     {
         public static DynamicTexture Texture { get; set; }
 

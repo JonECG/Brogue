@@ -6,7 +6,7 @@ using Brogue.Enums;
 using Brogue.Engine;
 namespace Brogue.Items.Equipment.Offhand
 {
-    public class SpellBook : Offhand
+    [Serializable] public class SpellBook : Offhand
     {
         public static DynamicTexture Texture { get; set; }
 

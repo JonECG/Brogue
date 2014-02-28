@@ -7,6 +7,7 @@ using System.Text;
 
 namespace Brogue.Enemies
 {
+    [Serializable]
     class GuardianEnemy : Enemy
     {
         public override bool TakeTurn(Level level)

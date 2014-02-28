@@ -11,6 +11,7 @@ using System.Text;
 //owned by Jake
 namespace Brogue.Enemies
 {
+    [Serializable]
     abstract class Enemy : GameCharacter
     {
         protected GameCharacter target;

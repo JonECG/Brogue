@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Brogue.Items.Equipment.Weapon.Ranged
 {
-    public abstract class RangedWeapon : Weapon
+    [Serializable] public abstract class RangedWeapon : Weapon
     {
         Random rand = new Random();
 

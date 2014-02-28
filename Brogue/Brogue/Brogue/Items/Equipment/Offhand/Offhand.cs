@@ -6,7 +6,7 @@ using Brogue.Enums;
 
 namespace Brogue.Items.Equipment.Offhand
 {
-    public abstract class Offhand : Gear
+    [Serializable] public abstract class Offhand : Gear
     {
         public List<ElementAttributes> Element { get; protected set; }
 

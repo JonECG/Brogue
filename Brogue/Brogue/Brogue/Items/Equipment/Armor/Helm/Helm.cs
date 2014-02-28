@@ -5,7 +5,7 @@ using System.Text;
 using Brogue.Enums;
 namespace Brogue.Items.Equipment.Armor.Helm
 {
-    public abstract class Helm : Armor
+    [Serializable] public abstract class Helm : Armor
     {
         Random rand = new Random();
 

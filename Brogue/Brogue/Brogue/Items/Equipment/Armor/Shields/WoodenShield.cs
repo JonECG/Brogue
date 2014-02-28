@@ -7,7 +7,7 @@ using Brogue.Enums;
 
 namespace Brogue.Items.Equipment.Armor.Shields
 {
-    public class WoodenShield : Shields
+    [Serializable] public class WoodenShield : Shields
     {
         public static DynamicTexture Texture { get; set; }
 

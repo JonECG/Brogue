@@ -7,7 +7,7 @@ using Brogue.Engine;
 
 namespace Brogue.Items.Equipment.Weapon.Legendary.Ranged
 {
-    public class RodOfExtending : LegendaryRanged
+    [Serializable] public class RodOfExtending : LegendaryRanged
     {
         public static DynamicTexture Texture { get; set; }
 

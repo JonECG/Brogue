@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Brogue.InventorySystem
 {
-    public class InventorySlot
+    [Serializable] public class InventorySlot
     {
         public Item item;
         public bool isFilled;

@@ -10,7 +10,8 @@ using System.Threading.Tasks;
 
 namespace Brogue.Abilities.Damaging.SingleTargets
 {
-    class Cleave : SingleTarget
+    [Serializable]
+    public class Cleave : SingleTarget
     {
         private int baseDamage = 5;
         private IntVec[] castSquares = new IntVec[2];

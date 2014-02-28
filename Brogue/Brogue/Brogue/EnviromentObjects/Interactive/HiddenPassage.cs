@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Brogue.EnviromentObjects.Interactive
 {
-    class HiddenPassage : IEnvironmentObject, IRenderable, IInteractable
+    [Serializable] class HiddenPassage : IEnvironmentObject, IRenderable, IInteractable
     {
 
         static DynamicTexture texture = Engine.Engine.GetTexture("Enviroment/Stairs");

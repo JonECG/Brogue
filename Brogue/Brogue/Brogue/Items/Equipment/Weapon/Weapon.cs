@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Brogue.Items.Equipment.Weapon
 {
-    public abstract class Weapon : Gear
+    [Serializable] public abstract class Weapon : Gear
     {
         public int BaseDamage { get; protected set; }
         public int Damage { get; protected set; }

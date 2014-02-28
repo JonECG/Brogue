@@ -7,7 +7,7 @@ using Brogue.Engine;
 
 namespace Brogue.Items.Equipment.Weapon.Melee
 {
-    public class Scythe : MeleeWeapon
+    [Serializable] public class Scythe : MeleeWeapon
     {
         public static DynamicTexture Texture { get; set; }
 

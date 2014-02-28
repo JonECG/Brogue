@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Brogue
 {
-    public abstract class GameCharacter : IRenderable
+    [Serializable] public abstract class GameCharacter : IRenderable
     {
         public int health;
         public int maxHealth;

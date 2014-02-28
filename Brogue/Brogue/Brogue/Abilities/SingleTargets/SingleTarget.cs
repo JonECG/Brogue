@@ -9,7 +9,7 @@ using Brogue.Engine;
 
 namespace Brogue.Abilities.Damaging
 {
-    public abstract class SingleTarget : Ability
+    [Serializable] public abstract class SingleTarget : Ability
     {
         protected int width, height;
         protected IntVec startingPoint;

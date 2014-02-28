@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Brogue.Items.Consumables
 {
-    public class Potion : Consumable
+    [Serializable] public class Potion : Consumable
     {
         public static DynamicTexture Texture { get; set; }
 

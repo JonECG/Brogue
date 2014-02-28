@@ -7,7 +7,7 @@ using Brogue.HeroClasses;
 
 namespace Brogue.Items.Equipment
 {
-    public abstract class Gear : Item
+    [Serializable] public abstract class Gear : Item
     {
        public int LevelReq { get; protected set; }
        public List<Class> UsedBy { get; protected set; }

@@ -7,7 +7,8 @@ using System.Text;
 
 namespace Brogue.Mapping
 {
-    class ColorEnvironment : IEnvironmentObject, IInteractable, ILightSource
+    [Serializable]
+    public class ColorEnvironment : IEnvironmentObject, IInteractable, ILightSource
     {
         Color color;
         bool solid;

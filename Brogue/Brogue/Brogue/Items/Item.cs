@@ -22,7 +22,7 @@ using Brogue.HeroClasses;
 
 namespace Brogue.Items
 {
-    public abstract class Item : IRenderable
+    [Serializable] public abstract class Item : IRenderable
     {
         public string Name { get; protected set; }
         public ITypes ItemType { get; protected set; }

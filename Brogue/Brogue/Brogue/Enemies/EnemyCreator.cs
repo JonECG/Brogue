@@ -5,6 +5,7 @@ using System.Text;
 
 namespace Brogue.Enemies
 {
+    [Serializable]
     static class EnemyCreator
     {
         private static Random gen = new Random();

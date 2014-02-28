@@ -8,7 +8,7 @@ using Brogue.Engine;
 
 namespace Brogue.Mapping
 {
-    public class Tile : IRenderable
+    [Serializable] public class Tile : IRenderable
     {
         public bool isSolid;
         public int solidNeighbors;

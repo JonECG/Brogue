@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Brogue.EnviromentObjects.Interactive
 {
-    public class Swiches : IEnvironmentObject, IInteractable, IRenderable
+    [Serializable] public class Swiches : IEnvironmentObject, IInteractable, IRenderable
     {
 
         static DynamicTexture texture1 = Engine.Engine.GetTexture("Enviroment/SwichUP");
@@ -88,7 +88,7 @@ namespace Brogue.EnviromentObjects.Interactive
         }
     }
 
-    public class presserPlate : IEnvironmentObject, IInteractable
+    [Serializable] public class presserPlate : IEnvironmentObject, IInteractable
     {
         public bool active { get; set; }
         public bool isPassable { get; set; }

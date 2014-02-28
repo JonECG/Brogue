@@ -8,7 +8,8 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Brogue.EnviromentObjects
 {
-    abstract class EnviromentObjects : IEnvironmentObject
+    [Serializable]
+    abstract  class EnviromentObjects : IEnvironmentObject
     {
         public string Name { get; protected set; }
         public string Image { get; protected set; }

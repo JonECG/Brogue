@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Brogue.Abilities
 {
-    public abstract class Ability
+    [Serializable] public abstract class Ability
     {
         public int damage {get; protected set;}
         public int cooldown {get; set;}

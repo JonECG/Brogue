@@ -23,7 +23,7 @@ using Brogue.Items.Equipment.Weapon.Ranged;
 namespace Brogue.HeroClasses
 {
 
-    public abstract class Hero : GameCharacter, IRenderable
+    [Serializable] public abstract class Hero : GameCharacter, IRenderable
     {
         public static int level { get; set; }
         public static int MaxJarBarAmount;

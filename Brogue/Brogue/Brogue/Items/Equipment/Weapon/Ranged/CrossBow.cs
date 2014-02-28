@@ -7,7 +7,7 @@ using Brogue.Engine;
 
 namespace Brogue.Items.Equipment.Weapon.Ranged
 {
-    public class CrossBow : RangedWeapon
+    [Serializable] public class CrossBow : RangedWeapon
     {
         public static DynamicTexture Texture { get; set; }
 

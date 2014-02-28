@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Brogue.EnviromentObjects.Interactive
 {
-    class Door : IInteractable, IEnvironmentObject, IRenderable
+    [Serializable] class Door : IInteractable, IEnvironmentObject, IRenderable
     {
        bool isSolid { get; set; }
        bool isOpen { get; set; }
@@ -63,7 +63,7 @@ namespace Brogue.EnviromentObjects.Interactive
        }
     }
 
-    class secretDoor : IInteractable,IEnvironmentObject
+    [Serializable] class secretDoor : IInteractable,IEnvironmentObject
     {
 
         static DynamicTexture texture = Engine.Engine.GetTexture("Enviroment/Door");

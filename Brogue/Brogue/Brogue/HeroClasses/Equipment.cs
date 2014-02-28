@@ -11,7 +11,7 @@ using Brogue.Items.Equipment.Accessory;
 
 namespace Brogue.HeroClasses
 {
-    public class Equipment
+    [Serializable] public class Equipment
     {
         const int MAX_ARMOR_SLOTS = 7;
         const int MAX_WEAPON_SLOTS = 2;

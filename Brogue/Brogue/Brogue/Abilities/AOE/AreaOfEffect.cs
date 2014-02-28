@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Brogue.Abilities.AOE
 {
-    public abstract class AreaOfEffect : Ability
+    [Serializable] public abstract class AreaOfEffect : Ability
     {
 
     }

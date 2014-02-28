@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Brogue.InventorySystem
 {
-    public class Inventory
+    [Serializable] public class Inventory
     {
         const int MAX_ITEM_COUNT = 16;
         public InventorySlot[] stored {get; protected set;}

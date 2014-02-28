@@ -6,6 +6,7 @@ using Brogue.Mapping;
 
 namespace Brogue.Enemies
 {
+    [Serializable]
     class VampBoss : BossEnemy
     {
         int turnCounter = 0;

@@ -12,7 +12,7 @@ using System.Text;
 
 namespace Brogue.Mapping
 {
-    public class Level
+    [Serializable] public class Level
     {
         Tile[,] tiles;
         public GridBoundList<IEnvironmentObject> Environment { get; private set; }
@@ -365,11 +365,14 @@ namespace Brogue.Mapping
 
             if (KeyboardController.IsPressed('Z'))
             {
-                Item item = Item.randomItem(80, 10);
+                for (int i = 0; i < 100; i++)
+                {
+                    Item item = Item.randomItem(80, 10);
 
-                Engine.Engine.Log(string.Format("Item Generated: {0}", item.Name));
+                    Engine.Engine.Log(string.Format("Item Generated: {0}", item.Name));
 
-                DroppedItems.Add(item, findRandomOpenPosition());
+                    DroppedItems.Add(item, findRandomOpenPosition());
+                }
             }
 
             if (KeyboardController.IsPressed('Q'))

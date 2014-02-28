@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Brogue.Engine
 {
-    public class Direction
+    [Serializable] public class Direction
     {
         public static readonly Direction UP = new Direction(0, -1);
         public static readonly Direction DOWN = new Direction(0, 1);

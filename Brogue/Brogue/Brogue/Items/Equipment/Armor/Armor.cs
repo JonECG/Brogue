@@ -6,7 +6,7 @@ using Brogue.Enums;
 
 namespace Brogue.Items.Equipment.Armor
 {
-    public abstract class Armor : Gear
+    [Serializable] public abstract class Armor : Gear
     {
         public int BaseArmor { get; protected set; }
         public int ArmorValue { get; protected set; }

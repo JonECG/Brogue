@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Brogue.HeroClasses
 {
+    [Serializable]
     class Mage : Hero
     {
         public Mage()

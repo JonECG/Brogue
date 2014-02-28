@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Brogue.Mapping
 {
-    public class GridBoundList<T> where T : IRenderable
+    [Serializable] public class GridBoundList<T> where T : IRenderable
     {
         public bool changed;
         List<Tuple<T,IntVec>> list;

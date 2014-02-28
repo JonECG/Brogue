@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Brogue.EnviromentObjects.Interactive
 {
-    class Wall : IEnvironmentObject
+    [Serializable] class Wall : IEnvironmentObject
     {
         static DynamicTexture texture = Engine.Engine.GetTexture("levelTileset");
 
@@ -34,7 +34,7 @@ namespace Brogue.EnviromentObjects.Interactive
         }
     }
 
-    class SecretWall : IInteractable, IEnvironmentObject
+    [Serializable] class SecretWall : IInteractable, IEnvironmentObject
     {
         static DynamicTexture texture = Engine.Engine.GetTexture("levelTileset");
         public bool isSolid { get; set; }

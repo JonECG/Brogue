@@ -7,7 +7,7 @@ using Brogue.Engine;
 
 namespace Brogue.Items.Equipment.Weapon.Melee
 {
-    public class Rapier : MeleeWeapon
+    [Serializable] public class Rapier : MeleeWeapon
     {
         public static DynamicTexture Texture { get; set; }
 

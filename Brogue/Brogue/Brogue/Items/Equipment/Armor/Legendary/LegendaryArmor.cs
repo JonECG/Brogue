@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Brogue.Items.Equipment.Armor.Legendary
 {
-    public abstract class LegendaryArmor : Armor
+    [Serializable] public abstract class LegendaryArmor : Armor
     {
         public string FlavorText { get; protected set; }
     }

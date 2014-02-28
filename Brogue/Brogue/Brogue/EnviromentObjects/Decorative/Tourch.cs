@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Brogue.EnviromentObjects.Decorative
 {
-    class Tourch : IEnvironmentObject, IRenderable, ILightSource
+    [Serializable] class Tourch : IEnvironmentObject, IRenderable, ILightSource
     {
 
         static DynamicTexture texture = Engine.Engine.GetTexture("Enviroment/Tourch");

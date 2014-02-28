@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Brogue
 {
-    public class IntVec
+    [Serializable] public class IntVec
     {
         public int[] ints = new int[2];
 

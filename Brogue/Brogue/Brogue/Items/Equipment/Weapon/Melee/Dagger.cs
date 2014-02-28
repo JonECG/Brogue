@@ -8,7 +8,7 @@ using Brogue.Enums;
 
 namespace Brogue.Items.Equipment.Weapon.Melee
 {
-    public class Dagger : MeleeWeapon
+    [Serializable] public class Dagger : MeleeWeapon
     {
         public static DynamicTexture Texture { get; set; }
 

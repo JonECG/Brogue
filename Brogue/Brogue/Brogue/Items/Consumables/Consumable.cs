@@ -7,7 +7,7 @@ using Brogue.HeroClasses;
 
 namespace Brogue.Items.Consumables
 {
-    public abstract class Consumable : Item
+    [Serializable] public abstract class Consumable : Item
     {
         public int RestoreAmount { get; protected set; }
         public int BaseAmount { get; protected set; }

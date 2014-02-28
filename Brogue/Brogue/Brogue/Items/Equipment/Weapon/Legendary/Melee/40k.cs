@@ -7,7 +7,7 @@ using Brogue.Engine;
 
 namespace Brogue.Items.Equipment.Weapon.Legendary.Melee
 {
-    public class _40k : LegendaryMelee
+    [Serializable] public class _40k : LegendaryMelee
     {
         public static DynamicTexture Texture { get; set; }
 

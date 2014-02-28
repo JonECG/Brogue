@@ -7,6 +7,7 @@ using Brogue.Engine;
 
 namespace Brogue.Enemies
 {
+    [Serializable]
     class MeleeEnemy : Enemy
     {
         public override bool TakeTurn(Level level)

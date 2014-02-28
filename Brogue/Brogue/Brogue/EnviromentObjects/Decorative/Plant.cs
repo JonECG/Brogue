@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Brogue.EnviromentObjects.Decorative
 {
-    class Plant : InonInteractable, IEnvironmentObject, IRenderable
+    [Serializable] class Plant : InonInteractable, IEnvironmentObject, IRenderable
     {
         static DynamicTexture texture = Engine.Engine.GetTexture("Enviroment/Plant");
         bool isSolid { get; set; }

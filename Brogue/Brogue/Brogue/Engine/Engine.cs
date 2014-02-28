@@ -21,8 +21,7 @@ namespace Brogue.Engine
     class SaveGameData
     {
         public HeroClasses.Hero character;
-        public int levelSeed;
-        public int levelComplexity;
+        public Level level;
     }
 
     class XPParticle
@@ -129,13 +128,23 @@ namespace Brogue.Engine
         {
             SaveGameData sg = new SaveGameData();
             sg.character = hero;
-            sg.levelSeed = 1828;
-            sg.levelComplexity = 200;
+            sg.level = currentLevel;
+            
             //Write to binary file...
             IFormatter formatter = new BinaryFormatter();
             Stream stream = new FileStream("myfile.bro", FileMode.Create, FileAccess.Write, FileShare.None);
             formatter.Serialize(stream, sg);
             stream.Close();
+        }
+
+        public static void LoadGame()
+        {
+            IFormatter formatter = new BinaryFormatter();
+            Stream stream = new FileStream("myfile.bro", FileMode.Open, FileAccess.Read, FileShare.Read);
+            SaveGameData gd = (SaveGameData)formatter.Deserialize(stream);
+            stream.Close();
+            hero = gd.character;
+            currentLevel = gd.level;
         }
 
 
@@ -324,6 +333,12 @@ namespace Brogue.Engine
                 SaveGame();
                 didSomething = true;
                 
+            }
+
+            if (KeyboardController.IsPressed(Keys.I))
+            {
+                LoadGame();
+                didSomething = true;
             }
 
             if (KeyboardController.IsPressed(Keys.OemPlus))

@@ -7,7 +7,7 @@ using Brogue.Enums;
 
 namespace Brogue.Items.Equipment.Armor.Helm
 {
-    public class MailHelm : Helm
+    [Serializable] public class MailHelm : Helm
     {
         public static DynamicTexture Texture { get; set; }
 

@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Brogue.EnviromentObjects.Decorative
 {
-    class Chair : InonInteractable, IEnvironmentObject, IRenderable
+    [Serializable] class Chair : InonInteractable, IEnvironmentObject, IRenderable
     {
         static DynamicTexture texture = Engine.Engine.GetTexture("Enviroment/Chair");
         bool isSolid { get; set; }

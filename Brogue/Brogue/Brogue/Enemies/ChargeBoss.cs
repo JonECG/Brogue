@@ -7,6 +7,7 @@ using System.Text;
 
 namespace Brogue.Enemies
 {
+    [Serializable]
     class ChargeBoss : BossEnemy
     {
         int turnCounter = 0;

@@ -52,7 +52,7 @@ namespace Brogue.Mapping
         }
 
 
-        public class __AStarNode : IComparable<__AStarNode>
+        [Serializable] public class __AStarNode : IComparable<__AStarNode>
         {
             public IntVec position;
             public int actualCost;
@@ -73,7 +73,7 @@ namespace Brogue.Mapping
                 expanded = false;
             }
 
-            public class __AStarNodeComparer : IComparer<__AStarNode>
+            [Serializable] public class __AStarNodeComparer : IComparer<__AStarNode>
             {
                 public int Compare(__AStarNode a, __AStarNode b)
                 {

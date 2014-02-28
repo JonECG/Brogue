@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Brogue.InventorySystem
 {
-    public class ItemCount : IComparable<ItemCount>
+    [Serializable] public class ItemCount : IComparable<ItemCount>
     {
         public Item item;
         public int count;

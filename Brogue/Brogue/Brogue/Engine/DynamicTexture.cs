@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Brogue.Engine
 {
-    public class DynamicTexture
+    [Serializable] public class DynamicTexture
     {
         public Texture2D texture;
 

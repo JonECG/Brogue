@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Brogue.Items.Equipment.Weapon.Legendary.Melee
 {
-    public abstract class LegendaryMelee : LegendaryWeapon
+    [Serializable] public abstract class LegendaryMelee : LegendaryWeapon
     {
         Random rand = new Random();
 
