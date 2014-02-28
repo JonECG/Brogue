@@ -27,5 +27,10 @@ namespace Brogue.Items.Equipment
                return rand.Next(dLevel, max);
            }
        }
+
+       public override Item PickUpEffect()
+       {
+           return this;
+       }
     }
 }

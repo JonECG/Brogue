@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Brogue.Enums;
+using Brogue.HeroClasses;
 
 namespace Brogue.Items.Consumables
 {
@@ -19,6 +20,12 @@ namespace Brogue.Items.Consumables
         public static int findRestoreAmount(int dLevel, int bAmt)
         {
             return bAmt * dLevel;
+        }
+
+        public override Item PickUpEffect(Hero player)
+        {
+            
+            return null;
         }
     }
 }
