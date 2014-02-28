@@ -1,9 +1,13 @@
 ﻿using Brogue.Items.Equipment.Armor;
+using Brogue.Items.Equipment.Armor.Helm;
+using Brogue.Items.Equipment.Armor.Chest;
+using Brogue.Items.Equipment.Armor.Legs;
 using Brogue.Items.Equipment.Weapon;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Brogue.Items.Equipment.Accessory;
 
 namespace Brogue.HeroClasses
 {
@@ -11,7 +15,11 @@ namespace Brogue.HeroClasses
     {
         const int MAX_ARMOR_SLOTS = 7;
         const int MAX_WEAPON_SLOTS = 2;
-        private Armor[] equippedArmor = new Armor[MAX_ARMOR_SLOTS];
+        private Helm helmet;
+        private Chest chestPlate;
+        private Legs grieves;
+        private Necklace necklace;
+        private Ring[] rings = new Ring[2];
         private Weapon[] equippedWeapons =new Weapon[MAX_WEAPON_SLOTS];
         private int slotsOpen = 2;
 
@@ -26,13 +34,7 @@ namespace Brogue.HeroClasses
         public int getTotalArmorRating()
         {
             int totalArmor = 0;
-            for (int i = 0; i < equippedArmor.Length; i++)
-            {
-                if (equippedArmor[i] != null)
-                {
-                    totalArmor += equippedArmor[i].ArmorValue;
-                }
-            }
+            totalArmor += helmet.ArmorValue + chestPlate.ArmorValue + grieves.ArmorValue;
             return totalArmor;
         }
 
@@ -56,7 +58,14 @@ namespace Brogue.HeroClasses
             {
                 if (equippedWeapons[index] == null)
                 {
-                    equippedWeapons[index] = weapon;
+                    if (handsTaken == 2)
+                    {
+                        equippedWeapons[0] = weapon;
+                    }
+                    else
+                    {
+                        equippedWeapons[index] = weapon;
+                    }
                     slotsOpen -= handsTaken;
                 }
             }

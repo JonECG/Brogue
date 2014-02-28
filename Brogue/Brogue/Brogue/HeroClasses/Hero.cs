@@ -55,6 +55,8 @@ namespace Brogue.HeroClasses
             isFriendly = true;
             abilities = new Ability[2];
             abilities[0] = new Cleave();
+            inventory.addItem(new Sword(1, 1));
+            equipWeapon(0, 0);
             pickupItem(new Sword(1, 1));
             pickupItem(new Axe(1, 1));
             pickupItem(new Sword(1, 1));
