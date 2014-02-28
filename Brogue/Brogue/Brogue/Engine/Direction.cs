@@ -32,6 +32,22 @@ namespace Brogue.Engine
             Y = y;
         }
 
+        public Direction Rotate(bool clockwise = true)
+        {
+            Direction result = null;
+
+            if (this == Direction.UP)
+                result = (clockwise) ? Direction.RIGHT : Direction.LEFT;
+            if( this == Direction.DOWN )
+                result = (clockwise) ? Direction.LEFT : Direction.RIGHT;
+            if( this == Direction.LEFT )
+                result = (clockwise) ? Direction.UP : Direction.DOWN;
+            if( this == Direction.RIGHT )
+                result = (clockwise) ? Direction.DOWN : Direction.UP;
+
+            return result;
+        }
+
         public static implicit operator float(Direction dir)
         {
             return (float) Math.Atan2(dir.Y, dir.X);
