@@ -297,7 +297,7 @@ namespace Brogue.Mapping
             //    Engine.Engine.Draw( new Sprite( Engine.Engine.placeHolder, Color.Orange, dir ), new IntVec(current.X, current.Y) ); //Orange
             //}
 
-            //Engine.Engine.Draw(new Sprite( Engine.Engine.placeHolder, Color.Green ), new IntVec(a.X, a.Y) ); //Green
+            Engine.Engine.Draw(new Sprite( Engine.Engine.placeHolder, Color.Green ), new IntVec(a.X, a.Y) ); //Green
             //Engine.Engine.Draw(new Sprite( Engine.Engine.placeHolder, Color.Red ), new IntVec(b.X, b.Y) ); //Red
 
 
@@ -363,7 +363,7 @@ namespace Brogue.Mapping
                 if (previousPathDistance != -1 && Math.Abs(previousPathDistance - path.Length) > movement)
                     Engine.Engine.Log(string.Format("<INCONSISTENT PATHFIND; MOVEMENTDELTA={0},PATHDELTA={1}>", movement, Math.Abs(previousPathDistance - path.Length)));
 
-                moveset = AStar.getPossiblePositionsFrom(this, a, 5, true);
+                moveset = AStar.getPossiblePositionsFrom(this, a, 2, true);
 
                 previousPathDistance = path.Length;
             }

@@ -34,13 +34,13 @@ namespace Brogue.Mapping
 
         private static void possiblePositionsFromStep(Level level, List<IntVec> positions, int[,] used, IntVec start, IntVec position, int budget, bool targetCharacters, bool straight, bool expand)
         {
-            if (budget != 0 && (!straight || lineIsFree(used, start, position))) 
+            if ( (!straight || lineIsFree(used, start, position))) 
             {
                 used[position.X, position.Y] = budget;
 
                 positions.Add(position);
 
-                if (expand)
+                if (expand && budget > 0)
                 foreach (Direction dir in Direction.Values)
                 {
                     IntVec target = position + dir;
