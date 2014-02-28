@@ -41,7 +41,6 @@ namespace Brogue.HeroClasses
         protected Equipment currentlyEquippedItems = new Equipment();
         protected Inventory inventory = new Inventory();
         //Variable for testing, delete
-        private static int testHealth;
         private static bool viewingCast = false;
 
         public Hero()
@@ -118,22 +117,14 @@ namespace Brogue.HeroClasses
             armorRating = currentlyEquippedItems.getTotalArmorRating();
         }
 
-        private void resetHealth()
-        {
-            maxHealth = 20 * level;
-            if (testHealth != maxHealth)
-            {
-                Engine.Engine.Log("Character's health increased to: " + maxHealth);
-                health += 20;
-            }
-        }
-
         private void resetLevel()
         {
             if (experience >= expRequired)
             {
                 int addedExp = experience - expRequired;
                 level += 1;
+                maxHealth = 20 + 5*level;
+                health += 20;
                 experience = 0 + addedExp;
                 expRequired = 1000 + 50 * (level-1);
             }
@@ -148,7 +139,6 @@ namespace Brogue.HeroClasses
                 casting = abilities[i].isCasting;
             }*/
             resetArmor();
-            resetHealth();
             resetLevel();
             if (MouseController.LeftClicked())
             {
