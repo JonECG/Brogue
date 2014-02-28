@@ -17,6 +17,7 @@ using Brogue.Items.Equipment.Weapon.Legendary.Melee;
 using Brogue.Items.Equipment.Weapon.Legendary.Ranged;
 using Brogue.Items.Equipment.Armor.Legendary.Shields;
 using Brogue.Items.Equipment.Offhand;
+using Brogue.HeroClasses;
 
 
 namespace Brogue.Items
@@ -355,6 +356,6 @@ namespace Brogue.Items
             return new Potion(dLevel, cLevel);
         }
 
-        public abstract Item PickUpEffect();
+        public abstract Item PickUpEffect(Hero Player);
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Brogue.Enums;
+using Brogue.HeroClasses;
 
 namespace Brogue.Items.Equipment
 {
@@ -28,7 +29,7 @@ namespace Brogue.Items.Equipment
            }
        }
 
-       public override Item PickUpEffect()
+       public override Item PickUpEffect(Hero player)
        {
            return this;
        }
