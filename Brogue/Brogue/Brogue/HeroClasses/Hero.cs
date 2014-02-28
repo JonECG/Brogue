@@ -55,7 +55,12 @@ namespace Brogue.HeroClasses
             isFriendly = true;
             abilities = new Ability[2];
             abilities[0] = new Cleave();
-            currentlyEquippedItems.equipWeapon(new Sword(1, 1));
+            equipWeapon(new Sword(1, 1), 0);
+            pickupItem(new Sword(1, 1));
+            pickupItem(new Axe(1, 1));
+            pickupItem(new Sword(1, 1));
+            pickupItem(new Axe(1, 1));
+            pickupItem(new Axe(1, 1));
         }
 
         public IntVec move(Direction dir)
@@ -186,6 +191,10 @@ namespace Brogue.HeroClasses
                 {
                     checkGround(mapLevel);
                 }
+                else if (Mapping.KeyboardController.IsPressed(Keys.R))
+                {
+                    inventory.sortInventory();
+                }
 
                 else if (Mapping.KeyboardController.IsPressed(Keys.D1))
                 {
@@ -247,12 +256,12 @@ namespace Brogue.HeroClasses
             Enemies.Enemy testEnemy = (Enemies.Enemy)mapLevel.CharacterEntities.FindEntity(MouseController.MouseGridPosition());
             if (testEnemy != null)
             {
-                int weaponRange1 = currentlyEquippedItems.equippedWeapons[0].Range;
-                int weaponRange2 = (currentlyEquippedItems.equippedWeapons[1] != null) ? currentlyEquippedItems.equippedWeapons[1].Range : -1;
-                damageEnemyIfInRange(testEnemy, mapLevel.CharacterEntities.FindPosition(this), currentlyEquippedItems.equippedWeapons[0].Damage, weaponRange1);
+                int weaponRange1 = currentlyEquippedItems.getPrimaryWeapon().Range;
+                int weaponRange2 = (currentlyEquippedItems.getAuxilaryWeapon() != null) ? currentlyEquippedItems.getAuxilaryWeapon().Range : -1;
+                damageEnemyIfInRange(testEnemy, mapLevel.CharacterEntities.FindPosition(this), currentlyEquippedItems.getPrimaryWeapon().Damage, weaponRange1);
                 if (weaponRange2 != -1)
                 {
-                    damageEnemyIfInRange(testEnemy, mapLevel.CharacterEntities.FindPosition(this), currentlyEquippedItems.equippedWeapons[1].Damage, weaponRange2);
+                    damageEnemyIfInRange(testEnemy, mapLevel.CharacterEntities.FindPosition(this), currentlyEquippedItems.getAuxilaryWeapon().Damage, weaponRange2);
                 }
             }
         }
@@ -267,11 +276,6 @@ namespace Brogue.HeroClasses
             }
         }
 
-        private IntVec[] seeWeaponRange(Level mapLevel, int weaponIndex)
-        {
-            int totalWeaponRange = currentlyEquippedItems.equippedWeapons[weaponIndex].Range + 1;
-            return AStar.getPossiblePositionsFrom(mapLevel, mapLevel.CharacterEntities.FindPosition(this), totalWeaponRange);
-        }
 
         private bool IsInRange(IntVec firstPosition, IntVec secondPosition, int range)
         {
@@ -309,31 +313,13 @@ namespace Brogue.HeroClasses
 
         public void equipArmor(int itemToEquip, int currentItemIndex = 0)
         {
-            if (inventory.stored[itemToEquip].item.ItemType == ITypes.Armor)
-            {
-                Item temp = currentlyEquippedItems.equippedArmor[currentItemIndex];
-                currentlyEquippedItems.equippedArmor[currentItemIndex] = (Armor)(inventory.stored[itemToEquip].item);
-                Engine.Engine.Log("Equipped " + inventory.stored[itemToEquip].item.Name);
-                if (temp == null)
-                {
-                    inventory.stored[itemToEquip].isFilled = false;
-                } 
-                inventory.stored[itemToEquip].item = temp;
-            }
         }
 
-        public void equipWeapon(int itemToEquip, int currentItemIndex = 0)
+        public void equipWeapon(Item weapon, int weaponIndex )
         {
-            if (inventory.stored[itemToEquip].isFilled && inventory.stored[itemToEquip].item.ItemType == ITypes.Weapon)
+            if (weapon.ItemType == ITypes.Weapon)
             {
-                Item temp = currentlyEquippedItems.equippedWeapons[currentItemIndex];
-                currentlyEquippedItems.equippedWeapons[currentItemIndex] = (Weapon)(inventory.stored[itemToEquip].item);
-                Engine.Engine.Log("Equipped " + inventory.stored[itemToEquip].item.Name);
-                if (temp == null)
-                {
-                    inventory.stored[itemToEquip].isFilled = false;
-                }
-                inventory.stored[itemToEquip].item = temp;
+                currentlyEquippedItems.equipWeapon((Weapon)weapon, weaponIndex);
             }
         }
 

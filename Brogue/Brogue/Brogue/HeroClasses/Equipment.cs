@@ -11,9 +11,9 @@ namespace Brogue.HeroClasses
     {
         const int MAX_ARMOR_SLOTS = 7;
         const int MAX_WEAPON_SLOTS = 2;
-        public Armor[] equippedArmor = new Armor[MAX_ARMOR_SLOTS];
-        public Weapon[] equippedWeapons =new Weapon[MAX_WEAPON_SLOTS];
-        public int slotsOpen = 2;
+        private Armor[] equippedArmor = new Armor[MAX_ARMOR_SLOTS];
+        private Weapon[] equippedWeapons =new Weapon[MAX_WEAPON_SLOTS];
+        private int slotsOpen = 2;
 
         public Equipment()
         {
@@ -49,20 +49,15 @@ namespace Brogue.HeroClasses
             return totalDamage;
         }
 
-        public void equipWeapon(Weapon weapon)
+        public void equipWeapon(Weapon weapon, int index)
         {
             int handsTaken = (weapon.EquipableIn.Contains(Enums.Slots.Hand_Both))? 2: 1;
             if (slotsOpen >= handsTaken)
             {
-                bool found = false;
-                for (int i = 0; i < equippedWeapons.Length && !found; i++)
+                if (equippedWeapons[index] == null)
                 {
-                    if (equippedWeapons[i] == null)
-                    {
-                        found = true;
-                        equippedWeapons[i] = weapon;
-                        slotsOpen -= handsTaken;
-                    }
+                    equippedWeapons[index] = weapon;
+                    slotsOpen -= handsTaken;
                 }
             }
         }
@@ -72,6 +67,16 @@ namespace Brogue.HeroClasses
             int handsTaken = (equippedWeapons[index].EquipableIn.Contains(Enums.Slots.Hand_Both))? 2: 1;
             equippedWeapons[index] = null;
             slotsOpen += handsTaken;
+        }
+
+        public Weapon getPrimaryWeapon()
+        {
+            return equippedWeapons[0];
+        }
+
+        public Weapon getAuxilaryWeapon()
+        {
+            return equippedWeapons[1];
         }
     }
 }

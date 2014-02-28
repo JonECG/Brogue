@@ -77,5 +77,42 @@ namespace Brogue.InventorySystem
             stored[indexOne] = stored[indexTwo];
             stored[indexTwo] = tempSlot;
         }
+
+        public void sortInventory()
+        {
+            List<ItemCount> itemsWithCount = new List<ItemCount>();
+            for (int i = 0; i < MAX_ITEM_COUNT; i++)
+            {
+                bool foundMatch = false;
+                if (stored[i].isFilled)
+                {
+                    for (int j = 0; j < itemsWithCount.Count && !foundMatch; j++)
+                    {
+                        if ((itemsWithCount[j].item.Name).Equals(stored[i].item.Name))
+                        {
+                            foundMatch = true;
+                            itemsWithCount[j].count++;
+                        }
+                    }
+                    
+                    if (!foundMatch)
+                    {
+                        itemsWithCount.Add(new ItemCount(stored[i].item, 1));
+                    }
+                }
+            }
+
+            itemsWithCount.Sort();
+            int offset = 0;
+            for (int i = 0; i < itemsWithCount.Count; i++)
+            {
+                Engine.Engine.Log(itemsWithCount[i].item.ToString());
+                for (int j = 0+offset; j < itemsWithCount[i].count+offset; j++)
+                {
+                    stored[j].item = itemsWithCount[i].item;
+                }
+                offset += itemsWithCount[i].count;
+            }
+        }
     }
 }
