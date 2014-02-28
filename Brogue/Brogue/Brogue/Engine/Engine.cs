@@ -319,12 +319,12 @@ namespace Brogue.Engine
         private static bool GameCommands()
         {
             bool didSomething = false;
-            if (KeyboardController.IsPressed(Keys.U))
-            {
-                SaveGame();
-                didSomething = true;
-                
-            }
+            //if (KeyboardController.IsPressed(Keys.U))
+            //{
+            //    SaveGame();
+            //    didSomething = true;
+            //    
+            //}
 
             if (KeyboardController.IsPressed(Keys.OemPlus))
             {
