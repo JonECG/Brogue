@@ -83,6 +83,8 @@ namespace Brogue.Engine
         private static List<XPParticle> xpList = new List<XPParticle>();
         public static Matrix worldToView;
         public static Vector2 xpBarPosition;
+        public static Vector2 weaponEquipPosition;
+        public static Vector2 armorEquipPosition;
         public static IntVec windowSizeInTiles;
         public static int lightMaskWidthInTilesDividedByTwo;
         private static IntVec modifiedCameraPosition = new IntVec(0, 0);
@@ -101,6 +103,7 @@ namespace Brogue.Engine
             healthbar = GetTexture("UI/HealthBar"), 
             xpbar = GetTexture("UI/XPBar"),
             invSlot = GetTexture("UI/InvSlot"),
+            invHighlightSlot = GetTexture("UI/InvSlotHighlighted"),
             invButton = GetTexture("UI/InventoryIcon");
         
         static SpriteFont font;
@@ -170,6 +173,8 @@ namespace Brogue.Engine
             InvButtonPosition = new Vector2(game.Width - 48, game.Height - 48);
             InventoryPosition = new Vector2(game.Width - 5 * (CELLWIDTH), game.Height - 5 * (CELLWIDTH));
             InventorySize = new Vector2(4 * CELLWIDTH, 4 * CELLWIDTH);
+            weaponEquipPosition = new Vector2(game.Width / 2 - CELLWIDTH, game.Height - CELLWIDTH);
+            armorEquipPosition = new Vector2(game.Width - 6 * CELLWIDTH, CELLWIDTH);
             windowSizeInTiles = new IntVec(game.Width / CELLWIDTH, game.Height / CELLWIDTH);
             game.IsMouseVisible = true;
             StartGame();
@@ -537,7 +542,54 @@ namespace Brogue.Engine
                 DrawInventory(uisb);
             }
 
+            DrawEquip(uisb);
+
             DrawLog(uisb);
+        }
+
+        private static void DrawEquip(SpriteBatch sb)
+        {
+            for (int i = 0; i < HeroClasses.Equipment.MAX_ARMOR_SLOTS; i++)
+            {
+                Vector2 curpos = new Vector2(armorEquipPosition.X + (invSlot.texture.Width * i), armorEquipPosition.Y);
+                sb.Draw(invSlot.texture, curpos, Color.White);
+                Items.Item item = null;
+                switch (i)
+                {
+                    case 0:
+                        item = hero.currentlyEquippedItems.helmet;
+                        break;
+                    case 1:
+                        item = hero.currentlyEquippedItems.chestPlate;
+                        break;
+                    case 2:
+                        item = hero.currentlyEquippedItems.grieves;
+                        break;
+                    case 3:
+                        item = hero.currentlyEquippedItems.rings[0];
+                        break;
+                    case 4:
+                        item = hero.currentlyEquippedItems.rings[1];
+                        break;
+                    case 5:
+                        item = hero.currentlyEquippedItems.necklace;
+                        break;
+                }
+                if (item != null)
+                {
+                    sb.Draw(item.GetTexture().texture, curpos, Color.White);
+                }
+            }
+            for (int i = 0; i < HeroClasses.Equipment.MAX_WEAPON_SLOTS; i++)
+            {
+                Vector2 curpos = new Vector2(weaponEquipPosition.X + (invSlot.texture.Width * i), weaponEquipPosition.Y);
+                sb.Draw(invSlot.texture, curpos, Color.White);
+                Items.Item item = hero.currentlyEquippedItems.equippedWeapons[i];
+                if (item != null)
+                {
+                    sb.Draw(item.GetTexture().texture, curpos, Color.White);
+                }
+            }
         }
 
         private static bool IsTileInView(IntVec gridloc)

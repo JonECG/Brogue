@@ -13,15 +13,15 @@ namespace Brogue.HeroClasses
 {
     [Serializable] public class Equipment
     {
-        const int MAX_ARMOR_SLOTS = 7;
-        const int MAX_WEAPON_SLOTS = 2;
-        private Helm helmet;
-        private Chest chestPlate;
-        private Legs grieves;
-        private Necklace necklace;
-        private Ring[] rings = new Ring[2];
-        private Weapon[] equippedWeapons =new Weapon[MAX_WEAPON_SLOTS];
-        private int slotsOpen = 2;
+        public const int MAX_ARMOR_SLOTS = 6;
+        public const int MAX_WEAPON_SLOTS = 2;
+        public Helm helmet;
+        public Chest chestPlate;
+        public Legs grieves;
+        public Necklace necklace;
+        public Ring[] rings = new Ring[2];
+        public Weapon[] equippedWeapons =new Weapon[MAX_WEAPON_SLOTS];
+        public int slotsOpen = 2;
 
         public Equipment()
         {

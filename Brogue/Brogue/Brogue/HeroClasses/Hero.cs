@@ -38,7 +38,7 @@ namespace Brogue.HeroClasses
         static Sprite castingSprite;
         public static DynamicTexture abilitySprite;
         public static DynamicTexture castingSquareSprite;
-        protected Equipment currentlyEquippedItems = new Equipment();
+        public Equipment currentlyEquippedItems = new Equipment();
         protected Inventory inventory = new Inventory();
         //Variable for testing, delete
         private static bool viewingCast = false;
