@@ -397,8 +397,13 @@ namespace Brogue.Engine
 
                 if (leftButton)
                 {
+
+                    //hero.equipWeapon(inventorySlotIndex);
+                    hero.equipArmor(inventorySlotIndex);
+
                     hero.equipWeapon(inventorySlotIndex, 0);
                     hero.equipArmor(inventorySlotIndex, 0);
+
                 }
                 else
                 {
