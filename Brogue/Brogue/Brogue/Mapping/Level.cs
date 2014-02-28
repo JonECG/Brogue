@@ -297,7 +297,7 @@ namespace Brogue.Mapping
             //    Engine.Engine.Draw( new Sprite( Engine.Engine.placeHolder, Color.Orange, dir ), new IntVec(current.X, current.Y) ); //Orange
             //}
 
-            Engine.Engine.Draw(new Sprite( Engine.Engine.placeHolder, Color.Green ), new IntVec(a.X, a.Y) ); //Green
+            //Engine.Engine.Draw(new Sprite( Engine.Engine.placeHolder, Color.Green ), new IntVec(a.X, a.Y) ); //Green
             //Engine.Engine.Draw(new Sprite( Engine.Engine.placeHolder, Color.Red ), new IntVec(b.X, b.Y) ); //Red
 
 

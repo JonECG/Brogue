@@ -25,7 +25,7 @@ namespace Brogue.Mapping
             List<IntVec> positions = new List<IntVec>();
 
             int[,] used = level.getIntSolid();
-            used[start.X, start.Y] = int.MaxValue - 1;
+            //used[start.X, start.Y] = int.MaxValue - 1;
 
             possiblePositionsFromStep(level, positions, used, start, start, budget, targetCharacters, straight, true);
 
@@ -38,6 +38,7 @@ namespace Brogue.Mapping
             {
                 used[position.X, position.Y] = budget;
 
+                if( !start.Equals(position) )
                 positions.Add(position);
 
                 if (expand && budget > 0)
