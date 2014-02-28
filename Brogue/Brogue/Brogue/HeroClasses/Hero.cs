@@ -325,7 +325,7 @@ namespace Brogue.HeroClasses
                 Item newlyEquippedItem = inventory.stored[inventoryIndex].item;
                 inventory.removeItem(inventoryIndex);
                 inventory.addItem(currentlyEquippedItems.removeWeapon(weaponIndex));
-                currentlyEquippedItems.equipWeapon((Weapon)inventory.stored[inventoryIndex].item, weaponIndex);
+                currentlyEquippedItems.equipWeapon((Weapon)newlyEquippedItem, weaponIndex);
             }
         }
 

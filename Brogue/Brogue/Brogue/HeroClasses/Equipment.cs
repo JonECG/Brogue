@@ -34,7 +34,9 @@ namespace Brogue.HeroClasses
         public int getTotalArmorRating()
         {
             int totalArmor = 0;
-            totalArmor += helmet.ArmorValue + chestPlate.ArmorValue + grieves.ArmorValue;
+            totalArmor += (helmet != null) ? helmet.ArmorValue : 0;
+            totalArmor += (chestPlate != null) ? chestPlate.ArmorValue : 0;
+            totalArmor += (grieves != null) ? grieves.ArmorValue : 0;
             return totalArmor;
         }
 
@@ -53,30 +55,37 @@ namespace Brogue.HeroClasses
 
         public void equipWeapon(Weapon weapon, int index)
         {
-            int handsTaken = (weapon.EquipableIn.Contains(Enums.Slots.Hand_Both))? 2: 1;
-            if (slotsOpen >= handsTaken)
+            if (weapon != null)
             {
-                if (equippedWeapons[index] == null)
+                int handsTaken = (weapon.EquipableIn.Contains(Enums.Slots.Hand_Both)) ? 2 : 1;
+                if (slotsOpen >= handsTaken)
                 {
-                    if (handsTaken == 2)
+                    if (equippedWeapons[index] == null)
                     {
-                        equippedWeapons[0] = weapon;
+                        if (handsTaken == 2)
+                        {
+                            equippedWeapons[0] = weapon;
+                        }
+                        else
+                        {
+                            equippedWeapons[index] = weapon;
+                        }
+                        slotsOpen -= handsTaken;
                     }
-                    else
-                    {
-                        equippedWeapons[index] = weapon;
-                    }
-                    slotsOpen -= handsTaken;
                 }
             }
         }
 
         public Weapon removeWeapon(int index)
         {
-            int handsTaken = (equippedWeapons[index].EquipableIn.Contains(Enums.Slots.Hand_Both))? 2: 1;
-            Weapon removedWeapon = equippedWeapons[index];
-            equippedWeapons[index] = null;
-            slotsOpen += handsTaken;
+            Weapon removedWeapon = null;
+            if (equippedWeapons[index] != null)
+            {
+                int handsTaken = (equippedWeapons[index].EquipableIn.Contains(Enums.Slots.Hand_Both)) ? 2 : 1;
+                removedWeapon = equippedWeapons[index];
+                equippedWeapons[index] = null;
+                slotsOpen += handsTaken;
+            }
             return removedWeapon;
         }
 
