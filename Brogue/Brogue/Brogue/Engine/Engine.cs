@@ -10,6 +10,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Brogue.EnviromentObjects.Interactive;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
 
 
 namespace Brogue.Engine
@@ -129,7 +132,10 @@ namespace Brogue.Engine
             sg.levelSeed = 1828;
             sg.levelComplexity = 200;
             //Write to binary file...
-            
+            IFormatter formatter = new BinaryFormatter();
+            Stream stream = new FileStream("myfile.bro", FileMode.Create, FileAccess.Write, FileShare.None);
+            formatter.Serialize(stream, sg);
+            stream.Close();
         }
 
 
@@ -312,6 +318,13 @@ namespace Brogue.Engine
         private static bool GameCommands()
         {
             bool didSomething = false;
+            //if (KeyboardController.IsPressed(Keys.U))
+            //{
+            //    SaveGame();
+            //    didSomething = true;
+                
+            //}
+
             if (KeyboardController.IsPressed(Keys.OemPlus))
             {
                 logSize += 5;
@@ -496,7 +509,7 @@ namespace Brogue.Engine
                 new Vector2(1, hero.GetXpPercent()), SpriteEffects.None, 0);
             //uisb.Draw(xpbar, xpBarPosition, Color.White);
             //uisb.Draw(inventory.texture, new Vector2(game.Width / 2 - inventory.texture.Width / 2, game.Height - 100), Color.White);
-            hero.jarBarAmount = 50;
+            
             uisb.Draw(jar.texture, 
                 new Vector2(game.Width - 50 - jar.texture.Width, game.Height / 2 - jar.texture.Height / 2), 
                 Color.White);
