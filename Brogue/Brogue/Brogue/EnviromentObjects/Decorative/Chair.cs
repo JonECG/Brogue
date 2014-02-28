@@ -16,10 +16,18 @@ namespace Brogue.EnviromentObjects.Decorative
         static DynamicTexture texture = Engine.Engine.GetTexture("Enviroment/Chair");
         bool isSolid { get; set; }
 
+        Direction directionFacing { get; set; }
+
         public Chair() 
        {
            isSolid = false;
        }
+
+        public Chair(Direction whereToFace)
+        {
+            isSolid = false;
+            directionFacing = whereToFace;
+        }
 
         public bool IsSolid()
         {
@@ -29,12 +37,8 @@ namespace Brogue.EnviromentObjects.Decorative
         public Sprite GetSprite()
         {
             return new Sprite(texture);
+            //return new Sprite(texture, directionFacing);
+
         }
-
-
-        //public bool getSolidity()
-        //{
-        //    throw new NotImplementedException();
-        //}
     }
 }

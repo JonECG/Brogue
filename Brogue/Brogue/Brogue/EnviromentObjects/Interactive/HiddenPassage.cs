@@ -19,27 +19,31 @@ namespace Brogue.EnviromentObjects.Interactive
         bool isSolid { get; set; }
         bool isVisiable { get; set; }
 
-        Direction directionFacing { get; set; }
+        public IntVec testPosition { get; set; }
 
-        HiddenPassage other = new HiddenPassage();
+        public Direction directionFacing { get; set; }
 
-        HiddenPassage()
+        public HiddenPassage other;
+
+        public HiddenPassage()
         {
             isSolid = true;
             isVisiable = false;
         }
 
-        HiddenPassage(HiddenPassage exitPosition)
+        public HiddenPassage(HiddenPassage exitPosition)
         {
             isSolid = true;
             isVisiable = false;
             other = exitPosition;
+            exitPosition.other = this;
         }
 
         private void setToNewPosition(GameCharacter actingCharacter)
         {
-            IntVec exitPosition = Engine.Engine.currentLevel.InteractableEnvironment.FindPosition(other);
-            actingCharacter.position = exitPosition;
+            //IntVec exitPosition = Engine.Engine.currentLevel.InteractableEnvironment.FindPosition(other);
+            IntVec exitPosition = other.testPosition;
+            actingCharacter.position = new IntVec(exitPosition.X + directionFacing.X, exitPosition.Y + directionFacing.Y);
         }
 
         private void changeState()
@@ -57,15 +61,15 @@ namespace Brogue.EnviromentObjects.Interactive
 
         public Sprite GetSprite()
         {
-            return new Sprite(texture);
+            //return new Sprite(texture);
+            return new Sprite(texture, directionFacing);
         }
 
         public void actOn(GameCharacter actingCharacter)
         {
             changeState();
-            other.actOn(actingCharacter);
-            setToNewPosition(actingCharacter);
-
+            other.setToNewPosition(actingCharacter);
+            other.isVisiable = true;
             //target.actOn(actingCharacter);
         }
 

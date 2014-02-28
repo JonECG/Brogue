@@ -96,6 +96,8 @@ namespace Brogue.EnviromentObjects.Interactive
 
         static DynamicTexture texture = Engine.Engine.GetTexture("Enviroment/Presser Plate");
 
+       // Direction directionFacing { get; set; }
+
         public IInteractable target { get; set; }
 
         public presserPlate()
@@ -150,6 +152,7 @@ namespace Brogue.EnviromentObjects.Interactive
         public Sprite GetSprite()
         {
             return new Sprite(texture);
+            //return new Sprite(texture, directionFacing);
         }
 
         public void actOn(GameCharacter actingCharacter)
