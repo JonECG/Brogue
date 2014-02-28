@@ -62,11 +62,13 @@ namespace Brogue.HeroClasses
             }
         }
 
-        public void removeWeapon(int index)
+        public Weapon removeWeapon(int index)
         {
             int handsTaken = (equippedWeapons[index].EquipableIn.Contains(Enums.Slots.Hand_Both))? 2: 1;
+            Weapon removedWeapon = equippedWeapons[index];
             equippedWeapons[index] = null;
             slotsOpen += handsTaken;
+            return removedWeapon;
         }
 
         public Weapon getPrimaryWeapon()

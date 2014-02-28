@@ -55,7 +55,6 @@ namespace Brogue.HeroClasses
             isFriendly = true;
             abilities = new Ability[2];
             abilities[0] = new Cleave();
-            equipWeapon(new Sword(1, 1), 0);
             pickupItem(new Sword(1, 1));
             pickupItem(new Axe(1, 1));
             pickupItem(new Sword(1, 1));
@@ -313,12 +312,19 @@ namespace Brogue.HeroClasses
 
         public void equipArmor(int itemToEquip, int currentItemIndex = 0)
         {
+            if (inventory.stored[itemToEquip].item != null && inventory.stored[itemToEquip].item.ItemType == ITypes.Armor)
+            {
+
+            }
         }
 
         public void equipWeapon(int inventoryIndex, int weaponIndex )
         {
-            if (inventory.stored[inventoryIndex].item.ItemType == ITypes.Weapon)
+            if (inventory.stored[inventoryIndex].item != null && inventory.stored[inventoryIndex].item.ItemType == ITypes.Weapon)
             {
+                Item newlyEquippedItem = inventory.stored[inventoryIndex].item;
+                inventory.removeItem(inventoryIndex);
+                inventory.addItem(currentlyEquippedItems.removeWeapon(weaponIndex));
                 currentlyEquippedItems.equipWeapon((Weapon)inventory.stored[inventoryIndex].item, weaponIndex);
             }
         }
