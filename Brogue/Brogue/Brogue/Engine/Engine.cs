@@ -63,7 +63,7 @@ namespace Brogue.Engine
         private static Game1 game;
         public static IntVec cameraPosition = new IntVec(12, 8);
         private static Queue<String> log = new Queue<string>(10);
-        private static Vector2 LogPosition, InvButtonPosition, InventoryPosition;
+        private static Vector2 LogPosition, InvButtonPosition, InventoryPosition, InventorySize;
         private static HeroClasses.Hero hero;
         private static bool heroesTurn = true;
         private static RenderTarget2D lightsTarget;
@@ -134,6 +134,7 @@ namespace Brogue.Engine
             LogPosition = new Vector2(12, 12);
             InvButtonPosition = new Vector2(game.Width - 48, game.Height - 48);
             InventoryPosition = new Vector2(game.Width - 5 * (CELLWIDTH), game.Height - 5 * (CELLWIDTH));
+            InventorySize = new Vector2(4 * CELLWIDTH, 4 * CELLWIDTH);
             windowSizeInTiles = new IntVec(game.Width / CELLWIDTH, game.Height / CELLWIDTH);
             game.IsMouseVisible = true;
             StartGame();
@@ -160,7 +161,7 @@ namespace Brogue.Engine
 
         public static void GenerateLevel()
         {
-            currentLevel = LevelGenerator.generate(802, 50);
+            currentLevel = LevelGenerator.generate(802, 100);
             Log("Level generated.");
             hero = new HeroClasses.Mage();
             currentLevel.CharacterEntities.Add(hero, currentLevel.GetStartPoint());
@@ -230,7 +231,7 @@ namespace Brogue.Engine
             }
             if (!GameCommands())
             {
-                //currentLevel.testUpdate();
+                currentLevel.testUpdate();
                 //Game turns
                 
                 //hero.TakeTurn(currentLevel);
@@ -252,9 +253,9 @@ namespace Brogue.Engine
                         }
                         else
                         {
-                            charIndex++;
+                           charIndex++;
 
-                        }
+                      }
                     }
                     if (charIndex >= currentLevel.CharacterEntities.Entities().Count<GameCharacter>())
                     {
@@ -321,9 +322,10 @@ namespace Brogue.Engine
                     System.Environment.Exit(0);
                 }
             }
+            IntVec screenpos = MouseController.MouseScreenPosition();
+            IntVec worldPos = MouseController.MouseGridPosition();
             if (MouseController.LeftClicked())
             {
-                IntVec screenpos = MouseController.MouseScreenPosition();
                 if (screenpos.X >= InvButtonPosition.X && screenpos.X <= InvButtonPosition.X + invButton.texture.Width &&
                     screenpos.Y >= InvButtonPosition.Y && screenpos.Y <= InvButtonPosition.Y + invButton.texture.Height
                     )
@@ -334,16 +336,59 @@ namespace Brogue.Engine
                     didSomething = true;
                 }
 
-                IntVec worldPos = MouseController.MouseGridPosition();
                 GameCharacter gchar = currentLevel.CharacterEntities.FindEntity(worldPos);
                 if (gchar != null)
                 {
                     Log(gchar.ToString());
                     gchar.TakeDamage(50, hero);
                 }
+
+                if (!didSomething)
+                {
+                    didSomething = InventoryInteraction(true, screenpos);
+                }
+            }
+            if (MouseController.RightClicked())
+            {
+                if (!didSomething)
+                {
+                    didSomething = InventoryInteraction(false, screenpos);
+                }
+
             }
 
             return didSomething;
+        }
+
+        private static bool InventoryInteraction(bool leftButton, IntVec screenpos)
+        {
+            bool didsomething = false;
+            if (inventoryOpen &&
+                    screenpos.X > InventoryPosition.X && screenpos.Y > InventoryPosition.Y &&
+                    screenpos.X < InventoryPosition.X + InventorySize.X &&
+                    screenpos.Y < InventoryPosition.Y + InventorySize.Y)
+            {
+                //clicked in the inventory somewhere. Figure out which cell it was and adjust appropriately.
+                Vector2 relativeInventoryLocation = new Vector2(screenpos.X, screenpos.Y) - InventoryPosition;
+                IntVec inventoryCell = new IntVec((int)(relativeInventoryLocation.X / CELLWIDTH), (int)(relativeInventoryLocation.Y / CELLWIDTH));
+
+                int inventorySlotIndex = inventoryCell.Y * 4 + inventoryCell.X;
+
+                if (leftButton)
+                {
+                    hero.equipWeapon(inventorySlotIndex);
+                    hero.equipArmor(inventorySlotIndex);
+                }
+                else
+                {
+                    hero.dropItem(inventorySlotIndex, currentLevel);
+                }
+                didsomething = true;
+
+            }
+
+
+            return didsomething;
         }
 
         public static void DrawInventory(SpriteBatch sb)
@@ -426,7 +471,8 @@ namespace Brogue.Engine
             //uisb.Draw(inventory.texture, new Vector2(game.Width / 2 - inventory.texture.Width / 2, game.Height - 100), Color.White);
 
             uisb.Draw(jar.texture, new Vector2(game.Width - 50 - jar.texture.Width, game.Height / 2 - jar.texture.Height / 2), Color.White);
-            uisb.Draw(bar.texture, new Vector2(game.Width - 50 - jar.texture.Width, game.Height / 2 - bar.texture.Height / 2), Color.White);
+            uisb.Draw(bar.texture, new Vector2(game.Width - 50 - jar.texture.Width, game.Height / 2 - bar.texture.Height / 2), new Rectangle(0, 0, jar.texture.Width, jar.texture.Height), Color.White, 0, new Vector2(jar.texture.Width / 2, xpbar.texture.Height), new Vector2(1, hero.jarBarAmount / HeroClasses.Hero.MaxJarBarAmount), SpriteEffects.None, 0);
+            //uisb.Draw(bar.texture, new Vector2(game.Width - 50 - jar.texture.Width, game.Height / 2 - bar.texture.Height / 2), Color.White);
             uisb.Draw(invButton.texture, InvButtonPosition, Color.White);
             DrawMiniMap(uisb);
             if (inventoryOpen)

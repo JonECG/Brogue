@@ -32,7 +32,7 @@ namespace Brogue.HeroClasses
         protected int experience = 0;
         protected int expRequired = 100;
         protected Ability[] abilities;
-        private int jarBarAmount;
+        public int jarBarAmount;
         static Sprite sprite;
         static Sprite radiusSprite;
         static Sprite castingSprite;
@@ -187,15 +187,6 @@ namespace Brogue.HeroClasses
                     checkGround(mapLevel);
                 }
 
-                else if (Mapping.KeyboardController.IsTyped(Keys.RightShift))
-                {
-                    IntVec itemPosition = new IntVec(mapLevel.CharacterEntities.FindPosition(this).X, mapLevel.CharacterEntities.FindPosition(this).Y);
-                    Item tempItem = dropItem(0);
-                    if (tempItem != null)
-                    {
-                        mapLevel.DroppedItems.Add(tempItem, itemPosition);
-                    }
-                }
                 else if (Mapping.KeyboardController.IsPressed(Keys.D1))
                 {
                     Engine.Engine.Log(abilities[0].cooldown.ToString());
@@ -322,16 +313,26 @@ namespace Brogue.HeroClasses
             {
                 Item temp = currentlyEquippedItems.equippedArmor[currentItemIndex];
                 currentlyEquippedItems.equippedArmor[currentItemIndex] = (Armor)(inventory.stored[itemToEquip].item);
+                Engine.Engine.Log("Equipped " + inventory.stored[itemToEquip].item.Name);
+                if (temp == null)
+                {
+                    inventory.stored[itemToEquip].isFilled = false;
+                } 
                 inventory.stored[itemToEquip].item = temp;
             }
         }
 
         public void equipWeapon(int itemToEquip, int currentItemIndex = 0)
         {
-            if (inventory.stored[itemToEquip].item.ItemType == ITypes.Weapon)
+            if (inventory.stored[itemToEquip].isFilled && inventory.stored[itemToEquip].item.ItemType == ITypes.Weapon)
             {
                 Item temp = currentlyEquippedItems.equippedWeapons[currentItemIndex];
                 currentlyEquippedItems.equippedWeapons[currentItemIndex] = (Weapon)(inventory.stored[itemToEquip].item);
+                Engine.Engine.Log("Equipped " + inventory.stored[itemToEquip].item.Name);
+                if (temp == null)
+                {
+                    inventory.stored[itemToEquip].isFilled = false;
+                }
                 inventory.stored[itemToEquip].item = temp;
             }
         }
@@ -351,9 +352,14 @@ namespace Brogue.HeroClasses
             inventory.addItem(item);
         }
 
-        public Item dropItem(int whichItem)
+        public void dropItem(int whichItem, Level mapLevel)
         {
-            return inventory.removeItem(whichItem);
+            IntVec itemPosition = new IntVec(mapLevel.CharacterEntities.FindPosition(this).X, mapLevel.CharacterEntities.FindPosition(this).Y);
+            Item tempItem = inventory.removeItem(whichItem);
+            if (tempItem != null)
+            {
+                mapLevel.DroppedItems.Add(tempItem, itemPosition);
+            }
         }
 
         Sprite IRenderable.GetSprite()
