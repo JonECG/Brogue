@@ -319,12 +319,12 @@ namespace Brogue.Engine
         private static bool GameCommands()
         {
             bool didSomething = false;
-            //if (KeyboardController.IsPressed(Keys.U))
-            //{
-            //    SaveGame();
-            //    didSomething = true;
-            //    
-            //}
+            if (KeyboardController.IsPressed(Keys.U))
+            {
+                SaveGame();
+                didSomething = true;
+                
+            }
 
             if (KeyboardController.IsPressed(Keys.OemPlus))
             {
@@ -528,10 +528,13 @@ namespace Brogue.Engine
         private static bool IsTileInView(IntVec gridloc)
         {
             bool drawthistile = false;
-            if (gridloc.X >= modifiedCameraPosition.X && gridloc.X <= modifiedCameraPosition.X + windowSizeInTiles.X
-                && gridloc.Y >= modifiedCameraPosition.Y && gridloc.Y <= modifiedCameraPosition.Y + windowSizeInTiles.Y)
+            if (gridloc != null)
             {
-                drawthistile = true;
+                if (gridloc.X >= modifiedCameraPosition.X && gridloc.X <= modifiedCameraPosition.X + windowSizeInTiles.X
+                    && gridloc.Y >= modifiedCameraPosition.Y && gridloc.Y <= modifiedCameraPosition.Y + windowSizeInTiles.Y)
+                {
+                    drawthistile = true;
+                }
             }
             return drawthistile;
         }
