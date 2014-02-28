@@ -319,7 +319,7 @@ namespace Brogue.Mapping
         }
         #endregion
 
-        public static Level generate(int seed, int levels)
+        public static Level generate(int seed, int levels, int dungeonLevel = 1, int heroLevel = 1 )
         {
             Random rand = new Random(seed);
 
@@ -330,36 +330,17 @@ namespace Brogue.Mapping
             GridBoundList<ILightSource> lightSources = new GridBoundList<ILightSource>();
             GridBoundList<GameCharacter> characters = new GridBoundList<GameCharacter>();
 
-            int entryRoom = rand.Next( floorPlan.hallstart );
-            while (floorPlan.rooms[entryRoom].type != __FloorPlan.__Room.__RoomType.FOYER && floorPlan.rooms[entryRoom].type != __FloorPlan.__Room.__RoomType.TREASURE_ROOM )
-            {
-                entryRoom = (entryRoom + 1) % floorPlan.hallstart;
-            }
-            __FloorPlan.__Room start = floorPlan.rooms[entryRoom];
-            IntVec startPoint = start.GetCenter();
-            Engine.Engine.Log( string.Format( "Start point: <{0}, {1}>", startPoint.X, startPoint.Y) );
-            floorPlan.rooms[entryRoom].type = __FloorPlan.__Room.__RoomType.EMPTY;
-
-            int endRoom = (entryRoom + floorPlan.hallstart / 2) % floorPlan.hallstart;
-            while (floorPlan.rooms[endRoom].type != __FloorPlan.__Room.__RoomType.FOYER && floorPlan.rooms[endRoom].type != __FloorPlan.__Room.__RoomType.TREASURE_ROOM)
-            {
-                endRoom = (endRoom + 1) % floorPlan.hallstart;
-            }
-            __FloorPlan.__Room end = floorPlan.rooms[ endRoom ];
-            floorPlan.rooms[endRoom].type = __FloorPlan.__Room.__RoomType.EMPTY;
-            Engine.Engine.Log(string.Format("End point: <{0}, {1}>", end.GetCenter().X, end.GetCenter().Y));
-            interactableEnvironment.Add( new ColorEnvironment(Color.Blue, true), end.GetCenter());
-
+            IntVec startPoint = findEndPoints(floorPlan, interactableEnvironment, rand);
 
             foreach (var room in floorPlan.rooms)
             {
                 populateEnvironmentObjects(room, environment, rand);
-                populateInteractiveEnvironmentObjects(room, interactableEnvironment, rand);
+                populateInteractiveEnvironmentObjects(room, interactableEnvironment, rand, dungeonLevel, heroLevel);
                 populateLightSources(room, lightSources, rand);
-                populateGameCharacters(room, characters, rand);
+                populateGameCharacters(room, characters, rand, dungeonLevel, heroLevel);
             }
 
-            Level result = new Level( startPoint, floorPlan.tiles, environment, interactableEnvironment, lightSources, characters);
+            Level result = new Level( startPoint, floorPlan.tiles, environment, interactableEnvironment, lightSources, characters, dungeonLevel );
 
             if (!result.isComplete())
             {
@@ -367,6 +348,30 @@ namespace Brogue.Mapping
             }
 
             return result;
+        }
+
+        private static IntVec findEndPoints(__FloorPlan floorPlan, GridBoundList<IInteractable> interactableEnvironment, Random rand)
+        {
+            int entryRoom = rand.Next(floorPlan.hallstart);
+            while (floorPlan.rooms[entryRoom].type != __FloorPlan.__Room.__RoomType.FOYER && floorPlan.rooms[entryRoom].type != __FloorPlan.__Room.__RoomType.TREASURE_ROOM)
+            {
+                entryRoom = (entryRoom + 1) % floorPlan.hallstart;
+            }
+            __FloorPlan.__Room start = floorPlan.rooms[entryRoom];
+            IntVec startPoint = start.GetCenter();
+            Engine.Engine.Log(string.Format("Start point: <{0}, {1}>", startPoint.X, startPoint.Y));
+            floorPlan.rooms[entryRoom].type = __FloorPlan.__Room.__RoomType.EMPTY;
+
+            int endRoom = (entryRoom + floorPlan.hallstart / 2) % floorPlan.hallstart;
+            while (floorPlan.rooms[endRoom].type != __FloorPlan.__Room.__RoomType.FOYER && floorPlan.rooms[endRoom].type != __FloorPlan.__Room.__RoomType.TREASURE_ROOM)
+            {
+                endRoom = (endRoom + 1) % floorPlan.hallstart;
+            }
+            __FloorPlan.__Room end = floorPlan.rooms[endRoom];
+            floorPlan.rooms[endRoom].type = __FloorPlan.__Room.__RoomType.EMPTY;
+            Engine.Engine.Log(string.Format("End point: <{0}, {1}>", end.GetCenter().X, end.GetCenter().Y));
+            interactableEnvironment.Add(new ColorEnvironment(Color.Blue, true), end.GetCenter());
+            return startPoint;
         }
 
 
@@ -403,7 +408,7 @@ namespace Brogue.Mapping
             }
         }
 
-        private static void populateInteractiveEnvironmentObjects(__FloorPlan.__Room room, GridBoundList<IInteractable> interact, Random rand)
+        private static void populateInteractiveEnvironmentObjects(__FloorPlan.__Room room, GridBoundList<IInteractable> interact, Random rand, int dungeonLevel, int heroLevel)
         {
             switch (room.type)
             {
@@ -414,7 +419,7 @@ namespace Brogue.Mapping
                     Item[] items = new Item[ rand.Next( 2, 8 ) ];
                     for (int i = 0; i < items.Length; i++)
                     {
-                        items[i] = Item.randomItem(10, 10);
+                        items[i] = Item.randomItem(dungeonLevel, heroLevel);
                     }
                     interact.Add(new Chest(items), room.GetCenter());
                     //interact.Add(new ColorEnvironment( Color.Brown, true ), room.GetCenter());
@@ -436,23 +441,23 @@ namespace Brogue.Mapping
             //}
         }
 
-        private static void populateGameCharacters(__FloorPlan.__Room room, GridBoundList<GameCharacter> chars, Random rand)
+        private static void populateGameCharacters(__FloorPlan.__Room room, GridBoundList<GameCharacter> chars, Random rand, int dungeonLevel, int heroLevel)
         {
             switch (room.type)
             {
                 case __FloorPlan.__Room.__RoomType.BOSS_ROOM:
-                    chars.Add(EnemyCreator.GetRandomBoss(40), room.GetCenter());
+                    chars.Add(EnemyCreator.GetRandomBoss(dungeonLevel), room.GetCenter());
                     break;
                 case __FloorPlan.__Room.__RoomType.NOTHING_SPECIAL:
                     foreach (var pos in room.GetCells())
                     {
                         if (rand.NextDouble() > 0.98)
-                            chars.Add(EnemyCreator.GetRandomEnemy(1,40)[0], pos);
+                            chars.Add(EnemyCreator.GetRandomEnemy(1, dungeonLevel)[0], pos);
                         //lights.Add(new ColorEnvironment(new Color(rand.Next(100,256), rand.Next(100,256), rand.Next(100,256)), false), position);
                     }
                     break;
                 case __FloorPlan.__Room.__RoomType.MOB_ROOM:
-                        Enemy[] enemies = EnemyCreator.GetRandomEnemy(rand.Next(2,6),40 );
+                    Enemy[] enemies = EnemyCreator.GetRandomEnemy(rand.Next(2, 6), dungeonLevel);
                         int dropped = 1;
                         chars.Add(enemies[0], room.GetCenter() );
                         foreach (var dir in Direction.Values)

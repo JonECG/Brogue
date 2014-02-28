@@ -30,10 +30,11 @@ namespace Brogue.Mapping
         bool[,] cachedSolid;
         bool needToCache;
         IntVec startPoint;
+        public int DungeonLevel { get; private set; }
 
         static Random statRand = new Random();
 
-        public Level(IntVec startPoint, Tile[,] tiles, GridBoundList<IEnvironmentObject> environment, GridBoundList<IInteractable> interact, GridBoundList<ILightSource> light, GridBoundList<GameCharacter> characterEntities)
+        public Level(IntVec startPoint, Tile[,] tiles, GridBoundList<IEnvironmentObject> environment, GridBoundList<IInteractable> interact, GridBoundList<ILightSource> light, GridBoundList<GameCharacter> characterEntities, int dungeonLevel)
         {
             this.tiles = tiles;
             this.startPoint = startPoint;
@@ -42,6 +43,7 @@ namespace Brogue.Mapping
             this.CharacterEntities = characterEntities;
             this.LightSources = light;
             this.DroppedItems = new GridBoundList<Item>();
+            this.DungeonLevel = dungeonLevel;
             calculateTiles();
             needToCache = true;
             cachedSolid = new bool[tiles.GetLength(0), tiles.GetLength(1)];
@@ -59,6 +61,8 @@ namespace Brogue.Mapping
 
                 //DroppedItems.Add(item, findRandomOpenPosition());
             }
+
+            
         }
 
         public IntVec GetStartPoint()

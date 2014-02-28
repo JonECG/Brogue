@@ -166,5 +166,10 @@ namespace Brogue.Mapping
                 func.Invoke(tup.Item1, tup.Item2);
             }
         }
+
+        public Tuple<T,IntVec> ElementAt(int index)
+        {
+            return list.ElementAt(index);
+        }
     }
 }
