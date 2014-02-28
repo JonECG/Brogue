@@ -22,13 +22,16 @@ namespace Brogue.Enemies
                 {
                     foreach (GameCharacter g in targets)
                     {
-                        if (g.maxHealth / g.health > 4)
+                        if (g.health != 0)
                         {
-                            g.TakeDamage(9001, this);
-                        }
-                        else
-                        {
-                            g.Heal(g.maxHealth / 5);
+                            if (g.maxHealth / g.health > 4)
+                            {
+                                g.TakeDamage(9001, this);
+                            }
+                            else
+                            {
+                                g.Heal(g.maxHealth / 5);
+                            }
                         }
                     }
                 }
