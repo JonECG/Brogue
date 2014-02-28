@@ -48,6 +48,7 @@ namespace Brogue.HeroClasses
         {
             level = 1;
             numAbilities = 0;
+            health = 20;
             experience = 0;
             expRequired = 100;
             MaxJarBarAmount = 50;
@@ -123,8 +124,8 @@ namespace Brogue.HeroClasses
             if (testHealth != maxHealth)
             {
                 Engine.Engine.Log("Character's health increased to: " + maxHealth);
+                health += 20;
             }
-            testHealth = maxHealth;
         }
 
         private void resetLevel()
