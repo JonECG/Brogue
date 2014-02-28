@@ -315,11 +315,11 @@ namespace Brogue.HeroClasses
         {
         }
 
-        public void equipWeapon(Item weapon, int weaponIndex )
+        public void equipWeapon(int inventoryIndex, int weaponIndex )
         {
-            if (weapon.ItemType == ITypes.Weapon)
+            if (inventory.stored[inventoryIndex].item.ItemType == ITypes.Weapon)
             {
-                currentlyEquippedItems.equipWeapon((Weapon)weapon, weaponIndex);
+                currentlyEquippedItems.equipWeapon((Weapon)inventory.stored[inventoryIndex].item, weaponIndex);
             }
         }
 
