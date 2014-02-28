@@ -491,14 +491,17 @@ namespace Brogue.Engine
                 new Vector2(1, hero.GetXpPercent()), SpriteEffects.None, 0);
             //uisb.Draw(xpbar, xpBarPosition, Color.White);
             //uisb.Draw(inventory.texture, new Vector2(game.Width / 2 - inventory.texture.Width / 2, game.Height - 100), Color.White);
-
-            uisb.Draw(jar.texture, new Vector2(game.Width - 50 - jar.texture.Width, 
-                game.Height / 2 - jar.texture.Height / 2), Color.White);
-            uisb.Draw(bar.texture, new Vector2(game.Width - 50 - jar.texture.Width, 
-                game.Height / 2 - bar.texture.Height / 2), 
+            hero.jarBarAmount = 50;
+            uisb.Draw(jar.texture, 
+                new Vector2(game.Width - 50 - jar.texture.Width, game.Height / 2 - jar.texture.Height / 2), 
+                Color.White);
+            uisb.Draw(bar.texture, 
+                new Vector2(game.Width - 50 - jar.texture.Width / 2, game.Height / 2 + jar.texture.Height / 2), 
                 new Rectangle(0, 0, jar.texture.Width, jar.texture.Height), Color.White, 
-                0, new Vector2(jar.texture.Width / 2, xpbar.texture.Height),
-                new Vector2(1, hero.jarBarAmount / HeroClasses.Hero.MaxJarBarAmount), SpriteEffects.None, 0);
+                0, 
+                new Vector2(jar.texture.Width / 2, jar.texture.Height),
+                new Vector2(1, hero.jarBarAmount / HeroClasses.Hero.MaxJarBarAmount), 
+                SpriteEffects.None, 0);
             //uisb.Draw(bar.texture, new Vector2(game.Width - 50 - jar.texture.Width, game.Height / 2 - bar.texture.Height / 2), Color.White);
             uisb.Draw(invButton.texture, InvButtonPosition, Color.White);
             DrawMiniMap(uisb);
