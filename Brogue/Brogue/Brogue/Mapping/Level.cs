@@ -225,7 +225,7 @@ namespace Brogue.Mapping
             if (absolute && !isSolid( position ) )
                 moveWasMade = CharacterEntities.SetPosition(character, position);
             else
-            if ( !isSolid( CharacterEntities.FindPosition(character) + position ) )
+            if ( !absolute && !isSolid( CharacterEntities.FindPosition(character) + position ) )
                 moveWasMade = CharacterEntities.AddPosition(character, position);
             return moveWasMade;
         }
