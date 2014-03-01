@@ -1,4 +1,5 @@
-﻿using Brogue.Mapping;
+﻿using Brogue;
+using Brogue.Mapping;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -88,6 +89,7 @@ namespace Brogue.Engine
         public static IntVec windowSizeInTiles;
         public static int lightMaskWidthInTilesDividedByTwo;
         private static IntVec modifiedCameraPosition = new IntVec(0, 0);
+        
 
         private static DynamicTexture
             lightMask = GetTexture("lightmask")
@@ -228,12 +230,11 @@ namespace Brogue.Engine
             xpBarPosition = new Vector2(80, game.Height / 2 - healthbar.texture.Height / 2);
             font = content.Load<SpriteFont>("UI/Font");
 
-            if (DOAUDIO)
-            {
-                backgroundSong = content.Load<Song>("Audio/The Descent");
-                MediaPlayer.Play(backgroundSong);
-                MediaPlayer.IsRepeating = true;
-            }
+            //////////////////////////////////
+            Audio.LoadContent(content);
+            Audio.playMusic("The_Thing");
+            //////////////////////////////////
+            
         }
 
         private static void AITurn()
