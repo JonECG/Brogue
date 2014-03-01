@@ -14,6 +14,7 @@ namespace Brogue.EnviromentObjects.Interactive
     {
        bool isSolid { get; set; }
        bool isOpen { get; set; }
+       bool rotated { get; set; }
 
        Direction directionFacing { get; set; }
 
@@ -38,11 +39,13 @@ namespace Brogue.EnviromentObjects.Interactive
            {
                isSolid = false;
                isOpen = true;
+               directionFacing.Rotate(true);
            }
            else if (!isSolid)
            {
                isSolid = true;
                isOpen = false;
+               directionFacing.Rotate(false);
            }
        }
 
