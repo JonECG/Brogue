@@ -42,7 +42,7 @@ namespace Brogue
         }
         public virtual DynamicTexture GetTexture()
         {
-            return Engine.Engine.GetTexture("GameCharacter");
+            return Engine.Engine.GetTexture("GAME_CHAR");
         }
     }
 }

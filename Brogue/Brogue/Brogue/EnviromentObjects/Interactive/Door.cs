@@ -63,7 +63,8 @@ namespace Brogue.EnviromentObjects.Interactive
        public void actOn(GameCharacter actingCharacter)
        {
            changeSolid();
-           Audio.playSound("door");
+           //The following line doesn't work because whoever added it didn't add the Audio class to the repo.
+           //Audio.playSound("door");
        }
     }
 

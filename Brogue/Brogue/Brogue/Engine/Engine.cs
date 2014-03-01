@@ -63,15 +63,81 @@ namespace Brogue.Engine
         }
     }
 
+    class UIButton
+    {
+        static DynamicTexture standard = Engine.GetTexture("UI/InvSlot");
+        static DynamicTexture highlighted = Engine.GetTexture("UI/InvSlotHighlighted");
+        Texture2D currentBackTex;
+        public DynamicTexture drawOver; 
+        public bool doDrawOver;
+        string caption;
+        Vector2 pos;
+        public UIButton(Vector2 position, bool centered, string drawOverTexture, string caption)
+        {
+            pos = position;
+            if (centered)
+            {
+                pos.X -= Engine.CELLWIDTH / 2;//standard.texture.Width / 2;
+                pos.Y -= Engine.CELLWIDTH / 2;//standard.texture.Height / 2;
+            }
+            if (drawOverTexture != null)
+            {
+                drawOver = Engine.GetTexture(drawOverTexture);
+                doDrawOver = true;
+            }
+            this.caption = caption;
+            currentBackTex = standard.texture;
+        }
+        public bool isMouseOver()
+        {
+            bool isMouseOver = false;
+            if (currentBackTex != null)
+            {
+                IntVec mpos = MouseController.MouseScreenPosition();
+                isMouseOver = mpos.X > pos.X && mpos.X < pos.X + currentBackTex.Width &&
+                    mpos.Y > pos.Y && mpos.Y < pos.Y + currentBackTex.Height;
+                if (isMouseOver)
+                {
+                    currentBackTex = highlighted.texture;
+                }
+                else
+                {
+                    currentBackTex = standard.texture;
+                }
+            }
+
+            return isMouseOver;
+        }
+
+        public bool isClicked()
+        {
+            return isMouseOver() && MouseController.LeftClicked();
+        }
+
+        public void Draw(SpriteBatch sb)
+        {
+            if (currentBackTex != null)
+            {
+                sb.Draw(currentBackTex, pos, Color.White);
+                sb.Draw(drawOver.texture, pos, Color.White);
+                sb.DrawString(Engine.font, caption,
+                    new Vector2(pos.X - Engine.font.MeasureString(caption).X / 2, pos.Y - 20), Color.Red);
+            }
+        }
+    }
+
     partial class Engine
     {
         public const bool DOLIGHTING = true;
         public const bool DOAUDIO = false;
+        public const bool DOSTARTMENU = false;
         public const float sightDistance = 1;
         public static bool inventoryOpen = false;
+        public static bool characterCreationOpen = true;
         public static int CELLWIDTH = 48;
         private static int logSize = 10;
         private static Game1 game;
+        private static bool gameStarted = false;
         public static IntVec cameraPosition = new IntVec(12, 8);
         private static Queue<String> log = new Queue<string>(10);
         private static Vector2 LogPosition, InvButtonPosition, InventoryPosition, InventorySize;
@@ -107,8 +173,11 @@ namespace Brogue.Engine
             invSlot = GetTexture("UI/InvSlot"),
             invHighlightSlot = GetTexture("UI/InvSlotHighlighted"),
             invButton = GetTexture("UI/InventoryIcon");
-        
-        static SpriteFont font;
+
+
+        static UIButton mageButton, warriorButton, rogueButton;
+
+        public static SpriteFont font;
         static List<GridSelection> gridSelection = new List<GridSelection>();
 
         public static DynamicTexture placeHolder = GetTexture("placeholder");
@@ -170,16 +239,17 @@ namespace Brogue.Engine
         {
             game = injectedGame;
             CharacterCreation();
-            GenerateLevel();
+
+            //GenerateLevel();
             LogPosition = new Vector2(12, 12);
-            InvButtonPosition = new Vector2(game.Width - 48, game.Height - 48);
+            // = new Vector2(game.Width - 48, game.Height - 48);
             InventoryPosition = new Vector2(game.Width - 5 * (CELLWIDTH), game.Height - 5 * (CELLWIDTH));
             InventorySize = new Vector2(4 * CELLWIDTH, 4 * CELLWIDTH);
             weaponEquipPosition = new Vector2(game.Width / 2 - CELLWIDTH, game.Height - CELLWIDTH);
             armorEquipPosition = new Vector2(game.Width - 6 * CELLWIDTH, CELLWIDTH);
             windowSizeInTiles = new IntVec(game.Width / CELLWIDTH, game.Height / CELLWIDTH);
             game.IsMouseVisible = true;
-            StartGame();
+            //StartGame();
         }
 
         public static void End()
@@ -198,27 +268,35 @@ namespace Brogue.Engine
 
         public static void CharacterCreation()
         {
-             
+            LoadContent(game.Content);
+            if (DOSTARTMENU)
+            {
+                warriorButton = new UIButton(new Vector2(game.Width / 2, game.Height / 2), true, "Hero/Hero", "Warrior");
+                mageButton = new UIButton(new Vector2(game.Width / 2 - 60, game.Height / 2), true, "Hero/Hero", "Mage");
+                rogueButton = new UIButton(new Vector2(game.Width / 2 + 60, game.Height / 2), true, "Hero/Hero", "Rogue");
+                characterCreationOpen = true;
+            }
+            else
+            {
+                hero = new HeroClasses.Mage();
+                StartGame();
+            }
         }
 
         public static void GenerateLevel()
         {
             currentLevel = LevelGenerator.generate(802, 100);
             Log("Level generated.");
-            hero = new HeroClasses.Mage();
             currentLevel.CharacterEntities.Add(hero, currentLevel.GetStartPoint());
         }
 
         public static void StartGame()
         {
-            //Make new level.
-            //Start gameloop.
             Log("Game started");
-            KeyboardState keyState = Keyboard.GetState();
-
-            //Check keystate for engine relate key presses (exit, menu things, etc).
-            //If it's the players turn, pass keystate to Hero.
-            //Otherwise, take AI turn.
+            gameStarted = true;
+            characterCreationOpen = false;
+            GenerateLevel();
+            //LoadContent(contentManager);
 
         }
 
@@ -231,8 +309,9 @@ namespace Brogue.Engine
             font = content.Load<SpriteFont>("UI/Font");
 
             //////////////////////////////////
-            Audio.LoadContent(content);
-            Audio.playMusic("The_Thing");
+            //The following line doesn't work because whoever added it didn't add the Audio class to the repo.
+            //Audio.LoadContent(content);
+            //Audio.playMusic("The_Thing");
             //////////////////////////////////
             
         }
@@ -244,7 +323,7 @@ namespace Brogue.Engine
 
         public static void Draw(Sprite sprite, IntVec destination)
         {
-            if (IsTileInView(destination) && sprite.IsVisible && sprite.Texture.texture != null)
+            if (sprite.Texture != null && IsTileInView(destination) && sprite.IsVisible && sprite.Texture.texture != null)
             {
                 game.spriteBatch.Draw(sprite.Texture.texture, new Rectangle(destination.X * CELLWIDTH, destination.Y * CELLWIDTH, CELLWIDTH, CELLWIDTH), new Rectangle(sprite.SourceTile.X * CELLWIDTH, sprite.SourceTile.Y * CELLWIDTH, CELLWIDTH, CELLWIDTH), sprite.Blend, sprite.Direction, new Vector2(CELLWIDTH / 2, CELLWIDTH / 2), SpriteEffects.None, 0);
             }
@@ -256,67 +335,88 @@ namespace Brogue.Engine
 
         public static void Update(GameTime gameTime)
         {
-            if (heroPos == null)
-            {
-                heroPos = currentLevel.CharacterEntities.FindPosition(hero);
-                
-            }
             MouseController.Update();
-            for (int i = 0; i < xpList.Count; i++)
+            if (gameStarted)
             {
-                if (xpList[i].update())
+                if (heroPos == null)
                 {
-                    xpList.RemoveAt(i);
-                    hero.AddExperience(1);
-                }
-            }
-            if (!GameCommands())
-            {
-                currentLevel.testUpdate();
-                //Game turns
-                
-                //hero.TakeTurn(currentLevel);
-                if (charIndex >= currentLevel.CharacterEntities.Entities().Count<GameCharacter>())
-                {
-                    charIndex = 0;
-                }
-                while (currentLevel.CharacterEntities.Entities().ElementAt<GameCharacter>(charIndex) != hero)
-                {
-                    if (charIndex < currentLevel.CharacterEntities.Entities().Count<GameCharacter>())
-                    {
-                        IntVec enemyPosition = currentLevel.CharacterEntities.FindPosition(currentLevel.CharacterEntities.Entities().ElementAt<GameCharacter>(charIndex));
-                        if (enemyPosition.X > heroPos.X - AIDist &&
-                            enemyPosition.X < heroPos.X + AIDist &&
-                            enemyPosition.Y > heroPos.Y - AIDist &&
-                            enemyPosition.Y < heroPos.Y + AIDist)
-                        {
-                            if (currentLevel.CharacterEntities.Entities().ElementAt<GameCharacter>(charIndex).TakeTurn(currentLevel))
-                            {
-                                currentLevel.InvalidateCache();
-                                charIndex++;
-                                heroPos = currentLevel.CharacterEntities.FindPosition(hero);
-                            }
-                        }
-                        else
-                        {
-                           charIndex++;
+                    heroPos = currentLevel.CharacterEntities.FindPosition(hero);
 
-                      }
+                }
+                
+                for (int i = 0; i < xpList.Count; i++)
+                {
+                    if (xpList[i].update())
+                    {
+                        xpList.RemoveAt(i);
+                        hero.AddExperience(1);
                     }
+                }
+                if (!GameCommands())
+                {
+                    currentLevel.testUpdate();
+                    //Game turns
+
+                    //hero.TakeTurn(currentLevel);
                     if (charIndex >= currentLevel.CharacterEntities.Entities().Count<GameCharacter>())
                     {
                         charIndex = 0;
                     }
+                    while (currentLevel.CharacterEntities.Entities().ElementAt<GameCharacter>(charIndex) != hero)
+                    {
+                        if (charIndex < currentLevel.CharacterEntities.Entities().Count<GameCharacter>())
+                        {
+                            IntVec enemyPosition = currentLevel.CharacterEntities.FindPosition(currentLevel.CharacterEntities.Entities().ElementAt<GameCharacter>(charIndex));
+                            if (enemyPosition.X > heroPos.X - AIDist &&
+                                enemyPosition.X < heroPos.X + AIDist &&
+                                enemyPosition.Y > heroPos.Y - AIDist &&
+                                enemyPosition.Y < heroPos.Y + AIDist)
+                            {
+                                if (currentLevel.CharacterEntities.Entities().ElementAt<GameCharacter>(charIndex).TakeTurn(currentLevel))
+                                {
+                                    currentLevel.InvalidateCache();
+                                    charIndex++;
+                                    heroPos = currentLevel.CharacterEntities.FindPosition(hero);
+                                }
+                            }
+                            else
+                            {
+                                charIndex++;
+
+                            }
+                        }
+                        if (charIndex >= currentLevel.CharacterEntities.Entities().Count<GameCharacter>())
+                        {
+                            charIndex = 0;
+                        }
+                    }
+                    charIndex += hero.TakeTurn(currentLevel) ? 1 : 0;
+
+                    cameraPosition = currentLevel.CharacterEntities.FindPosition(hero);
+                    modifiedCameraPosition.X = cameraPosition.X - (windowSizeInTiles.X / 2);
+                    modifiedCameraPosition.Y = cameraPosition.Y - (windowSizeInTiles.Y / 2);
+                    currentLevel.InvalidateCache();
+
                 }
-                charIndex += hero.TakeTurn(currentLevel)?1: 0;
-                
+            }
+            else
+            {
+                if (mageButton.isClicked())
+                {
+                    hero = new HeroClasses.Mage();
+                    StartGame();
+                }
+                if (warriorButton.isClicked())
+                {
+                    hero = new HeroClasses.Warrior();
+                    StartGame();
+                }
+                if (rogueButton.isClicked())
+                {
+                    hero = new HeroClasses.Rogue();
+                    StartGame();
+                }
 
-
-                cameraPosition = currentLevel.CharacterEntities.FindPosition(hero);
-                modifiedCameraPosition.X = cameraPosition.X - (windowSizeInTiles.X / 2);
-                modifiedCameraPosition.Y = cameraPosition.Y - (windowSizeInTiles.Y / 2);
-                currentLevel.InvalidateCache();
-              
             }
         }
 
@@ -458,7 +558,6 @@ namespace Brogue.Engine
                     }
                 }
             }
-
         }
 
         public static void DrawLog(SpriteBatch spriteBatch)
@@ -472,80 +571,101 @@ namespace Brogue.Engine
         
         public static void DrawGame(GameTime gameTime)
         {
-            worldToView = Matrix.CreateTranslation(-cameraPosition.X * CELLWIDTH + game.Width / 2, -cameraPosition.Y * CELLWIDTH + game.Height / 2, 1.0f)
-                    * Matrix.CreateScale(1.0f, 1.0f, 1);
-            
-            //Draw lighting.
-            DrawLighting(worldToView); 
-            
-            //Draw level.
-            game.GraphicsDevice.SetRenderTarget(mainTarget);
-            game.GraphicsDevice.Clear(Color.Black);
-            game.spriteBatch.Begin(SpriteSortMode.Deferred,
-                        BlendState.AlphaBlend,
-                        null,
-                        null,
-                        null,
-                        null,
-                        worldToView);
-            currentLevel.render();
-            foreach (GridSelection gs in gridSelection)
+            if (gameStarted)
             {
-                game.spriteBatch.Draw(gs.tex.texture, new Rectangle(gs.gridPos.X * CELLWIDTH, gs.gridPos.Y * CELLWIDTH, CELLWIDTH, CELLWIDTH), 
-                    new Rectangle(0, 0, CELLWIDTH, CELLWIDTH), Color.White, 0, new Vector2(CELLWIDTH / 2, CELLWIDTH / 2), SpriteEffects.None, 0);
+                worldToView = Matrix.CreateTranslation(-cameraPosition.X * CELLWIDTH + game.Width / 2, -cameraPosition.Y * CELLWIDTH + game.Height / 2, 1.0f)
+                        * Matrix.CreateScale(1.0f, 1.0f, 1);
+
+                //Draw lighting.
+                DrawLighting(worldToView);
+
+                //Draw level.
+                game.GraphicsDevice.SetRenderTarget(mainTarget);
+                game.GraphicsDevice.Clear(Color.Black);
+                game.spriteBatch.Begin(SpriteSortMode.Deferred,
+                            BlendState.AlphaBlend,
+                            null,
+                            null,
+                            null,
+                            null,
+                            worldToView);
+                currentLevel.render();
+                foreach (GridSelection gs in gridSelection)
+                {
+                    game.spriteBatch.Draw(gs.tex.texture, new Rectangle(gs.gridPos.X * CELLWIDTH, gs.gridPos.Y * CELLWIDTH, CELLWIDTH, CELLWIDTH),
+                        new Rectangle(0, 0, CELLWIDTH, CELLWIDTH), Color.White, 0, new Vector2(CELLWIDTH / 2, CELLWIDTH / 2), SpriteEffects.None, 0);
+                }
+                game.spriteBatch.End();
+
+                //Draw both to screen.
+                game.GraphicsDevice.SetRenderTarget(null);
+                game.GraphicsDevice.Clear(Color.CornflowerBlue);
+                game.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+                game.effect.Parameters["lightMask"].SetValue(lightsTarget);
+                game.effect.CurrentTechnique.Passes[0].Apply();
+
+                game.spriteBatch.Draw(mainTarget, Vector2.Zero, Color.White);
+                game.spriteBatch.End();
             }
-            game.spriteBatch.End();
-
-            //Draw both to screen.
-            game.GraphicsDevice.SetRenderTarget(null);
-            game.GraphicsDevice.Clear(Color.CornflowerBlue);
-            game.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
-            game.effect.Parameters["lightMask"].SetValue(lightsTarget);
-            game.effect.CurrentTechnique.Passes[0].Apply();
-            
-            game.spriteBatch.Draw(mainTarget, Vector2.Zero, Color.White);
-            game.spriteBatch.End();
-
         }
 
         public static void DrawUI(SpriteBatch uisb)
         {
-            foreach (XPParticle xp in xpList)
+            if (gameStarted)
             {
-                uisb.Draw(particleTex.texture, xp.screenPosition, Color.White);
-            }
-            uisb.Draw(healthcontainer.texture, new Vector2(50, game.Height / 2 - healthcontainer.texture.Height / 2), Color.White);
-            uisb.Draw(healthcontainer.texture, xpBarPosition, Color.White);
-            uisb.Draw(healthbar.texture, new Vector2(50, game.Height / 2 - healthcontainer.texture.Height / 2), Color.White);
-            uisb.Draw(xpbar.texture, new Vector2(xpBarPosition.X + xpbar.texture.Width / 2, 
-                xpBarPosition.Y + xpbar.texture.Height / 2), 
-                new Rectangle(0, 0, xpbar.texture.Width, xpbar.texture.Height), 
-                Color.White, 0, new Vector2(xpbar.texture.Width / 2, xpbar.texture.Height / 2), 
-                new Vector2(1, hero.GetXpPercent()), SpriteEffects.None, 0);
-            //uisb.Draw(xpbar, xpBarPosition, Color.White);
-            //uisb.Draw(inventory.texture, new Vector2(game.Width / 2 - inventory.texture.Width / 2, game.Height - 100), Color.White);
-            
-            uisb.Draw(jar.texture, 
-                new Vector2(game.Width - 50 - jar.texture.Width, game.Height / 2 - jar.texture.Height / 2), 
-                Color.White);
-            uisb.Draw(bar.texture, 
-                new Vector2(game.Width - 50 - jar.texture.Width / 2, game.Height / 2 + jar.texture.Height / 2), 
-                new Rectangle(0, 0, jar.texture.Width, jar.texture.Height), Color.White, 
-                0, 
-                new Vector2(jar.texture.Width / 2, jar.texture.Height),
-                new Vector2(1, hero.jarBarAmount / HeroClasses.Hero.MaxJarBarAmount), 
-                SpriteEffects.None, 0);
-            //uisb.Draw(bar.texture, new Vector2(game.Width - 50 - jar.texture.Width, game.Height / 2 - bar.texture.Height / 2), Color.White);
-            uisb.Draw(invButton.texture, InvButtonPosition, Color.White);
-            DrawMiniMap(uisb);
-            if (inventoryOpen)
-            {
-                DrawInventory(uisb);
+                foreach (XPParticle xp in xpList)
+                {
+                    uisb.Draw(particleTex.texture, xp.screenPosition, Color.White);
+                }
+                uisb.Draw(healthcontainer.texture, new Vector2(50, game.Height / 2 - healthcontainer.texture.Height / 2), Color.White);
+                uisb.Draw(healthcontainer.texture, xpBarPosition, Color.White);
+                uisb.Draw(healthbar.texture, new Vector2(50, game.Height / 2 - healthcontainer.texture.Height / 2), Color.White);
+                uisb.Draw(xpbar.texture, new Vector2(xpBarPosition.X + xpbar.texture.Width / 2,
+                    xpBarPosition.Y + xpbar.texture.Height / 2),
+                    new Rectangle(0, 0, xpbar.texture.Width, xpbar.texture.Height),
+                    Color.White, 0, new Vector2(xpbar.texture.Width / 2, xpbar.texture.Height / 2),
+                    new Vector2(1, hero.GetXpPercent()), SpriteEffects.None, 0);
+                //uisb.Draw(xpbar, xpBarPosition, Color.White);
+                //uisb.Draw(inventory.texture, new Vector2(game.Width / 2 - inventory.texture.Width / 2, game.Height - 100), Color.White);
+
+                uisb.Draw(jar.texture,
+                    new Vector2(game.Width - 50 - jar.texture.Width, game.Height / 2 - jar.texture.Height / 2),
+                    Color.White);
+                uisb.Draw(bar.texture,
+                    new Vector2(game.Width - 50 - jar.texture.Width / 2, game.Height / 2 + jar.texture.Height / 2),
+                    new Rectangle(0, 0, jar.texture.Width, jar.texture.Height), Color.White,
+                    0,
+                    new Vector2(jar.texture.Width / 2, jar.texture.Height),
+                    new Vector2(1, hero.jarBarAmount / HeroClasses.Hero.MaxJarBarAmount),
+                    SpriteEffects.None, 0);
+                //uisb.Draw(bar.texture, new Vector2(game.Width - 50 - jar.texture.Width, game.Height / 2 - bar.texture.Height / 2), Color.White);
+                uisb.Draw(invButton.texture, InvButtonPosition, Color.White);
+                //DrawMiniMap(uisb);
+                if (inventoryOpen)
+                {
+                    DrawInventory(uisb);
+                }
+                if (characterCreationOpen)
+                {
+                    DrawCharacterCreation(uisb);
+                }
+
+                DrawEquip(uisb);
             }
 
-            DrawEquip(uisb);
-
+            else
+            {
+                game.GraphicsDevice.Clear(Color.White);
+                DrawCharacterCreation(uisb);
+            }
             DrawLog(uisb);
+        }
+
+        private static void DrawCharacterCreation(SpriteBatch sb)
+        {
+            mageButton.Draw(sb);
+            warriorButton.Draw(sb);
+            rogueButton.Draw(sb);
         }
 
         private static void DrawEquip(SpriteBatch sb)

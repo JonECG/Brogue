@@ -71,7 +71,9 @@ namespace Brogue.Engine
                 }
                 else
                 {
-                    textureDictionary.Add(path, new DynamicTexture(contentManager.Load<Texture2D>(path)));
+                    DynamicTexture newTex =  new DynamicTexture(contentManager.Load<Texture2D>(path));
+                    textureDictionary.Add(path, newTex);
+                    result = newTex;
                 }
             }
             return result;
@@ -89,20 +91,6 @@ namespace Brogue.Engine
                 textureDictionary[path].texture = contentManager.Load<Texture2D>(path);
             }
 
-
-            //Level.LoadContent(content);
-            //HeroClasses.Hero.LoadContent(content);
-            //Items.Item.LoadContent(content);
-            //
-            //lightsTarget = new RenderTarget2D(game.GraphicsDevice, game.Width, game.Height);
-            //mainTarget = new RenderTarget2D(game.GraphicsDevice, game.Width, game.Height);
-            //xpBarPosition = new Vector2(80, game.Height / 2 - healthbar.Height / 2);
-            //if (DOAUDIO)
-            //{
-            //    backgroundSong = content.Load<Song>("Audio/The Descent");
-            //    MediaPlayer.Play(backgroundSong);
-            //    MediaPlayer.IsRepeating = true;
-            //}
 
             ContentLoaded(content);
 
