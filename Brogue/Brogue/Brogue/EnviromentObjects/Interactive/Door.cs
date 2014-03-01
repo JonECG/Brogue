@@ -60,6 +60,7 @@ namespace Brogue.EnviromentObjects.Interactive
        public void actOn(GameCharacter actingCharacter)
        {
            changeSolid();
+           Audio.playSound("door");
        }
     }
 
