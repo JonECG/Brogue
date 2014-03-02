@@ -192,9 +192,21 @@ namespace Brogue.Mapping
                     }
                     return largest;
                 }
+
+                public bool setUnfree(int x, int y)
+                {
+                    bool result = floorPlan[x, y];
+                    floorPlan[x, y] = false;
+                    return result;
+                }
+
+                public bool setUnfree(IntVec pos)
+                {
+                    return setUnfree(pos.X, pos.Y);
+                }
             }
 
-            bool[,] isFloor;
+            public bool[,] isFloor;
             public Tile[,] tiles;
             public __Room[] rooms;
 
@@ -360,6 +372,7 @@ namespace Brogue.Mapping
             __FloorPlan.__Room start = floorPlan.rooms[entryRoom];
             IntVec startPoint = start.GetCenter();
             Engine.Engine.Log(string.Format("Start point: <{0}, {1}>", startPoint.X, startPoint.Y));
+            floorPlan.isFloor[startPoint.X, startPoint.Y] = false;
             floorPlan.rooms[entryRoom].type = __FloorPlan.__Room.__RoomType.EMPTY;
 
             int endRoom = (entryRoom + floorPlan.hallstart / 2) % floorPlan.hallstart;
@@ -370,6 +383,7 @@ namespace Brogue.Mapping
             __FloorPlan.__Room end = floorPlan.rooms[endRoom];
             floorPlan.rooms[endRoom].type = __FloorPlan.__Room.__RoomType.EMPTY;
             Engine.Engine.Log(string.Format("End point: <{0}, {1}>", end.GetCenter().X, end.GetCenter().Y));
+            floorPlan.isFloor[end.GetCenter().X, end.GetCenter().Y] = false;
             interactableEnvironment.Add(new ColorEnvironment(Color.Blue, true), end.GetCenter());
             return startPoint;
         }
@@ -404,7 +418,70 @@ namespace Brogue.Mapping
 
             foreach (IntVec pos in room.GetCells())
             {
-                environ.Add(new ColorEnvironment(col, false), pos);
+                //environ.Add(new ColorEnvironment(col, false), pos);
+            }
+
+
+            switch (room.type)
+            {
+                case __FloorPlan.__Room.__RoomType.BOSS_ROOM:
+                    Decoration[] scratches = {  new Decoration(new Sprite(Engine.Engine.GetTexture("Enviroment/Scratches"), new IntVec(0,0))), 
+                                                new Decoration(new Sprite(Engine.Engine.GetTexture("Enviroment/Scratches"), new IntVec(1,0))) };
+                    foreach (IntVec pos in room.GetCells())
+                    {
+                        //Scratches on the floor
+                        if (rand.NextDouble() > 0.7)
+                            environ.Add( ChooseOne(rand, scratches) , pos);
+                    }
+                    goto case __FloorPlan.__Room.__RoomType.MOB_ROOM;
+                case __FloorPlan.__Room.__RoomType.MOB_ROOM:
+                    Decoration[] bloods = {  new Decoration(new Sprite(Engine.Engine.GetTexture("Enviroment/Blood"), new IntVec(0,0))), 
+                                                new Decoration(new Sprite(Engine.Engine.GetTexture("Enviroment/Blood"), new IntVec(1,0))) };
+                    foreach (IntVec pos in room.GetCells())
+                    {
+                        //Blood on the floor
+                        if (rand.NextDouble() > 0.7)
+                            environ.Add(ChooseOne(rand, bloods), pos);
+                    }
+                    break;
+                case __FloorPlan.__Room.__RoomType.NOTHING_SPECIAL:
+                    foreach (Tuple<IntVec,Direction> pos in room.GetWalls(true))
+                    {
+                        if (rand.NextDouble() > 0.9)
+                            environ.Add(new Plant(), pos.Item1);
+                    }
+                    break;
+                case __FloorPlan.__Room.__RoomType.FOYER:
+                    Decoration[] tableItems = {  new Decoration(new Sprite(Engine.Engine.GetTexture("Enviroment/Scratches"), new IntVec(0,0) )), 
+                                                new Decoration(new Sprite(Engine.Engine.GetTexture("Enviroment/Scratches"), new IntVec(1,0))) };
+                    //Table
+                    for (int x = 2; x < room.dimensions.Width - 2; x++)
+                    {
+                        for (int y = 2; y < room.dimensions.Height - 2; y++)
+                        {
+                            room.setUnfree(room.dimensions.X + x, room.dimensions.Y + y);
+                            environ.Add(new Decoration(new Sprite(Engine.Engine.GetTexture("Enviroment/Table"), new IntVec(1 - ((x == 2) ? 1 : 0) + ((x == room.dimensions.Width - 3) ? 1 : 0), 1 - ((y == 2) ? 1 : 0) + ((y == room.dimensions.Height - 3) ? 1 : 0))), true), new IntVec(room.dimensions.X + x, room.dimensions.Y + y));
+                            //environ.Add(new ColorEnvironment( Color.Aqua, true ) , new IntVec( room.dimensions.X + x, room.dimensions.Y + y ) );
+                            if (rand.NextDouble() > 0.6)
+                            {
+                                //Something on the table
+                                environ.Add(ChooseOne(rand, tableItems), new IntVec(room.dimensions.X + x, room.dimensions.Y + y));
+                            }
+                        }
+                    }
+                    //Chairs
+                    for (int x = 2; x < room.dimensions.Width - 2; x++)
+                    {
+                        environ.Add( new Chair( Direction.DOWN ), new IntVec(room.dimensions.X + x, room.dimensions.Y + 1) );
+                        environ.Add(new Chair(Direction.UP), new IntVec(room.dimensions.X + x, room.dimensions.Y + room.dimensions.Height - 2));
+                    }
+                    for (int y = 2; y < room.dimensions.Height - 2; y++)
+                    {
+                        environ.Add(new Chair(Direction.RIGHT), new IntVec(room.dimensions.X + 1, room.dimensions.Y + y));
+                        environ.Add(new Chair(Direction.LEFT), new IntVec(room.dimensions.X + room.dimensions.Width - 2, room.dimensions.Y + y));
+                    }
+                    //environ.Add( new Plant(), room.GetCenter() );
+                    break;
             }
         }
 
@@ -413,16 +490,20 @@ namespace Brogue.Mapping
             switch (room.type)
             {
                 case __FloorPlan.__Room.__RoomType.DOORWAY:
-                    interact.Add(new Door( (room.floorPlan[room.dimensions.X-1,room.dimensions.Y]) ? Direction.RIGHT: Direction.UP ), new IntVec(room.dimensions.X, room.dimensions.Y));
+                    if ( room.setUnfree(room.dimensions.X, room.dimensions.Y) )
+                        interact.Add(new Door( (room.floorPlan[room.dimensions.X-1,room.dimensions.Y]) ? Direction.RIGHT: Direction.UP ), new IntVec(room.dimensions.X, room.dimensions.Y));
                     break;
                 case __FloorPlan.__Room.__RoomType.TREASURE_ROOM:
-                    Item[] items = new Item[ rand.Next( 2, 8 ) ];
-                    for (int i = 0; i < items.Length; i++)
+                    if (room.setUnfree(room.dimensions.X, room.dimensions.Y))
                     {
-                        items[i] = Item.randomItem(dungeonLevel, heroLevel);
+                        Item[] items = new Item[rand.Next(2, 8)];
+                        for (int i = 0; i < items.Length; i++)
+                        {
+                            items[i] = Item.randomItem(dungeonLevel, heroLevel);
+                        }
+                        interact.Add(new Chest(items), room.GetCenter());
+                        //interact.Add(new ColorEnvironment( Color.Brown, true ), room.GetCenter());
                     }
-                    interact.Add(new Chest(items), room.GetCenter());
-                    //interact.Add(new ColorEnvironment( Color.Brown, true ), room.GetCenter());
                     break;
             }
         }
@@ -446,28 +527,38 @@ namespace Brogue.Mapping
             switch (room.type)
             {
                 case __FloorPlan.__Room.__RoomType.BOSS_ROOM:
-                    chars.Add(EnemyCreator.GetRandomBoss(dungeonLevel), room.GetCenter());
+                    if (room.setUnfree(room.GetCenter()))
+                    {
+                        chars.Add(EnemyCreator.GetRandomBoss(dungeonLevel), room.GetCenter());
+                    }
                     break;
                 case __FloorPlan.__Room.__RoomType.NOTHING_SPECIAL:
                     foreach (var pos in room.GetCells())
                     {
-                        if (rand.NextDouble() > 0.98)
+                        if (rand.NextDouble() > 0.98 && room.setUnfree(pos) )
                             chars.Add(EnemyCreator.GetRandomEnemy(1, dungeonLevel)[0], pos);
                         //lights.Add(new ColorEnvironment(new Color(rand.Next(100,256), rand.Next(100,256), rand.Next(100,256)), false), position);
                     }
                     break;
                 case __FloorPlan.__Room.__RoomType.MOB_ROOM:
                     Enemy[] enemies = EnemyCreator.GetRandomEnemy(rand.Next(2, 6), dungeonLevel);
-                        int dropped = 1;
-                        chars.Add(enemies[0], room.GetCenter() );
-                        foreach (var dir in Direction.Values)
+                    int dropped = 1;
+                    chars.Add(enemies[0], room.GetCenter() );
+                    foreach (var dir in Direction.Values)
+                    {
+                        if (dropped < enemies.Length && (room.setUnfree(room.GetCenter() + dir)))
                         {
-                            if( dropped < enemies.Length )
-                                chars.Add(enemies[dropped], room.GetCenter() + dir);
+                            chars.Add(enemies[dropped], room.GetCenter() + dir);
                             dropped++;
                         }
+                    }
                     break;
             }
+        }
+
+        private static T ChooseOne<T>(Random rand, params T[] choices)
+        {
+            return choices[ rand.Next( choices.Length ) ];
         }
 
         #region FLOOR PLAN CREATION
