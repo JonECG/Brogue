@@ -220,7 +220,7 @@ namespace Brogue.HeroClasses
                         {
                             withinRange = true;
                             abilities[0].addCastingSquares(MouseController.MouseGridPosition());
-                            if (abilities[0].filledSquares())
+                            if (true)//abilities[0].filledSquares())
                             {
                                 turnOver = true;
                                 abilities[0].finishCastandDealDamage(level, currentlyEquippedItems.getTotalWeaponDamage());
@@ -251,15 +251,18 @@ namespace Brogue.HeroClasses
         //public void castAbility(int ability)
         public void attack(Level mapLevel)
         {
-            Enemies.Enemy testEnemy = (Enemies.Enemy)mapLevel.CharacterEntities.FindEntity(MouseController.MouseGridPosition());
-            if (testEnemy != null)
+            if (mapLevel.CharacterEntities.FindEntity(MouseController.MouseGridPosition()) != this)
             {
-                int weaponRange1 = currentlyEquippedItems.getPrimaryWeapon().Range;
-                int weaponRange2 = (currentlyEquippedItems.getAuxilaryWeapon() != null) ? currentlyEquippedItems.getAuxilaryWeapon().Range : -1;
-                damageEnemyIfInRange(testEnemy, mapLevel.CharacterEntities.FindPosition(this), currentlyEquippedItems.getPrimaryWeapon().Damage, weaponRange1);
-                if (weaponRange2 != -1)
+                Enemies.Enemy testEnemy = (Enemies.Enemy)mapLevel.CharacterEntities.FindEntity(MouseController.MouseGridPosition());
+                if (testEnemy != null)
                 {
-                    damageEnemyIfInRange(testEnemy, mapLevel.CharacterEntities.FindPosition(this), currentlyEquippedItems.getAuxilaryWeapon().Damage, weaponRange2);
+                    int weaponRange1 = currentlyEquippedItems.getPrimaryWeapon().Range;
+                    int weaponRange2 = (currentlyEquippedItems.getAuxilaryWeapon() != null) ? currentlyEquippedItems.getAuxilaryWeapon().Range : -1;
+                    damageEnemyIfInRange(testEnemy, mapLevel.CharacterEntities.FindPosition(this), currentlyEquippedItems.getPrimaryWeapon().Damage, weaponRange1);
+                    if (weaponRange2 != -1)
+                    {
+                        damageEnemyIfInRange(testEnemy, mapLevel.CharacterEntities.FindPosition(this), currentlyEquippedItems.getAuxilaryWeapon().Damage, weaponRange2);
+                    }
                 }
             }
         }

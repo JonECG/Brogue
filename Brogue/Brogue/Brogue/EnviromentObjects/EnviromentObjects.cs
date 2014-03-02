@@ -13,7 +13,7 @@ namespace Brogue.EnviromentObjects
     {
         public string Name { get; protected set; }
         public string Image { get; protected set; }
-        public Texture2D Texture { get; protected set; }
+        //public Texture2D Texture { get; protected set; }
 
         public bool IsSolid()
         {

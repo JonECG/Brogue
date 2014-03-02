@@ -8,6 +8,7 @@ using System.Text;
 
 namespace Brogue
 {
+    [Serializable]
     public struct Sprite
     {
         private static DynamicTexture nullTexture = Engine.Engine.GetTexture( "null" );

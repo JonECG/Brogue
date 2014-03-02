@@ -387,10 +387,7 @@ namespace Brogue.Mapping
             interactableEnvironment.Add(new ColorEnvironment(Color.Blue, true), end.GetCenter());
             return startPoint;
         }
-
-
-
-
+        
         private static void populateEnvironmentObjects(__FloorPlan.__Room room, GridBoundList<IEnvironmentObject> environ, Random rand)
         {
             Color col = Color.White;

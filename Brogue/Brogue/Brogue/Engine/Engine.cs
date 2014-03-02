@@ -13,6 +13,7 @@ using System.Text;
 using Brogue.EnviromentObjects.Interactive;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using Microsoft.Xna.Framework.Content;
 using System.IO;
 
 
@@ -22,7 +23,9 @@ namespace Brogue.Engine
     class SaveGameData
     {
         public HeroClasses.Hero character;
-        public Level level;
+        public int seed;
+        public int levelComplexity;
+        public int dungeonLevel;
     }
 
     class XPParticle
@@ -134,6 +137,7 @@ namespace Brogue.Engine
         public const float sightDistance = 1;
         public static bool inventoryOpen = false;
         public static bool characterCreationOpen = true;
+        public static bool savePromptOpen = false;
         public static int CELLWIDTH = 48;
         private static int logSize = 10;
         private static Game1 game;
@@ -155,6 +159,11 @@ namespace Brogue.Engine
         public static IntVec windowSizeInTiles;
         public static int lightMaskWidthInTilesDividedByTwo;
         private static IntVec modifiedCameraPosition = new IntVec(0, 0);
+
+        private static int levelSeed;
+
+        private static int levelComplexity;
+        private static int currentDungeonLevel = 1;
         
 
         private static DynamicTexture
@@ -176,6 +185,7 @@ namespace Brogue.Engine
 
 
         static UIButton mageButton, warriorButton, rogueButton;
+        static UIButton saveButton, continueButton;
 
         public static SpriteFont font;
         static List<GridSelection> gridSelection = new List<GridSelection>();
@@ -202,8 +212,12 @@ namespace Brogue.Engine
         {
             SaveGameData sg = new SaveGameData();
             sg.character = hero;
-            sg.level = currentLevel;
+            sg.seed = enginerand.Next();
+            sg.levelComplexity = enginerand.Next(500) + 50;
+            sg.dungeonLevel = currentDungeonLevel + 1;
             
+            //IntermediateSerializer  is = new IntermediateSerializer();
+
             //Write to binary file...
             IFormatter formatter = new BinaryFormatter();
             Stream stream = new FileStream("myfile.bro", FileMode.Create, FileAccess.Write, FileShare.None);
@@ -218,7 +232,8 @@ namespace Brogue.Engine
             SaveGameData gd = (SaveGameData)formatter.Deserialize(stream);
             stream.Close();
             hero = gd.character;
-            currentLevel = gd.level;
+            currentLevel = LevelGenerator.generate(gd.seed, gd.levelComplexity, gd.dungeonLevel);
+            currentLevel.CharacterEntities.Add(hero, currentLevel.GetStartPoint());
         }
 
 
@@ -244,11 +259,16 @@ namespace Brogue.Engine
             LogPosition = new Vector2(12, 12);
             // = new Vector2(game.Width - 48, game.Height - 48);
             InventoryPosition = new Vector2(game.Width - 5 * (CELLWIDTH), game.Height - 5 * (CELLWIDTH));
+            InvButtonPosition = new Vector2(game.Width - CELLWIDTH, game.Height - CELLWIDTH);
             InventorySize = new Vector2(4 * CELLWIDTH, 4 * CELLWIDTH);
             weaponEquipPosition = new Vector2(game.Width / 2 - CELLWIDTH, game.Height - CELLWIDTH);
             armorEquipPosition = new Vector2(game.Width - 6 * CELLWIDTH, CELLWIDTH);
             windowSizeInTiles = new IntVec(game.Width / CELLWIDTH, game.Height / CELLWIDTH);
             game.IsMouseVisible = true;
+
+
+            saveButton = new UIButton(new Vector2(game.Width / 2 - 150, game.Height / 2), true, "UI/Save", "Save and quit");
+            continueButton = new UIButton(new Vector2(game.Width / 2 + 150, game.Height / 2), true, "UI/Continue", "Continue");
             //StartGame();
         }
 
@@ -285,7 +305,10 @@ namespace Brogue.Engine
 
         public static void GenerateLevel()
         {
-            currentLevel = LevelGenerator.generate(802, 100);
+            levelSeed = enginerand.Next();
+            levelComplexity = enginerand.Next(500) + 50;
+            currentDungeonLevel = 1;
+            currentLevel = LevelGenerator.generate(levelSeed, levelComplexity, currentDungeonLevel);
             Log("Level generated.");
             currentLevel.CharacterEntities.Add(hero, currentLevel.GetStartPoint());
         }
@@ -401,20 +424,37 @@ namespace Brogue.Engine
             }
             else
             {
-                if (mageButton.isClicked())
+                if (characterCreationOpen)
                 {
-                    hero = new HeroClasses.Mage();
-                    StartGame();
+                    if (mageButton.isClicked())
+                    {
+                        hero = new HeroClasses.Mage();
+                        StartGame();
+                    }
+                    if (warriorButton.isClicked())
+                    {
+                        hero = new HeroClasses.Warrior();
+                        StartGame();
+                    }
+                    if (rogueButton.isClicked())
+                    {
+                        hero = new HeroClasses.Rogue();
+                        StartGame();
+                    }
                 }
-                if (warriorButton.isClicked())
+
+                else if (savePromptOpen)
                 {
-                    hero = new HeroClasses.Warrior();
-                    StartGame();
-                }
-                if (rogueButton.isClicked())
-                {
-                    hero = new HeroClasses.Rogue();
-                    StartGame();
+                    if (saveButton.isClicked())
+                    {
+                        SaveGame();
+                        System.Environment.Exit(0);
+                    }
+                    if (continueButton.isClicked())
+                    {
+                        savePromptOpen = false;
+                        gameStarted = true;
+                    }
                 }
 
             }
@@ -445,6 +485,13 @@ namespace Brogue.Engine
             {
                 LoadGame();
                 didSomething = true;
+            }
+
+            if (KeyboardController.IsPressed(Keys.O))
+            {
+                //Go to next level hacked.
+
+                GoToNextLevel();
             }
 
             if (KeyboardController.IsPressed(Keys.OemPlus))
@@ -492,7 +539,6 @@ namespace Brogue.Engine
                     didSomething = true;
                 }
 
-
                 if (!didSomething)
                 {
                     didSomething = InventoryInteraction(true, screenpos);
@@ -509,6 +555,18 @@ namespace Brogue.Engine
 
             return didSomething;
         }
+
+        private static void GoToNextLevel()
+        {
+            //Generate next level
+            currentLevel = LevelGenerator.generate(enginerand.Next(), enginerand.Next(500) + 50);
+            currentLevel.CharacterEntities.Add(hero, currentLevel.GetStartPoint());
+            //Prompt for save.
+
+            gameStarted = false;
+            savePromptOpen = true;
+        }
+
 
         private static bool InventoryInteraction(bool leftButton, IntVec screenpos)
         {
@@ -581,7 +639,7 @@ namespace Brogue.Engine
 
                 //Draw level.
                 game.GraphicsDevice.SetRenderTarget(mainTarget);
-                game.GraphicsDevice.Clear(Color.Black);
+                //game.GraphicsDevice.Clear(Color.Black);
                 game.spriteBatch.Begin(SpriteSortMode.Deferred,
                             BlendState.AlphaBlend,
                             null,
@@ -599,7 +657,7 @@ namespace Brogue.Engine
 
                 //Draw both to screen.
                 game.GraphicsDevice.SetRenderTarget(null);
-                game.GraphicsDevice.Clear(Color.CornflowerBlue);
+                //game.GraphicsDevice.Clear(Color.CornflowerBlue);
                 game.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
                 game.effect.Parameters["lightMask"].SetValue(lightsTarget);
                 game.effect.CurrentTechnique.Passes[0].Apply();
@@ -655,8 +713,16 @@ namespace Brogue.Engine
 
             else
             {
-                game.GraphicsDevice.Clear(Color.White);
-                DrawCharacterCreation(uisb);
+
+                //game.GraphicsDevice.Clear(Color);
+                if (characterCreationOpen)
+                {
+                    DrawCharacterCreation(uisb);
+                }
+                else if (savePromptOpen)
+                {
+                    DrawSavePrompt(uisb);
+                }
             }
             DrawLog(uisb);
         }
@@ -666,6 +732,12 @@ namespace Brogue.Engine
             mageButton.Draw(sb);
             warriorButton.Draw(sb);
             rogueButton.Draw(sb);
+        }
+
+        private static void DrawSavePrompt(SpriteBatch sb)
+        {
+            saveButton.Draw(sb);
+            continueButton.Draw(sb);
         }
 
         private static void DrawEquip(SpriteBatch sb)
@@ -772,7 +844,8 @@ namespace Brogue.Engine
                 game.spriteBatch.Begin(SpriteSortMode.Deferred,
                         BlendState.Additive);
                 game.GraphicsDevice.SetRenderTarget(lightsTarget);
-                game.GraphicsDevice.Clear(Color.White);
+                //
+                //game.GraphicsDevice.Clear(Color.White);
                 game.spriteBatch.End();
             }
         }
