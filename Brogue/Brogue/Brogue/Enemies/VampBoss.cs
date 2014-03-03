@@ -53,6 +53,14 @@ namespace Brogue.Enemies
                 Random gen = new Random();
                 IntVec choice = possible[gen.Next(0, possible.Length)];
 
+                Engine.Engine.Log("VAMP_BOSS_INFORMATION");
+                Engine.Engine.Log("CURRENT_POSITION: " + level.CharacterEntities.FindPosition(this).X + "," + level.CharacterEntities.FindPosition(this).Y);
+
+                foreach (IntVec i in possible)
+                {
+                    Engine.Engine.Log(i.X + "," + i.Y);
+                }
+
                 level.Move(this, choice, true);
             }
             return true;
@@ -82,6 +90,7 @@ namespace Brogue.Enemies
 
         public override void BuildBoss(int i)
         {
+            Engine.Engine.Log("VAMP_BOSS_CREATED");
             health = 50 + 20 * i;
             maxHealth = health;
             defense = 10 + 5 * i;

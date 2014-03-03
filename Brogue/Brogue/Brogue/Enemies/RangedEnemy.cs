@@ -17,20 +17,13 @@ namespace Brogue.Enemies
                 Direction[] path = AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(target));
                 if (path != null)
                 {
-                    if (path.Length - range <= moveSpeed)
+                    if (path.Length  <= range)
                     {
-                        for (int i = 0; i < path.Length - range; i++)
-                        {
-                            Move(path[i], level);
-                        }
                         Attack();
                     }
                     else
                     {
-                        for (int i = 0; i < moveSpeed; i++)
-                        {
-                            Move(path[i], level);
-                        }
+                        Move(path[0], level);
                     }
                 }
                 else
@@ -43,7 +36,7 @@ namespace Brogue.Enemies
                         {
                             targetPos = pos;
                         }
-                        else if (AStar.getCost(AStar.getPathBetween(level, position, targetPos)) > AStar.getCost(AStar.getPathBetween(level, position, pos)))
+                        else if (AStar.getCost(AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), targetPos)) > AStar.getCost(AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), pos)))
                         {
                             targetPos = pos;
                         }

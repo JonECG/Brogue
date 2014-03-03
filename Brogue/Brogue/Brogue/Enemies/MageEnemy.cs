@@ -12,14 +12,9 @@ namespace Brogue.Enemies
     {
         public override bool TakeTurn(Level level)
         {
-            position = Engine.Engine.currentLevel.CharacterEntities.FindPosition(this);
             if (Aggro(level))
             {
                 Attack();
-            }
-            else
-            {
-                //unimplemented
             }
             return true;
         }
@@ -72,7 +67,7 @@ namespace Brogue.Enemies
                 i = 0;
             }
 
-            range = 6+i;
+            range = 3+i/2;
             aggroRange = 3 + i / 2;
             defense = 2 + (2 * i);
             attack = 8 + (8 * i);

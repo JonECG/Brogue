@@ -12,32 +12,24 @@ namespace Brogue.Enemies
     {
         public override bool TakeTurn(Level level)
         {
-            position = Engine.Engine.currentLevel.CharacterEntities.FindPosition(this);
             if (IsAggro)
             {
-                Direction[] path = AStar.getPathBetween(level, this.position, target.position);
+                Direction[] path = AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(target));
 
                 if (path != null)
                 {
-                    if (path.Length - range <= moveSpeed)
+                    if (path.Length == 1)
                     {
-                        for (int i = 0; i < path.Length - range; i++)
-                        {
-                            Move(path[i], level);
-                        }
                         Attack();
                     }
                     else
                     {
-                        for (int i = 0; i < moveSpeed; i++)
-                        {
-                            Move(path[i], level);
-                        }
+                        Move(path[0], level);
                     }
                 }
                 else
                 {
-                    IntVec[] possible = AStar.getPossiblePositionsFrom(level, position, moveSpeed);
+                    IntVec[] possible = AStar.getPossiblePositionsFrom(level, level.CharacterEntities.FindPosition(this), moveSpeed);
                     IntVec targetPos = null;
                     foreach (IntVec pos in possible)
                     {
@@ -45,7 +37,7 @@ namespace Brogue.Enemies
                         {
                             targetPos = pos;
                         }
-                        else if (AStar.getCost(AStar.getPathBetween(level, position, targetPos)) > AStar.getCost(AStar.getPathBetween(level, position, pos)))
+                        else if (AStar.getCost(AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), targetPos)) > AStar.getCost(AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), pos)))
                         {
                             targetPos = pos;
                         }
