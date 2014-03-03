@@ -38,8 +38,12 @@ namespace Brogue.Enemies
         //Drops items and any other needed actions for death
         protected virtual void Die()
         {
+            Level level = Engine.Engine.currentLevel;
             Engine.Engine.AddXP(exp, Engine.Engine.currentLevel.CharacterEntities.FindPosition(this));
             Engine.Engine.currentLevel.CharacterEntities.Remove(this);
+
+            //CURRENTLY USING DUNGEON LEVEL OF 1 AND CHARACTER LEVEL OF 2. NEED ACCESS.
+            level.DroppedItems.Add(Items.Item.randomLegendary(1, 2), level.CharacterEntities.FindPosition(this));
         }
 
         //Converts damage based on armour and then removes from health.
