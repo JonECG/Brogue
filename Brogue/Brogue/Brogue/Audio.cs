@@ -91,7 +91,7 @@ namespace Brogue
         }
 
 
-        public static void playRandomSong()
+        public static void playRandomSong(float volume = 0.75f)
         {
             stopAllMusic();
             int selected = random.Next(0, MAX_LIABBARY_SIZE); ;
@@ -99,21 +99,21 @@ namespace Brogue
             {
                 selected = random.Next(0, MAX_LIABBARY_SIZE);
             }
-            music[selected].playFile();
+            music[selected].playFile(volume);
         }
 
-        public static void playRandomSound()
+        public static void playRandomSound(float volume = 0.75f)
         {
             int selected = random.Next(0, MAX_LIABBARY_SIZE); ;
             while (sound[selected] == null)
             {
                 selected = random.Next(0, MAX_LIABBARY_SIZE);
             }
-            sound[selected].playFile();
+            sound[selected].playFile(volume);
         }
 
 
-        public static void playSound(String key)
+        public static void playSound(String key, float volume = 0.75f)
         {
             bool fileNotFound = true;
             for (int currentSlot = 0; currentSlot < MAX_LIABBARY_SIZE && (fileNotFound); currentSlot++)
@@ -122,7 +122,7 @@ namespace Brogue
                 {
                     if (sound[currentSlot].keyName.Equals(key))
                     {
-                        sound[currentSlot].playFile();
+                        sound[currentSlot].playFile(volume);
                         fileNotFound = false;
                     }
                 }
@@ -133,7 +133,7 @@ namespace Brogue
             }
         }
 
-        public static void playMusic(String key)
+        public static void playMusic(String key, float volume = 0.75f)
         {
             bool fileNotFound = true;
             for (int currentSlot = 0; currentSlot < MAX_LIABBARY_SIZE && (fileNotFound); currentSlot++)
@@ -142,7 +142,7 @@ namespace Brogue
                 {
                     if (music[currentSlot].keyName.Equals(key))
                     {
-                        music[currentSlot].playFile();
+                        music[currentSlot].playFile(volume);
                         fileNotFound = false;
                     }
                 }
