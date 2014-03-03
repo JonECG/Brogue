@@ -13,6 +13,11 @@ namespace Brogue.Items.Equipment
        public List<Class> UsedBy { get; protected set; }
        public List<Slots> EquipableIn { get; protected set; }
 
+       public Gear()
+       {
+
+       }
+
        public static int findLevelReq(int dLevel, int cLevel)
        {
            int levelRange = 3;

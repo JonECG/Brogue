@@ -65,7 +65,7 @@ namespace Brogue.Items
             Items.Equipment.Weapon.Ranged.Chakrams.Texture = Engine.Engine.GetTexture("Items/Chakram");
             Items.Equipment.Weapon.Legendary.Ranged.RodOfExtending.Texture = Engine.Engine.GetTexture("Items/Staff");
             Items.Equipment.Weapon.Legendary.Ranged.KunaiWithChain.Texture = Engine.Engine.GetTexture("Items/Kunai");
-            Items.Equipment.Weapon.Legendary.Ranged.BloodWing.Texture = Engine.Engine.GetTexture("Items/Sniper");
+            Items.Equipment.Weapon.Legendary.Ranged.BloodWing.Texture = Engine.Engine.GetTexture("Items/SniperRifle");
             Items.Equipment.Weapon.Legendary.Ranged.ThePhoenix.Texture = Engine.Engine.GetTexture("Items/Wand");
 
             Items.Equipment.Armor.Chest.ClothChest.Texture = Engine.Engine.GetTexture("Items/ClothChest");

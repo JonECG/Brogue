@@ -88,4 +88,7 @@ Content\Enviroment\Table.xnb
 Content\UI\InvSlotHighlighted.xnb
 Content\UI\Save.xnb
 Content\UI\Continue.xnb
+Content\Hero\MageSprite.xnb
+Content\Hero\RogueSprite.xnb
+Content\Hero\WarriorSprite.xnb
 Content\Audio\The Descent.wma
