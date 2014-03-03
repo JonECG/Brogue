@@ -31,9 +31,10 @@ namespace Brogue.HeroClasses
         protected int armorRating;
         protected int experience = 0;
         protected int expRequired = 100;
+        protected int healthPerLevel;
         protected Ability[] abilities;
         public int jarBarAmount;
-        static Sprite sprite;
+        protected static Sprite sprite;
         static Sprite radiusSprite;
         static Sprite castingSprite;
         public static DynamicTexture abilitySprite;
@@ -47,9 +48,11 @@ namespace Brogue.HeroClasses
         {
             level = 1;
             numAbilities = 0;
-            health = 20;
+            health = 200;
+            maxHealth = health;
+            healthPerLevel = 50;
             experience = 0;
-            expRequired = 100;
+            expRequired = 50;
             MaxJarBarAmount = 50;
             jarBarAmount = 0;
             isFriendly = true;
@@ -90,8 +93,10 @@ namespace Brogue.HeroClasses
         public override void TakeDamage(int damage, GameCharacter attacker)
         {
             int damagePostReduction = damage - armorRating;
-            damagePostReduction = (damagePostReduction < 1) ? 1 : 0;
+            damagePostReduction = (damagePostReduction < 1) ? 1 : damagePostReduction;
             health -= damagePostReduction;
+            Engine.Engine.Log(health.ToString());
+            Engine.Engine.Log(attacker.ToString());
         }
 
         public static void loadSprite()
@@ -123,11 +128,21 @@ namespace Brogue.HeroClasses
             {
                 int addedExp = experience - expRequired;
                 level += 1;
-                maxHealth = 20 + 5*level;
-                health += 20;
+                maxHealth = 200 + healthPerLevel*level;
+                health += healthPerLevel;
                 experience = 0 + addedExp;
-                expRequired = 1000 + 50 * (level-1);
+                expRequired = 50 + 25 * (level-1);
             }
+        }
+
+        private void drinkFromJarBar()
+        {
+            int amountToHeal = (jarBarAmount > maxHealth - health) ? maxHealth - health : jarBarAmount;
+            jarBarAmount -= amountToHeal;
+            Engine.Engine.Log(amountToHeal.ToString());
+            
+            Heal(amountToHeal);
+            Engine.Engine.Log(health.ToString());
         }
 
         public override bool TakeTurn(Mapping.Level mapLevel)
@@ -184,6 +199,10 @@ namespace Brogue.HeroClasses
                 {
                     checkGround(mapLevel);
                 }
+                else if (Mapping.KeyboardController.IsTyped(Keys.RightShift))
+                {
+                    drinkFromJarBar();
+                }
                 else if (Mapping.KeyboardController.IsPressed(Keys.R))
                 {
                     inventory.sortInventory();
@@ -223,7 +242,7 @@ namespace Brogue.HeroClasses
                             if (true)//abilities[0].filledSquares())
                             {
                                 turnOver = true;
-                                abilities[0].finishCastandDealDamage(level, currentlyEquippedItems.getTotalWeaponDamage());
+                                abilities[0].finishCastandDealDamage(level, currentlyEquippedItems.getTotalWeaponDamage(), mapLevel, this);
                                 Engine.Engine.ClearGridSelections();
                                 viewingCast = false;
                             }
@@ -258,21 +277,20 @@ namespace Brogue.HeroClasses
                 {
                     int weaponRange1 = currentlyEquippedItems.getPrimaryWeapon().Range;
                     int weaponRange2 = (currentlyEquippedItems.getAuxilaryWeapon() != null) ? currentlyEquippedItems.getAuxilaryWeapon().Range : -1;
-                    damageEnemyIfInRange(testEnemy, mapLevel.CharacterEntities.FindPosition(this), currentlyEquippedItems.getPrimaryWeapon().Damage, weaponRange1);
+                    damageEnemyIfInRange(testEnemy, mapLevel, mapLevel.CharacterEntities.FindPosition(this), currentlyEquippedItems.getPrimaryWeapon().Damage, weaponRange1);
                     if (weaponRange2 != -1)
                     {
-                        damageEnemyIfInRange(testEnemy, mapLevel.CharacterEntities.FindPosition(this), currentlyEquippedItems.getAuxilaryWeapon().Damage, weaponRange2);
+                        damageEnemyIfInRange(testEnemy, mapLevel,  mapLevel.CharacterEntities.FindPosition(this), currentlyEquippedItems.getAuxilaryWeapon().Damage, weaponRange2);
                     }
                 }
             }
         }
 
-        private void damageEnemyIfInRange(Enemies.Enemy testEnemy, IntVec heroPosition, int damage, int range)
+        private void damageEnemyIfInRange(GameCharacter testEnemy, Level mapLevel, IntVec heroPosition, int damage, int range)
         {
-            Engine.Engine.Log(IsInRange(testEnemy.position, heroPosition, range).ToString());
-            if (IsInRange(testEnemy.position, heroPosition, range))
+            IntVec position = mapLevel.CharacterEntities.FindPosition(testEnemy);
+            if (IsInRange(position, heroPosition, range))
             {
-                Engine.Engine.Log("I'm called");
                 testEnemy.TakeDamage(damage, this);
             }
         }
@@ -343,8 +361,11 @@ namespace Brogue.HeroClasses
 
         public void pickupItem(Item item)
         {
-            inventory.addItem(item.PickUpEffect(this));
-            Engine.Engine.Log("" + jarBarAmount);
+            if (item != null)
+            {
+                inventory.addItem(item.PickUpEffect(this));
+                Engine.Engine.Log("" + jarBarAmount);
+            }
 
         }
 

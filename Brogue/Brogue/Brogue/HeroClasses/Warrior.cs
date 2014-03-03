@@ -11,7 +11,8 @@ namespace Brogue.HeroClasses
         public Warrior()
         {
             numAbilities = 2;
-            position = new IntVec(0, 0);
+            texture = Engine.Engine.GetTexture("Hero/WarriorSprite");
+            Hero.sprite = new Sprite(texture);
         }
     }
 }
