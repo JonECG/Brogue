@@ -10,6 +10,11 @@ namespace Brogue.Enums
         TheWolverine,
         _40k,
         RodOfExtending,
-        KunaiWithChain
+        KunaiWithChain,
+        Bloodwing,
+        ThePhoenix,
+        Bloodthirster,
+        BladeWaltz,
+        PaleRider,
     }
 }

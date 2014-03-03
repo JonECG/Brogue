@@ -132,7 +132,7 @@ namespace Brogue.Engine
     partial class Engine
     {
         public const bool DOLIGHTING = true;
-        public const bool DOAUDIO = false;
+        public const bool DOAUDIO = true;
         public const bool DOSTARTMENU = false;
         public const float sightDistance = 1;
         public static bool inventoryOpen = false;

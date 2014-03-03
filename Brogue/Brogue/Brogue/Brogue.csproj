@@ -164,9 +164,11 @@
     <Compile Include="Enums\StatModifiers.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Enums\UniqueAccesory.cs" />
     <Compile Include="Enums\UniqueArmor.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Enums\UniqueOffhands.cs" />
     <Compile Include="Enums\UniqueWeapons.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -239,6 +241,8 @@
     <Compile Include="Items\Equipment\Accessory\Accessory.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Items\Equipment\Accessory\Legendary\LegendaryAccessory.cs" />
+    <Compile Include="Items\Equipment\Accessory\Legendary\TheOne.cs" />
     <Compile Include="Items\Equipment\Accessory\Necklace.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -274,9 +278,21 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Equipment\Armor\Helm\PlateHelm.cs" />
+    <Compile Include="Items\Equipment\Armor\Legendary\Chest\AbyssalChest.cs" />
+    <Compile Include="Items\Equipment\Armor\Legendary\Chest\GladiatorChest.cs" />
+    <Compile Include="Items\Equipment\Armor\Legendary\Chest\LegendaryChest.cs" />
+    <Compile Include="Items\Equipment\Armor\Legendary\Chest\ProwlerChest.cs" />
+    <Compile Include="Items\Equipment\Armor\Legendary\Helm\AbyssalHelm.cs" />
+    <Compile Include="Items\Equipment\Armor\Legendary\Helm\GladiatorHelm.cs" />
+    <Compile Include="Items\Equipment\Armor\Legendary\Helm\LegendaryHelm.cs" />
+    <Compile Include="Items\Equipment\Armor\Legendary\Helm\ProwlerHelm.cs" />
     <Compile Include="Items\Equipment\Armor\Legendary\LegendaryArmor.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Items\Equipment\Armor\Legendary\Legs\AbyssalLegs.cs" />
+    <Compile Include="Items\Equipment\Armor\Legendary\Legs\GladiatorLegs.cs" />
+    <Compile Include="Items\Equipment\Armor\Legendary\Legs\LegendaryLegs.cs" />
+    <Compile Include="Items\Equipment\Armor\Legendary\Legs\ProwlerLegs.cs" />
     <Compile Include="Items\Equipment\Armor\Legendary\Shields\FirstAvenger.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -308,6 +324,8 @@
     <Compile Include="Items\Equipment\Gear.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Items\Equipment\Offhand\Legendary\LegendaryOffhand.cs" />
+    <Compile Include="Items\Equipment\Offhand\Legendary\Necronomicon.cs" />
     <Compile Include="Items\Equipment\Offhand\Offhand.cs" />
     <Compile Include="Items\Equipment\Offhand\SpellBook.cs" />
     <Compile Include="Items\Equipment\Weapon\Legendary\LegendaryWeapon.cs">
@@ -316,12 +334,16 @@
     <Compile Include="Items\Equipment\Weapon\Legendary\Melee\40k.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Items\Equipment\Weapon\Legendary\Melee\BladeWaltz.cs" />
+    <Compile Include="Items\Equipment\Weapon\Legendary\Melee\Bloodthirster.cs" />
     <Compile Include="Items\Equipment\Weapon\Legendary\Melee\LegendaryMelee.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Items\Equipment\Weapon\Legendary\Melee\PaleRider.cs" />
     <Compile Include="Items\Equipment\Weapon\Legendary\Melee\TheWolverine.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Items\Equipment\Weapon\Legendary\Ranged\BloodWing.cs" />
     <Compile Include="Items\Equipment\Weapon\Legendary\Ranged\KunaiWithChain.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -331,6 +353,7 @@
     <Compile Include="Items\Equipment\Weapon\Legendary\Ranged\RodOfExtending.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Items\Equipment\Weapon\Legendary\Ranged\ThePhoenix.cs" />
     <Compile Include="Items\Equipment\Weapon\Melee\Axe.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -384,6 +407,7 @@
     <Compile Include="Mapping\ColorEnvironment.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Mapping\Decal.cs" />
     <Compile Include="Mapping\EnvironmentObject.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -460,9 +484,6 @@
     <None Include="EnviromentObjects\XP.pdn" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Items\Equipment\Unique\Armor\" />
-    <Folder Include="Items\Equipment\Unique\Item\" />
-    <Folder Include="Items\Equipment\Unique\Weapon\" />
     <Folder Include="TestCases\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

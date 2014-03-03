@@ -14,6 +14,7 @@ namespace Brogue.Items.Equipment.Offhand
         {
             return Texture;
         }
+
         public SpellBook(int dLevel, int cLevel)
         {
             Name = "Spellbook";

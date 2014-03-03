@@ -7,6 +7,15 @@ namespace Brogue.Enums
 {
     public enum LegendaryArmor
     {
-        TheFirstAvenger
+        TheFirstAvenger,
+        AbyssalChest,
+        AbyssalHelm,
+        AbyssalLegs,
+        ProwlerChest,
+        ProwlerHelm,
+        ProwlerLegs,
+        GladiatorChest,
+        GladiatorHelm,
+        GladiatorLegs,      
     }
 }

@@ -1,13 +1,13 @@
-﻿using System;
+﻿using Brogue.Engine;
+using Brogue.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Brogue.Enums;
-using Brogue.Engine;
 
-namespace Brogue.Items.Equipment.Armor.Legendary.Shields
+namespace Brogue.Items.Equipment.Armor.Legendary.Legs
 {
-    [Serializable] public class FirstAvenger : LegendaryShield
+    public class GladiatorLegs : LegendaryLegs
     {
         public static DynamicTexture Texture { get; set; }
 
@@ -16,12 +16,12 @@ namespace Brogue.Items.Equipment.Armor.Legendary.Shields
             return Texture;
         }
 
-        public FirstAvenger(int dLevel, int cLevel)
+        public GladiatorLegs(int dLevel, int cLevel)
         {
-            Name = "The First Avenger";
-            FlavorText = "I had a date.";
+            Name = "Gladiator Legs";
+            FlavorText = "Legendary Legs";
             LevelReq = findLevelReq(dLevel, cLevel);
-            UsedBy = new List<Class> { Class.Sentinel, Class.Juggernaut };
+            UsedBy = new List<Class> { Class.Warrior, Class.Brawler, Class.Berserker };
             ArmorValue = findArmorValue(BaseArmor, dLevel, TypeBonus);
         }
     }

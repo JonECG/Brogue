@@ -5,11 +5,8 @@ using System.Text;
 
 namespace Brogue.Enums
 {
-    public enum Legends
+    public enum LegendaryOffhands
     {
-        Weapon,
-        Armor,
-        Accessories,
-        Offhands,
+        Necromonicon
     }
 }

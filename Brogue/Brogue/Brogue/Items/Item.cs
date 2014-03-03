@@ -18,6 +18,11 @@ using Brogue.Items.Equipment.Weapon.Legendary.Ranged;
 using Brogue.Items.Equipment.Armor.Legendary.Shields;
 using Brogue.Items.Equipment.Offhand;
 using Brogue.HeroClasses;
+using Brogue.Items.Equipment.Accessory.Legendary;
+using Brogue.Items.Equipment.Offhand.Legendary;
+using Brogue.Items.Equipment.Armor.Legendary.Chest;
+using Brogue.Items.Equipment.Armor.Legendary.Helm;
+using Brogue.Items.Equipment.Armor.Legendary.Legs;
 
 
 namespace Brogue.Items
@@ -46,6 +51,9 @@ namespace Brogue.Items
             Items.Equipment.Weapon.Melee.Scythe.Texture = Engine.Engine.GetTexture("Items/Scythe");
             Items.Equipment.Weapon.Legendary.Melee.TheWolverine.Texture = Engine.Engine.GetTexture("Items/Claws");
             Items.Equipment.Weapon.Legendary.Melee._40k.Texture = Engine.Engine.GetTexture("Items/Warhammer");
+            Items.Equipment.Weapon.Legendary.Melee.PaleRider.Texture = Engine.Engine.GetTexture("Items/Scythe");
+            Items.Equipment.Weapon.Legendary.Melee.BladeWaltz.Texture = Engine.Engine.GetTexture("Items/Rapier");
+            Items.Equipment.Weapon.Legendary.Melee.Bloodthirster.Texture = Engine.Engine.GetTexture("Items/BastardSword");
 
             Items.Equipment.Weapon.Ranged.Kunai.Texture = Engine.Engine.GetTexture("Items/Kunai");
             Items.Equipment.Weapon.Ranged.Staff.Texture = Engine.Engine.GetTexture("Items/Staff");
@@ -57,6 +65,8 @@ namespace Brogue.Items
             Items.Equipment.Weapon.Ranged.Chakrams.Texture = Engine.Engine.GetTexture("Items/Chakram");
             Items.Equipment.Weapon.Legendary.Ranged.RodOfExtending.Texture = Engine.Engine.GetTexture("Items/Staff");
             Items.Equipment.Weapon.Legendary.Ranged.KunaiWithChain.Texture = Engine.Engine.GetTexture("Items/Kunai");
+            Items.Equipment.Weapon.Legendary.Ranged.BloodWing.Texture = Engine.Engine.GetTexture("Items/Sniper");
+            Items.Equipment.Weapon.Legendary.Ranged.ThePhoenix.Texture = Engine.Engine.GetTexture("Items/Wand");
 
             Items.Equipment.Armor.Chest.ClothChest.Texture = Engine.Engine.GetTexture("Items/ClothChest");
             Items.Equipment.Armor.Chest.LeatherChest.Texture = Engine.Engine.GetTexture("Items/LeatherChest");
@@ -78,9 +88,12 @@ namespace Brogue.Items
             Items.Equipment.Armor.Legendary.Shields.FirstAvenger.Texture = Engine.Engine.GetTexture("Items/PlateShield");
 
             Items.Equipment.Accessory.Necklace.Texture = Engine.Engine.GetTexture("Items/Necklace");
+
             Items.Equipment.Accessory.Ring.Texture = Engine.Engine.GetTexture("Items/Ring");
+            Items.Equipment.Accessory.Legendary.TheOne.Texture = Engine.Engine.GetTexture("Items/Ring");
 
             Items.Equipment.Offhand.SpellBook.Texture = Engine.Engine.GetTexture("Items/Spellbook");
+            Items.Equipment.Offhand.Legendary.Necronomicon.Texture = Engine.Engine.GetTexture("Items/Spellbook");
         }
 
         public static Item randomItem(int dLevel, int cLevel)
@@ -319,6 +332,7 @@ namespace Brogue.Items
             int findItem;
 
             findItem = rand.Next(Enum.GetNames(typeof(Legends)).Length);
+            #region Legendary Weapons
             if ((Legends)findItem == Legends.Weapon)
             {
                 findItem = rand.Next(Enum.GetNames(typeof(LegendaryWeapon)).Length);
@@ -326,19 +340,41 @@ namespace Brogue.Items
                 {
                     return new _40k(dLevel, cLevel);
                 }
-                if ((LegendaryWeapon)findItem == LegendaryWeapon.KunaiWithChain)
+                else if ((LegendaryWeapon)findItem == LegendaryWeapon.KunaiWithChain)
                 {
                     return new KunaiWithChain(dLevel, cLevel);
                 }
-                if ((LegendaryWeapon)findItem == LegendaryWeapon.RodOfExtending)
+                else if ((LegendaryWeapon)findItem == LegendaryWeapon.RodOfExtending)
                 {
                     return new RodOfExtending(dLevel, cLevel);
                 }
-                if ((LegendaryWeapon)findItem == LegendaryWeapon.TheWolverine)
+                else if ((LegendaryWeapon)findItem == LegendaryWeapon.TheWolverine)
                 {
                     return new TheWolverine(dLevel, cLevel);
                 }
+                else if ((LegendaryWeapon)findItem == LegendaryWeapon.BladeWaltz)
+                {
+                    return new BladeWaltz(dLevel, cLevel);
+                }
+                else if ((LegendaryWeapon)findItem == LegendaryWeapon.Bloodthirster)
+                {
+                    return new Bloodthirster(dLevel, cLevel);
+                }
+                else if ((LegendaryWeapon)findItem == LegendaryWeapon.Bloodwing)
+                {
+                    return new BloodWing(dLevel, cLevel);
+                }
+                else if ((LegendaryWeapon)findItem == LegendaryWeapon.ThePhoenix)
+                {
+                    return new ThePhoenix(dLevel, cLevel);
+                }
+                else if ((LegendaryWeapon)findItem == LegendaryWeapon.PaleRider)
+                {
+                    return new PaleRider(dLevel, cLevel);
+                }
             }
+            #endregion
+            #region Legendary Armors
             else if ((Legends)findItem == Legends.Armor)
             {
                 findItem = rand.Next(Enum.GetNames(typeof(LegendaryArmor)).Length);
@@ -346,8 +382,64 @@ namespace Brogue.Items
                 {
                     return new FirstAvenger(dLevel, cLevel);
                 }
+                else if ((LegendaryArmor)findItem == LegendaryArmor.AbyssalChest)
+                {
+                    return new AbyssalChest(dLevel, cLevel);
+                }
+                else if ((LegendaryArmor)findItem == LegendaryArmor.AbyssalLegs)
+                {
+                    return new AbyssalLegs(dLevel, cLevel);
+                }
+                else if ((LegendaryArmor)findItem == LegendaryArmor.AbyssalHelm)
+                {
+                    return new AbyssalHelm(dLevel, cLevel);
+                }
+                else if ((LegendaryArmor)findItem == LegendaryArmor.ProwlerChest)
+                {
+                    return new ProwlerChest(dLevel, cLevel);
+                }
+                else if ((LegendaryArmor)findItem == LegendaryArmor.ProwlerLegs)
+                {
+                    return new ProwlerLegs(dLevel, cLevel);
+                }
+                else if ((LegendaryArmor)findItem == LegendaryArmor.ProwlerHelm)
+                {
+                    return new ProwlerHelm(dLevel, cLevel);
+                }
+                else if ((LegendaryArmor)findItem == LegendaryArmor.GladiatorChest)
+                {
+                    return new GladiatorChest(dLevel, cLevel);
+                }
+                else if ((LegendaryArmor)findItem == LegendaryArmor.GladiatorLegs)
+                {
+                    return new GladiatorLegs(dLevel, cLevel);
+                }
+                else if ((LegendaryArmor)findItem == LegendaryArmor.GladiatorHelm)
+                {
+                    return new GladiatorHelm(dLevel, cLevel);
+                }
             }
-
+            #endregion
+            #region Legendary Accessories
+            else if ((Legends)findItem == Legends.Accessories)
+            {
+                findItem = rand.Next(Enum.GetNames(typeof(LegendaryAccessories)).Length);
+                if ((LegendaryAccessories)findItem == LegendaryAccessories.TheOne)
+                {
+                    return new TheOne(dLevel, cLevel);
+                }
+            }
+            #endregion
+            #region Legendary Offhands
+            else if ((Legends)findItem == Legends.Offhands)
+            {
+                findItem = rand.Next(Enum.GetNames(typeof(LegendaryOffhands)).Length);
+                if ((LegendaryOffhands)findItem == LegendaryOffhands.Necromonicon)
+                {
+                    return new Necronomicon(dLevel, cLevel);
+                }
+            }
+            #endregion
             return new Potion(dLevel, cLevel);
         }
 
