@@ -135,7 +135,7 @@ namespace Brogue.Mapping
 
                         IntVec newLocation = recentNode.position + dir;
 
-                        if (solid[newLocation.X, newLocation.Y] < -(recentNode.actualCost + 10))
+                        if (solid[newLocation.X, newLocation.Y] < -(recentNode.actualCost + 10) || (solid[newLocation.X,newLocation.Y]==int.MaxValue && newLocation.Equals(to) ) )
                         {
                             solid[newLocation.X, newLocation.Y] = -(recentNode.actualCost + 10);
                             nodes.Add(new __AStarNode(newLocation, recentNode.actualCost + 10, 10 * calculateHeuristic(newLocation, to), i, recentNode, dir));

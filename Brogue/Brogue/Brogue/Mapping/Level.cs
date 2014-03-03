@@ -288,17 +288,17 @@ namespace Brogue.Mapping
             }
 
 
-            //path = AStar.getPathBetween(this, a, b);
+            path = AStar.getPathBetween(this, a, b);
 
-            //IntVec current = new IntVec(a.X, a.Y);
-            //foreach (Direction dir in path)
-            //{
-            //    current += dir;
-            //    Engine.Engine.Draw( new Sprite( Engine.Engine.placeHolder, Color.Orange, dir ), new IntVec(current.X, current.Y) ); //Orange
-            //}
+            IntVec current = new IntVec(a.X, a.Y);
+            foreach (Direction dir in path)
+            {
+                current += dir;
+                Engine.Engine.Draw(new Sprite(Engine.Engine.placeHolder, Color.Orange, dir), new IntVec(current.X, current.Y)); //Orange
+            }
 
-            //Engine.Engine.Draw(new Sprite( Engine.Engine.placeHolder, Color.Green ), new IntVec(a.X, a.Y) ); //Green
-            //Engine.Engine.Draw(new Sprite( Engine.Engine.placeHolder, Color.Red ), new IntVec(b.X, b.Y) ); //Red
+            Engine.Engine.Draw(new Sprite(Engine.Engine.placeHolder, Color.Green), new IntVec(a.X, a.Y)); //Green
+            Engine.Engine.Draw(new Sprite(Engine.Engine.placeHolder, Color.Red), new IntVec(b.X, b.Y)); //Red
 
 
             //var nodes = AStar.getPathDrawnBetween(this, a, b, actionsToTake);
@@ -342,7 +342,7 @@ namespace Brogue.Mapping
         internal void testUpdate()
         {
             IntVec aMove = new IntVec((KeyboardController.IsTyped('H',0) ? 1 : 0) - (KeyboardController.IsTyped('F',0) ? 1 : 0), (KeyboardController.IsTyped('G',0) ? 1 : 0) - (KeyboardController.IsTyped('T',0) ? 1 : 0));
-            IntVec bMove = new IntVec((KeyboardController.IsPressed('L') ? 1 : 0) - (KeyboardController.IsPressed('J') ? 1 : 0), (KeyboardController.IsPressed('K') ? 1 : 0) - (KeyboardController.IsPressed('I') ? 1 : 0));
+            IntVec bMove = new IntVec((KeyboardController.IsPressed('M') ? 1 : 0) - (KeyboardController.IsPressed('B') ? 1 : 0), (KeyboardController.IsPressed('N') ? 1 : 0) - (KeyboardController.IsPressed('J') ? 1 : 0));
             actionsToTake += (KeyboardController.IsDown('2') ? 1 : 0) - (KeyboardController.IsDown('1') ? 1 : 0);
 
             if (aMove.X != 0 || aMove.Y != 0 || bMove.X != 0 || bMove.Y != 0)

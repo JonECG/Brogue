@@ -354,9 +354,9 @@ namespace Brogue.Mapping
 
             Level result = new Level( startPoint, floorPlan.tiles, environment, interactableEnvironment, lightSources, characters, dungeonLevel );
 
-            if (!result.isComplete())
+            //if (!result.isComplete())
             {
-                Engine.Engine.Log( "Level contains places which are impossible to reach from the starting position" );
+                //Engine.Engine.Log( "Level contains places which are impossible to reach from the starting position" );
             }
 
             return result;
@@ -449,8 +449,8 @@ namespace Brogue.Mapping
                     }
                     break;
                 case __FloorPlan.__Room.__RoomType.FOYER:
-                    Decoration[] tableItems = {  new Decoration(new Sprite(Engine.Engine.GetTexture("Enviroment/Scratches"), new IntVec(0,0) )), 
-                                                new Decoration(new Sprite(Engine.Engine.GetTexture("Enviroment/Scratches"), new IntVec(1,0))) };
+                    Decoration[] tableItems = {  new Decoration(new Sprite(Engine.Engine.GetTexture("placeholder"), new IntVec(0,0) )), 
+                                                new Decoration(new Sprite(Engine.Engine.GetTexture("placeholder"), new IntVec(0,0))) };
                     //Table
                     for (int x = 2; x < room.dimensions.Width - 2; x++)
                     {
