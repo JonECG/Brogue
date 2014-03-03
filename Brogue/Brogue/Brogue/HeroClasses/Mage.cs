@@ -12,7 +12,7 @@ namespace Brogue.HeroClasses
         public Mage()
         {
             numAbilities = 2;
-            texture = Engine.Engine.GetTexture("Hero/RogueSprite");
+            texture = Engine.Engine.GetTexture("Hero/MageSprite");
             Hero.sprite = new Sprite(texture);
         }
     }
