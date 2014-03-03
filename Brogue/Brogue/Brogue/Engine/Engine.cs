@@ -332,9 +332,8 @@ namespace Brogue.Engine
             font = content.Load<SpriteFont>("UI/Font");
 
             //////////////////////////////////
-            //The following line doesn't work because whoever added it didn't add the Audio class to the repo.
-            //Audio.LoadContent(content);
-            //Audio.playMusic("The_Thing");
+            Audio.LoadContent(content);
+            Audio.playMusic("The_Thing", 1.0f);
             //////////////////////////////////
             
         }

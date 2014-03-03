@@ -39,13 +39,13 @@ namespace Brogue.EnviromentObjects.Interactive
            {
                isSolid = false;
                isOpen = true;
-               directionFacing.Rotate(true);
+               directionFacing = directionFacing.Rotate(true);
            }
            else if (!isSolid)
            {
                isSolid = true;
                isOpen = false;
-               directionFacing.Rotate(false);
+               directionFacing = directionFacing.Rotate(false);
            }
        }
 
@@ -63,8 +63,8 @@ namespace Brogue.EnviromentObjects.Interactive
        public void actOn(GameCharacter actingCharacter)
        {
            changeSolid();
-           //The following line doesn't work because whoever added it didn't add the Audio class to the repo.
-           //Audio.playSound("door");
+           //directionFacing = directionFacing.Rotate(true);
+           Audio.playSound("door");
        }
     }
 
