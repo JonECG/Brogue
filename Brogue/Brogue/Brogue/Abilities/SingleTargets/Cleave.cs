@@ -14,10 +14,10 @@ namespace Brogue.Abilities.Damaging.SingleTargets
     public class Cleave : SingleTarget
     {
         private int baseDamage = 5;
-        private IntVec[] castSquares = new IntVec[2];
 
         public Cleave()
         {
+            castSquares = new IntVec[2];
             for(int i = 0; i < castSquares.Length;i++)
             {
                 castSquares[i] = new IntVec(0,0);
@@ -26,8 +26,8 @@ namespace Brogue.Abilities.Damaging.SingleTargets
 
         public override IntVec[] viewCastRange(Level level, IntVec start)
         {
-            radius = 2;
-            IntVec[] test = AStar.getPossiblePositionsFrom(level, start, radius);
+            radius = 1;
+            IntVec[] test = AStar.getPossiblePositionsFrom(level, start, radius, true);
             return test;
         }
 
@@ -42,6 +42,17 @@ namespace Brogue.Abilities.Damaging.SingleTargets
                     castSquares[i] = mouse;
                 }
             }
+        }
+
+        public override bool filledSquares()
+        {
+            bool filled = true;
+            IntVec test = new IntVec(0, 0);
+            for (int i = 0; i < castSquares.Length && filled; i++)
+            {
+                filled = !(castSquares[i].Equals(test));
+            }
+            return filled;
         }
 
         public override void removeCastingSquares(IntVec cursorPosition)
@@ -61,7 +72,7 @@ namespace Brogue.Abilities.Damaging.SingleTargets
             return castSquares;
         }
 
-        public override int finishCastandDealDamage(int heroLevel, int heroDamage)
+        public override int finishCastandDealDamage(int heroLevel, int heroDamage, Level mapLevel, GameCharacter hero)
         {
             int baseSpellDamage = baseDamage * heroLevel;
             damage = baseSpellDamage + heroDamage;
@@ -69,6 +80,11 @@ namespace Brogue.Abilities.Damaging.SingleTargets
             wasJustCast = true;
             for (int i = 0; i < castSquares.Length; i++)
             {
+                GameCharacter test = (GameCharacter)mapLevel.CharacterEntities.FindEntity(castSquares[i]);
+                if (test != null)
+                {
+                    test.TakeDamage(damage, hero);
+                }
                 castSquares[i] = new IntVec(0,0);
             }
             return damage;

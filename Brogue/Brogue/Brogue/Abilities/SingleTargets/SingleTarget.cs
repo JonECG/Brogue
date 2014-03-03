@@ -12,6 +12,6 @@ namespace Brogue.Abilities.Damaging
     [Serializable] public abstract class SingleTarget : Ability
     {
         protected int width, height;
-        protected IntVec startingPoint;
+        protected IntVec[] castSquares;
     }
 }
