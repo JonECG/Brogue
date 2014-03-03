@@ -27,6 +27,8 @@ namespace Brogue.EnviromentObjects.Decorative
         {
             isSolid = false;
             directionFacing = whereToFace;
+            directionFacing = directionFacing.Rotate(true);
+            directionFacing = directionFacing.Rotate(true);
         }
 
         public bool IsSolid()
@@ -36,8 +38,8 @@ namespace Brogue.EnviromentObjects.Decorative
 
         public Sprite GetSprite()
         {
-            return new Sprite(texture);
-            //return new Sprite(texture, directionFacing);
+            //return new Sprite(texture);
+            return new Sprite(texture, directionFacing);
 
         }
     }

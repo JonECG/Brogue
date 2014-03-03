@@ -333,7 +333,7 @@ namespace Brogue.Engine
 
             //////////////////////////////////
             Audio.LoadContent(content);
-            Audio.playMusic("The_Thing", 1.0f);
+            Audio.playMusic("Doom", 0.15f);
             //////////////////////////////////
             
         }
