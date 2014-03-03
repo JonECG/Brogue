@@ -72,16 +72,25 @@ namespace Brogue.Items
             Items.Equipment.Armor.Chest.LeatherChest.Texture = Engine.Engine.GetTexture("Items/LeatherChest");
             Items.Equipment.Armor.Chest.MailChest.Texture = Engine.Engine.GetTexture("Items/MailChest");
             Items.Equipment.Armor.Chest.PlateChest.Texture = Engine.Engine.GetTexture("Items/PlateChest");
+            Items.Equipment.Armor.Legendary.Chest.AbyssalChest.Texture = Engine.Engine.GetTexture("Items/PlateChest");
+            Items.Equipment.Armor.Legendary.Chest.GladiatorChest.Texture = Engine.Engine.GetTexture("Items/MailChest");
+            Items.Equipment.Armor.Legendary.Chest.ProwlerChest.Texture = Engine.Engine.GetTexture("Items/LeatherChest");
 
             Items.Equipment.Armor.Legs.ClothLegs.Texture = Engine.Engine.GetTexture("Items/ClothLegs");
             Items.Equipment.Armor.Legs.LeatherLegs.Texture = Engine.Engine.GetTexture("Items/LeatherLegs");
             Items.Equipment.Armor.Legs.MailLegs.Texture = Engine.Engine.GetTexture("Items/MailLegs");
             Items.Equipment.Armor.Legs.PlateLegs.Texture = Engine.Engine.GetTexture("Items/PlateLegs");
+            Items.Equipment.Armor.Legendary.Legs.AbyssalLegs.Texture = Engine.Engine.GetTexture("Items/PlateLegs");
+            Items.Equipment.Armor.Legendary.Legs.GladiatorLegs.Texture = Engine.Engine.GetTexture("Items/MailLegs");
+            Items.Equipment.Armor.Legendary.Legs.ProwlerLegs.Texture = Engine.Engine.GetTexture("Items/LeatherLegs");
 
             Items.Equipment.Armor.Helm.ClothHelm.Texture = Engine.Engine.GetTexture("Items/ClothHelm");
             Items.Equipment.Armor.Helm.LeatherHelm.Texture = Engine.Engine.GetTexture("Items/LeatherHelm");
             Items.Equipment.Armor.Helm.MailHelm.Texture = Engine.Engine.GetTexture("Items/MailHelm");
             Items.Equipment.Armor.Helm.PlateHelm.Texture = Engine.Engine.GetTexture("Items/PlateHelm");
+            Items.Equipment.Armor.Legendary.Helm.AbyssalHelm.Texture = Engine.Engine.GetTexture("Items/PlateHelm");
+            Items.Equipment.Armor.Legendary.Helm.GladiatorHelm.Texture = Engine.Engine.GetTexture("Items/MailHelm");
+            Items.Equipment.Armor.Legendary.Helm.ProwlerHelm.Texture = Engine.Engine.GetTexture("Items/LeatherHelm");
 
             Items.Equipment.Armor.Shields.PlateShield.Texture = Engine.Engine.GetTexture("Items/PlateShield");
             Items.Equipment.Armor.Shields.WoodenShield.Texture = Engine.Engine.GetTexture("Items/WoodenShield");
