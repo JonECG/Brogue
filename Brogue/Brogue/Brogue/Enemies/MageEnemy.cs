@@ -67,7 +67,7 @@ namespace Brogue.Enemies
                 i = 0;
             }
 
-            range = 3+i/2;
+            range = 4+i/2;
             aggroRange = 3 + i / 2;
             defense = 2 + (2 * i);
             attack = 8 + (8 * i);

@@ -57,10 +57,11 @@ namespace Brogue.Enemies
         {
             Level level = Engine.Engine.currentLevel;
             Engine.Engine.AddXP(exp, Engine.Engine.currentLevel.CharacterEntities.FindPosition(this));
+            IntVec itemPos = level.CharacterEntities.FindPosition(this);
             level.CharacterEntities.Remove(this);
 
             //CURRENTLY USING DUNGEON LEVEL OF 1 AND CHARACTER LEVEL OF 2. NEED ACCESS.
-            level.DroppedItems.Add(Items.Item.randomItem(1, 2), level.CharacterEntities.FindPosition(this));
+            level.DroppedItems.Add(Items.Item.randomItem(1, 2), itemPos);
         }
         
         /// <summary>

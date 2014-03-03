@@ -20,6 +20,7 @@ namespace Brogue.Enemies
                     if (path.Length  <= range)
                     {
                         Attack();
+                        Engine.Engine.Log("Was in range: " + (range - path.Length));
                     }
                     else
                     {
