@@ -15,12 +15,14 @@ namespace Brogue.Enemies
             if (Aggro(level))
             {
                 Direction[] path = AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(target));
+                int pathCost = AStar.getCost(path);
+
                 if (path != null)
                 {
-                    if (path.Length  <= range)
+                    if (pathCost <= range)
                     {
                         Attack();
-                        Engine.Engine.Log("Was in range: " + (range - path.Length));
+                        Engine.Engine.Log("Was in range: " + level.CharacterEntities.FindPosition(this) + " to " + level.CharacterEntities.FindPosition(target) + " " + pathCost + " " + String.Join<Direction>(", ", path));
                     }
                     else
                     {
@@ -29,20 +31,20 @@ namespace Brogue.Enemies
                 }
                 else
                 {
-                    IntVec[] possible = AStar.getPossiblePositionsFrom(level, level.CharacterEntities.FindPosition(this), moveSpeed);
-                    IntVec targetPos = null;
-                    foreach (IntVec pos in possible)
-                    {
-                        if (targetPos == null)
-                        {
-                            targetPos = pos;
-                        }
-                        else if (AStar.getCost(AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), targetPos)) > AStar.getCost(AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), pos)))
-                        {
-                            targetPos = pos;
-                        }
-                    }
-                    level.Move(this, targetPos, true);
+                    //IntVec[] possible = AStar.getPossiblePositionsFrom(level, level.CharacterEntities.FindPosition(this), moveSpeed);
+                    //IntVec targetPos = null;
+                    //foreach (IntVec pos in possible)
+                    //{
+                    //    if (targetPos == null)
+                    //    {
+                    //        targetPos = pos;
+                    //    }
+                    //    else if (AStar.getCost(AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), targetPos)) > AStar.getCost(AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), pos)))
+                    //    {
+                    //        targetPos = pos;
+                    //    }
+                    //}
+                    //level.Move(this, targetPos, true);
                 }
             }
             else
