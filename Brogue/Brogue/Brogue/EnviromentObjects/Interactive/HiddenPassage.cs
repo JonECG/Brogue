@@ -20,6 +20,7 @@ namespace Brogue.EnviromentObjects.Interactive
         bool isVisiable { get; set; }
 
         public IntVec testPosition { get; set; }
+        public IntVec testPlayerPosition { get; set; }
 
         public Direction directionFacing { get; set; }
 
@@ -42,13 +43,15 @@ namespace Brogue.EnviromentObjects.Interactive
         private void setToNewPosition(GameCharacter actingCharacter)
         {
 
+            //IntVec exitPosition = other.testPosition;
+            //IntVec finalPosition = exitPosition + other.directionFacing;
+            //testPlayerPosition = finalPosition;
+
             IntVec exitPosition = Engine.Engine.currentLevel.InteractableEnvironment.FindPosition(other);
             IntVec finalPosition = exitPosition + other.directionFacing;
             IntVec characterPosition = Engine.Engine.currentLevel.CharacterEntities.FindPosition(actingCharacter);
 
             Engine.Engine.currentLevel.Move(actingCharacter, finalPosition, true);
-            ///IntVec exitPosition = other.testPosition;
-            //actingCharacter.position = new IntVec(exitPosition.X + directionFacing.X, exitPosition.Y + directionFacing.Y);
         }
 
         private void changeState()
