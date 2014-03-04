@@ -20,6 +20,7 @@ using Brogue.EnviromentObjects.Interactive;
 using Brogue.Mapping;
 using Brogue.Items.Equipment.Weapon.Melee;
 using Brogue.Items.Equipment.Weapon.Ranged;
+using Brogue.Abilities.AOE;
 
 namespace Brogue.HeroClasses
 {
@@ -46,7 +47,9 @@ namespace Brogue.HeroClasses
         public Equipment currentlyEquippedItems = new Equipment();
         protected Inventory inventory = new Inventory();
         //Variable for testing, delete
-        private static bool viewingCast = false;
+        private bool viewingCast = false;
+        private int viewedAbility;
+        private Keys abilityKey;
 
         public Hero()
         {
@@ -65,6 +68,7 @@ namespace Brogue.HeroClasses
             numAbilities = 2;
             abilities = new Ability[6];
             abilities[0] = new Cleave();
+            abilities[1] = new WhirlwindSlash();
         }
 
         public IntVec move(Direction dir)
@@ -210,10 +214,20 @@ namespace Brogue.HeroClasses
 
                 else if (Mapping.KeyboardController.IsPressed(Keys.D1))
                 {
-                    Engine.Engine.Log(abilities[0].cooldown.ToString());
                     if (abilities[0].cooldown == 0)
                     {
                         viewingCast = true;
+                        viewedAbility = 0;
+                        abilityKey = Keys.D1;
+                    }
+                }
+                else if (Mapping.KeyboardController.IsPressed(Keys.D2))
+                {
+                    if (abilities[1].cooldown == 0)
+                    {
+                        viewingCast = true;
+                        viewedAbility = 1;
+                        abilityKey = Keys.D2;
                     }
                 }
 
@@ -222,41 +236,12 @@ namespace Brogue.HeroClasses
 
             if (viewingCast)
             {
-                IntVec[] castSquares = abilities[0].viewCastRange(mapLevel, mapLevel.CharacterEntities.FindPosition(this));
-                Engine.Engine.ClearGridSelections();
-                Engine.Engine.AddGridSelections(castSquares, abilitySprite);
-                if (abilities[0].getCastingSquares() != null)
-                {
-                    Engine.Engine.AddGridSelections(abilities[0].getCastingSquares(), castingSquareSprite);
-                }
-
-                if (MouseController.LeftClicked())
-                {
-                    bool withinRange = false;
-                    for (int i = 0; i < castSquares.Length && !withinRange; i++)
-                    {
-                        if (MouseController.MouseGridPosition().Equals(castSquares[i]))
-                        {
-                            withinRange = true;
-                            abilities[0].addCastingSquares(MouseController.MouseGridPosition());
-                            if (abilities[0].filledSquares())
-                            {
-                                turnOver = true;
-                                abilities[0].finishCastandDealDamage(level, currentlyEquippedItems.getTotalWeaponDamage(), mapLevel, this);
-                                Engine.Engine.ClearGridSelections();
-                                viewingCast = false;
-                            }
-                        }
-                    }
-                }
-                if (MouseController.RightClicked())
-                {
-                    abilities[0].removeCastingSquares(MouseController.MouseGridPosition());
-                }
-                
-                if (Mapping.KeyboardController.IsReleased(Keys.D1))
+                turnOver = castAbility(viewedAbility, mapLevel);
+               
+                if (Mapping.KeyboardController.IsReleased(abilityKey))
                 {
                     Engine.Engine.ClearGridSelections();
+                    abilities[viewedAbility].resetSquares();
                     viewingCast = !viewingCast;
                 }
             }
@@ -267,7 +252,43 @@ namespace Brogue.HeroClasses
             return turnOver;
         }
 
-        //public void castAbility(int ability)
+        public bool castAbility(int ability, Level mapLevel)
+        {
+            bool turnOver = false;
+            IntVec[] castSquares = abilities[ability].viewCastRange(mapLevel, mapLevel.CharacterEntities.FindPosition(this));
+                Engine.Engine.ClearGridSelections();
+                Engine.Engine.AddGridSelections(castSquares, abilitySprite);
+                if (abilities[ability].getCastingSquares() != null)
+                {
+                    Engine.Engine.AddGridSelections(abilities[ability].getCastingSquares(), castingSquareSprite);
+                }
+
+                if (MouseController.LeftClicked())
+                {
+                    bool withinRange = false;
+                    for (int i = 0; i < castSquares.Length && !withinRange; i++)
+                    {
+                        if (MouseController.MouseGridPosition().Equals(castSquares[i]))
+                        {
+                            withinRange = true;
+                            abilities[ability].addCastingSquares(MouseController.MouseGridPosition());
+                            if (abilities[ability].filledSquares())
+                            {
+                                turnOver = true;
+                                abilities[ability].finishCastandDealDamage(level, currentlyEquippedItems.getTotalWeaponDamage(), mapLevel, this);
+                                Engine.Engine.ClearGridSelections();
+                                viewingCast = false;
+                            }
+                        }
+                    }
+                }
+                if (MouseController.RightClicked())
+                {
+                    abilities[ability].removeCastingSquares(MouseController.MouseGridPosition());
+                }
+                
+                return turnOver;
+        }
         public void attack(Level mapLevel)
         {
             if (mapLevel.CharacterEntities.FindEntity(MouseController.MouseGridPosition()) != this)
