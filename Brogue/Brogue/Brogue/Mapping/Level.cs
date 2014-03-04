@@ -398,5 +398,10 @@ namespace Brogue.Mapping
         {
             needToCache = true;
         }
+
+        internal bool isFloor(IntVec position)
+        {
+            return !tiles[position.X, position.Y].isSolid;
+        }
     }
 }

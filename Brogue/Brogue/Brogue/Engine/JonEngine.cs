@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Brogue.Mapping;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
@@ -11,43 +12,76 @@ namespace Brogue.Engine
 {
     partial class Engine
     {
+        private static Minimap map;
+
         private static void DrawMiniMap(SpriteBatch uisb)
         {
-            IntVec offset = new IntVec(game.Width / 4 * 3, 20);
-            IntVec size = new IntVec(2, 2);
-        //
+            if (map == null || map.level != currentLevel )
+            {
+                map = new Minimap(currentLevel);
+            }
+
+            IntVec mapCenter = currentLevel.CharacterEntities.FindPosition(hero);
+
+            map.UpdateView(mapCenter);
+
+            IntVec offset = new IntVec(game.Width / 6 * 5, 20);
+            IntVec mapSize = new IntVec(70, 70);
+            Rectangle tempMap = new Rectangle(0, 0, mapSize.X, mapSize.Y);
+
+            IntVec size = new IntVec(3, 3);
+
+            FillRect(uisb, offset, mapSize * size, new Color(60,60,90,255));
+
             for (int x = 0; x < currentLevel.GetWidth(); x++)
             {
                 for (int y = 0; y < currentLevel.GetHeight(); y++)
                 {
                     IntVec position = new IntVec(x, y);
-                    DrawPoint(uisb, offset + position * 2, size, currentLevel.isSolid(position) ? Color.Gray : Color.DarkGray);
+                    IntVec mapPos = position - mapCenter + mapSize / 2;
+
+                    if( map.IsDetected( position ) && tempMap.Contains( mapPos.X, mapPos.Y ) )
+                        DrawPoint(uisb, offset + mapPos * size, size, currentLevel.isFloor(position) ? (map.IsActive(position) ? new Color(160, 160, 160, 255) : Color.Gray) : (map.IsActive(position) ? new Color(210, 210, 210, 255) : Color.DarkGray));
                 }
             }
-        //
+
             foreach (IntVec position in currentLevel.InteractableEnvironment.Positions())
             {
-                DrawPoint(uisb, offset + position * 2, size, Color.Magenta);
+                IntVec mapPos = position - mapCenter + mapSize / 2;
+
+                if (map.IsActive(position) && tempMap.Contains(mapPos.X, mapPos.Y))
+                    DrawPoint(uisb, offset + mapPos * size, size, Color.Magenta);
             }
-        //
+
             foreach (IntVec position in currentLevel.DroppedItems.Positions())
             {
-                DrawPoint(uisb, offset + position * 2, size, Color.Green);
+                IntVec mapPos = position - mapCenter + mapSize / 2;
+
+                if (map.IsActive(position) && tempMap.Contains(mapPos.X, mapPos.Y))
+                    DrawPoint(uisb, offset + mapPos * size, size, Color.Green);
             }
-        //
+
             foreach (IntVec position in currentLevel.CharacterEntities.Positions())
             {
-                DrawPoint(uisb, offset + position * 2, size, Color.Red);
+                IntVec mapPos = position - mapCenter + mapSize / 2;
+
+                if (map.IsActive(position) && tempMap.Contains(mapPos.X, mapPos.Y))
+                    DrawPoint(uisb, offset + mapPos * size, size, Color.Red);
             }
-        //
-            DrawPoint(uisb, offset + currentLevel.CharacterEntities.FindPosition(hero) * 2, size, Color.Gold);
+
+            DrawPoint(uisb, offset + (mapSize / 2) * size, size, Color.Gold);
         }
-        //
+
         static DynamicTexture empty = GetTexture("levelTileset");
 
         private static void DrawPoint(SpriteBatch uisb, IntVec position, IntVec size, Color color)
         {
             uisb.Draw(empty.texture, new Rectangle(position.X, position.Y, size.X, size.Y), new Rectangle(5, 5, 1, 1), color);
+        }
+
+        private static void FillRect(SpriteBatch uisb, IntVec position, IntVec dimensions, Color color)
+        {
+            uisb.Draw(empty.texture, new Rectangle(position.X, position.Y, dimensions.X, dimensions.Y), new Rectangle(5, 5, 1, 1), color);
         }
 
 
