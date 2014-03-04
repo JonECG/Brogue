@@ -1,13 +1,13 @@
-﻿using System;
+﻿using Brogue.Engine;
+using Brogue.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Brogue.Enums;
-using Brogue.Engine;
 
 namespace Brogue.Items.Equipment.Weapon.Legendary.Ranged
 {
-    [Serializable] public class KunaiWithChain : LegendaryRanged
+    public class Condemned : LegendaryRanged
     {
         public static DynamicTexture Texture { get; set; }
 
@@ -16,12 +16,12 @@ namespace Brogue.Items.Equipment.Weapon.Legendary.Ranged
             return Texture;
         }
 
-        public KunaiWithChain(int dLevel, int cLevel)
+        public Condemned(int dLevel, int cLevel)
         {
-            Name = "Kunai With Chain";
-            FlavorText = "KWhat is this!";
-            UsedBy = new List<Classes> { Classes.Rogue, Classes.Assassin };
-            EquipableIn = new List<Slots> { Slots.Hand_Auxillary };
+            Name = "Condemned";
+            FlavorText = "The dark should fear me.";
+            UsedBy = new List<Classes> { Classes.Ranger, Classes.Marksman };
+            EquipableIn = new List<Slots> { Slots.Hand_Both };
             LevelReq = findLevelReq(dLevel, cLevel);
             Damage = findDamage(BaseDamage, dLevel, LevelReq);
         }

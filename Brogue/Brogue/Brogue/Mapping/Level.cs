@@ -372,7 +372,7 @@ namespace Brogue.Mapping
             {
                 for (int i = 0; i < 100; i++)
                 {
-                    Item item = Item.randomItem(80, 10);
+                    Item item = Item.randomItem(1000, 1000);
 
                     Engine.Engine.Log(string.Format("Item Generated: {0}", item.Name));
 
@@ -384,14 +384,13 @@ namespace Brogue.Mapping
             {
                 for (int i = 0; i < 100; i++ )
                 {
-                    Item item = Item.randomItem(1, 10);
+                    Item item = Item.randomLegendary(1000, 1000);
 
                     Engine.Engine.Log(string.Format("Item Generated: {0}", item.Name));
 
                     DroppedItems.Add(item, findRandomOpenPosition());
                 }
-            }
-            
+            }           
         }
 
         internal void InvalidateCache()

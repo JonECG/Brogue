@@ -10,7 +10,7 @@ namespace Brogue.Items.Equipment
     [Serializable] public abstract class Gear : Item
     {
        public int LevelReq { get; protected set; }
-       public List<Class> UsedBy { get; protected set; }
+       public List<Classes> UsedBy { get; protected set; }
        public List<Slots> EquipableIn { get; protected set; }
 
        public Gear()

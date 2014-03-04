@@ -20,7 +20,7 @@ namespace Brogue.Items.Equipment.Armor.Chest
         {
             Name = "Cloth Chest";
             LevelReq = findLevelReq(dLevel, cLevel);
-            UsedBy = new List<Class> { Class.Mage, Class.Sorcerer, Class.SpellWeaver, Class.Magus, Class.SpellBlade };
+            UsedBy = new List<Classes> { Classes.Mage, Classes.Sorcerer, Classes.SpellWeaver, Classes.Magus, Classes.SpellBlade };
             TypeBonus = 1;
             ArmorValue = findArmorValue(BaseArmor, dLevel, TypeBonus);
         }

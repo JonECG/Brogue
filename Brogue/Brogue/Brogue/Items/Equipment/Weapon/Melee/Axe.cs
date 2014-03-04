@@ -20,7 +20,7 @@ namespace Brogue.Items.Equipment.Weapon.Melee
         public Axe(int dLevel, int cLevel)
         {
             Name = "Axe";
-            UsedBy = new List<Class> { Class.Warrior, Class.Brawler, Class.Berserker, Class.Sentinel, Class.Juggernaut};
+            UsedBy = new List<Classes> { Classes.Warrior, Classes.Brawler, Classes.Berserker, Classes.Sentinel, Classes.Juggernaut};
             EquipableIn = new List<Slots> { Slots.Hand_Primary, Slots.Hand_Auxillary };
             LevelReq = findLevelReq(dLevel, cLevel);
             Damage = findDamage(BaseDamage, dLevel, LevelReq);

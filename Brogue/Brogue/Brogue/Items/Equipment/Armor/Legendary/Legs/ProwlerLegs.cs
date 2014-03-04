@@ -21,7 +21,7 @@ namespace Brogue.Items.Equipment.Armor.Legendary.Legs
             Name = "Prowler Legs";
             FlavorText = "Legendary Legs";
             LevelReq = findLevelReq(dLevel, cLevel);
-            UsedBy = new List<Class> { Class.Rogue, Class.Duelist, Class.Assassin, Class.Ranger, Class.Marksman };
+            UsedBy = new List<Classes> { Classes.Rogue, Classes.Duelist, Classes.Assassin, Classes.Ranger, Classes.Marksman };
             ArmorValue = findArmorValue(BaseArmor, dLevel, TypeBonus);
         }
     }

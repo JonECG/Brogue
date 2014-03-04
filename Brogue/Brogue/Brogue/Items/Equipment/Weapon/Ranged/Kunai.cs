@@ -20,7 +20,7 @@ namespace Brogue.Items.Equipment.Weapon.Ranged
         public Kunai(int dLevel, int cLevel)
         {
             Name = "Kunai";
-            UsedBy = new List<Class> { Class.Rogue, Class.Assassin };
+            UsedBy = new List<Classes> { Classes.Rogue, Classes.Assassin };
             EquipableIn = new List<Slots> { Slots.Hand_Auxillary };
             LevelReq = findLevelReq(dLevel, cLevel);
             Damage = findDamage(BaseDamage, dLevel, LevelReq);

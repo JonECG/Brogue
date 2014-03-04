@@ -242,6 +242,7 @@
     <Compile Include="Items\Equipment\Accessory\Accessory.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Items\Equipment\Accessory\Legendary\BlackPendant.cs" />
     <Compile Include="Items\Equipment\Accessory\Legendary\LegendaryAccessory.cs" />
     <Compile Include="Items\Equipment\Accessory\Legendary\TheOne.cs" />
     <Compile Include="Items\Equipment\Accessory\Necklace.cs">
@@ -282,10 +283,12 @@
     <Compile Include="Items\Equipment\Armor\Legendary\Chest\AbyssalChest.cs" />
     <Compile Include="Items\Equipment\Armor\Legendary\Chest\GladiatorChest.cs" />
     <Compile Include="Items\Equipment\Armor\Legendary\Chest\LegendaryChest.cs" />
+    <Compile Include="Items\Equipment\Armor\Legendary\Chest\MagistrateChest.cs" />
     <Compile Include="Items\Equipment\Armor\Legendary\Chest\ProwlerChest.cs" />
     <Compile Include="Items\Equipment\Armor\Legendary\Helm\AbyssalHelm.cs" />
     <Compile Include="Items\Equipment\Armor\Legendary\Helm\GladiatorHelm.cs" />
     <Compile Include="Items\Equipment\Armor\Legendary\Helm\LegendaryHelm.cs" />
+    <Compile Include="Items\Equipment\Armor\Legendary\Helm\MagistrateHelm.cs" />
     <Compile Include="Items\Equipment\Armor\Legendary\Helm\ProwlerHelm.cs" />
     <Compile Include="Items\Equipment\Armor\Legendary\LegendaryArmor.cs">
       <SubType>Code</SubType>
@@ -293,6 +296,7 @@
     <Compile Include="Items\Equipment\Armor\Legendary\Legs\AbyssalLegs.cs" />
     <Compile Include="Items\Equipment\Armor\Legendary\Legs\GladiatorLegs.cs" />
     <Compile Include="Items\Equipment\Armor\Legendary\Legs\LegendaryLegs.cs" />
+    <Compile Include="Items\Equipment\Armor\Legendary\Legs\MagistrateLegs.cs" />
     <Compile Include="Items\Equipment\Armor\Legendary\Legs\ProwlerLegs.cs" />
     <Compile Include="Items\Equipment\Armor\Legendary\Shields\FirstAvenger.cs">
       <SubType>Code</SubType>
@@ -335,8 +339,12 @@
     <Compile Include="Items\Equipment\Weapon\Legendary\Melee\40k.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Items\Equipment\Weapon\Legendary\Melee\Anarchy.cs" />
     <Compile Include="Items\Equipment\Weapon\Legendary\Melee\BladeWaltz.cs" />
     <Compile Include="Items\Equipment\Weapon\Legendary\Melee\Bloodthirster.cs" />
+    <Compile Include="Items\Equipment\Weapon\Legendary\Melee\Excecutioner.cs" />
+    <Compile Include="Items\Equipment\Weapon\Legendary\Melee\Judgement.cs" />
+    <Compile Include="Items\Equipment\Weapon\Legendary\Melee\Kris.cs" />
     <Compile Include="Items\Equipment\Weapon\Legendary\Melee\LegendaryMelee.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -345,12 +353,17 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Equipment\Weapon\Legendary\Ranged\BloodWing.cs" />
+    <Compile Include="Items\Equipment\Weapon\Legendary\Ranged\Ebony.cs" />
+    <Compile Include="Items\Equipment\Weapon\Legendary\Ranged\HeartWu.cs" />
+    <Compile Include="Items\Equipment\Weapon\Legendary\Ranged\Condemned.cs" />
+    <Compile Include="Items\Equipment\Weapon\Legendary\Ranged\Ivory.cs" />
     <Compile Include="Items\Equipment\Weapon\Legendary\Ranged\KunaiWithChain.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Equipment\Weapon\Legendary\Ranged\LegendaryRanged.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Items\Equipment\Weapon\Legendary\Ranged\Retribution.cs" />
     <Compile Include="Items\Equipment\Weapon\Legendary\Ranged\RodOfExtending.cs">
       <SubType>Code</SubType>
     </Compile>

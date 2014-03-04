@@ -1,14 +1,13 @@
-﻿using System;
+﻿using Brogue.Engine;
+using Brogue.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Brogue.Engine;
-using Brogue.Enums;
 
-
-namespace Brogue.Items.Equipment.Weapon.Melee
+namespace Brogue.Items.Equipment.Weapon.Legendary.Melee
 {
-    [Serializable] public class Sword : MeleeWeapon
+    public class Judgement : LegendaryMelee
     {
         public static DynamicTexture Texture { get; set; }
 
@@ -17,9 +16,10 @@ namespace Brogue.Items.Equipment.Weapon.Melee
             return Texture;
         }
 
-        public Sword(int dLevel, int cLevel)
+        public Judgement(int dLevel, int cLevel)
         {
-            Name = "Sword";
+            Name = "Judgement";
+            FlavorText = "To the fields of Justice.";
             UsedBy = new List<Classes> 
             { 
                 Classes.Warrior, Classes.Brawler, Classes.Berserker, Classes.Sentinel, Classes.Juggernaut, 

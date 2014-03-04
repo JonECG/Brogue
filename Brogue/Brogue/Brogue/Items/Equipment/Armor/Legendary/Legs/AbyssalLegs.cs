@@ -21,7 +21,7 @@ namespace Brogue.Items.Equipment.Armor.Legendary.Legs
             Name = "Abyssal Legs";
             FlavorText = "Legendary Legs";
             LevelReq = findLevelReq(dLevel, cLevel);
-            UsedBy = new List<Class> { Class.Sentinel, Class.Juggernaut };
+            UsedBy = new List<Classes> { Classes.Sentinel, Classes.Juggernaut };
             ArmorValue = findArmorValue(BaseArmor, dLevel, TypeBonus);
         }
     }

@@ -1,13 +1,13 @@
-﻿using System;
+﻿using Brogue.Enums;
+using Brogue.Engine;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Brogue.Enums;
-using Brogue.Engine;
 
 namespace Brogue.Items.Equipment.Weapon.Legendary.Melee
 {
-    [Serializable] public class _40k : LegendaryMelee
+    public class Excecutioner : LegendaryMelee
     {
         public static DynamicTexture Texture { get; set; }
 
@@ -16,10 +16,10 @@ namespace Brogue.Items.Equipment.Weapon.Legendary.Melee
             return Texture;
         }
 
-        public _40k(int dLevel, int cLevel)
+        public Excecutioner(int dLevel, int cLevel)
         {
-            Name = "40k";
-            FlavorText = "They are my Space Marines...and they shall know no fear.";
+            Name = "Excecutioner";
+            FlavorText = "Witness true strength";
             UsedBy = new List<Classes> { Classes.Warrior, Classes.Brawler, Classes.Berserker };
             EquipableIn = new List<Slots> { Slots.Hand_Both };
             LevelReq = findLevelReq(dLevel, cLevel);

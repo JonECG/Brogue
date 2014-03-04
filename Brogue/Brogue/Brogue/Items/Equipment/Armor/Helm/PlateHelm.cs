@@ -19,7 +19,7 @@ namespace Brogue.Items.Equipment.Armor.Helm
         {
             Name = "Plate Helm";
             LevelReq = findLevelReq(dLevel, cLevel);
-            UsedBy = new List<Class> { Class.Sentinel, Class.Juggernaut };
+            UsedBy = new List<Classes> { Classes.Sentinel, Classes.Juggernaut };
             TypeBonus = 7;
             ArmorValue = findArmorValue(BaseArmor, dLevel, TypeBonus);
         }

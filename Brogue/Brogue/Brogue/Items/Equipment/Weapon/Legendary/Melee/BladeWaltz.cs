@@ -20,7 +20,7 @@ namespace Brogue.Items.Equipment.Weapon.Legendary.Melee
         {
             Name = "Blade Waltz";
             FlavorText = "I long for a worthy opponent.";
-            UsedBy = new List<Class> { Class.Duelist, Class.Assassin };
+            UsedBy = new List<Classes> { Classes.Duelist, Classes.Assassin };
             EquipableIn = new List<Slots> { Slots.Hand_Auxillary, Slots.Hand_Primary };
             LevelReq = findLevelReq(dLevel, cLevel);
             Damage = findDamage(BaseDamage, dLevel, LevelReq);

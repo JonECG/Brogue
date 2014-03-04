@@ -20,7 +20,7 @@ namespace Brogue.Items.Equipment.Weapon.Ranged
         {
             Name = "Sniper Rifle";
             LevelReq = findLevelReq(dlevel, clevel);
-            UsedBy = new List<Class> { Class.Marksman };
+            UsedBy = new List<Classes> { Classes.Marksman };
             EquipableIn = new List<Slots> { Slots.Hand_Both };
             Damage = findDamage(BaseDamage, dlevel, LevelReq);
         }

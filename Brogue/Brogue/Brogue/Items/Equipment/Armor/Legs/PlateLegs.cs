@@ -20,7 +20,7 @@ namespace Brogue.Items.Equipment.Armor.Legs
         {
             Name = "Plate Legs";
             LevelReq = findLevelReq(dlevel, clevel);
-            UsedBy = new List<Class> { Class.Sentinel, Class.Juggernaut };
+            UsedBy = new List<Classes> { Classes.Sentinel, Classes.Juggernaut };
             TypeBonus = 7;
             ArmorValue = findArmorValue(BaseArmor, dlevel, TypeBonus);
         }

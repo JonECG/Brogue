@@ -20,7 +20,7 @@ namespace Brogue.Items.Equipment.Armor.Helm
         {
             Name = "Mail Helm";
             LevelReq = findLevelReq(dLevel, cLevel);
-            UsedBy = new List<Class> { Class.Warrior, Class.Brawler, Class.Berserker, Class.Sentinel, Class.Juggernaut };
+            UsedBy = new List<Classes> { Classes.Warrior, Classes.Brawler, Classes.Berserker, Classes.Sentinel, Classes.Juggernaut };
             TypeBonus = 5;
             ArmorValue = findArmorValue(BaseArmor, dLevel, TypeBonus);
         }

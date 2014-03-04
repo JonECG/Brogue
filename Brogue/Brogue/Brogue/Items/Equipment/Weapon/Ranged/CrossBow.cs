@@ -20,7 +20,7 @@ namespace Brogue.Items.Equipment.Weapon.Ranged
         {
             Name = "Cross Bow";
             LevelReq = findLevelReq(dlevel, clevel);
-            UsedBy = new List<Class> { Class.Ranger, Class.Marksman };
+            UsedBy = new List<Classes> { Classes.Ranger, Classes.Marksman };
             EquipableIn = new List<Slots> { Slots.Hand_Both };
             Damage = findDamage(BaseDamage, dlevel, LevelReq);
         }

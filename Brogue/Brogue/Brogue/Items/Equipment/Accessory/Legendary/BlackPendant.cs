@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Brogue.Items.Equipment.Accessory.Legendary
 {
-    public class TheOne : LegendaryAccessory
+    public class BlackPendant : LegendaryAccessory
     {
         public static DynamicTexture Texture { get; set; }
 
@@ -16,10 +16,10 @@ namespace Brogue.Items.Equipment.Accessory.Legendary
             return Texture;
         }
 
-        public TheOne(int dLevel, int cLevel)
+        public BlackPendant(int dLevel, int cLevel)
         {
-            Name = "The One";
-            FlavorText = "Does this really rule them all.";
+            Name = "The Black Pendant";
+            FlavorText = "...";
             LevelReq = findLevelReq(dLevel, cLevel);
             UsedBy = new List<Classes>
             {
@@ -27,7 +27,7 @@ namespace Brogue.Items.Equipment.Accessory.Legendary
                 Classes.Mage, Classes.Sorcerer, Classes.SpellWeaver, Classes.Magus, Classes.SpellBlade,
                 Classes.Rogue, Classes.Duelist, Classes.Assassin, Classes.Ranger, Classes.Marksman
             };
-            EquipableIn = new List<Slots> { Slots.Finger_One, Slots.Finger_Two };
+            EquipableIn = new List<Slots> { Slots.Neck };
             StatIncreased = new List<Modifiers> { Modifiers.Damage, Modifiers.Health };
             StatIncrease = findStatIncrease(BaseIncrease, dLevel, LevelReq);
         }

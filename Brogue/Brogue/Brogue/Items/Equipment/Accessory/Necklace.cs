@@ -20,11 +20,11 @@ namespace Brogue.Items.Equipment.Accessory
         {
             Name = "Necklace";
             LevelReq = findLevelReq(dLevel, cLevel);
-            UsedBy = new List<Class> 
+            UsedBy = new List<Classes> 
             {
-                Class.Mage, Class.Sorcerer, Class.SpellWeaver, Class.Magus, Class.SpellBlade,
-                Class.Rogue, Class.Duelist, Class.Assassin, Class.Ranger, Class.Marksman,
-                Class.Warrior, Class.Brawler, Class.Berserker, Class.Sentinel, Class.Juggernaut
+                Classes.Mage, Classes.Sorcerer, Classes.SpellWeaver, Classes.Magus, Classes.SpellBlade,
+                Classes.Rogue, Classes.Duelist, Classes.Assassin, Classes.Ranger, Classes.Marksman,
+                Classes.Warrior, Classes.Brawler, Classes.Berserker, Classes.Sentinel, Classes.Juggernaut
             };
             EquipableIn = new List<Slots> { Slots.Neck };
             StatIncreased = new List<Modifiers> { findStatIncreased() };

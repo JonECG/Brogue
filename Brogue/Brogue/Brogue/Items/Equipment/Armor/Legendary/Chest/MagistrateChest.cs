@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Brogue.Items.Equipment.Armor.Legendary.Helm
+namespace Brogue.Items.Equipment.Armor.Legendary.Chest
 {
-    public class ProwlerHelm : LegendaryHelm
+    public class MagistrateChest : LegendaryChest
     {
         public static DynamicTexture Texture { get; set; }
 
@@ -16,12 +16,12 @@ namespace Brogue.Items.Equipment.Armor.Legendary.Helm
             return Texture;
         }
 
-        public ProwlerHelm(int dLevel, int cLevel)
+        public MagistrateChest(int dLevel, int cLevel)
         {
-            Name = "Prowler Helm";
-            FlavorText = "Legendary Helm";
+            Name = "Magistrate Chest";
+            FlavorText = "Legendary Chest";
             LevelReq = findLevelReq(dLevel, cLevel);
-            UsedBy = new List<Classes> { Classes.Rogue, Classes.Duelist, Classes.Assassin, Classes.Ranger, Classes.Marksman };
+            UsedBy = new List<Classes> { Classes.Mage, Classes.Sorcerer, Classes.SpellWeaver, Classes.Magus, Classes.SpellBlade };
             ArmorValue = findArmorValue(BaseArmor, dLevel, TypeBonus);
         }
     }

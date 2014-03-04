@@ -20,7 +20,7 @@ namespace Brogue.Items.Equipment.Weapon.Melee
         {
             Name = "Scythe";
             LevelReq = findLevelReq(dLevel, cLevel);
-            UsedBy = new List<Class> { Class.Assassin };
+            UsedBy = new List<Classes> { Classes.Assassin };
             EquipableIn = new List<Slots> { Slots.Hand_Both };
             Damage = findDamage(BaseDamage, dLevel, LevelReq);
         }

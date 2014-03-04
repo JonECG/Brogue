@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Brogue.Items.Equipment.Armor.Legendary.Helm
 {
-    public class ProwlerHelm : LegendaryHelm
+    public class MagistrateHelm : LegendaryHelm
     {
         public static DynamicTexture Texture { get; set; }
 
@@ -16,12 +16,12 @@ namespace Brogue.Items.Equipment.Armor.Legendary.Helm
             return Texture;
         }
 
-        public ProwlerHelm(int dLevel, int cLevel)
+        public MagistrateHelm(int dLevel, int cLevel)
         {
-            Name = "Prowler Helm";
+            Name = "Magistrate Helm";
             FlavorText = "Legendary Helm";
             LevelReq = findLevelReq(dLevel, cLevel);
-            UsedBy = new List<Classes> { Classes.Rogue, Classes.Duelist, Classes.Assassin, Classes.Ranger, Classes.Marksman };
+            UsedBy = new List<Classes> { Classes.Mage, Classes.Sorcerer, Classes.SpellWeaver, Classes.Magus, Classes.SpellBlade };
             ArmorValue = findArmorValue(BaseArmor, dLevel, TypeBonus);
         }
     }

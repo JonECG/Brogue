@@ -20,7 +20,7 @@ namespace Brogue.Items.Equipment.Weapon.Ranged
         public Staff(int dLevel, int cLevel)
         {
             Name = "Staff";
-            UsedBy = new List<Class> { Class.Mage, Class.Sorcerer, Class.SpellWeaver };
+            UsedBy = new List<Classes> { Classes.Mage, Classes.Sorcerer, Classes.SpellWeaver };
             EquipableIn = new List<Slots> { Slots.Hand_Primary };
             LevelReq = findLevelReq(dLevel, cLevel);
             Damage = findDamage(BaseDamage, dLevel, LevelReq);

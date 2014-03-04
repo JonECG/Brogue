@@ -20,7 +20,7 @@ namespace Brogue.Items.Equipment.Weapon.Legendary.Melee
         {
             Name = "PaleRider";
             FlavorText = "Wreaks of Death";
-            UsedBy = new List<Class> { Class.Assassin };
+            UsedBy = new List<Classes> { Classes.Assassin };
             EquipableIn = new List<Slots> { Slots.Hand_Both };
             LevelReq = findLevelReq(dLevel, cLevel);
             Damage = findDamage(BaseDamage, dLevel, LevelReq);

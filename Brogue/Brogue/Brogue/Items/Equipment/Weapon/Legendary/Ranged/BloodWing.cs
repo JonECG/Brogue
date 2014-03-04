@@ -20,7 +20,7 @@ namespace Brogue.Items.Equipment.Weapon.Legendary.Ranged
         {
             Name = "Bloodwing";
             FlavorText = "What's a \"Vault Hunter\".";
-            UsedBy = new List<Class> { Class.Marksman };
+            UsedBy = new List<Classes> { Classes.Marksman };
             EquipableIn = new List<Slots> { Slots.Hand_Both };
             LevelReq = findLevelReq(dLevel, cLevel);
             Damage = findDamage(BaseDamage, dLevel, LevelReq);

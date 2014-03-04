@@ -21,7 +21,7 @@ namespace Brogue.Items.Equipment.Armor.Legendary.Chest
             Name = "Gladiator Chest";
             FlavorText = "Legendary Chest";
             LevelReq = findLevelReq(dLevel, cLevel);
-            UsedBy = new List<Class> { Class.Warrior, Class.Brawler, Class.Berserker };
+            UsedBy = new List<Classes> { Classes.Warrior, Classes.Brawler, Classes.Berserker };
             ArmorValue = findArmorValue(BaseArmor, dLevel, TypeBonus);
         }
     }
