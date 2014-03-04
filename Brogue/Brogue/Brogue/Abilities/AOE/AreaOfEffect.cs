@@ -11,6 +11,7 @@ namespace Brogue.Abilities.AOE
 {
     [Serializable] public abstract class AreaOfEffect : Ability
     {
-
+        protected IntVec[] radiusSquares;
+        protected bool isActuallyFilled;
     }
 }

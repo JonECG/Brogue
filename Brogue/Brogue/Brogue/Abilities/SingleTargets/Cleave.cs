@@ -72,7 +72,7 @@ namespace Brogue.Abilities.Damaging.SingleTargets
             return castSquares;
         }
 
-        public override int finishCastandDealDamage(int heroLevel, int heroDamage, Level mapLevel, GameCharacter hero)
+        public override void finishCastandDealDamage(int heroLevel, int heroDamage, Level mapLevel, GameCharacter hero)
         {
             int baseSpellDamage = baseDamage * heroLevel;
             damage = baseSpellDamage + heroDamage;
@@ -87,7 +87,6 @@ namespace Brogue.Abilities.Damaging.SingleTargets
                 }
                 castSquares[i] = new IntVec(0,0);
             }
-            return damage;
         }
     }
 }

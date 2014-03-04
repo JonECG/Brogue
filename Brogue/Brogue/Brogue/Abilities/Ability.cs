@@ -16,6 +16,7 @@ namespace Brogue.Abilities
         public int radius {get; protected set;}
         public bool isCasting { get; protected set; }
         public bool wasJustCast { get; set; }
+        protected IntVec[] castSquares;
         public string description { get; protected set; }
 
         abstract public void addCastingSquares(IntVec cursorPosition);
@@ -23,6 +24,14 @@ namespace Brogue.Abilities
         abstract public IntVec[] getCastingSquares();
         abstract public IntVec[] viewCastRange(Level level, IntVec start);
         abstract public bool filledSquares();
-        abstract public int finishCastandDealDamage(int heroLevel, int heroDamage, Level mapLevel, GameCharacter Hero);
+        abstract public void finishCastandDealDamage(int heroLevel, int heroDamage, Level mapLevel, GameCharacter Hero);
+
+        public void resetSquares()
+        {
+            for (int i = 0; i < castSquares.Length; i++)
+            {
+                castSquares[i] = new IntVec(0, 0);
+            }
+        }
     }
 }
