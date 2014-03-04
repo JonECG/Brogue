@@ -13,7 +13,6 @@ using System.Text;
 using Brogue.EnviromentObjects.Interactive;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
-using Microsoft.Xna.Framework.Content;
 using System.IO;
 
 
@@ -132,7 +131,7 @@ namespace Brogue.Engine
     partial class Engine
     {
         public const bool DOLIGHTING = true;
-        public const bool DOAUDIO = true;
+        public const bool DOAUDIO = false;
         public const bool DOSTARTMENU = false;
         public const float sightDistance = 1;
         public static bool inventoryOpen = false;
@@ -298,7 +297,7 @@ namespace Brogue.Engine
             }
             else
             {
-                hero = new HeroClasses.Mage();
+                hero = new HeroClasses.Warrior();
                 StartGame();
             }
         }
@@ -588,7 +587,7 @@ namespace Brogue.Engine
                     hero.equipArmor(inventorySlotIndex);
 
                     hero.equipWeapon(inventorySlotIndex, 0);
-                    hero.equipArmor(inventorySlotIndex, 0);
+                    hero.equipArmor(inventorySlotIndex);
 
                 }
                 else
