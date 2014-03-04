@@ -18,20 +18,15 @@ namespace Brogue
         {
             file = newFile;
             keyName = name;
-            soundEngineInstance = file.CreateInstance();
             shouldLoop = Loop;
         }
 
         public void playFile(float volume = 0.75f)
         {
-            if (!soundEngineInstance.IsLooped)
-            {
-                soundEngineInstance = file.CreateInstance();
-            }
+            soundEngineInstance = file.CreateInstance();
             soundEngineInstance.Volume = volume;
             soundEngineInstance.IsLooped = shouldLoop;
             soundEngineInstance.Play();
-            
         }
 
         public void stop()
@@ -45,9 +40,7 @@ namespace Brogue
     {
         private static int MAX_LIABBARY_SIZE = 10;
         private static Random random = new Random();
-
         
-
         private static audioFile[] music;
         private static audioFile[] sound;
         private static audioFile defualtSound;
@@ -90,7 +83,6 @@ namespace Brogue
             }
         }
 
-
         public static void playRandomSong(float volume = 0.75f)
         {
             stopAllMusic();
@@ -111,7 +103,6 @@ namespace Brogue
             }
             sound[selected].playFile(volume);
         }
-
 
         public static void playSound(String key, float volume = 0.75f)
         {
@@ -153,7 +144,6 @@ namespace Brogue
             }
         }
 
-
         public static void LoadContent(ContentManager content)
         {
             // audioLibary = new audioFile[MAX_LIABBARY_SIZE];
@@ -161,16 +151,16 @@ namespace Brogue
             sound = new audioFile[MAX_LIABBARY_SIZE];
 
             //Load Music
-            music[0] = new audioFile(content.Load<SoundEffect>("Music/SOMITEST"), "Monkey Island", true);
-            music[1] = new audioFile(content.Load<SoundEffect>("Music/The_Thing"), "The_Thing", true);
-            music[2] = new audioFile(content.Load<SoundEffect>("Music/E1M1"), "Doom", true);
+            //music[0] = new audioFile(content.Load<SoundEffect>("Music/SOMITEST"), "Monkey Island", true);
+            music[0] = new audioFile(content.Load<SoundEffect>("Music/The_Thing"), "The_Thing", true);
+            music[1] = new audioFile(content.Load<SoundEffect>("Music/E1M1"), "Doom", true);
 
             //Load Sound
             defualtSound = new audioFile(content.Load<SoundEffect>("Sound/Whammy"), "Whammy");
             sound[0] = new audioFile(content.Load<SoundEffect>("Sound/Water_Drop"), "waterDrop");
             sound[1] = new audioFile(content.Load<SoundEffect>("Sound/door"), "door");
-
-            
+            sound[2] = new audioFile(content.Load<SoundEffect>("Sound/switch"), "switch");
+            sound[3] = new audioFile(content.Load<SoundEffect>("Sound/stairs"), "stairs");
         }
 
         
