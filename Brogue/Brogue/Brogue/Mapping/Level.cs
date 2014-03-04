@@ -231,8 +231,8 @@ namespace Brogue.Mapping
         }
 
 
-        IntVec a;
-        IntVec b;
+        public IntVec a;
+        public IntVec b;
         Direction[] path;
         IntVec[] moveset;
 
