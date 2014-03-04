@@ -104,32 +104,150 @@ namespace Brogue
 
     }
 
-    public class AuxerSwichTest
+    public class AuxerSwitchTest
     {
+        Mage bob;
+        Switch lever;
+        Switch leverTwo;
+        Door targetObject;
+
+        public void runTest()
+        {
+            testOneCreatingSwich();
+            testTwoLinkSwitchToInteractable();
+            testThreeActOnSwichToObject();
+        }
+
+        public void testOneCreatingSwich()
+        {
+            bool passed = false;
+
+            lever = new Switch();
+
+            if (lever != null)
+            {
+                passed = true;
+            }
+
+            if (!passed)
+            {
+                throw new System.ArgumentException("Swiches was not created", "testOneCreatingSwich");
+            }
+        }
+
+        public void testTwoLinkSwitchToInteractable()
+        {
+            bool passed = false;
+
+            targetObject = new Door();
+            lever = new Switch(targetObject);
+
+            if (lever.target != null)
+            {
+                passed = true;
+            }
+
+            if (!passed)
+            {
+                throw new System.ArgumentException("Switch did not link to object", "testTwoLinkSwitchToInteractable");
+            }
+        }
+
+        public void testThreeActOnSwichToObject()
+        {
+            bool passed = false;
+            bob = new Mage();
+            targetObject = new Door(Direction.UP);
+            lever = new Switch(targetObject);
+
+            Direction first = targetObject.directionFacing;
+            lever.actOn(bob);
+            Direction second = targetObject.directionFacing;
+
+            if (first != second)
+            {
+                passed = true;
+            }
+
+            if (!passed)
+            {
+                throw new System.ArgumentException("Switch acting on object", "testThreeActOnSwichToObject");
+            }
+        }
+    }
+
+    public class AuxerStairTest
+    {
+        Mage bob;
+        Stairs stair;
+
+
+        public void runTest()
+        {
+            testOneCreatingStair();
+            testThreeActOnSwichToObject();
+        }
+
+        public void testOneCreatingStair()
+        {
+            bool passed = false;
+
+            stair = new Stairs();
+
+            if (stair != null)
+            {
+                passed = true;
+            }
+
+            if (!passed)
+            {
+                throw new System.ArgumentException("Swiches was not created", "testOneCreatingSwich");
+            }
+        }
+
+        public void testThreeActOnSwichToObject()
+        {
+            bool passed = false;
+
+            bob = new Mage();
+            stair = new Stairs();
+
+            stair.actOn(bob);
+
+            if (stair.calledNextLevel == true)
+            {
+                passed = true;
+            }
+
+            if (!passed)
+            {
+                throw new System.ArgumentException("Switch acting on object", "testThreeActOnSwichToObject");
+            }
+        }
 
     }
 
-
-
-    /// <summary>
-    /// This is the main type for your game
-    /// </summary>
     public class AuxerTestingZone : Microsoft.Xna.Framework.Game
     {
 
         AuxerHiddenPassageTest testHiddenPassage;
+        AuxerSwitchTest testSwitch;
+        AuxerStairTest testStairs;
 
         public AuxerTestingZone()
         {
             Content.RootDirectory = "Content";
 
             testHiddenPassage = new AuxerHiddenPassageTest();
-            //testHiddenPassage.runTest();
+            testSwitch = new AuxerSwitchTest();
+            testStairs = new AuxerStairTest();
         }
 
         public void runTests()
         {
-            testHiddenPassage.runTest();
+            //testHiddenPassage.runTest();
+            //testSwitch.runTest();
+            testStairs.runTest();
         }
 
         protected override void Initialize()
