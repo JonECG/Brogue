@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Brogue.Items.Equipment.Accessory;
+using Brogue.Enums;
 
 namespace Brogue.HeroClasses
 {
@@ -53,27 +54,107 @@ namespace Brogue.HeroClasses
             return totalDamage;
         }
 
-        public void equipWeapon(Weapon weapon, int index)
+        public bool isWeaponEquipable(Weapon weapon, Class heroRole, int level)
         {
+            
+            bool result = false;
             if (weapon != null)
             {
-                int handsTaken = (weapon.EquipableIn.Contains(Enums.Slots.Hand_Both)) ? 2 : 1;
-                if (slotsOpen >= handsTaken)
+                bool equipable = false;
+                for (int i = 0; i < weapon.UsedBy.Count && !equipable; i++)
                 {
-                    if (equippedWeapons[index] == null)
-                    {
-                        if (handsTaken == 2)
-                        {
-                            equippedWeapons[0] = weapon;
-                        }
-                        else
-                        {
-                            equippedWeapons[index] = weapon;
-                        }
-                        slotsOpen -= handsTaken;
-                    }
+                    equipable = (weapon.UsedBy[i] == heroRole);
+                }
+                if (equipable && weapon.LevelReq <= level)
+                {
+                    int handsTaken = (weapon.EquipableIn.Contains(Enums.Slots.Hand_Both)) ? 2 : 1;
+                    result = (slotsOpen >= handsTaken);
                 }
             }
+            if (!result)
+            {
+                Engine.Engine.Log("You can't equip this weapon.");
+            }
+            return result;
+        }
+
+        public bool isArmorEquipable(Armor armor, Class heroRole, int level)
+        {
+            bool result = false;
+            if (armor != null)
+            {
+                bool equipable = false;
+                for (int i = 0; i < armor.UsedBy.Count && !equipable; i++)
+                {
+                    equipable = (armor.UsedBy[i] == heroRole);
+                }
+                result = (equipable && armor.LevelReq <= level);
+            }
+            if (!result)
+            {
+                Engine.Engine.Log("You can't equip this armor.");
+            }
+            return result;
+        }
+
+        public void equipArmor(Armor armor)
+        {
+            for (int i = 0; i < armor.EquipableIn.Count; i++)
+            {
+                switch (armor.EquipableIn[i])
+                {
+                    case Slots.Head:
+                        helmet = (Helm)armor;
+                        break;
+                    case Slots.Chest:
+                        chestPlate = (Chest)armor;
+                        break;
+                    case Slots.Legs:
+                        grieves = (Legs)armor;
+                        break;
+                }
+            }
+        }
+
+        public void equipWeapon(Weapon weapon, int index)
+        {
+            int handsTaken = (weapon.EquipableIn.Contains(Enums.Slots.Hand_Both)) ? 2 : 1;
+            if (slotsOpen >= handsTaken)
+            {
+                if (equippedWeapons[index] == null)
+                {
+                    if (handsTaken == 2)
+                    {
+                        equippedWeapons[0] = weapon;
+                    }
+                    else
+                    {
+                        equippedWeapons[index] = weapon;
+                    }
+                    slotsOpen -= handsTaken;
+                }
+            }
+        }
+
+        public Armor removeArmor(Armor type)
+        {
+            Armor removedArmor = null;
+            for (int i = 0; i < type.EquipableIn.Count; i++)
+            {
+                switch (type.EquipableIn[i])
+                {
+                    case Slots.Head:
+                        removedArmor = helmet;
+                        break;
+                    case Slots.Legs:
+                        removedArmor = grieves;
+                        break;
+                    case Slots.Chest:
+                        removedArmor = chestPlate;
+                        break;
+                }
+            }
+            return removedArmor;
         }
 
         public Weapon removeWeapon(int index)

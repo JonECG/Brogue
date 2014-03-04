@@ -3,6 +3,7 @@ using Brogue.Enums;
 using Brogue.Abilities;
 using Brogue.Items;
 using Brogue.Items.Equipment;
+using Brogue.Enums;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -27,7 +28,10 @@ namespace Brogue.HeroClasses
     {
         public static int level { get; set; }
         public static int MaxJarBarAmount;
-        protected int numAbilities = 0;
+        protected int numAbilities;
+        protected int damageBoost;
+        public static Class heroRole;
+        protected int baseHealth;
         protected int armorRating;
         protected int experience = 0;
         protected int expRequired = 100;
@@ -46,25 +50,21 @@ namespace Brogue.HeroClasses
 
         public Hero()
         {
-            level = 1;
+            level = 5;
             numAbilities = 0;
-            health = 200;
+            baseHealth = 200;
+            health = baseHealth;
             maxHealth = health;
             healthPerLevel = 50;
+            damageBoost = 0;
             experience = 0;
             expRequired = 50;
             MaxJarBarAmount = 50;
             jarBarAmount = 0;
             isFriendly = true;
-            abilities = new Ability[2];
+            numAbilities = 2;
+            abilities = new Ability[6];
             abilities[0] = new Cleave();
-            inventory.addItem(new Sword(1, 1));
-            equipWeapon(0, 0);
-            pickupItem(new Sword(1, 1));
-            pickupItem(new Axe(1, 1));
-            pickupItem(new Sword(1, 1));
-            pickupItem(new Axe(1, 1));
-            pickupItem(new Axe(1, 1));
         }
 
         public IntVec move(Direction dir)
@@ -239,7 +239,7 @@ namespace Brogue.HeroClasses
                         {
                             withinRange = true;
                             abilities[0].addCastingSquares(MouseController.MouseGridPosition());
-                            if (true)//abilities[0].filledSquares())
+                            if (abilities[0].filledSquares())
                             {
                                 turnOver = true;
                                 abilities[0].finishCastandDealDamage(level, currentlyEquippedItems.getTotalWeaponDamage(), mapLevel, this);
@@ -323,18 +323,24 @@ namespace Brogue.HeroClasses
         {
             Item temp = mapLevel.DroppedItems.FindEntity(mapLevel.CharacterEntities.FindPosition(this));
             pickupItem(temp);
-            if (temp != null && !inventory.inventoryMaxed())
+            if (temp != null)
             {
                 mapLevel.DroppedItems.RemoveEntity(temp);
                 Engine.Engine.Log("item picked up");
             }
         }
 
-        public void equipArmor(int itemToEquip, int currentItemIndex = 0)
+        public void equipArmor(int itemToEquip)
         {
             if (inventory.stored[itemToEquip].item != null && inventory.stored[itemToEquip].item.ItemType == ITypes.Armor)
             {
-
+                Item newlyEquippedItem = inventory.stored[itemToEquip].item;
+                if(currentlyEquippedItems.isArmorEquipable((Armor)newlyEquippedItem, heroRole, level))
+                {
+                    inventory.removeItem(itemToEquip);
+                    inventory.addItem(currentlyEquippedItems.removeArmor((Armor)newlyEquippedItem));
+                    currentlyEquippedItems.equipArmor((Armor)newlyEquippedItem);
+                }
             }
         }
 
@@ -343,9 +349,12 @@ namespace Brogue.HeroClasses
             if (inventory.stored[inventoryIndex].item != null && inventory.stored[inventoryIndex].item.ItemType == ITypes.Weapon)
             {
                 Item newlyEquippedItem = inventory.stored[inventoryIndex].item;
-                inventory.removeItem(inventoryIndex);
-                inventory.addItem(currentlyEquippedItems.removeWeapon(weaponIndex));
-                currentlyEquippedItems.equipWeapon((Weapon)newlyEquippedItem, weaponIndex);
+                if(currentlyEquippedItems.isWeaponEquipable((Weapon)newlyEquippedItem, heroRole, level))
+                {
+                    inventory.removeItem(inventoryIndex);
+                    inventory.addItem(currentlyEquippedItems.removeWeapon(weaponIndex));
+                    currentlyEquippedItems.equipWeapon((Weapon)newlyEquippedItem, weaponIndex);
+                }
             }
         }
 
@@ -361,7 +370,7 @@ namespace Brogue.HeroClasses
 
         public void pickupItem(Item item)
         {
-            if (item != null)
+            if (item != null && !inventory.inventoryMaxed())
             {
                 inventory.addItem(item.PickUpEffect(this));
                 Engine.Engine.Log("" + jarBarAmount);
