@@ -207,6 +207,11 @@ namespace Brogue.Engine
             }
         }
 
+        public static void NextLevel()
+        {
+
+        }
+
         public static void SaveGame()
         {
             SaveGameData sg = new SaveGameData();
