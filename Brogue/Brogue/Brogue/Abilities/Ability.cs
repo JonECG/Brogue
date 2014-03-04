@@ -16,6 +16,7 @@ namespace Brogue.Abilities
         public int radius {get; protected set;}
         public bool isCasting { get; protected set; }
         public bool wasJustCast { get; set; }
+        public string description { get; protected set; }
 
         abstract public void addCastingSquares(IntVec cursorPosition);
         abstract public void removeCastingSquares(IntVec cursorPosition);

@@ -17,6 +17,7 @@ namespace Brogue.Abilities.Damaging.SingleTargets
 
         public Cleave()
         {
+            description = "The warrior strikes two immideately adjacent squares \ndealing " + baseDamage + " * hero level plus weapon damage to enemies \nwithin those squares.";
             castSquares = new IntVec[2];
             for(int i = 0; i < castSquares.Length;i++)
             {
@@ -38,7 +39,6 @@ namespace Brogue.Abilities.Damaging.SingleTargets
             {
                 if ((castSquares[i].X == 0 && castSquares[i].Y == 0) && !castSquares.Contains(mouse))
                 {
-                    Engine.Engine.Log("Adding grid square");
                     castSquares[i] = mouse;
                 }
             }
