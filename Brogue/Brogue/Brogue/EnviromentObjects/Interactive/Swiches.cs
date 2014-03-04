@@ -30,11 +30,6 @@ namespace Brogue.EnviromentObjects.Interactive
             isPassable = false;
         }
 
-        public void link(IInteractable actingOn)
-        {
-            target = actingOn;
-        }
-
         public Swiches(IInteractable actingOn)
         {
             active = false;
@@ -84,6 +79,7 @@ namespace Brogue.EnviromentObjects.Interactive
         {
             changeState();
             target.actOn(actingCharacter);
+            Audio.playSound("switch");
             //actingCharacter.position = new IntVec()
         }
     }

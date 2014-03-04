@@ -42,11 +42,6 @@ namespace Brogue.EnviromentObjects.Interactive
 
         private void setToNewPosition(GameCharacter actingCharacter)
         {
-
-            //IntVec exitPosition = other.testPosition;
-            //IntVec finalPosition = exitPosition + other.directionFacing;
-            //testPlayerPosition = finalPosition;
-
             IntVec exitPosition = Engine.Engine.currentLevel.InteractableEnvironment.FindPosition(other);
             IntVec finalPosition = exitPosition + other.directionFacing;
             IntVec characterPosition = Engine.Engine.currentLevel.CharacterEntities.FindPosition(actingCharacter);

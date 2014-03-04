@@ -223,12 +223,12 @@ namespace Brogue.EnviromentObjects.Interactive
 
         public void actOn(GameCharacter actingCharacter)
         {
-            changeSolid();
             if (!empty)
             {
                 spewOutIteams();
                 empty = true;
             }
+            Engine.Engine.currentLevel.InteractableEnvironment.Remove(this);
         }
     }
 }
