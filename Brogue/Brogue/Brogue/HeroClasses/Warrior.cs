@@ -1,4 +1,5 @@
 ﻿using Brogue.Enums;
+using Brogue.Items.Equipment.Accessory;
 using Brogue.Items.Equipment.Armor.Helm;
 using Brogue.Items.Equipment.Armor.Legs;
 using Brogue.Items.Equipment.Weapon.Melee;
@@ -22,6 +23,12 @@ namespace Brogue.HeroClasses
             equipWeapon(0, 0);
             pickupItem(new MailHelm(1, 1));
             pickupItem(new MailLegs(1, 1));
+            pickupItem(new Ring(1, 1));
+            pickupItem(new Ring(1, 1));
+            pickupItem(new Ring(1, 1));
+            pickupItem(new Ring(1, 1));
+            resetLevel();
+            resetHealth();
         }
     }
 }

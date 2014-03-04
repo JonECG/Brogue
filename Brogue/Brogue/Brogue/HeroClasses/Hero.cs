@@ -21,6 +21,7 @@ using Brogue.Mapping;
 using Brogue.Items.Equipment.Weapon.Melee;
 using Brogue.Items.Equipment.Weapon.Ranged;
 using Brogue.Abilities.AOE;
+using Brogue.Items.Equipment.Accessory;
 
 namespace Brogue.HeroClasses
 {
@@ -126,17 +127,24 @@ namespace Brogue.HeroClasses
             armorRating = currentlyEquippedItems.getTotalArmorRating();
         }
 
-        private void resetLevel()
+        protected void resetLevel()
         {
+            maxHealth = baseHealth + currentlyEquippedItems.getAccessoryHealthModifier() + healthPerLevel * level;
+            Engine.Engine.Log(health.ToString());
+            Engine.Engine.Log(maxHealth.ToString());
             if (experience >= expRequired)
             {
                 int addedExp = experience - expRequired;
                 level += 1;
-                maxHealth = 200 + healthPerLevel*level;
                 health += healthPerLevel;
                 experience = 0 + addedExp;
                 expRequired = 50 + 25 * (level-1);
             }
+        }
+
+        protected void resetHealth()
+        {
+            health = maxHealth;
         }
 
         private void drinkFromJarBar()
@@ -275,7 +283,7 @@ namespace Brogue.HeroClasses
                             if (abilities[ability].filledSquares())
                             {
                                 turnOver = true;
-                                abilities[ability].finishCastandDealDamage(level, currentlyEquippedItems.getTotalWeaponDamage(), mapLevel, this);
+                                abilities[ability].finishCastandDealDamage(level, currentlyEquippedItems.getTotalDamageIncrease(), mapLevel, this);
                                 Engine.Engine.ClearGridSelections();
                                 viewingCast = false;
                             }
@@ -289,6 +297,7 @@ namespace Brogue.HeroClasses
                 
                 return turnOver;
         }
+
         public void attack(Level mapLevel)
         {
             if (mapLevel.CharacterEntities.FindEntity(MouseController.MouseGridPosition()) != this)
@@ -351,12 +360,26 @@ namespace Brogue.HeroClasses
             }
         }
 
+        public void equipAccessory(int itemToEquip)
+        {
+            if (inventory.stored[itemToEquip].item != null && inventory.stored[itemToEquip].item.ItemType == ITypes.Accessory)
+            {
+                Item newlyEquippedItem = inventory.stored[itemToEquip].item;
+                if(currentlyEquippedItems.isAccessoryEquipable((Accessory)newlyEquippedItem, heroRole, level))
+                {
+                    inventory.removeItem(itemToEquip);
+                    inventory.addItem(currentlyEquippedItems.removeAccessory((Accessory)newlyEquippedItem));
+                    currentlyEquippedItems.equipAccessory((Accessory)newlyEquippedItem);
+                }
+            }
+        }
+
         public void equipArmor(int itemToEquip)
         {
             if (inventory.stored[itemToEquip].item != null && inventory.stored[itemToEquip].item.ItemType == ITypes.Armor)
             {
                 Item newlyEquippedItem = inventory.stored[itemToEquip].item;
-                if(currentlyEquippedItems.isArmorEquipable((Armor)newlyEquippedItem, heroRole, level))
+                if (currentlyEquippedItems.isArmorEquipable((Armor)newlyEquippedItem, heroRole, level))
                 {
                     inventory.removeItem(itemToEquip);
                     inventory.addItem(currentlyEquippedItems.removeArmor((Armor)newlyEquippedItem));

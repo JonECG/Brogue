@@ -41,7 +41,37 @@ namespace Brogue.HeroClasses
             return totalArmor;
         }
 
-        public int getTotalWeaponDamage()
+        public int getAccessoryHealthModifier()
+        {
+            int increasedHealth = 0;
+            if (necklace != null)
+            {
+                for (int i = 0; i < necklace.StatIncreased.Count; i++)
+                {
+                    if (necklace.StatIncreased[i] == Modifiers.Health)
+                    {
+                        increasedHealth += necklace.StatIncrease;
+                    }
+                }
+            }
+
+            for (int i = 0; i < rings.Length; i++)
+            {
+                if (rings[i] != null)
+                {
+                    for (int j = 0; j < rings[i].StatIncreased.Count; j++)
+                    {
+                        if (rings[i].StatIncreased[j] == Modifiers.Health)
+                        {
+                            increasedHealth += rings[i].StatIncrease;
+                        }
+                    }
+                }
+            }
+            return increasedHealth;
+        }
+
+        public int getTotalDamageIncrease()
         {
             int totalDamage = 0;
             for (int i = 0; i < equippedWeapons.Length; i++)
@@ -49,6 +79,31 @@ namespace Brogue.HeroClasses
                 if (equippedWeapons[i] != null)
                 {
                     totalDamage += equippedWeapons[i].Damage;
+                }
+            }
+
+            if (necklace != null)
+            {
+                for (int i = 0; i < necklace.StatIncreased.Count; i++)
+                {
+                    if (necklace.StatIncreased[i] == Modifiers.Damage)
+                    {
+                        totalDamage += necklace.StatIncrease;
+                    }
+                }
+            }
+
+            for (int i = 0; i < rings.Length; i++)
+            {
+                if (rings[i] != null)
+                {
+                    for (int j = 0; j < rings[0].StatIncreased.Count; j++)
+                    {
+                        if (rings[i].StatIncreased[j] == Modifiers.Damage)
+                        {
+                            totalDamage += rings[i].StatIncrease;
+                        }
+                    }
                 }
             }
             return totalDamage;
@@ -97,6 +152,25 @@ namespace Brogue.HeroClasses
             return result;
         }
 
+        public bool isAccessoryEquipable(Accessory accessory, Class heroRole, int level)
+        {
+            bool result = false;
+            if (accessory != null)
+            {
+                bool equipable = false;
+                for (int i = 0; i < accessory.UsedBy.Count && !equipable; i++)
+                {
+                    equipable = (accessory.UsedBy[i] == heroRole);
+                }
+                result = (equipable && accessory.LevelReq <= level);
+            }
+            if (!result)
+            {
+                Engine.Engine.Log("You can't equip this accessory.");
+            }
+            return result;
+        }
+
         public void equipArmor(Armor armor)
         {
             for (int i = 0; i < armor.EquipableIn.Count; i++)
@@ -111,6 +185,29 @@ namespace Brogue.HeroClasses
                         break;
                     case Slots.Legs:
                         grieves = (Legs)armor;
+                        break;
+                }
+            }
+        }
+
+        public void equipAccessory(Accessory accessory)
+        {
+            for (int i = 0; i < accessory.EquipableIn.Count; i++)
+            {
+                switch (accessory.EquipableIn[i])
+                {
+                    case Slots.Neck:
+                        necklace = (Necklace)accessory;
+                        break;
+                    case Slots.Finger_One:
+                        if (rings[0] != null && rings[1] == null)
+                        {
+                            rings[1] = (Ring)accessory;
+                        }
+                        else
+                        {
+                            rings[0] = (Ring)accessory;
+                        }
                         break;
                 }
             }
@@ -145,12 +242,15 @@ namespace Brogue.HeroClasses
                 {
                     case Slots.Head:
                         removedArmor = helmet;
+                        helmet = null;
                         break;
                     case Slots.Legs:
                         removedArmor = grieves;
+                        grieves = null;
                         break;
                     case Slots.Chest:
                         removedArmor = chestPlate;
+                        chestPlate = null;
                         break;
                 }
             }
@@ -168,6 +268,32 @@ namespace Brogue.HeroClasses
                 slotsOpen += handsTaken;
             }
             return removedWeapon;
+        }
+
+        public Accessory removeAccessory(Accessory type)
+        {
+            Accessory removedAccesory = null;
+            bool found = false;
+            for (int i = 0; i < type.EquipableIn.Count && !found; i++)
+            {
+                switch (type.EquipableIn[i])
+                {
+                    case Slots.Neck:
+                        removedAccesory = necklace;
+                        necklace = null;
+                        found = true;
+                        break;
+                    case Slots.Finger_One:
+                        if (rings[0] != null && rings[1] != null)
+                        {
+                            removedAccesory = rings[1];
+                            found = true;
+                            rings[1] = null;
+                        }
+                        break;
+                }
+            }
+            return removedAccesory;
         }
 
         public Weapon getPrimaryWeapon()
