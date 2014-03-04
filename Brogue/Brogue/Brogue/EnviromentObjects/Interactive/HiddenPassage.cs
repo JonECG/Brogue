@@ -64,7 +64,6 @@ namespace Brogue.EnviromentObjects.Interactive
 
         public Sprite GetSprite()
         {
-            //return new Sprite(texture);
             return new Sprite(texture, directionFacing);
         }
 
@@ -73,7 +72,6 @@ namespace Brogue.EnviromentObjects.Interactive
             changeState();
             other.setToNewPosition(actingCharacter);
             other.isVisiable = true;
-            //target.actOn(actingCharacter);
         }
 
     }

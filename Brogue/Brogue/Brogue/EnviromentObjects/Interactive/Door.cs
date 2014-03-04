@@ -16,7 +16,7 @@ namespace Brogue.EnviromentObjects.Interactive
        bool isOpen { get; set; }
        bool rotated { get; set; }
 
-       Direction directionFacing { get; set; }
+       public Direction directionFacing { get; set; }
 
        static DynamicTexture texture = Engine.Engine.GetTexture("Enviroment/Door");
 

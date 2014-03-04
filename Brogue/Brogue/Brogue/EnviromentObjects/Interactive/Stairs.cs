@@ -15,9 +15,12 @@ namespace Brogue.EnviromentObjects.Interactive
 
         public bool isSolid { get; set; }
 
+        public bool calledNextLevel { get; set; }
+
         public Stairs() 
         {
             isSolid = true;
+            calledNextLevel = false;
         }
 
         public bool IsSolid()
@@ -34,6 +37,7 @@ namespace Brogue.EnviromentObjects.Interactive
         {
             Audio.playSound("stairs");
             Engine.Engine.NextLevel();
+            calledNextLevel = true;
             Audio.playRandomSong();
         }
     }

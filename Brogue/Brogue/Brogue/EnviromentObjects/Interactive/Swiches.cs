@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Brogue.EnviromentObjects.Interactive
 {
-    [Serializable] public class Swiches : IEnvironmentObject, IInteractable, IRenderable
+    [Serializable] public class Switch : IEnvironmentObject, IInteractable, IRenderable
     {
 
         static DynamicTexture texture1 = Engine.Engine.GetTexture("Enviroment/SwichUP");
@@ -23,14 +23,14 @@ namespace Brogue.EnviromentObjects.Interactive
         public bool isPassable { get; set; }
         public IInteractable target { get; set; }
 
-        public Swiches() 
+        public Switch() 
         {
             active = false;
             isSolid = true;
             isPassable = false;
         }
 
-        public Swiches(IInteractable actingOn)
+        public Switch(IInteractable actingOn)
         {
             active = false;
             isSolid = true;
