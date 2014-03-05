@@ -23,6 +23,7 @@ namespace Brogue.Engine
     {
         public HeroClasses.Hero character;
         public int seed;
+        public int saveSlot;
         public int levelComplexity;
         public int dungeonLevel;
     }
@@ -70,7 +71,7 @@ namespace Brogue.Engine
         static DynamicTexture standard = Engine.GetTexture("UI/InvSlot");
         static DynamicTexture highlighted = Engine.GetTexture("UI/InvSlotHighlighted");
         Texture2D currentBackTex;
-        public DynamicTexture drawOver; 
+        public DynamicTexture drawOver;
         public bool doDrawOver;
         string caption;
         Vector2 pos;
@@ -123,7 +124,7 @@ namespace Brogue.Engine
                 sb.Draw(currentBackTex, pos, Color.White);
                 sb.Draw(drawOver.texture, pos, Color.White);
                 sb.DrawString(Engine.font, caption,
-                    new Vector2(pos.X - Engine.font.MeasureString(caption).X / 2, pos.Y - 20), Color.Red);
+                    new Vector2(pos.X + currentBackTex.Width / 2 - Engine.font.MeasureString(caption).X / 2, pos.Y - 20), Color.Red);
             }
         }
     }
@@ -135,7 +136,7 @@ namespace Brogue.Engine
         public const bool DOSTARTMENU = false;
         public const float sightDistance = 1;
         public static bool inventoryOpen = false;
-        public static bool characterCreationOpen = true;
+        public static bool mainMenuOpen = true;
         public static bool savePromptOpen = false;
         public static int CELLWIDTH = 48;
         private static int logSize = 10;
@@ -158,12 +159,14 @@ namespace Brogue.Engine
         public static IntVec windowSizeInTiles;
         public static int lightMaskWidthInTilesDividedByTwo;
         private static IntVec modifiedCameraPosition = new IntVec(0, 0);
+        private static GeneratedLevel nextLevel;
 
         private static int levelSeed;
-
+        private static int currentSaveSlot = -1;
         private static int levelComplexity;
         private static int currentDungeonLevel = 1;
-        
+
+        private static bool showSaveSlotSelection;
 
         private static DynamicTexture
             lightMask = GetTexture("lightmask")
@@ -183,9 +186,10 @@ namespace Brogue.Engine
             invButton = GetTexture("UI/InventoryIcon");
 
 
+        const int SAVE_SLOTS = 8;
         static UIButton mageButton, warriorButton, rogueButton;
         static UIButton saveButton, continueButton;
-
+        static UIButton[] saveSlots = new UIButton[SAVE_SLOTS];
         public static SpriteFont font;
         static List<GridSelection> gridSelection = new List<GridSelection>();
 
@@ -209,35 +213,41 @@ namespace Brogue.Engine
 
         public static void NextLevel()
         {
-
+            GoToNextLevel();
         }
 
-        public static void SaveGame()
+        public static void SaveGame(string filename)
         {
             SaveGameData sg = new SaveGameData();
             sg.character = hero;
             sg.seed = enginerand.Next();
             sg.levelComplexity = enginerand.Next(500) + 50;
+            sg.saveSlot = currentSaveSlot;
             sg.dungeonLevel = currentDungeonLevel + 1;
             
             //IntermediateSerializer  is = new IntermediateSerializer();
 
             //Write to binary file...
             IFormatter formatter = new BinaryFormatter();
-            Stream stream = new FileStream("myfile.bro", FileMode.Create, FileAccess.Write, FileShare.None);
+            Stream stream = new FileStream(filename, FileMode.Create, FileAccess.Write, FileShare.None);
             formatter.Serialize(stream, sg);
             stream.Close();
         }
 
-        public static void LoadGame()
+        public static void LoadGame(string filename)
         {
             IFormatter formatter = new BinaryFormatter();
-            Stream stream = new FileStream("myfile.bro", FileMode.Open, FileAccess.Read, FileShare.Read);
+            Stream stream = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read);
             SaveGameData gd = (SaveGameData)formatter.Deserialize(stream);
             stream.Close();
+            File.Delete(filename);
+            currentSaveSlot = gd.saveSlot;
             hero = gd.character;
             currentLevel = LevelGenerator.generate(gd.seed, gd.levelComplexity, gd.dungeonLevel);
             currentLevel.CharacterEntities.Add(hero, currentLevel.GetStartPoint());
+            showSaveSlotSelection = false;
+            mainMenuOpen = false;
+            gameStarted = true;
         }
 
 
@@ -257,7 +267,7 @@ namespace Brogue.Engine
         public static void Start(Game1 injectedGame)
         {
             game = injectedGame;
-            CharacterCreation();
+            LoadMainMenu();
 
             //GenerateLevel();
             LogPosition = new Vector2(12, 12);
@@ -290,19 +300,34 @@ namespace Brogue.Engine
             }
         }
 
-        public static void CharacterCreation()
+        public static void LoadMainMenu()
         {
             LoadContent(game.Content);
             if (DOSTARTMENU)
             {
-                warriorButton = new UIButton(new Vector2(game.Width / 2, game.Height / 2), true, "Hero/Hero", "Warrior");
-                mageButton = new UIButton(new Vector2(game.Width / 2 - 60, game.Height / 2), true, "Hero/Hero", "Mage");
-                rogueButton = new UIButton(new Vector2(game.Width / 2 + 60, game.Height / 2), true, "Hero/Hero", "Rogue");
-                characterCreationOpen = true;
+                warriorButton = new UIButton(new Vector2(game.Width / 2, game.Height / 2), true, "Hero/WarriorSprite", "Warrior");
+                mageButton = new UIButton(new Vector2(game.Width / 2 - 60, game.Height / 2), true, "Hero/MageSprite", "Mage");
+                rogueButton = new UIButton(new Vector2(game.Width / 2 + 60, game.Height / 2), true, "Hero/RogueSprite", "Rogue");
+                mainMenuOpen = true;
+
+                Vector2 postemp = new Vector2(game.Width / 2 - (CELLWIDTH + 20) * SAVE_SLOTS / 2, game.Height - 100);
+                for (int i = 0; i < SAVE_SLOTS; i++)
+                {
+                    if (File.Exists("saveSlot" + (i + 1) + ".bro"))
+                    {
+                        saveSlots[i] = new UIButton(new Vector2(postemp.X + (CELLWIDTH + 20) * i, postemp.Y), true, "UI/FilledSaveSlot", "Slot " + (i + 1));
+                    }
+                    else
+                    {
+                        saveSlots[i] = new UIButton(new Vector2(postemp.X + (CELLWIDTH + 20) * i, postemp.Y), true, "UI/FreeSaveSlot", "Slot " + (i + 1));
+                    }
+                    
+                }
             }
             else
             {
                 hero = new HeroClasses.Warrior();
+                currentSaveSlot = 1;
                 StartGame();
             }
         }
@@ -312,6 +337,13 @@ namespace Brogue.Engine
             levelSeed = enginerand.Next();
             levelComplexity = enginerand.Next(500) + 50;
             currentDungeonLevel = 1;
+            if (nextLevel == null)
+            {
+                nextLevel = new GeneratedLevel(levelSeed, levelComplexity, currentDungeonLevel);
+            }
+            currentLevel = nextLevel.RetrieveLevel();
+            currentDungeonLevel++;
+            nextLevel = new GeneratedLevel(levelSeed, levelComplexity, currentDungeonLevel);
             currentLevel = LevelGenerator.generate(levelSeed, levelComplexity, currentDungeonLevel);
             Log("Level generated.");
             currentLevel.CharacterEntities.Add(hero, currentLevel.GetStartPoint());
@@ -321,7 +353,8 @@ namespace Brogue.Engine
         {
             Log("Game started");
             gameStarted = true;
-            characterCreationOpen = false;
+            mainMenuOpen = false;
+            showSaveSlotSelection = false;
             GenerateLevel();
             //LoadContent(contentManager);
 
@@ -427,22 +460,30 @@ namespace Brogue.Engine
             }
             else
             {
-                if (characterCreationOpen)
+                if (mainMenuOpen)
                 {
                     if (mageButton.isClicked())
                     {
                         hero = new HeroClasses.Mage();
-                        StartGame();
+                        mainMenuOpen = false;
+                        showSaveSlotSelection = true;
                     }
                     if (warriorButton.isClicked())
                     {
                         hero = new HeroClasses.Warrior();
-                        StartGame();
+                        mainMenuOpen = false;
+                        showSaveSlotSelection = true;
                     }
                     if (rogueButton.isClicked())
                     {
                         hero = new HeroClasses.Rogue();
-                        StartGame();
+                        mainMenuOpen = false;
+                        showSaveSlotSelection = true;
+                    }
+                    int saveSlot = saveSlotClicked();
+                    if (saveSlot != -1)
+                    {
+                        LoadFromSlot(saveSlot);
                     }
                 }
 
@@ -450,7 +491,7 @@ namespace Brogue.Engine
                 {
                     if (saveButton.isClicked())
                     {
-                        SaveGame();
+                        SaveToSlot(currentSaveSlot);
                         System.Environment.Exit(0);
                     }
                     if (continueButton.isClicked())
@@ -459,8 +500,48 @@ namespace Brogue.Engine
                         gameStarted = true;
                     }
                 }
+                else if (showSaveSlotSelection)
+                {
+                    int saveClicked = saveSlotClicked();
+                    if (saveClicked != -1)
+                    {
+                        currentSaveSlot = saveClicked;
+                        showSaveSlotSelection = false;
+                        StartGame();
+                    }
+
+                }
 
             }
+        }
+
+        private static void LoadFromSlot(int slot)
+        {
+            string filename = "saveSlot" + slot + ".bro";
+            if (File.Exists(filename))
+            {
+                LoadGame(filename);
+            }
+        }
+
+        private static void SaveToSlot(int slot)
+        {
+            string filename = "saveSlot" + slot + ".bro";
+            SaveGame(filename);
+        }
+
+        private static int saveSlotClicked()
+        {
+            
+            int clicked = -1;
+            for (int i = 0; i < SAVE_SLOTS && clicked == -1; i++)
+            {
+                if (saveSlots[i].isClicked())
+                {
+                    clicked = i + 1;
+                }
+            }
+            return clicked;
         }
 
         private static IntVec[] GetEnemyPositions()
@@ -477,18 +558,6 @@ namespace Brogue.Engine
         private static bool GameCommands()
         {
             bool didSomething = false;
-            if (KeyboardController.IsPressed(Keys.U))
-            {
-                SaveGame();
-                didSomething = true;
-                
-            }
-
-            if (KeyboardController.IsPressed(Keys.I))
-            {
-                LoadGame();
-                didSomething = true;
-            }
 
             if (KeyboardController.IsPressed(Keys.O))
             {
@@ -562,8 +631,7 @@ namespace Brogue.Engine
         private static void GoToNextLevel()
         {
             //Generate next level
-            currentLevel = LevelGenerator.generate(enginerand.Next(), enginerand.Next(500) + 50);
-            currentLevel.CharacterEntities.Add(hero, currentLevel.GetStartPoint());
+            GenerateLevel();
             //Prompt for save.
 
             gameStarted = false;
@@ -695,18 +763,18 @@ namespace Brogue.Engine
                     new Rectangle(0, 0, jar.texture.Width, jar.texture.Height), Color.White,
                     0,
                     new Vector2(jar.texture.Width / 2, jar.texture.Height),
-                    new Vector2(1, hero.jarBarAmount / HeroClasses.Hero.MaxJarBarAmount),
+                    new Vector2(1, hero.jarBarAmount / hero.MaxJarBarAmount),
                     SpriteEffects.None, 0);
                 //uisb.Draw(bar.texture, new Vector2(game.Width - 50 - jar.texture.Width, game.Height / 2 - bar.texture.Height / 2), Color.White);
                 uisb.Draw(invButton.texture, InvButtonPosition, Color.White);
-                DrawMiniMap(uisb);
+                //DrawMiniMap(uisb);
                 if (inventoryOpen)
                 {
                     DrawInventory(uisb);
                 }
-                if (characterCreationOpen)
+                if (mainMenuOpen)
                 {
-                    DrawCharacterCreation(uisb);
+                    DrawMainMenu(uisb);
                 }
 
                 DrawEquip(uisb);
@@ -716,23 +784,39 @@ namespace Brogue.Engine
             {
 
                 //game.GraphicsDevice.Clear(Color);
-                if (characterCreationOpen)
+                if (mainMenuOpen)
                 {
-                    DrawCharacterCreation(uisb);
+                    DrawMainMenu(uisb);
                 }
                 else if (savePromptOpen)
                 {
                     DrawSavePrompt(uisb);
                 }
+                else if (showSaveSlotSelection)
+                {
+                    DrawSaveSelection(uisb);
+                }
             }
             DrawLog(uisb);
         }
 
-        private static void DrawCharacterCreation(SpriteBatch sb)
+        private static void DrawMainMenu(SpriteBatch sb)
         {
             mageButton.Draw(sb);
             warriorButton.Draw(sb);
             rogueButton.Draw(sb);
+
+            for (int i = 0; i < saveSlots.Count(); i++)
+            {
+                saveSlots[i].Draw(sb);
+            }
+        }
+        private static void DrawSaveSelection(SpriteBatch sb)
+        {
+            for (int i = 0; i < saveSlots.Count(); i++)
+            {
+                saveSlots[i].Draw(sb);
+            }
         }
 
         private static void DrawSavePrompt(SpriteBatch sb)

@@ -27,11 +27,11 @@ namespace Brogue.HeroClasses
 
     [Serializable] public abstract class Hero : GameCharacter, IRenderable
     {
-        public static int level { get; set; }
-        public static int MaxJarBarAmount = 50;
+        public int level { get; set; }
+        public int MaxJarBarAmount = 50;
         protected int numAbilities;
         protected int damageBoost;
-        public static Classes heroRole;
+        public Classes heroRole;
         protected int baseHealth;
         protected int armorRating;
         protected int experience = 0;
