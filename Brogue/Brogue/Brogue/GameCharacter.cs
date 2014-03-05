@@ -32,7 +32,7 @@ namespace Brogue
 
         public void Heal(int heal)
         {
-            health = (health + maxHealth > maxHealth) ? maxHealth : health + heal;
+            health = (health + heal > maxHealth) ? maxHealth : health + heal;
         }
 
         public Sprite GetSprite()
