@@ -18,7 +18,7 @@ namespace Brogue.HeroClasses
             numAbilities = 2;
             texture = Engine.Engine.GetTexture("Hero/WarriorSprite");
             Hero.sprite = new Sprite(texture);
-            heroRole = Class.Warrior;
+            heroRole = Classes.Warrior;
             inventory.addItem(new Sword(1, 1));
             equipWeapon(0, 0);
             pickupItem(new MailHelm(1, 1));

@@ -13,7 +13,7 @@ namespace Brogue.HeroClasses
             numAbilities = 2;
             texture = Engine.Engine.GetTexture("Hero/RogueSprite");
             Hero.sprite = new Sprite(texture);
-            heroRole = Class.Rogue;
+            heroRole = Classes.Rogue;
         }
     }
 }

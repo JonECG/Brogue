@@ -3,7 +3,6 @@ using Brogue.Enums;
 using Brogue.Abilities;
 using Brogue.Items;
 using Brogue.Items.Equipment;
-using Brogue.Enums;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -29,10 +28,10 @@ namespace Brogue.HeroClasses
     [Serializable] public abstract class Hero : GameCharacter, IRenderable
     {
         public static int level { get; set; }
-        public static int MaxJarBarAmount;
+        public static int MaxJarBarAmount = 50;
         protected int numAbilities;
         protected int damageBoost;
-        public static Class heroRole;
+        public static Classes heroRole;
         protected int baseHealth;
         protected int armorRating;
         protected int experience = 0;
@@ -63,7 +62,6 @@ namespace Brogue.HeroClasses
             damageBoost = 0;
             experience = 0;
             expRequired = 50;
-            MaxJarBarAmount = 50;
             jarBarAmount = 0;
             isFriendly = true;
             numAbilities = 2;
@@ -130,8 +128,6 @@ namespace Brogue.HeroClasses
         protected void resetLevel()
         {
             maxHealth = baseHealth + currentlyEquippedItems.getAccessoryHealthModifier() + healthPerLevel * level;
-            Engine.Engine.Log(health.ToString());
-            Engine.Engine.Log(maxHealth.ToString());
             if (experience >= expRequired)
             {
                 int addedExp = experience - expRequired;
