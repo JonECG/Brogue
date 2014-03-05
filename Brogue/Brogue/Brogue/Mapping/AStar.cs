@@ -134,6 +134,12 @@ namespace Brogue.Mapping
 
         public static Direction[] getPathBetween(Level level, IntVec from, IntVec to)
         {
+            bool dummy = false;
+            return getPathBetween(level, from, to, ref dummy);
+        }
+
+        public static Direction[] getPathBetween(Level level, IntVec from, IntVec to, ref bool isPossible)
+        {
             int[,] solid = level.getIntSolid();
             SortedSet<__AStarNode> nodes = new SortedSet<__AStarNode>( new __AStarNode.__AStarNodeComparer() );
 
@@ -176,6 +182,8 @@ namespace Brogue.Mapping
                 }
                 
             }
+
+            isPossible = recentNode.Equals(to);
 
             List<Direction> path = new List<Direction>();
 

@@ -18,7 +18,7 @@ namespace Brogue.Mapping
 
         public void Add( T t, IntVec position )
         {
-            list.Add(Tuple.Create(t, position));
+            list.Add(Tuple.Create(t, new IntVec(position) ));
         }
 
         public void Remove(T t)
