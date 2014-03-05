@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Brogue.Mapping;
+using Brogue.Engine;
 
 namespace Brogue.Enemies
 {
@@ -15,77 +16,39 @@ namespace Brogue.Enemies
         {
             turnCounter++;
 
-            Aggro(level);
-
-            if(AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(targets[0])) != null)
+            if (IsAggro)
             {
-                if (turnCounter % 9 == 0)
+                if (AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(targets[0])) != null)
                 {
-                    foreach (GameCharacter g in targets)
+                    Direction[] path = AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(targets[0]));
+                    if (path.Length > 1)
                     {
-                        if (g.health != 0)
+                        level.Move(this, path[0]);
+                    }
+
+                    else if (turnCounter % 3 == 0)
+                    {
+                        foreach (GameCharacter g in targets)
                         {
-                            if (g.maxHealth / g.health > 4)
-                            {
-                                g.TakeDamage(9001, this);
-                            }
-                            else
-                            {
-                                g.Heal(g.maxHealth / 5);
-                            }
+                            g.TakeDamage(attacks[1], this);
+                            health = (health * 4) / 5;
                         }
                     }
-                }
-                else if (turnCounter % 3 == 0)
-                {
-                    foreach (GameCharacter g in targets)
+                    else
                     {
-                        g.TakeDamage(attacks[1], this);
-                        health = (health * 4) / 5;
+                        targets[0].TakeDamage(attacks[0], this);
+                        Heal(attacks[0] / 10);
                     }
                 }
-                else
-                {
-                    targets[0].TakeDamage(attacks[0], this);
-                    Heal(attacks[0] / 10);
-                }
-                IntVec[] possible = AStar.getPossiblePositionsFrom(level, level.CharacterEntities.FindPosition(this), 2);
-                Random gen = new Random();
-                IntVec choice = possible[gen.Next(0, possible.Length)];
-
-                Engine.Engine.Log("VAMP_BOSS_INFORMATION");
-                Engine.Engine.Log("CURRENT_POSITION: " + level.CharacterEntities.FindPosition(this).X + "," + level.CharacterEntities.FindPosition(this).Y);
-
-                foreach (IntVec i in possible)
-                {
-                    Engine.Engine.Log(i.X + "," + i.Y);
-                }
-
-                level.Move(this, choice, true);
             }
+
+            
             return true;
         }
 
         public override void Aggro(Level level)
         {
-            if (targets.Count == 0)
-            {
-                targets.Add(level.CharacterEntities.FindEntity(FindNearestTarget(level.GetCharactersIsFriendly(true), level)));
-            }
-            else
-            {
-                targets[0] = level.CharacterEntities.FindEntity(FindNearestTarget(level.GetCharactersIsFriendly(true), level));
-            }
-            if (targets.Count > 0)
-            {
-                foreach (GameCharacter g in level.GetCharactersIsFriendly(true))
-                {
-                    if (level.CharacterEntities.FindPosition(g) != level.CharacterEntities.FindPosition(targets[0]))
-                    {
-                        targets.Add(g);
-                    }
-                }
-            }
+            throw new NotImplementedException();
         }
 
         public override void BuildBoss(int i)

@@ -11,40 +11,29 @@ namespace Brogue.Enemies
     class RangerBoss : BossEnemy
     {
         int turnCounter = 0;
+        int range;
 
         public override bool TakeTurn(Level level)
         {
             turnCounter++;
 
-            Aggro(level);
-
-            if (AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(targets[0])) != null)
+            if (IsAggro)
             {
-                if (turnCounter % 2 == 0)
+                if (AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(targets[0])) != null)
                 {
-                    targets[0].TakeDamage(attacks[0], this);
-                }
-
-                IntVec[] possible = AStar.getPossiblePositionsFrom(level, level.CharacterEntities.FindPosition(this), 1);
-                IntVec targetPos = null;
-                foreach (IntVec i in possible)
-                {
-                    if (targetPos == null)
+                    Direction[] path = AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(targets[0]));
+                    if (path.Length > range)
                     {
-                        targetPos = i;
+                        level.Move(this, path[0]);
+                    }
+                    else if (turnCounter % 3 == 0)
+                    {
+                        targets[0].TakeDamage(attacks[0]*2, this);
                     }
                     else
                     {
-                        if (AStar.getCost(AStar.getPathBetween(level, targetPos, level.CharacterEntities.FindPosition(targets[0]))) < AStar.getCost(AStar.getPathBetween(level, i, level.CharacterEntities.FindPosition(targets[0]))))
-                        {
-                            targetPos = i;
-                        }
+                        targets[0].TakeDamage(attacks[0], this);
                     }
-                }
-                Direction[] path = AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), targetPos);
-                foreach (Direction d in path)
-                {
-                    Move(d, level);
                 }
             }
             return true;
@@ -52,18 +41,12 @@ namespace Brogue.Enemies
 
         public override void Aggro(Level level)
         {
-            if (targets.Count == 0)
-            {
-                targets.Add(level.CharacterEntities.FindEntity(FindNearestTarget(level.GetCharactersIsFriendly(true), level)));
-            }
-            else
-            {
-                targets[0] = level.CharacterEntities.FindEntity(FindNearestTarget(level.GetCharactersIsFriendly(true), level));
-            }
+            throw new NotImplementedException();
         }
 
         public override void BuildBoss(int i)
-        {
+        {   
+            range = 7;
             health = 30 + 20 * i;
             maxHealth = health;
             defense = 10 + 3 * i;

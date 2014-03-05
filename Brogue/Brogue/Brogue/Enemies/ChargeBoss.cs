@@ -16,57 +16,25 @@ namespace Brogue.Enemies
         {
             turnCounter++;
 
-            Aggro(level);
-
-            if (AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(targets[0])) != null)
+            if (IsAggro)
             {
-                if (turnCounter % 3 == 0)
+                Direction[] path = AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(targets[0]));
+                if (path.Length > 1)
                 {
-                    Direction[] path = AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(targets[0]));
-                    if (AStar.getCost(path) <= moveSpeed + 1)
-                    {
-                        foreach (Direction d in path)
-                        {
-                            if (!(level.CharacterEntities.FindPosition(this).X + d.X == level.CharacterEntities.FindPosition(targets[0]).X
-                                && level.CharacterEntities.FindPosition(this).Y + d.Y == level.CharacterEntities.FindPosition(targets[0]).Y))
-                            {
-                                Move(d, level);
-                            }
-                        }
-                        targets[0].TakeDamage(attacks[1], this);
-                    }
-                    else
-                    {
-                        for (int i = 0; i < moveSpeed; i++)
-                        {
-                            Move(path[i], level);
-                        }
-                    }
+                    level.Move(this, path[0]);
                 }
-                else
+                else if (path.Length > 2)
                 {
-                    Direction[] path = AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(targets[0]));
-                    if (AStar.getCost(path) <= moveSpeed + 1)
-                    {
-                        foreach (Direction d in path)
-                        {
-                            if (!(level.CharacterEntities.FindPosition(this).X + d.X == level.CharacterEntities.FindPosition(targets[0]).X
-                                && level.CharacterEntities.FindPosition(this).Y + d.Y == level.CharacterEntities.FindPosition(targets[0]).Y))
-                            {
-                                Move(d, level);
-                            }
-                        }
-                        targets[0].TakeDamage(attacks[0], this);
-                    }
-                    else
-                    {
-                        for (int i = 0; i < moveSpeed; i++)
-                        {
-                            Move(path[i], level);
-                        }
-                    }
+                    level.Move(this, path[0]);
+                    level.Move(this, path[1]);
+                }
+
+                if (path.Length < 4)
+                {
+                    targets[0].TakeDamage(attacks[0], this);
                 }
             }
+           
             return true;
         }
 

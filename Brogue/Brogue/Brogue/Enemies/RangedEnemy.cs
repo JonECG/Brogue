@@ -112,7 +112,14 @@ namespace Brogue.Enemies
 
         public override DynamicTexture GetTexture()
         {
-            return Engine.Engine.GetTexture("Enemies/RangedEnemy");
+            if (IsAggro)
+            {
+                return Engine.Engine.GetTexture("Enemies/RangedEnemy_aggressive");
+            }
+            else
+            {
+                return Engine.Engine.GetTexture("Enemies/RangedEnemy_passive");
+            }
         }
     }
 }
