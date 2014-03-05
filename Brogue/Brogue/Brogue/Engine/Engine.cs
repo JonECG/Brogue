@@ -32,6 +32,7 @@ namespace Brogue.Engine
     {
         public Vector2 screenPosition;
         float speed;
+        public float scale = 0;
         Vector2 direction;
         float distance;
         public XPParticle(Vector2 screenPosition, float speed)
@@ -46,6 +47,11 @@ namespace Brogue.Engine
         {
             screenPosition += direction * speed;
             bool finished = false;
+            if (scale < .50f)
+            {
+                scale += 0.02f;
+            }
+
             distance -= speed;
             if (distance < 5)
             {
@@ -154,6 +160,7 @@ namespace Brogue.Engine
         private static List<XPParticle> xpList = new List<XPParticle>();
         public static Matrix worldToView;
         public static Vector2 xpBarPosition;
+        public static Vector2 healthBarPosition;
         public static Vector2 weaponEquipPosition;
         public static Vector2 armorEquipPosition;
         public static IntVec windowSizeInTiles;
@@ -188,7 +195,7 @@ namespace Brogue.Engine
 
         const int SAVE_SLOTS = 8;
         static UIButton mageButton, warriorButton, rogueButton;
-        static UIButton saveButton, continueButton;
+        static UIButton saveButton, continueButton, quitButton;
         static UIButton[] saveSlots = new UIButton[SAVE_SLOTS];
         public static SpriteFont font;
         static List<GridSelection> gridSelection = new List<GridSelection>();
@@ -206,7 +213,7 @@ namespace Brogue.Engine
 
             for (int i = 0; i < xp; i++)
             {
-                XPParticle newxp = new XPParticle(new Vector2(worldVector.X + enginerand.Next(CELLWIDTH) - CELLWIDTH/2, worldVector.Y + enginerand.Next(CELLWIDTH) - CELLWIDTH/2), enginerand.Next(20) + 15);
+                XPParticle newxp = new XPParticle(new Vector2(worldVector.X + enginerand.Next(CELLWIDTH) - CELLWIDTH/2, worldVector.Y + enginerand.Next(CELLWIDTH) - CELLWIDTH/2), enginerand.Next(15) + 10);
                 xpList.Add(newxp);
             }
         }
@@ -308,6 +315,7 @@ namespace Brogue.Engine
                 warriorButton = new UIButton(new Vector2(game.Width / 2, game.Height / 2), true, "Hero/WarriorSprite", "Warrior");
                 mageButton = new UIButton(new Vector2(game.Width / 2 - 60, game.Height / 2), true, "Hero/MageSprite", "Mage");
                 rogueButton = new UIButton(new Vector2(game.Width / 2 + 60, game.Height / 2), true, "Hero/RogueSprite", "Rogue");
+                quitButton = new UIButton(new Vector2(game.Width / 2 + 150, game.Height /4), true, "UI/QuitButton", "");
                 mainMenuOpen = true;
 
                 Vector2 postemp = new Vector2(game.Width / 2 - (CELLWIDTH + 20) * SAVE_SLOTS / 2, game.Height - 100);
@@ -366,11 +374,12 @@ namespace Brogue.Engine
             mainTarget = new RenderTarget2D(game.GraphicsDevice, game.Width, game.Height);
             lightMaskWidthInTilesDividedByTwo = lightMask.texture.Width / (2 * CELLWIDTH);
             xpBarPosition = new Vector2(80, game.Height / 2 - healthbar.texture.Height / 2);
+            healthBarPosition = new Vector2(40, game.Height / 2 - healthbar.texture.Height / 2);
             font = content.Load<SpriteFont>("UI/Font");
 
             //////////////////////////////////
             Audio.LoadContent(content);
-            Audio.playMusic("Doom", 0.15f);
+            //Audio.playMusic("Doom", 0.15f);
             //////////////////////////////////
             
         }
@@ -742,15 +751,23 @@ namespace Brogue.Engine
             {
                 foreach (XPParticle xp in xpList)
                 {
-                    uisb.Draw(particleTex.texture, xp.screenPosition, Color.White);
+                    uisb.Draw(particleTex.texture, xp.screenPosition, new Rectangle(0, 0, particleTex.texture.Width, particleTex.texture.Height), Color.White, 0, new Vector2(particleTex.texture.Width/2, particleTex.texture.Height/2), xp.scale, SpriteEffects.None, 0);
+                    //uisb.Draw(particleTex.texture, xp.screenPosition, Color.White);
                 }
-                uisb.Draw(healthcontainer.texture, new Vector2(50, game.Height / 2 - healthcontainer.texture.Height / 2), Color.White);
+                uisb.Draw(healthcontainer.texture, healthBarPosition, Color.White);
                 uisb.Draw(healthcontainer.texture, xpBarPosition, Color.White);
-                uisb.Draw(healthbar.texture, new Vector2(50, game.Height / 2 - healthcontainer.texture.Height / 2), Color.White);
+                //uisb.Draw(healthbar.texture, new Vector2(50, game.Height / 2 - healthcontainer.texture.Height / 2), Color.White);
+                uisb.Draw(healthbar.texture, new Vector2(healthBarPosition.X + healthbar.texture.Width / 2,
+                    healthBarPosition.Y + healthbar.texture.Height),
+                    new Rectangle(0, 0, healthbar.texture.Width, healthbar.texture.Height),
+                    Color.White, 0,
+                    new Vector2(healthbar.texture.Width / 2, healthbar.texture.Height),
+                    new Vector2(1, (float)hero.health / (float)hero.maxHealth), SpriteEffects.None, 0);
                 uisb.Draw(xpbar.texture, new Vector2(xpBarPosition.X + xpbar.texture.Width / 2,
-                    xpBarPosition.Y + xpbar.texture.Height / 2),
+                    xpBarPosition.Y + xpbar.texture.Height),
                     new Rectangle(0, 0, xpbar.texture.Width, xpbar.texture.Height),
-                    Color.White, 0, new Vector2(xpbar.texture.Width / 2, xpbar.texture.Height / 2),
+                    Color.White, 0,
+                    new Vector2(xpbar.texture.Width / 2, xpbar.texture.Height),
                     new Vector2(1, hero.GetXpPercent()), SpriteEffects.None, 0);
                 //uisb.Draw(xpbar, xpBarPosition, Color.White);
                 //uisb.Draw(inventory.texture, new Vector2(game.Width / 2 - inventory.texture.Width / 2, game.Height - 100), Color.White);
