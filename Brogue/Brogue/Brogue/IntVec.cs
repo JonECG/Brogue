@@ -49,6 +49,12 @@ namespace Brogue
             ints[1] = y;
         }
 
+        public IntVec(IntVec other)
+        {
+            ints[0] = other.X;
+            ints[1] = other.Y;
+        }
+
         public override int GetHashCode()
         {
             return new { X, Y }.GetHashCode();

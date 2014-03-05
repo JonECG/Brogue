@@ -34,7 +34,7 @@ namespace Brogue.Mapping
 
         private static void possiblePositionsFromStep(Level level, List<IntVec> positions, int[,] used, IntVec start, IntVec position, int budget, bool targetCharacters, bool straight, bool expand)
         {
-            if ( (!straight || lineIsFree(used, start, position))) 
+            if ( (!straight || lineIsFree(level, start, position))) 
             {
                 used[position.X, position.Y] = budget;
 
@@ -53,9 +53,37 @@ namespace Brogue.Mapping
             }
         }
 
-        private static bool lineIsFree(int[,] used, IntVec start, IntVec end)
+        private static bool lineIsFree(Level level, IntVec start, IntVec end)
         {
-            return true;
+            IntVec delta = new IntVec(Math.Abs(end.X - start.X), Math.Abs(end.Y - start.Y));
+            int sx = (end.X > start.X) ? 1 : -1;
+            int sy = (end.Y > start.Y) ? 1 : -1;
+            int err = delta.X - delta.Y;
+
+            IntVec current = new IntVec( start );
+
+            bool result = true;
+
+            while ( result && !current.Equals( end ) )
+            {
+                int e2 = 2*err;
+
+                if (e2 > -delta.Y)
+                {
+                    err -= delta.Y;
+                    current.X += sx;
+                }
+                if (e2 < delta.X )
+                {
+                    err += delta.X;
+                    current.Y += sy;
+                }
+
+                if (!current.Equals(end) && level.isSolid( current ))
+                    result = false;
+            }
+
+            return result;
         }
 
 
@@ -142,10 +170,9 @@ namespace Brogue.Mapping
                         }
                     }
 
-                    
 
-                    if (!nodes.Remove(recentNode))
-                        throw new NotImplementedException();
+
+                    nodes.Remove(recentNode);
                 }
                 
             }
@@ -208,8 +235,8 @@ namespace Brogue.Mapping
 
 
 
-                    if ((actions++ < count) && !nodes.Remove(recentNode))
-                        throw new NotImplementedException();
+                    if (actions++ < count)
+                        nodes.Remove(recentNode);
                 }
 
             }

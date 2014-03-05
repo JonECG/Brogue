@@ -48,7 +48,7 @@ namespace Brogue.Mapping
             needToCache = true;
             cachedSolid = new bool[tiles.GetLength(0), tiles.GetLength(1)];
 
-            a = findRandomOpenPosition();
+            a = GetStartPoint();
             b = findRandomOpenPosition();
             path = AStar.getPathBetween(this, a, b);
             moveset = AStar.getPossiblePositionsFrom(this, a, 15);
@@ -288,14 +288,14 @@ namespace Brogue.Mapping
             }
 
 
-            path = AStar.getPathBetween(this, a, b);
+            //path = AStar.getPathBetween(this, a, b);
 
-            IntVec current = new IntVec(a.X, a.Y);
-            foreach (Direction dir in path)
-            {
-                current += dir;
-                Engine.Engine.Draw(new Sprite(Engine.Engine.placeHolder, Color.Orange, dir), new IntVec(current.X, current.Y)); //Orange
-            }
+            //IntVec current = new IntVec(a.X, a.Y);
+            //foreach (Direction dir in path)
+            //{
+            //    current += dir;
+            //    Engine.Engine.Draw(new Sprite(Engine.Engine.placeHolder, Color.Orange, dir), new IntVec(current.X, current.Y)); //Orange
+            //}
 
             Engine.Engine.Draw(new Sprite(Engine.Engine.placeHolder, Color.Green), new IntVec(a.X, a.Y)); //Green
             Engine.Engine.Draw(new Sprite(Engine.Engine.placeHolder, Color.Red), new IntVec(b.X, b.Y)); //Red
@@ -363,7 +363,7 @@ namespace Brogue.Mapping
                 if (previousPathDistance != -1 && Math.Abs(previousPathDistance - path.Length) > movement)
                     Engine.Engine.Log(string.Format("<INCONSISTENT PATHFIND; MOVEMENTDELTA={0},PATHDELTA={1}>", movement, Math.Abs(previousPathDistance - path.Length)));
 
-                moveset = AStar.getPossiblePositionsFrom(this, a, 2, true);
+                moveset = AStar.getPossiblePositionsFrom(this, a, 2, false, true);
 
                 previousPathDistance = path.Length;
             }
