@@ -1,4 +1,6 @@
 ﻿using Brogue.Enums;
+using Brogue.Items.Consumables;
+using Brogue.Items.Equipment.Offhand;
 using Brogue.Items.Equipment.Weapon.Ranged;
 using System;
 using System.Collections.Generic;
@@ -18,6 +20,8 @@ namespace Brogue.HeroClasses
             Hero.sprite = new Sprite(texture);
             heroRole = Classes.Mage;
             inventory.addItem(new Staff(1, 1));
+            inventory.addItem(new SpellBook(1, 1));
+            inventory.addItem(new Potion(1,1));
             equipWeapon(0, 0);
         }
     }

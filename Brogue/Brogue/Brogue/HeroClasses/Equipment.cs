@@ -9,10 +9,13 @@ using System.Linq;
 using System.Text;
 using Brogue.Items.Equipment.Accessory;
 using Brogue.Enums;
+using Brogue.Items.Equipment;
+using Brogue.Items.Equipment.Offhand;
 
 namespace Brogue.HeroClasses
 {
-    [Serializable] public class Equipment
+    [Serializable]
+    public class Equipment
     {
         public const int MAX_ARMOR_SLOTS = 6;
         public const int MAX_WEAPON_SLOTS = 2;
@@ -21,7 +24,7 @@ namespace Brogue.HeroClasses
         public Legs grieves;
         public Necklace necklace;
         public Ring[] rings = new Ring[2];
-        public Weapon[] equippedWeapons =new Weapon[MAX_WEAPON_SLOTS];
+        public Gear[] equippedWeapons = new Gear[MAX_WEAPON_SLOTS];
         public int slotsOpen = 2;
 
         public Equipment()
@@ -76,9 +79,10 @@ namespace Brogue.HeroClasses
             int totalDamage = 0;
             for (int i = 0; i < equippedWeapons.Length; i++)
             {
-                if (equippedWeapons[i] != null)
+                if (equippedWeapons[i] != null && equippedWeapons[i].ItemType == ITypes.Weapon)
                 {
-                    totalDamage += equippedWeapons[i].Damage;
+                    Weapon weapon = (Weapon)equippedWeapons[i];
+                    totalDamage += weapon.Damage;
                 }
             }
 
@@ -109,50 +113,64 @@ namespace Brogue.HeroClasses
             return totalDamage;
         }
 
-        public bool isWeaponEquipable(Weapon weapon, Class heroRole, int level)
+        public bool isWeaponEquipable(Gear weapon, Classes heroRole, int level)
         {
-            
             bool result = false;
+            string logInfo = "You can't equip this weapon";
             if (weapon != null)
             {
-                bool equipable = false;
-                for (int i = 0; i < weapon.UsedBy.Count && !equipable; i++)
+                logInfo = "Your class cannot equip this item.";
+                if (weapon.ItemType == ITypes.Weapon || weapon.ItemType == ITypes.Offhand)
                 {
-                    equipable = (weapon.UsedBy[i] == heroRole);
-                }
-                if (equipable && weapon.LevelReq <= level)
-                {
-                    int handsTaken = (weapon.EquipableIn.Contains(Enums.Slots.Hand_Both)) ? 2 : 1;
-                    result = (slotsOpen >= handsTaken);
+                    bool equipable = false;
+                    for (int i = 0; i < weapon.UsedBy.Count && !equipable; i++)
+                    {
+                        equipable = (weapon.UsedBy[i] == heroRole);
+                    }
+                    if (equipable && weapon.LevelReq <= level)
+                    {
+                        int handsTaken = (weapon.EquipableIn.Contains(Enums.Slots.Hand_Both)) ? 2 : 1;
+                        result = (slotsOpen >= handsTaken);
+                    }
+                    else if(equipable && weapon.LevelReq > level)
+                    {
+                        logInfo = "You aren't a high enough level to equip this weapon.";
+                    }
                 }
             }
             if (!result)
             {
-                Engine.Engine.Log("You can't equip this weapon.");
+                Engine.Engine.Log(logInfo);
             }
             return result;
         }
 
-        public bool isArmorEquipable(Armor armor, Class heroRole, int level)
+        public bool isArmorEquipable(Armor armor, Classes heroRole, int level)
         {
             bool result = false;
+            string logInfo = "You can't equip this armor";
             if (armor != null)
             {
+                logInfo = "Your class cannot equip this item.";
                 bool equipable = false;
                 for (int i = 0; i < armor.UsedBy.Count && !equipable; i++)
                 {
                     equipable = (armor.UsedBy[i] == heroRole);
                 }
                 result = (equipable && armor.LevelReq <= level);
+                if (!result && equipable)
+                {
+                    logInfo = "You aren't a high enough level to equip this piece of armor.";
+                }
             }
             if (!result)
             {
-                Engine.Engine.Log("You can't equip this armor.");
+                Engine.Engine.Log(logInfo);
             }
             return result;
         }
 
-        public bool isAccessoryEquipable(Accessory accessory, Class heroRole, int level)
+        public bool isAccessoryEquipable(Accessory accessory, Classes heroRole, int level)
         {
             bool result = false;
             if (accessory != null)
@@ -213,14 +231,18 @@ namespace Brogue.HeroClasses
             }
         }
 
-        public void equipWeapon(Weapon weapon, int index)
+        public void equipWeapon(Gear weapon, int index)
         {
             int handsTaken = (weapon.EquipableIn.Contains(Enums.Slots.Hand_Both)) ? 2 : 1;
             if (slotsOpen >= handsTaken)
             {
                 if (equippedWeapons[index] == null)
                 {
-                    if (handsTaken == 2)
+                    if (weapon.ItemType == ITypes.Offhand)
+                    {
+                        equippedWeapons[1] = weapon;
+                    }
+                    else if (handsTaken == 2)
                     {
                         equippedWeapons[0] = weapon;
                     }
@@ -257,9 +279,9 @@ namespace Brogue.HeroClasses
             return removedArmor;
         }
 
-        public Weapon removeWeapon(int index)
+        public Gear removeWeapon(int index)
         {
-            Weapon removedWeapon = null;
+            Gear removedWeapon = null;
             if (equippedWeapons[index] != null)
             {
                 int handsTaken = (equippedWeapons[index].EquipableIn.Contains(Enums.Slots.Hand_Both)) ? 2 : 1;
@@ -296,14 +318,32 @@ namespace Brogue.HeroClasses
             return removedAccesory;
         }
 
-        public Weapon getPrimaryWeapon()
+        public int getPrimaryWeaponRange()
         {
-            return equippedWeapons[0];
+            Weapon primary = (equippedWeapons[0] != null)? (Weapon)equippedWeapons[0]:null;
+            int range = (primary != null) ? primary.Range : 0;
+            return range;
         }
 
-        public Weapon getAuxilaryWeapon()
+        public int getPrimaryWeaponDamage()
         {
-            return equippedWeapons[1];
+            Weapon primary = (equippedWeapons[0] != null) ? (Weapon)equippedWeapons[0] : null;
+            int damage = (primary != null) ? primary.Damage : 0;
+            return damage;
+        }
+
+        public int getAuxilaryWeaponRange()
+        {
+            Weapon auxilary = (equippedWeapons[1] != null && equippedWeapons[1].ItemType == ITypes.Weapon) ? (Weapon)equippedWeapons[1] : null;
+            int range = (auxilary != null) ? auxilary.Range : 0;
+            return range;
+        }
+
+        public int getAuxilaryWeaponDamage()
+        {
+            Weapon auxilary = (equippedWeapons[1] != null && equippedWeapons[1].ItemType == ITypes.Weapon) ? (Weapon)equippedWeapons[1] : null;
+            int damage = (auxilary != null) ? auxilary.Damage : 0;
+            return damage;
         }
     }
 }

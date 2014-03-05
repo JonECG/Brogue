@@ -147,8 +147,8 @@ namespace Brogue.HeroClasses
         {
             int amountToHeal = (jarBarAmount > maxHealth - health) ? maxHealth - health : jarBarAmount;
             jarBarAmount -= amountToHeal;
-            Engine.Engine.Log(amountToHeal.ToString());
-            
+
+            Engine.Engine.Log(health.ToString());
             Heal(amountToHeal);
             Engine.Engine.Log(health.ToString());
         }
@@ -301,23 +301,27 @@ namespace Brogue.HeroClasses
                 Enemies.Enemy testEnemy = (Enemies.Enemy)mapLevel.CharacterEntities.FindEntity(MouseController.MouseGridPosition());
                 if (testEnemy != null)
                 {
-                    int weaponRange1 = currentlyEquippedItems.getPrimaryWeapon().Range;
-                    int weaponRange2 = (currentlyEquippedItems.getAuxilaryWeapon() != null) ? currentlyEquippedItems.getAuxilaryWeapon().Range : -1;
-                    damageEnemyIfInRange(testEnemy, mapLevel, mapLevel.CharacterEntities.FindPosition(this), currentlyEquippedItems.getPrimaryWeapon().Damage, weaponRange1);
-                    if (weaponRange2 != -1)
-                    {
-                        damageEnemyIfInRange(testEnemy, mapLevel,  mapLevel.CharacterEntities.FindPosition(this), currentlyEquippedItems.getAuxilaryWeapon().Damage, weaponRange2);
-                    }
+                    int weaponRange1 = currentlyEquippedItems.getPrimaryWeaponRange();
+                    int weaponRange2 = currentlyEquippedItems.getAuxilaryWeaponRange();
+                    IntVec[] weaponHitbox1 = AStar.getPossiblePositionsFrom(mapLevel, mapLevel.CharacterEntities.FindPosition(this), weaponRange1, true);
+                    IntVec[] weaponHitbox2 = AStar.getPossiblePositionsFrom(mapLevel, mapLevel.CharacterEntities.FindPosition(this), weaponRange2, true);
+                    damageEnemyIfInRange(weaponHitbox1, mapLevel, testEnemy, currentlyEquippedItems.getPrimaryWeaponDamage());
+                    damageEnemyIfInRange(weaponHitbox2, mapLevel, testEnemy, currentlyEquippedItems.getAuxilaryWeaponDamage());
                 }
             }
         }
 
-        private void damageEnemyIfInRange(GameCharacter testEnemy, Level mapLevel, IntVec heroPosition, int damage, int range)
+        private void damageEnemyIfInRange(IntVec[] hitBox, Level mapLevel, Enemies.Enemy enemy, int damage)
         {
-            IntVec position = mapLevel.CharacterEntities.FindPosition(testEnemy);
-            if (IsInRange(position, heroPosition, range))
+            bool found = false;
+            for (int i = 0; i < hitBox.Length&&!found; i++)
             {
-                testEnemy.TakeDamage(damage, this);
+                IntVec test = mapLevel.CharacterEntities.FindPosition(enemy);
+                if (hitBox[i].Equals(mapLevel.CharacterEntities.FindPosition(enemy)))
+                {
+                    found = true;
+                    enemy.TakeDamage(damage, this);
+                }
             }
         }
 
@@ -386,14 +390,14 @@ namespace Brogue.HeroClasses
 
         public void equipWeapon(int inventoryIndex, int weaponIndex )
         {
-            if (inventory.stored[inventoryIndex].item != null && inventory.stored[inventoryIndex].item.ItemType == ITypes.Weapon)
+            if (inventory.stored[inventoryIndex].item != null && (inventory.stored[inventoryIndex].item.ItemType == ITypes.Weapon || inventory.stored[inventoryIndex].item.ItemType == ITypes.Offhand))
             {
                 Item newlyEquippedItem = inventory.stored[inventoryIndex].item;
-                if(currentlyEquippedItems.isWeaponEquipable((Weapon)newlyEquippedItem, heroRole, level))
+                if(currentlyEquippedItems.isWeaponEquipable((Gear)newlyEquippedItem, heroRole, level))
                 {
                     inventory.removeItem(inventoryIndex);
                     inventory.addItem(currentlyEquippedItems.removeWeapon(weaponIndex));
-                    currentlyEquippedItems.equipWeapon((Weapon)newlyEquippedItem, weaponIndex);
+                    currentlyEquippedItems.equipWeapon((Gear)newlyEquippedItem, weaponIndex);
                 }
             }
         }
