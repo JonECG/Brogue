@@ -24,13 +24,13 @@ namespace Brogue.Items.Consumables
 
         public override Item PickUpEffect(Hero player)
         {
-            if (player.jarBarAmount < Hero.MaxJarBarAmount)
+            if (player.jarBarAmount < player.MaxJarBarAmount)
             {
                 player.jarBarAmount += this.RestoreAmount;
 
-                if (player.jarBarAmount > Hero.MaxJarBarAmount)
+                if (player.jarBarAmount > player.MaxJarBarAmount)
                 {
-                    player.jarBarAmount = Hero.MaxJarBarAmount;
+                    player.jarBarAmount = player.MaxJarBarAmount;
                 }
             }
             return null;
