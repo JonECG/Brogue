@@ -161,6 +161,7 @@ namespace Brogue
             sound[1] = new audioFile(content.Load<SoundEffect>("Sound/door"), "door");
             sound[2] = new audioFile(content.Load<SoundEffect>("Sound/switch"), "switch");
             sound[3] = new audioFile(content.Load<SoundEffect>("Sound/stairs"), "stairs");
+            sound[4] = new audioFile(content.Load<SoundEffect>("Sound/Chest"), "chest");
         }
 
         
