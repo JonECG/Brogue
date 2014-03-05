@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Brogue.HeroClasses
 {
-    class Warrior : Hero
+    [Serializable] class Warrior : Hero
     {
         public Warrior()
         {
