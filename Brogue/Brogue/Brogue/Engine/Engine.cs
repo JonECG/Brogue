@@ -139,7 +139,7 @@ namespace Brogue.Engine
     {
         public const bool DOLIGHTING = true;
         public const bool DOAUDIO = false;
-        public const bool DOSTARTMENU = false;
+        public const bool DOSTARTMENU = true;
         public const float sightDistance = 1;
         public static bool inventoryOpen = false;
         public static bool mainMenuOpen = true;
@@ -315,7 +315,7 @@ namespace Brogue.Engine
                 warriorButton = new UIButton(new Vector2(game.Width / 2, game.Height / 2), true, "Hero/WarriorSprite", "Warrior");
                 mageButton = new UIButton(new Vector2(game.Width / 2 - 60, game.Height / 2), true, "Hero/MageSprite", "Mage");
                 rogueButton = new UIButton(new Vector2(game.Width / 2 + 60, game.Height / 2), true, "Hero/RogueSprite", "Rogue");
-                quitButton = new UIButton(new Vector2(game.Width / 2 + 150, game.Height /4), true, "UI/QuitButton", "");
+                quitButton = new UIButton(new Vector2(game.Width - CELLWIDTH, 0), false, "UI/QuitButton", "");
                 mainMenuOpen = true;
 
                 Vector2 postemp = new Vector2(game.Width / 2 - (CELLWIDTH + 20) * SAVE_SLOTS / 2, game.Height - 100);
@@ -493,6 +493,10 @@ namespace Brogue.Engine
                     if (saveSlot != -1)
                     {
                         LoadFromSlot(saveSlot);
+                    }
+                    if (quitButton.isClicked())
+                    {
+                        System.Environment.Exit(0);
                     }
                 }
 
@@ -822,6 +826,7 @@ namespace Brogue.Engine
             mageButton.Draw(sb);
             warriorButton.Draw(sb);
             rogueButton.Draw(sb);
+            quitButton.Draw(sb);
 
             for (int i = 0; i < saveSlots.Count(); i++)
             {
