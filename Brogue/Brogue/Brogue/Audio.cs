@@ -31,7 +31,10 @@ namespace Brogue
 
         public void stop()
         {
-            soundEngineInstance.Stop();
+            if (soundEngineInstance != null)
+            {
+                soundEngineInstance.Stop();
+            }
         }
 
     }
