@@ -72,6 +72,12 @@ namespace Brogue.Enemies
             target.TakeDamage(attack, this);
         }
 
+        public GameCharacter Target
+        {
+            get { return target; }
+            set { target = value; }
+        }
+
         /// <summary>
         /// Converts damage input into the enemy to a lower damage based on this enemy's defense,  and then deals it and calls Die() if health is less than 0
         /// </summary>
@@ -79,10 +85,23 @@ namespace Brogue.Enemies
         /// <param name="attacker">The GameCharacter that attacked this enemy (used for aggro)</param>
         public override void TakeDamage(int damage, GameCharacter attacker)
         {
+            Level level = Engine.Engine.currentLevel;
             if (target == null)
             {
                 target = attacker;
             }
+
+            foreach (GameCharacter g in level.GetCharactersIsFriendly(false))
+            {
+                if (AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(g)).Length <= 2)
+                {
+                    if (g is Enemy)
+                    {
+                        //(Enemy)g.Target = attacker;
+                    }
+                }
+            }
+
             float tempArmor = (float)defense / 100f;
             damage -= (int)((float)damage * tempArmor);
             health -= damage;

@@ -61,28 +61,40 @@ namespace Brogue.Enemies
 
             foreach (GameCharacter g in chars)
             {
-                int gRange = AStar.getCost(AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(g)));
-
-                if (target == null)
+                if (AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(g)) != null)
                 {
-                    if (gRange <= aggroRange)
+                    int gRange = AStar.getCost(AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(g)));
+
+                    if (target == null)
                     {
-                        target = g;
-                        targetFound = true;
+                        if (gRange <= aggroRange)
+                        {
+                            target = g;
+                            targetFound = true;
+                        }
+                    }
+                    else
+                    {
+                        int tRange = AStar.getCost(AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(target)));
+
+                        if (tRange > aggroRange)
+                        {
+                            target = null;
+                        }
+
+                        if (gRange < tRange && gRange < aggroRange)
+                        {
+                            target = g;
+                            targetFound = true;
+                        }
                     }
                 }
-                else
+                else if (target != null && AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(target)) != null)
                 {
                     int tRange = AStar.getCost(AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(target)));
-
-                    if (g.Equals(target) && tRange <= aggroRange)
+                    if (tRange > aggroRange)
                     {
-                        targetFound = true;
-                    }
-                    else if (gRange < tRange)
-                    {
-                        target = g;
-                        targetFound = true;
+                        target = null;
                     }
                 }
             }
