@@ -384,7 +384,15 @@ namespace Brogue.Mapping
             floorPlan.rooms[endRoom].type = __FloorPlan.__Room.__RoomType.EMPTY;
             Engine.Engine.Log(string.Format("End point: <{0}, {1}>", end.GetCenter().X, end.GetCenter().Y));
             floorPlan.isFloor[end.GetCenter().X, end.GetCenter().Y] = false;
-            interactableEnvironment.Add(new ColorEnvironment(Color.Blue, true), end.GetCenter());
+            try
+            {
+                Stairs s = new Stairs();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine( "" );
+            }
+            interactableEnvironment.Add(new Stairs(), end.GetCenter());
             return startPoint;
         }
         

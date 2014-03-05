@@ -88,6 +88,8 @@ namespace Brogue.Engine
         static Dictionary<string, DynamicTexture> textureDictionary;
         static List<string> subscribed;
 
+        private static DynamicTexture notFound;
+
         public static DynamicTexture GetTexture(string path)
         {
             textureDictionary = textureDictionary ?? new Dictionary<string, DynamicTexture>();
@@ -105,8 +107,20 @@ namespace Brogue.Engine
                 }
                 else
                 {
-                    DynamicTexture newTex =  new DynamicTexture(contentManager.Load<Texture2D>(path));
-                    textureDictionary.Add(path, newTex);
+                    DynamicTexture newTex;
+                    try
+                    {
+                        newTex = new DynamicTexture(contentManager.Load<Texture2D>(path));
+                        textureDictionary.Add(path, newTex);
+                    }
+                    catch (ContentLoadException e)
+                    {
+                        textureDictionary.Add(path, notFound);
+                        Engine.Log("Texture '" + path + "' could not be found.");
+                        //Engine.Log(e.ToString());
+                        newTex = notFound;
+                    }
+
                     result = newTex;
                 }
             }
@@ -119,10 +133,22 @@ namespace Brogue.Engine
         public static void LoadContent(ContentManager content)
         {
             contentManager = content;
-            
+
+            notFound = new DynamicTexture();
+            notFound.texture = contentManager.Load<Texture2D>("error");
+
             foreach (string path in subscribed)
             {
-                textureDictionary[path].texture = contentManager.Load<Texture2D>(path);
+                try
+                {
+                    textureDictionary[path].texture = contentManager.Load<Texture2D>(path);
+                }
+                catch (ContentLoadException e)
+                {
+                    textureDictionary[path].texture = notFound.texture;
+                    Engine.Log("Texture '" + path + "' could not be found.");
+                    //Engine.Log(e.ToString());
+                }
             }
 
 
