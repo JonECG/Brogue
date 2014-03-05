@@ -25,47 +25,47 @@ namespace Brogue.Enemies
 
             IEnumerable<GameCharacter> chars = level.GetCharactersIsFriendly(true);
 
-            foreach (GameCharacter g in chars)
+            if (target != null)
             {
-                if (AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(g)) != null)
+                bool tIsPossible = false;
+                Direction[] tPath = AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(target), ref tIsPossible);
+                if (tIsPossible)
                 {
-                    int gRange = AStar.getCost(AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(g)));
-
-                    if (target == null)
-                    {
-                        if (gRange <= aggroRange)
-                        {
-                            target = g;
-                            targetFound = true;
-                        }
-                    }
-                    else
-                    {
-                        int tRange = AStar.getCost(AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(target)));
-
-                        if (tRange > aggroRange)
-                        {
-                            target = null;
-                        }
-
-                        if (gRange < tRange && gRange < aggroRange)
-                        {
-                            target = g;
-                            targetFound = true;
-                        }
-                    }
-                }
-                else if (target != null && AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(target)) != null)
-                {
-                    int tRange = AStar.getCost(AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(target)));
-                    if (tRange > aggroRange)
+                    if (tPath.Length > aggroRange)
                     {
                         target = null;
                     }
+                    else
+                    {
+                        targetFound = true;
+                    }
                 }
-                else if (target != null && AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(target)) == null)
+                else
                 {
                     target = null;
+                }
+            }
+
+            foreach (GameCharacter g in chars)
+            {
+                bool isPossible = false;
+                Direction[] gPath = AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(g), ref isPossible);
+                if (isPossible)
+                {
+                    if (target != null)
+                    {
+                        Direction[] tPath = AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(target));
+                        if (gPath.Length < tPath.Length)
+                        {
+                            target = g;
+                            targetFound = true;
+                        }
+                    }
+                    else if (gPath.Length < aggroRange)
+                    {
+                        target = g;
+                        targetFound = true;
+                    }
                 }
             }
 
