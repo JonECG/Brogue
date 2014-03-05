@@ -63,6 +63,10 @@ namespace Brogue.Enemies
                         target = null;
                     }
                 }
+                else if (target != null && AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(target)) == null)
+                {
+                    target = null;
+                }
             }
 
             return targetFound;
