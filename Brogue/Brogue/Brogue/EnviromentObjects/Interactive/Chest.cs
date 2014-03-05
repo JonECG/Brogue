@@ -228,6 +228,7 @@ namespace Brogue.EnviromentObjects.Interactive
                 spewOutIteams();
                 empty = true;
             }
+            Audio.playSound("chest");
             Engine.Engine.currentLevel.InteractableEnvironment.Remove(this);
         }
     }
