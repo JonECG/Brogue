@@ -168,6 +168,9 @@ namespace Brogue.Engine
         private static IntVec modifiedCameraPosition = new IntVec(0, 0);
         private static GeneratedLevel nextLevel;
 
+        private static UIButton headSlot, chestSlot, ringSlot1, ringSlot2, legSlot, neckSlot;
+        private static UIButton weaponSlot1, weaponSlot2;
+
         private static int levelSeed;
         private static int currentSaveSlot = -1;
         private static int levelComplexity;
@@ -217,7 +220,9 @@ namespace Brogue.Engine
 
             for (int i = 0; i < xp; i++)
             {
-                XPParticle newxp = new XPParticle(new Vector2(worldVector.X + enginerand.Next(CELLWIDTH) - CELLWIDTH/2, worldVector.Y + enginerand.Next(CELLWIDTH) - CELLWIDTH/2), enginerand.Next(15) + 10);
+                XPParticle newxp = new XPParticle(
+                    new Vector2(worldVector.X + enginerand.Next(CELLWIDTH) - CELLWIDTH/2, 
+                        worldVector.Y + enginerand.Next(CELLWIDTH) - CELLWIDTH/2), enginerand.Next(15) + 10);
                 xpList.Add(newxp);
             }
         }
@@ -287,13 +292,24 @@ namespace Brogue.Engine
             InvButtonPosition = new Vector2(game.Width - CELLWIDTH, game.Height - CELLWIDTH);
             InventorySize = new Vector2(4 * CELLWIDTH, 4 * CELLWIDTH);
             weaponEquipPosition = new Vector2(game.Width / 2 - CELLWIDTH, game.Height - CELLWIDTH);
-            armorEquipPosition = new Vector2(game.Width - 6 * CELLWIDTH, CELLWIDTH);
+            armorEquipPosition = new Vector2(0, game.Height - CELLWIDTH);
             windowSizeInTiles = new IntVec(game.Width / CELLWIDTH, game.Height / CELLWIDTH);
             game.IsMouseVisible = true;
 
-
             saveButton = new UIButton(new Vector2(game.Width / 2 - 150, game.Height / 2), true, "UI/Save", "Save and quit");
             continueButton = new UIButton(new Vector2(game.Width / 2 + 150, game.Height / 2), true, "UI/Continue", "Continue");
+
+            headSlot = new UIButton(armorEquipPosition, false, "UI/HelmOverlay", "Helm");
+            chestSlot = new UIButton(new Vector2(armorEquipPosition.X + CELLWIDTH, armorEquipPosition.Y),
+                false, "UI/ChestOverlay", "Chest");
+            legSlot = new UIButton(new Vector2(armorEquipPosition.X + 2 * (CELLWIDTH), armorEquipPosition.Y),
+                false, "UI/LegsOverlay", "Legs");
+            ringSlot1 = new UIButton(new Vector2(armorEquipPosition.X + 3 * (CELLWIDTH), armorEquipPosition.Y),
+                false, "UI/RingOverlay", "Left Ring");
+            ringSlot2 = new UIButton(new Vector2(armorEquipPosition.X + 4 * (CELLWIDTH), armorEquipPosition.Y),
+                false, "UI/RingOverlay", "Right Ring");
+            neckSlot = new UIButton(new Vector2(armorEquipPosition.X + 5 * (CELLWIDTH), armorEquipPosition.Y),
+                false, "UI/NeckOverlay", "Necklace");
             //StartGame();
         }
 
@@ -347,7 +363,7 @@ namespace Brogue.Engine
         public static void GenerateLevel()
         {
             levelSeed = enginerand.Next();
-            levelComplexity = enginerand.Next(500) + 50;
+            levelComplexity = enginerand.Next(250) + 50;
             currentDungeonLevel = 1;
             if (nextLevel == null)
             {
@@ -419,7 +435,6 @@ namespace Brogue.Engine
                 if (heroPos == null)
                 {
                     heroPos = currentLevel.CharacterEntities.FindPosition(hero);
-
                 }
                 
                 for (int i = 0; i < xpList.Count; i++)
@@ -650,7 +665,57 @@ namespace Brogue.Engine
                 }
 
             }
-
+            if (!didSomething)
+            {
+                if (headSlot.isClicked())
+                {
+                    if (hero.currentlyEquippedItems.helmet != null)
+                    {
+                        hero.GetInventory().addItem(hero.currentlyEquippedItems.removeArmor(hero.currentlyEquippedItems.helmet));
+                        didSomething = true;
+                    }
+                }
+                if (chestSlot.isClicked())
+                {
+                    if (hero.currentlyEquippedItems.chestPlate != null)
+                    {
+                        didSomething = true;
+                        hero.GetInventory().addItem(hero.currentlyEquippedItems.removeArmor(hero.currentlyEquippedItems.chestPlate));
+                    }
+                }
+                if (legSlot.isClicked())
+                {
+                    if (hero.currentlyEquippedItems.grieves != null)
+                    {
+                        hero.GetInventory().addItem(hero.currentlyEquippedItems.removeArmor(hero.currentlyEquippedItems.grieves));
+                        didSomething = true;
+                    }
+                }
+                if (ringSlot1.isClicked())
+                {
+                    if (hero.currentlyEquippedItems.rings[0] != null)
+                    {
+                        hero.GetInventory().addItem(hero.currentlyEquippedItems.removeAccessory(hero.currentlyEquippedItems.rings[0]));
+                        didSomething = true;
+                    }
+                }
+                if (ringSlot2.isClicked())
+                {
+                    if (hero.currentlyEquippedItems.rings[1] != null)
+                    {
+                        hero.GetInventory().addItem(hero.currentlyEquippedItems.removeAccessory(hero.currentlyEquippedItems.rings[1]));
+                        didSomething = true;
+                    }
+                }
+                if (neckSlot.isClicked())
+                {
+                    if (hero.currentlyEquippedItems.necklace != null)
+                    {
+                        hero.GetInventory().addItem(hero.currentlyEquippedItems.removeAccessory(hero.currentlyEquippedItems.necklace));
+                        didSomething = true;
+                    }
+                }
+            }
             return didSomething;
         }
 
@@ -663,7 +728,6 @@ namespace Brogue.Engine
             gameStarted = false;
             savePromptOpen = true;
         }
-
 
         private static bool InventoryInteraction(bool leftButton, IntVec screenpos)
         {
@@ -691,9 +755,13 @@ namespace Brogue.Engine
                 {
                     hero.dropItem(inventorySlotIndex, currentLevel);
                 }
-                didsomething = true;
+                //didsomething = true;
             }
+
+            
             return didsomething;
+
+            
         }
 
         public static void DrawInventory(SpriteBatch sb)
@@ -718,6 +786,7 @@ namespace Brogue.Engine
             int inc = 0;
             foreach (string s in log)
             {
+                if (s != null)
                 spriteBatch.DrawString(font, s, new Vector2(LogPosition.X, LogPosition.Y + 12 * inc++), Color.Red);
             }
         }
@@ -768,7 +837,10 @@ namespace Brogue.Engine
             {
                 foreach (XPParticle xp in xpList)
                 {
-                    uisb.Draw(particleTex.texture, xp.screenPosition, new Rectangle(0, 0, particleTex.texture.Width, particleTex.texture.Height), Color.White, 0, new Vector2(particleTex.texture.Width/2, particleTex.texture.Height/2), xp.scale, SpriteEffects.None, 0);
+                    uisb.Draw(particleTex.texture, xp.screenPosition, 
+                        new Rectangle(0, 0, particleTex.texture.Width, particleTex.texture.Height), 
+                        Color.White, 0, new Vector2(particleTex.texture.Width/2, particleTex.texture.Height/2), xp.scale, 
+                        SpriteEffects.None, 0);
                     //uisb.Draw(particleTex.texture, xp.screenPosition, Color.White);
                 }
                 uisb.Draw(healthcontainer.texture, healthBarPosition, Color.White);
@@ -801,7 +873,7 @@ namespace Brogue.Engine
                     SpriteEffects.None, 0);
                 //uisb.Draw(bar.texture, new Vector2(game.Width - 50 - jar.texture.Width, game.Height / 2 - bar.texture.Height / 2), Color.White);
                 uisb.Draw(invButton.texture, InvButtonPosition, Color.White);
-                //DrawMiniMap(uisb);
+               DrawMiniMap(uisb);
                 if (inventoryOpen)
                 {
                     DrawInventory(uisb);
@@ -862,47 +934,62 @@ namespace Brogue.Engine
 
         private static void DrawEquip(SpriteBatch sb)
         {
-            for (int i = 0; i < HeroClasses.Equipment.MAX_ARMOR_SLOTS; i++)
+            if (hero.currentlyEquippedItems.helmet != null)
             {
-                Vector2 curpos = new Vector2(armorEquipPosition.X + (invSlot.texture.Width * i), armorEquipPosition.Y);
-                sb.Draw(invSlot.texture, curpos, Color.White);
-                Items.Item item = null;
-                switch (i)
-                {
-                    case 0:
-                        item = hero.currentlyEquippedItems.helmet;
-                        break;
-                    case 1:
-                        item = hero.currentlyEquippedItems.chestPlate;
-                        break;
-                    case 2:
-                        item = hero.currentlyEquippedItems.grieves;
-                        break;
-                    case 3:
-                        item = hero.currentlyEquippedItems.rings[0];
-                        break;
-                    case 4:
-                        item = hero.currentlyEquippedItems.rings[1];
-                        break;
-                    case 5:
-                        item = hero.currentlyEquippedItems.necklace;
-                        break;
-                }
-                if (item != null)
-                {
-                    sb.Draw(item.GetTexture().texture, curpos, Color.White);
-                }
+                headSlot.drawOver = hero.currentlyEquippedItems.helmet.GetTexture();
             }
-            for (int i = 0; i < HeroClasses.Equipment.MAX_WEAPON_SLOTS; i++)
+            else
             {
-                Vector2 curpos = new Vector2(weaponEquipPosition.X + (invSlot.texture.Width * i), weaponEquipPosition.Y);
-                sb.Draw(invSlot.texture, curpos, Color.White);
-                Items.Item item = hero.currentlyEquippedItems.equippedWeapons[i];
-                if (item != null)
-                {
-                    sb.Draw(item.GetTexture().texture, curpos, Color.White);
-                }
+                headSlot.drawOver = GetTexture("UI/HelmOverlay");
+            } 
+            if (hero.currentlyEquippedItems.chestPlate != null)
+            {
+                chestSlot.drawOver = hero.currentlyEquippedItems.chestPlate.GetTexture();
             }
+            else
+            {
+                chestSlot.drawOver = GetTexture("UI/ChestOverlay");
+            }
+            if (hero.currentlyEquippedItems.grieves != null)
+            {
+                legSlot.drawOver = hero.currentlyEquippedItems.grieves.GetTexture();
+            }
+            else
+            {
+                legSlot.drawOver = GetTexture("UI/LegsOverlay");
+            }
+            if (hero.currentlyEquippedItems.rings[0] != null)
+            {
+                ringSlot1.drawOver = hero.currentlyEquippedItems.rings[0].GetTexture();
+            }
+            else
+            {
+                ringSlot1.drawOver = GetTexture("UI/RingOverlay");
+            }
+            if (hero.currentlyEquippedItems.rings[1] != null)
+            {
+                ringSlot2.drawOver = hero.currentlyEquippedItems.rings[1].GetTexture();
+            }
+            else
+            {
+                ringSlot2.drawOver = GetTexture("UI/RingOverlay");
+            }
+            if (hero.currentlyEquippedItems.necklace != null)
+            {
+                neckSlot.drawOver = hero.currentlyEquippedItems.necklace.GetTexture();
+            }
+            else
+            {
+                neckSlot.drawOver = GetTexture("UI/NeckOverlay");
+            }
+
+            headSlot.Draw(sb);
+            chestSlot.Draw(sb);
+            legSlot.Draw(sb);
+            ringSlot1.Draw(sb);
+            ringSlot2.Draw(sb);
+            neckSlot.Draw(sb);
+
         }
 
         private static bool IsTileInView(IntVec gridloc)
