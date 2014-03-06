@@ -88,12 +88,12 @@ namespace Brogue.Enemies
                 bool canSee = false;
                 Direction[] nextPath = AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(hero), ref canSee);
 
-                if (canSee && target == null && nextPath.Length < aggroRange)
+                if (!canSee && target == null && nextPath.Length < aggroRange)
                 {
                     target = hero;
                     targetFound = true;
                 }
-                else if (canSee && target != null && nextPath.Length < AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(target)).Length)
+                else if (!canSee && target != null && nextPath.Length < AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(target)).Length)
                 {
                     target = hero;
                     targetFound = true;
