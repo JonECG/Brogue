@@ -7,6 +7,8 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Brogue
 {
+
+
     public class audioFile
     {
         public string keyName;
@@ -43,6 +45,9 @@ namespace Brogue
     {
         private static int MAX_LIABBARY_SIZE = 10;
         private static Random random = new Random();
+
+        private static int DEALY_DEFALT_TIME = 10;
+        private static int delay;
         
         private static audioFile[] music;
         private static audioFile[] sound;
@@ -153,10 +158,11 @@ namespace Brogue
             music = new audioFile[MAX_LIABBARY_SIZE];
             sound = new audioFile[MAX_LIABBARY_SIZE];
 
-            //Load Music
+            //Load Music Brogue II
             //music[0] = new audioFile(content.Load<SoundEffect>("Music/SOMITEST"), "Monkey Island", true);
-            music[0] = new audioFile(content.Load<SoundEffect>("Music/The_Thing"), "The_Thing", true);
-            music[1] = new audioFile(content.Load<SoundEffect>("Music/E1M1"), "Doom", true);
+            music[0] = new audioFile(content.Load<SoundEffect>("Music/BrogueII"), "Brogue II", true);
+            music[1] = new audioFile(content.Load<SoundEffect>("Music/The_Thing"), "The_Thing", true);
+            music[2] = new audioFile(content.Load<SoundEffect>("Music/E1M1"), "Doom", true);
 
             //Load Sound
             defualtSound = new audioFile(content.Load<SoundEffect>("Sound/Whammy"), "Whammy");
@@ -167,6 +173,23 @@ namespace Brogue
             sound[4] = new audioFile(content.Load<SoundEffect>("Sound/Chest"), "chest");
         }
 
-        
+        public static void update()
+        {
+
+            if (delay == null || delay <= 0)
+            {
+                delay = random.Next(1, DEALY_DEFALT_TIME);
+            }
+            else if (delay > 0)
+            {
+                delay -= 1;
+            }
+            else
+            {
+               playRandomSound();
+            }
+       
+        }
+
     }
 }

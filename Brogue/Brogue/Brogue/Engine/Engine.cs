@@ -172,6 +172,10 @@ namespace Brogue.Engine
         private static int currentSaveSlot = -1;
         private static int levelComplexity;
         private static int currentDungeonLevel = 1;
+        
+        ///////////////////////////////////////////
+        //public static AuxerTestingZone auxerTests;
+        ///////////////////////////////////////////
 
         private static bool showSaveSlotSelection;
 
@@ -379,9 +383,15 @@ namespace Brogue.Engine
 
             //////////////////////////////////
             Audio.LoadContent(content);
+            Audio.playMusic("Brogue II", 1.0f);
             //Audio.playMusic("Doom", 0.15f);
             //////////////////////////////////
-            
+
+            /////////////////////////////////////
+            //auxerTests = new AuxerTestingZone();
+            //auxerTests.runTests();
+            //auxerTests.Exit();
+            /////////////////////////////////////
         }
 
         private static void AITurn()
@@ -526,7 +536,10 @@ namespace Brogue.Engine
                 }
 
             }
+
+            Audio.update();
         }
+
 
         private static void LoadFromSlot(int slot)
         {
