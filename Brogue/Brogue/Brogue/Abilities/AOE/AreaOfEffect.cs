@@ -13,5 +13,10 @@ namespace Brogue.Abilities.AOE
     {
         protected IntVec[] radiusSquares;
         protected bool isActuallyFilled;
+
+        public AreaOfEffect()
+        {
+            type = Enums.AbilityTypes.AOE;
+        }
     }
 }

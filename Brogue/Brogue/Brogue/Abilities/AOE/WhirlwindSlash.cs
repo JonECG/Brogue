@@ -57,7 +57,7 @@ namespace Brogue.Abilities.AOE
             return castSquares;
         }
 
-        public override void finishCastandDealDamage(int heroLevel, int heroDamage, Level mapLevel, GameCharacter Hero)
+        public override void finishCastandDealDamage(int heroLevel, int heroDamage, Level mapLevel, HeroClasses.Hero hero)
         {
             int damage = baseDamage * (heroLevel+heroDamage/2);
             cooldown = 5;
@@ -67,7 +67,7 @@ namespace Brogue.Abilities.AOE
                 GameCharacter enemy = (GameCharacter)mapLevel.CharacterEntities.FindEntity(castSquares[i]);
                 if (enemy != null)
                 {
-                    enemy.TakeDamage(damage, Hero);
+                    enemy.TakeDamage(damage, hero);
                 }
                 castSquares[i] = new IntVec(0, 0);
             }

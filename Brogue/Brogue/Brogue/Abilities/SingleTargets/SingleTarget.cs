@@ -12,5 +12,9 @@ namespace Brogue.Abilities.Damaging
     [Serializable] public abstract class SingleTarget : Ability
     {
         protected int width, height;
+        public SingleTarget()
+        {
+            type = Enums.AbilityTypes.Single;
+        }
     }
 }

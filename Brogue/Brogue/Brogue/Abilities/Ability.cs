@@ -1,5 +1,7 @@
 ﻿using Brogue;
 using Brogue.Engine;
+using Brogue.Enums;
+using Brogue.HeroClasses;
 using Brogue.Mapping;
 using System;
 using System.Collections.Generic;
@@ -18,13 +20,14 @@ namespace Brogue.Abilities
         public bool wasJustCast { get; set; }
         protected IntVec[] castSquares;
         public string description { get; protected set; }
+        public AbilityTypes type;
 
         abstract public void addCastingSquares(IntVec cursorPosition);
         abstract public void removeCastingSquares(IntVec cursorPosition);
         abstract public IntVec[] getCastingSquares();
         abstract public IntVec[] viewCastRange(Level level, IntVec start);
         abstract public bool filledSquares();
-        abstract public void finishCastandDealDamage(int heroLevel, int heroDamage, Level mapLevel, GameCharacter Hero);
+        abstract public void finishCastandDealDamage(int heroLevel, int heroDamage, Level mapLevel, Hero hero);
 
         public void resetSquares()
         {

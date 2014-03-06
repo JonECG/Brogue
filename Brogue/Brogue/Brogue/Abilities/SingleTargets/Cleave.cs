@@ -72,7 +72,7 @@ namespace Brogue.Abilities.Damaging.SingleTargets
             return castSquares;
         }
 
-        public override void finishCastandDealDamage(int heroLevel, int heroDamage, Level mapLevel, GameCharacter hero)
+        public override void finishCastandDealDamage(int heroLevel, int heroDamage, Level mapLevel, HeroClasses.Hero hero)
         {
             int baseSpellDamage = baseDamage * heroLevel;
             damage = baseSpellDamage + heroDamage;
