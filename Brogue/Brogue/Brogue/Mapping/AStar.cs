@@ -184,7 +184,7 @@ namespace Brogue.Mapping
             }
 
             if (bestNode != null)
-                isPossible = bestNode.Equals(to);
+                isPossible = bestNode.position.Equals(to);
 
             List<Direction> path = new List<Direction>();
 
