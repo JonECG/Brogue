@@ -257,7 +257,7 @@ namespace Brogue.Mapping
             }
 
             Environment.Draw();
-            drawAStar();
+            //drawAStar();
             InteractableEnvironment.Draw();
             
             DroppedItems.Draw();
