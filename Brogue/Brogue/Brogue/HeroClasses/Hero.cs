@@ -21,6 +21,7 @@ using Brogue.Items.Equipment.Weapon.Melee;
 using Brogue.Items.Equipment.Weapon.Ranged;
 using Brogue.Abilities.AOE;
 using Brogue.Items.Equipment.Accessory;
+using Brogue.Abilities.Togglable;
 
 namespace Brogue.HeroClasses
 {
@@ -30,7 +31,7 @@ namespace Brogue.HeroClasses
         public int level { get; set; }
         public int MaxJarBarAmount = 50;
         protected int numAbilities;
-        protected int damageBoost;
+        public int damageBoost;
         public Classes heroRole;
         protected int baseHealth;
         protected int armorRating;
@@ -68,6 +69,7 @@ namespace Brogue.HeroClasses
             abilities = new Ability[6];
             abilities[0] = new Cleave();
             abilities[1] = new WhirlwindSlash();
+            abilities[2] = new Rage();
         }
 
         public IntVec move(Direction dir)
@@ -234,6 +236,15 @@ namespace Brogue.HeroClasses
                         abilityKey = Keys.D2;
                     }
                 }
+                else if (Mapping.KeyboardController.IsPressed(Keys.D3))
+                {
+                    if (abilities[2].cooldown == 0)
+                    {
+                        viewingCast = true;
+                        viewedAbility = 2;
+                        abilityKey = Keys.D3;
+                    }
+                }
 
                 else turnOver = (Mapping.KeyboardController.IsTyped(Keys.Space));
             }
@@ -244,8 +255,11 @@ namespace Brogue.HeroClasses
                
                 if (Mapping.KeyboardController.IsReleased(abilityKey))
                 {
-                    Engine.Engine.ClearGridSelections();
-                    abilities[viewedAbility].resetSquares();
+                    if (abilities[viewedAbility].type != AbilityTypes.Toggle)
+                    {
+                        Engine.Engine.ClearGridSelections();
+                        abilities[viewedAbility].resetSquares();
+                    }
                     viewingCast = !viewingCast;
                 }
             }
@@ -259,7 +273,9 @@ namespace Brogue.HeroClasses
         public bool castAbility(int ability, Level mapLevel)
         {
             bool turnOver = false;
-            IntVec[] castSquares = abilities[ability].viewCastRange(mapLevel, mapLevel.CharacterEntities.FindPosition(this));
+            if (abilities[ability].type != AbilityTypes.Toggle)
+            {
+                IntVec[] castSquares = abilities[ability].viewCastRange(mapLevel, mapLevel.CharacterEntities.FindPosition(this));
                 Engine.Engine.ClearGridSelections();
                 Engine.Engine.AddGridSelections(castSquares, abilitySprite);
                 if (abilities[ability].getCastingSquares() != null)
@@ -286,11 +302,22 @@ namespace Brogue.HeroClasses
                         }
                     }
                 }
+
                 if (MouseController.RightClicked())
                 {
                     abilities[ability].removeCastingSquares(MouseController.MouseGridPosition());
                 }
-                
+            }
+            else
+            {
+                if (MouseController.LeftClicked())
+                {
+                    Engine.Engine.Log(damageBoost.ToString());
+                    abilities[ability].finishCastandDealDamage(level, currentlyEquippedItems.getTotalDamageIncrease(), mapLevel, this);
+                    
+                    Engine.Engine.Log(damageBoost.ToString());
+                }
+            }
                 return turnOver;
         }
 
@@ -340,6 +367,11 @@ namespace Brogue.HeroClasses
             {
                 if (abilities[i] != null)
                 {
+                    if (abilities[i].type == AbilityTypes.Toggle)
+                    {
+                        ToggleAbility toggled = (ToggleAbility)abilities[i];
+                        toggled.updateToggle(level, this);
+                    }
                     if (!abilities[i].wasJustCast)
                     {
                         abilities[i].cooldown -= (abilities[i].cooldown > 0) ? 1 : 0;
