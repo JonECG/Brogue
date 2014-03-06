@@ -82,26 +82,26 @@ namespace Brogue.Enemies
 
             foreach (GameCharacter g in chars)
             {
-                bool isPossible = false;
-                Direction[] gPath = AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(g), ref isPossible);
-                if (isPossible)
+                GameCharacter hero = g;
+
+                bool canSee = false;
+                Direction[] nextPath = AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(hero), ref canSee);
+
+                if (canSee && target == null && nextPath.Length < aggroRange)
                 {
-                    if (target != null)
-                    {
-                        Direction[] tPath = AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(target));
-                        if (gPath.Length < tPath.Length)
-                        {
-                            target = g;
-                            targetFound = true;
-                        }
-                    }
-                    else if (gPath.Length < aggroRange)
-                    {
-                        target = g;
-                        targetFound = true;
-                    }
+                    target = hero;
+                    targetFound = true;
                 }
+                else if (canSee && target != null && nextPath.Length < AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(target)).Length)
+                {
+                    target = hero;
+                    targetFound = true;
+                }
+
+                break;
             }
+
+
 
             return targetFound;
         }
