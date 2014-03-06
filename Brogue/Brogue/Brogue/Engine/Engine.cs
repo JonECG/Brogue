@@ -873,7 +873,7 @@ namespace Brogue.Engine
                     SpriteEffects.None, 0);
                 //uisb.Draw(bar.texture, new Vector2(game.Width - 50 - jar.texture.Width, game.Height / 2 - bar.texture.Height / 2), Color.White);
                 uisb.Draw(invButton.texture, InvButtonPosition, Color.White);
-               DrawMiniMap(uisb);
+                    DrawMiniMap(uisb);
                 if (inventoryOpen)
                 {
                     DrawInventory(uisb);
