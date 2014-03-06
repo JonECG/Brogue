@@ -305,11 +305,16 @@ namespace Brogue.Engine
             legSlot = new UIButton(new Vector2(armorEquipPosition.X + 2 * (CELLWIDTH), armorEquipPosition.Y),
                 false, "UI/LegsOverlay", "Legs");
             ringSlot1 = new UIButton(new Vector2(armorEquipPosition.X + 3 * (CELLWIDTH), armorEquipPosition.Y),
-                false, "UI/RingOverlay", "Left Ring");
+                false, "UI/RingOverlay", "Ring");
             ringSlot2 = new UIButton(new Vector2(armorEquipPosition.X + 4 * (CELLWIDTH), armorEquipPosition.Y),
-                false, "UI/RingOverlay", "Right Ring");
+                false, "UI/RingOverlay", "Ring");
             neckSlot = new UIButton(new Vector2(armorEquipPosition.X + 5 * (CELLWIDTH), armorEquipPosition.Y),
                 false, "UI/NeckOverlay", "Necklace");
+
+            weaponSlot1 = new UIButton(new Vector2(weaponEquipPosition.X, weaponEquipPosition.Y),
+                false, "UI/InvSlot", "Left");
+            weaponSlot2 = new UIButton(new Vector2(weaponEquipPosition.X + CELLWIDTH, weaponEquipPosition.Y),
+                false, "UI/InvSlot", "Right");
             //StartGame();
         }
 
@@ -715,6 +720,22 @@ namespace Brogue.Engine
                         didSomething = true;
                     }
                 }
+                if (weaponSlot1.isClicked())
+                {
+                    if (hero.currentlyEquippedItems.equippedWeapons[0] != null)
+                    {
+                        hero.GetInventory().addItem(hero.currentlyEquippedItems.removeWeapon(0));
+                        didSomething = true;
+                    }
+                }
+                if (weaponSlot2.isClicked())
+                {
+                    if (hero.currentlyEquippedItems.equippedWeapons[1] != null)
+                    {
+                        hero.GetInventory().addItem(hero.currentlyEquippedItems.removeWeapon(1));
+                        didSomething = true;
+                    }
+                }
             }
             return didSomething;
         }
@@ -983,12 +1004,34 @@ namespace Brogue.Engine
                 neckSlot.drawOver = GetTexture("UI/NeckOverlay");
             }
 
+            if (hero.currentlyEquippedItems.equippedWeapons[0] != null)
+            {
+                weaponSlot1.drawOver = hero.currentlyEquippedItems.equippedWeapons[0].GetTexture();
+            }
+            else
+            {
+                weaponSlot1.drawOver = GetTexture("UI/InvSlot");
+            }
+
+            if (hero.currentlyEquippedItems.equippedWeapons[1] != null)
+            {
+                weaponSlot2.drawOver = hero.currentlyEquippedItems.equippedWeapons[1].GetTexture();
+            }
+            else
+            {
+                weaponSlot2.drawOver = GetTexture("UI/InvSlot");
+            }
+
+
             headSlot.Draw(sb);
             chestSlot.Draw(sb);
             legSlot.Draw(sb);
             ringSlot1.Draw(sb);
             ringSlot2.Draw(sb);
             neckSlot.Draw(sb);
+
+            weaponSlot1.Draw(sb);
+            weaponSlot2.Draw(sb);
 
         }
 
