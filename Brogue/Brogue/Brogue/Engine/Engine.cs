@@ -61,6 +61,55 @@ namespace Brogue.Engine
         }
     }
 
+    class VisualAttack
+    {
+        public Vector2 screenPosition;
+        float speed;
+        public float scale = 0;
+        public float angle;
+        public DynamicTexture tex;
+        Vector2 direction;
+        float distance;
+        public VisualAttack(Vector2 screenPosition, Vector2 destination, float speed, string weaponSprite = "attackDefault")
+        {
+            this.screenPosition = screenPosition;
+            this.speed = speed;
+            tex = Engine.GetTexture(weaponSprite);
+            this.direction = new Vector2(destination.X, destination.Y) - screenPosition;
+            distance = direction.Length();
+            angle = (float)Math.Atan2(direction.X, -direction.Y);
+            this.direction.Normalize();
+        }
+
+        public VisualAttack(Vector2 screenPosition, Vector2 destination, float speed, DynamicTexture weaponDynTex)
+        {
+            
+            this.screenPosition = screenPosition;
+            this.speed = speed;
+            tex = weaponDynTex;
+            this.direction = new Vector2(destination.X, destination.Y) - screenPosition;
+            distance = direction.Length();
+            angle = (float)Math.Atan2(direction.X, -direction.Y);
+            this.direction.Normalize();
+        }
+        public bool update()
+        {
+            screenPosition += direction * speed;
+            bool finished = false;
+            if (scale < .50f)
+            {
+                scale += 0.02f;
+            }
+
+            distance -= speed;
+            if (distance < -speed)
+            {
+                finished = true;
+            }
+            return finished;
+        }
+    }
+
     class GridSelection
     {
         public IntVec gridPos;
@@ -167,6 +216,7 @@ namespace Brogue.Engine
         private const int AIDist = 15;
         public static Random enginerand = new Random();
         private static List<XPParticle> xpList = new List<XPParticle>();
+        private static List<VisualAttack> vattacks = new List<VisualAttack>();
         public static Matrix worldToView;
         public static Vector2 xpBarPosition;
         public static Vector2 healthBarPosition;
@@ -176,6 +226,9 @@ namespace Brogue.Engine
         public static int lightMaskWidthInTilesDividedByTwo;
         private static IntVec modifiedCameraPosition = new IntVec(0, 0);
         private static GeneratedLevel nextLevel;
+
+        private static DynamicTexture visualAttackTex = GetTexture("attackDefault");
+
 
         private static UIButton headSlot, chestSlot, ringSlot1, ringSlot2, legSlot, neckSlot;
         private static UIButton weaponSlot1, weaponSlot2;
@@ -231,6 +284,31 @@ namespace Brogue.Engine
                     new Vector2(worldVector.X + enginerand.Next(CELLWIDTH) - CELLWIDTH/2, 
                         worldVector.Y + enginerand.Next(CELLWIDTH) - CELLWIDTH/2), enginerand.Next(15) + 10);
                 xpList.Add(newxp);
+            }
+        }
+
+        public static void AddVisualAttack(GameCharacter origin, GameCharacter target, string attackSprite)
+        {
+            IntVec gamePositionOrigin = currentLevel.CharacterEntities.FindPosition(origin) * CELLWIDTH;
+            Vector2 originVector = Vector2.Transform(new Vector2(gamePositionOrigin.X, gamePositionOrigin.Y), worldToView);
+            IntVec gamePositionDest = currentLevel.CharacterEntities.FindPosition(target) * CELLWIDTH;
+            Vector2 destVector = Vector2.Transform(new Vector2(gamePositionDest.X, gamePositionDest.Y), worldToView);
+            vattacks.Add(new VisualAttack(originVector, destVector, 5, attackSprite));
+        }
+
+        public static void AddVisualAttack(GameCharacter origin, GameCharacter target, DynamicTexture attackSprite)
+        {
+            IntVec gamePositionOrigin = currentLevel.CharacterEntities.FindPosition(origin) * CELLWIDTH;
+            Vector2 originVector = Vector2.Transform(new Vector2(gamePositionOrigin.X, gamePositionOrigin.Y), worldToView);
+            IntVec gamePositionDest = currentLevel.CharacterEntities.FindPosition(target) * CELLWIDTH;
+            Vector2 destVector = Vector2.Transform(new Vector2(gamePositionDest.X, gamePositionDest.Y), worldToView);
+            if (attackSprite != null)
+            {
+                vattacks.Add(new VisualAttack(originVector, destVector, 5, attackSprite));
+            }
+            else
+            {
+                vattacks.Add(new VisualAttack(originVector, destVector, 5, "attackSprite"));
             }
         }
 
@@ -453,6 +531,14 @@ namespace Brogue.Engine
                         hero.AddExperience(1);
                     }
                 }
+                for (int i = 0; i < vattacks.Count; i++)
+                {
+                    if (vattacks[i].update())
+                    {
+                        vattacks.RemoveAt(i);
+                    }
+                }
+
                 if (!GameCommands())
                 {
                     currentLevel.testUpdate();
@@ -486,10 +572,12 @@ namespace Brogue.Engine
 
                             }
                         }
+                        /*
                         if (charIndex >= currentLevel.CharacterEntities.Entities().Count<GameCharacter>())
                         {
                             charIndex = 0;
                         }
+                         * */
                     }
                     charIndex += hero.TakeTurn(currentLevel) ? 1 : 0;
 
@@ -870,6 +958,15 @@ namespace Brogue.Engine
                         SpriteEffects.None, 0);
                     //uisb.Draw(particleTex.texture, xp.screenPosition, Color.White);
                 }
+
+                foreach (VisualAttack va in vattacks)
+                {
+                    uisb.Draw(va.tex.texture, va.screenPosition, 
+                        new Rectangle(0, 0, va.tex.texture.Width, va.tex.texture.Height), 
+                        Color.White, va.angle, 
+                        new Vector2(va.tex.texture.Width / 2, va.tex.texture.Height / 2), 
+                        1, SpriteEffects.None, 0);
+                }
                 uisb.Draw(healthcontainer.texture, healthBarPosition, Color.White);
                 uisb.Draw(healthcontainer.texture, xpBarPosition, Color.White);
                 //uisb.Draw(healthbar.texture, new Vector2(50, game.Height / 2 - healthcontainer.texture.Height / 2), Color.White);
@@ -945,6 +1042,7 @@ namespace Brogue.Engine
                 saveSlots[i].Draw(sb);
             }
         }
+
         private static void DrawSaveSelection(SpriteBatch sb)
         {
             for (int i = 0; i < saveSlots.Count(); i++)
