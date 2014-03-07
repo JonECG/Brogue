@@ -9,8 +9,6 @@ namespace Brogue.EnviromentObjects.Interactive
 {
     class Stairs : IEnvironmentObject, IInteractable, IRenderable
     {
-        Direction directionFacing { get; set; }
-
         static DynamicTexture texture = Engine.Engine.GetTexture("Enviroment/StairsDesent");
 
         public bool isSolid { get; set; }

@@ -26,18 +26,20 @@ namespace Brogue.EnviromentObjects.Interactive
 
         public HiddenPassage other;
 
-        public HiddenPassage()
+        public HiddenPassage(Direction directionToFace)
         {
             isSolid = true;
             isVisiable = false;
+            directionFacing = directionToFace;
         }
 
-        public HiddenPassage(HiddenPassage exitPosition)
+        public HiddenPassage(HiddenPassage exitPosition, Direction directionToFace)
         {
             isSolid = true;
             isVisiable = false;
             other = exitPosition;
             exitPosition.other = this;
+            directionFacing = directionToFace;
         }
 
         private void setToNewPosition(GameCharacter actingCharacter)

@@ -23,19 +23,21 @@ namespace Brogue.EnviromentObjects.Interactive
         public bool isPassable { get; set; }
         public IInteractable target { get; set; }
 
-        public Switch() 
+        public Switch(Direction directionToFace) 
         {
             active = false;
             isSolid = true;
             isPassable = false;
+            directionFacing = directionToFace;
         }
 
-        public Switch(IInteractable actingOn)
+        public Switch(IInteractable actingOn, Direction directionToFace)
         {
             active = false;
             isSolid = true;
             isPassable = false;
             target = actingOn;
+            directionFacing = directionToFace;
         }
 
         public void changeState()
