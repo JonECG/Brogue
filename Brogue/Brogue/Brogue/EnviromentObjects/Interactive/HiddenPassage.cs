@@ -38,7 +38,7 @@ namespace Brogue.EnviromentObjects.Interactive
             isSolid = true;
             isVisiable = false;
             other = exitPosition;
-            exitPosition.other = this;
+            other.other = this;
             directionFacing = directionToFace;
         }
 
@@ -72,8 +72,8 @@ namespace Brogue.EnviromentObjects.Interactive
         public void actOn(GameCharacter actingCharacter)
         {
             changeState();
-            other.setToNewPosition(actingCharacter);
-            other.isVisiable = true;
+            setToNewPosition(actingCharacter);
+            other.changeState();
         }
 
     }
