@@ -12,7 +12,8 @@ namespace Brogue.Enemies
     {
         public override bool TakeTurn(Level level)
         {
-            if (Aggro(level))
+            CheckElementDamage();
+            if (Aggro(level)  && !isFrozen)
             {
                 Direction[] path = AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(target));
                 int pathCost = AStar.getCost(path);
@@ -21,6 +22,7 @@ namespace Brogue.Enemies
                 {
                     if (pathCost <= range)
                     {
+                        Engine.Engine.AddVisualAttack(this, target, Engine.Engine.GetTexture("Enemies/Attacks/Arrow"));
                         Attack();
                         Engine.Engine.Log("Was in range: " + level.CharacterEntities.FindPosition(this) + " to " + level.CharacterEntities.FindPosition(target) + " " + pathCost + " " + String.Join<Direction>(", ", path));
                     }
@@ -109,20 +111,13 @@ namespace Brogue.Enemies
 
         public override void BuildEnemy(int i)
         {
-            if (i > 10)
-            {
-                i = 10;
-            }
-            if (i < 0)
-            {
-                i = 0;
-            }
-
             range = 5;
             aggroRange = 7;
-            defense = 5 + (3 * i);
-            attack = 5 + (4 * i);
-            health = 10 + (7 * i);
+            defense = 0 + (3 * i);
+            if (defense > 50)
+                defense = 50;
+            attack = 3 + (4 * i);
+            health = 10 + (3 * i);
             exp = 5 + 10 * i;
         }
 

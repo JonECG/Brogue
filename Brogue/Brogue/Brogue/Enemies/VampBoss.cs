@@ -15,29 +15,35 @@ namespace Brogue.Enemies
         public override bool TakeTurn(Level level)
         {
             turnCounter++;
+            CheckElementDamage();
 
-            if (IsAggro)
+            if (IsAggro && !isFrozen)
             {
                 if (AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(targets[0])) != null)
                 {
-                    Direction[] path = AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(targets[0]));
-                    if (path.Length > 1)
-                    {
-                        level.Move(this, path[0]);
-                    }
+                    bool pathIsClear = false;
+                    Direction[] path = AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(targets[0]), ref pathIsClear);
 
-                    else if (turnCounter % 3 == 0)
+                    if (pathIsClear)
                     {
-                        foreach (GameCharacter g in targets)
+                        if (path.Length > 2)
                         {
-                            g.TakeDamage(attacks[1], this);
-                            health = (health * 4) / 5;
+                            level.Move(this, path[0]);
                         }
-                    }
-                    else
-                    {
-                        targets[0].TakeDamage(attacks[0], this);
-                        Heal(attacks[0] / 10);
+
+                        else if (turnCounter % 3 == 0)
+                        {
+                            foreach (GameCharacter g in targets)
+                            {
+                                g.TakeDamage(attacks[1], this);
+                                health = (health * 4) / 5;
+                            }
+                        }
+                        else
+                        {
+                            targets[0].TakeDamage(attacks[0], this);
+                            Heal(attacks[0] / 10);
+                        }
                     }
                 }
             }

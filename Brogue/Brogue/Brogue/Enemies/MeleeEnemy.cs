@@ -12,7 +12,8 @@ namespace Brogue.Enemies
     {
         public override bool TakeTurn(Level level)
         {
-            if (Aggro(level))
+            CheckElementDamage();
+            if (Aggro(level) && !isFrozen)
             {
                 Direction[] path = AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(target));
                 int pathCost = AStar.getCost(path);
@@ -108,20 +109,13 @@ namespace Brogue.Enemies
 
         public override void BuildEnemy(int i)
         {
-            if(i > 10)
-            {
-                i = 10;
-            }
-            if(i < 0)
-            {
-                i = 0;
-            }
-
             range = 1;
             aggroRange = 7;
-            defense = 10 + (5 * i);
-            attack = 7 + (6 * i);
-            health = 15 + (10 * i);
+            defense = 1 + (5 * i);
+            if (defense > 60)
+                defense = 60;
+            attack = 2 + (4 * i);
+            health = 10 + (5 * i);
             exp = 5 + 10 * i;
             
         }

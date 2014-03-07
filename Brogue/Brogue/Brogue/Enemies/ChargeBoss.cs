@@ -15,8 +15,9 @@ namespace Brogue.Enemies
         public override bool TakeTurn(Level level)
         {
             turnCounter++;
+            CheckElementDamage();
 
-            if (IsAggro)
+            if (IsAggro && !isFrozen)
             {
                 Direction[] path = AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(targets[0]));
                 if (path.Length > 1)

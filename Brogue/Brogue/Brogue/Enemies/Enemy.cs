@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Brogue.Enums;
+using Brogue.HeroClasses;
 
 //owned by Jake
 namespace Brogue.Enemies
@@ -21,6 +23,7 @@ namespace Brogue.Enemies
         protected int range;
         protected int aggroRange;
         protected int exp;
+        protected ElementAttributes element;
 
         public bool IsAggro
         {
@@ -70,6 +73,10 @@ namespace Brogue.Enemies
         protected void Attack()
         {
             target.TakeDamage(attack, this);
+            if (element != null)
+            {
+                target.DealElementalDamage(element, (1 + Engine.Engine.currentLevel.DungeonLevel / 3));
+            }
         }
 
         public GameCharacter Target
@@ -103,6 +110,10 @@ namespace Brogue.Enemies
             }
 
             float tempArmor = (float)defense / 100f;
+            if (attacker is Mage)
+            {
+                tempArmor /= 3;
+            }
             damage -= (int)((float)damage * tempArmor);
             health -= damage;
             if (health <= 0)

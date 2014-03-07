@@ -12,8 +12,10 @@ namespace Brogue.Enemies
     {
         public override bool TakeTurn(Level level)
         {
-            if (Aggro(level))
+            CheckElementDamage();
+            if (Aggro(level) && !isFrozen)
             {
+                Engine.Engine.AddVisualAttack(this, target, Engine.Engine.GetTexture("Enemies/Attacks/FireBall"));
                 Attack();
             }
             return true;
@@ -74,22 +76,16 @@ namespace Brogue.Enemies
 
         public override void BuildEnemy(int i)
         {
-            if (i > 10)
-            {
-                i = 10;
-            }
-            if (i < 0)
-            {
-                i = 0;
-            }
-
-            range = 4+i/2;
-            aggroRange = 3 + i / 2;
+            range = 6;
+            aggroRange = 3;
             defense = 2 + (2 * i);
-            attack = 8 + (8 * i);
-            health = 5 + (5 * i);
+            if (defense > 30)
+                defense = 30;
+            attack = 4 + (4 * i);
+            health = 5 + (4 * i);
             moveSpeed = 0;
             exp = 10 + 10 * i;
+            element = Enums.ElementAttributes.Lighting;
         }
 
         public override DynamicTexture GetTexture()
