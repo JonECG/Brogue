@@ -18,11 +18,11 @@ namespace Brogue.Items.Equipment.Armor.Chest
 
         public LeatherChest(int dLevel, int cLevel)
         {
-            Name = "Leather Chest";
             LevelReq = findLevelReq(dLevel, cLevel);
             UsedBy = new List<Classes> { Classes.Rogue, Classes.Duelist, Classes.Assassin, Classes.Ranger, Classes.Marksman };
             TypeBonus = 3;
             ArmorValue = findArmorValue(BaseArmor, dLevel, TypeBonus);
+            Name = findName("Leather Chest", LevelReq);
         }
     }
 }

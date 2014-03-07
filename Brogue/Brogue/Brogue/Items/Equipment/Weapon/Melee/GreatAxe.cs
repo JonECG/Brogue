@@ -19,11 +19,12 @@ namespace Brogue.Items.Equipment.Weapon.Melee
 
         public GreatAxe(int dLevel, int cLevel)
         {
-            Name = "Great Axe";
             UsedBy = new List<Classes> { Classes.Warrior, Classes.Brawler, Classes.Berserker };
             EquipableIn = new List<Slots> { Slots.Hand_Both };
             LevelReq = findLevelReq(dLevel, cLevel);
             Damage = findDamage(BaseDamage, dLevel, LevelReq);
+            Name = findName("Great Axe", LevelReq);
+
         }
     }
 }

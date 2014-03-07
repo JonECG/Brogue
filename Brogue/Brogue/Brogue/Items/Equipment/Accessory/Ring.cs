@@ -18,7 +18,6 @@ namespace Brogue.Items.Equipment.Accessory
 
         public Ring(int dLevel, int cLevel)
         {
-            Name = "Ring";
             LevelReq = findLevelReq(dLevel, cLevel);
             UsedBy = new List<Classes> 
             { 
@@ -29,6 +28,7 @@ namespace Brogue.Items.Equipment.Accessory
             EquipableIn = new List<Slots> { Slots.Finger_One, Slots.Finger_Two };
             StatIncreased = new List<Modifiers> { findStatIncreased() };
             StatIncrease = findStatIncrease(BaseIncrease, dLevel, LevelReq);
+            Name = findName("Ring", LevelReq);
         }
     }
 }

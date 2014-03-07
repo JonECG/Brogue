@@ -18,11 +18,11 @@ namespace Brogue.Items.Equipment.Weapon.Ranged
 
         public Chakrams(int dLevel, int cLevel)
         {
-            Name = "Chakrams";
             LevelReq = findLevelReq(dLevel, cLevel);
             UsedBy = new List<Classes> { Classes.Magus, Classes.SpellBlade };
             EquipableIn = new List<Slots> { Slots.Hand_Auxillary };
             Damage = findDamage(BaseDamage, dLevel, LevelReq);
+            Name = findName("Chakram", LevelReq);
         }
     }
 }

@@ -18,11 +18,11 @@ namespace Brogue.Items.Equipment.Armor.Helm
 
         public MailHelm(int dLevel, int cLevel)
         {
-            Name = "Mail Helm";
             LevelReq = findLevelReq(dLevel, cLevel);
             UsedBy = new List<Classes> { Classes.Warrior, Classes.Brawler, Classes.Berserker, Classes.Sentinel, Classes.Juggernaut };
             TypeBonus = 5;
             ArmorValue = findArmorValue(BaseArmor, dLevel, TypeBonus);
+            Name = findName("Mail Helm", LevelReq);
         }
     }
 }

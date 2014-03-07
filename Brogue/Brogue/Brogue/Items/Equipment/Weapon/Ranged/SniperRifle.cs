@@ -18,11 +18,12 @@ namespace Brogue.Items.Equipment.Weapon.Ranged
 
         public SniperRifle(int dlevel, int clevel)
         {
-            Name = "Sniper Rifle";
             LevelReq = findLevelReq(dlevel, clevel);
             UsedBy = new List<Classes> { Classes.Marksman };
             EquipableIn = new List<Slots> { Slots.Hand_Both };
             Damage = findDamage(BaseDamage, dlevel, LevelReq);
+            Name = findName("Sniper Rifle", LevelReq);
+
         }
     }
 }

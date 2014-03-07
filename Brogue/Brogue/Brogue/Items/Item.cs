@@ -466,7 +466,7 @@ namespace Brogue.Items
 
         public static Item getDesiredDitem(int dLevel, int cLevel)
         {
-            return new Potion(dLevel, cLevel);
+            return new Sword(dLevel, cLevel);
         }
 
         public abstract Item PickUpEffect(Hero Player);

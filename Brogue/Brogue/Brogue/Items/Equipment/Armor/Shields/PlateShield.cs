@@ -18,11 +18,11 @@ namespace Brogue.Items.Equipment.Armor.Shields
 
         public PlateShield(int dLevel, int cLevel)
         {
-            Name = "Plate Shield";
             LevelReq = findLevelReq(dLevel, cLevel);
             UsedBy = new List<Classes> { Classes.Sentinel, Classes.Juggernaut };
             TypeBonus = 5;
             ArmorValue = findArmorValue(BaseArmor, dLevel, TypeBonus);
+            Name = findName("Plate Shield", LevelReq);
         }
     }
 }

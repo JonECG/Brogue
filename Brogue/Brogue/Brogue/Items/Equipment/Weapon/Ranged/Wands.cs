@@ -18,11 +18,11 @@ namespace Brogue.Items.Equipment.Weapon.Ranged
 
         public Wands(int dLevel, int cLevel)
         {
-            Name = "Wand";
             LevelReq = findLevelReq(dLevel, cLevel);
             UsedBy = new List<Classes> { Classes.Mage, Classes.Sorcerer, Classes.SpellWeaver };
             EquipableIn = new List<Slots> { Slots.Hand_Primary };
             Damage = findDamage(BaseDamage, dLevel, LevelReq);
+            Name = findName("Wand", LevelReq);
         }
     }
 }

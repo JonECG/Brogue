@@ -19,11 +19,11 @@ namespace Brogue.Items.Equipment.Weapon.Melee
 
         public WarHammer(int dLevel, int cLevel)
         {
-            Name = "WarHammer";
             UsedBy = new List<Classes> { Classes.Warrior, Classes.Brawler, Classes.Berserker };
             EquipableIn = new List<Slots> { Slots.Hand_Both };
             LevelReq = findLevelReq(dLevel, cLevel);
             Damage = findDamage(BaseDamage, dLevel, LevelReq);
+            Name = findName("War Hammer", LevelReq);
         }
     }
 }

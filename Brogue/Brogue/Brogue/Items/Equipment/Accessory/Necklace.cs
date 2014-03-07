@@ -18,7 +18,6 @@ namespace Brogue.Items.Equipment.Accessory
 
         public Necklace(int dLevel, int cLevel)
         {
-            Name = "Necklace";
             LevelReq = findLevelReq(dLevel, cLevel);
             UsedBy = new List<Classes> 
             {
@@ -29,6 +28,7 @@ namespace Brogue.Items.Equipment.Accessory
             EquipableIn = new List<Slots> { Slots.Neck };
             StatIncreased = new List<Modifiers> { findStatIncreased() };
             StatIncrease = findStatIncrease(BaseIncrease, dLevel, LevelReq);
+            Name = findName("Necklace", LevelReq);
         }
     }
 }

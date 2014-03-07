@@ -114,6 +114,7 @@ namespace Brogue.HeroClasses
         }
 
         public bool isWeaponEquipable(Gear weapon, Classes heroRole, int level)
+
         {
             bool result = false;
             string logInfo = "You can't equip this weapon";
@@ -231,7 +232,7 @@ namespace Brogue.HeroClasses
             }
         }
 
-        public void equipWeapon(Gear weapon, int index)
+        public void equipWeapon(Gear weapon, int index, Hero hero)
         {
             int handsTaken = (weapon.EquipableIn.Contains(Enums.Slots.Hand_Both)) ? 2 : 1;
             if (slotsOpen >= handsTaken)
@@ -241,6 +242,9 @@ namespace Brogue.HeroClasses
                     if (weapon.ItemType == ITypes.Offhand)
                     {
                         equippedWeapons[1] = weapon;
+                        SpellBook elements = (SpellBook)weapon;
+                        hero.Element = elements.Element;
+
                     }
                     else if (handsTaken == 2)
                     {

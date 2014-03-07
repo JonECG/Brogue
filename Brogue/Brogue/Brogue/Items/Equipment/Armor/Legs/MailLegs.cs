@@ -18,11 +18,11 @@ namespace Brogue.Items.Equipment.Armor.Legs
 
         public MailLegs(int dLevel, int cLevel)
         {
-            Name = "Mail Legs";
             LevelReq = findLevelReq(dLevel, cLevel);
             UsedBy = new List<Classes> { Classes.Warrior, Classes.Brawler, Classes.Berserker, Classes.Sentinel, Classes.Juggernaut };
             TypeBonus = 5;
             ArmorValue = findArmorValue(BaseArmor, dLevel, TypeBonus);
+            Name = findName("Mail Legs", LevelReq);
         }
     }
 }

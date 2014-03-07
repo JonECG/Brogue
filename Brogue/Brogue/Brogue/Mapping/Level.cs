@@ -372,7 +372,7 @@ namespace Brogue.Mapping
             {
                 for (int i = 0; i < 100; i++)
                 {
-                    Item item = Item.randomItem(1000, 1000);
+                    Item item = Item.getDesiredDitem(1, 1);
 
                     Engine.Engine.Log(string.Format("Item Generated: {0}", item.Name));
 

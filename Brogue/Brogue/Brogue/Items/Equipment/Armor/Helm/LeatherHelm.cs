@@ -18,11 +18,11 @@ namespace Brogue.Items.Equipment.Armor.Helm
 
         public LeatherHelm(int dLevel, int cLevel)
         {
-            Name = "Leather Helm";
             LevelReq = findLevelReq(dLevel, cLevel);
             UsedBy = new List<Classes> { Classes.Rogue, Classes.Duelist, Classes.Assassin, Classes.Ranger, Classes.Marksman };
             TypeBonus = 3;
             ArmorValue = findArmorValue(BaseArmor, dLevel, TypeBonus);
+            Name = findName("Leather Helm", LevelReq);
         }
     }
 }

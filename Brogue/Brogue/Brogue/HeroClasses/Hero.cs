@@ -29,10 +29,15 @@ namespace Brogue.HeroClasses
     [Serializable] public abstract class Hero : GameCharacter, IRenderable
     {
         public int level { get; set; }
+        
+        public List<ElementAttributes> Element { get; set; }
+
         public int MaxJarBarAmount = 50;
         protected int numAbilities;
         public int damageBoost;
-        public Classes heroRole;
+
+        public static Classes heroRole;
+
         protected int baseHealth;
         protected int armorRating;
         protected int experience = 0;
@@ -420,7 +425,7 @@ namespace Brogue.HeroClasses
             }
         }
 
-        public void equipWeapon(int inventoryIndex, int weaponIndex )
+        public void equipWeapon(int inventoryIndex, int weaponIndex)
         {
             if (inventory.stored[inventoryIndex].item != null && (inventory.stored[inventoryIndex].item.ItemType == ITypes.Weapon || inventory.stored[inventoryIndex].item.ItemType == ITypes.Offhand))
             {
@@ -429,7 +434,7 @@ namespace Brogue.HeroClasses
                 {
                     inventory.removeItem(inventoryIndex);
                     inventory.addItem(currentlyEquippedItems.removeWeapon(weaponIndex));
-                    currentlyEquippedItems.equipWeapon((Gear)newlyEquippedItem, weaponIndex);
+                    currentlyEquippedItems.equipWeapon((Gear)newlyEquippedItem, weaponIndex, this);
                 }
             }
         }

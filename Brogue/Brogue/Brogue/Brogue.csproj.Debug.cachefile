@@ -112,4 +112,18 @@ Content\UI\HelmOverlay.xnb
 Content\UI\LegsOverlay.xnb
 Content\UI\NeckOverlay.xnb
 Content\UI\RingOverlay.xnb
+Content\Sound\stairs.xnb
+Content\Sound\switch.xnb
+Content\Sound\Chest.xnb
+Content\Music\BrogueII.xnb
+Content\error.xnb
+Content\UI\FreeSaveSlot.xnb
+Content\UI\FilledSaveSlot.xnb
+Content\UI\QuitButton.xnb
+Content\Enemies\MageEnemy_aggressive.xnb
+Content\Enemies\MageEnemy_passive.xnb
+Content\Enemies\MeleeEnemy_aggressive.xnb
+Content\Enemies\MeleeEnemy_passive.xnb
+Content\Enemies\RangedEnemy_aggressive.xnb
+Content\Enemies\RangedEnemy_passive.xnb
 Content\Audio\The Descent.wma

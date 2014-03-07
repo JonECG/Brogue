@@ -17,10 +17,10 @@ namespace Brogue.Items.Equipment.Offhand
 
         public SpellBook(int dLevel, int cLevel)
         {
-            Name = "Spellbook";
             LevelReq = findLevelReq(dLevel, cLevel);
             UsedBy = new List<Classes> { Classes.Mage, Classes.Sorcerer, Classes.SpellWeaver };
             Element = new List<ElementAttributes> { findElement() };
+            Name = findName("Spellbook", LevelReq);
         }
     }
 }

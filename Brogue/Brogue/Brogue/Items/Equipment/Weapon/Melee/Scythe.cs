@@ -18,11 +18,12 @@ namespace Brogue.Items.Equipment.Weapon.Melee
 
         public Scythe(int dLevel, int cLevel)
         {
-            Name = "Scythe";
             LevelReq = findLevelReq(dLevel, cLevel);
             UsedBy = new List<Classes> { Classes.Assassin };
             EquipableIn = new List<Slots> { Slots.Hand_Both };
             Damage = findDamage(BaseDamage, dLevel, LevelReq);
+            Name = findName("Scythe", LevelReq);
+
         }
     }
 }

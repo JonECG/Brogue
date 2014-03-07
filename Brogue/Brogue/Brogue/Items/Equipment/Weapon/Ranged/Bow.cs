@@ -18,11 +18,12 @@ namespace Brogue.Items.Equipment.Weapon.Ranged
 
         public Bow(int dLevel, int cLevel)
         {
-            Name = "Bow";
             LevelReq = findLevelReq(dLevel, cLevel);
             UsedBy = new List<Classes> { Classes.Ranger, Classes.Marksman };
             EquipableIn = new List<Slots> { Slots.Hand_Both };
             Damage = findDamage(BaseDamage, dLevel, LevelReq);
+            Name = findName("Bow", LevelReq);
+
         }
     }
 }

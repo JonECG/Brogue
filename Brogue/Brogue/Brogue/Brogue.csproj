@@ -78,6 +78,7 @@
     <Compile Include="Abilities\AOE\AreaOfEffect.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Abilities\AOE\WhirlwindSlash.cs" />
     <Compile Include="Abilities\SingleTargets\Cleave.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -142,6 +143,7 @@
     <Compile Include="Enums\EquipmentSlots.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Enums\GoodNameDescriptions.cs" />
     <Compile Include="Enums\HelmTypes.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -152,19 +154,23 @@
     <Compile Include="Enums\LegTypes.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Enums\MasterNameDescription.cs" />
     <Compile Include="Enums\MeleeWeaponsTypes.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Enums\PoorNameDescriptions.cs" />
     <Compile Include="Enums\OffhandTypes.cs" />
     <Compile Include="Enums\RangedWeaponsTypes.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Enums\RareNameDescriptions.cs" />
     <Compile Include="Enums\ShieldTypes.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Enums\StatModifiers.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Enums\SuperNameDescriptions.cs" />
     <Compile Include="Enums\UniqueAccesory.cs" />
     <Compile Include="Enums\UniqueArmor.cs">
       <SubType>Code</SubType>
@@ -192,6 +198,7 @@
     <Compile Include="EnviromentObjects\Interactive\Iinteractable.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="EnviromentObjects\Interactive\Stairs.cs" />
     <Compile Include="EnviromentObjects\Interactive\Swiches.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -425,6 +432,7 @@
     <Compile Include="Mapping\EnvironmentObject.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Mapping\GeneratedLevel.cs" />
     <Compile Include="Mapping\GridBoundList.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -437,6 +445,7 @@
     <Compile Include="Mapping\LevelGenerator.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Mapping\Minimap.cs" />
     <Compile Include="Mapping\Tile.cs">
       <SubType>Code</SubType>
     </Compile>
