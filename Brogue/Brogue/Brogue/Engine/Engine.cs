@@ -152,7 +152,7 @@ namespace Brogue.Engine
         private static Queue<String> log = new Queue<string>(10);
         private static Vector2 LogPosition, InvButtonPosition, InventoryPosition, InventorySize;
         private static HeroClasses.Hero hero;
-        private static bool heroesTurn = true;
+        //private static bool heroesTurn = true;
         private static RenderTarget2D lightsTarget;
         private static RenderTarget2D mainTarget;
         private const int AIDist = 15;
@@ -210,8 +210,6 @@ namespace Brogue.Engine
         public static DynamicTexture placeHolder = GetTexture("placeholder");
 
         public static Level currentLevel;
-        
-        private static Song backgroundSong;
 
         public static void AddXP(int xp, IntVec gameGrid)
         {
@@ -265,8 +263,6 @@ namespace Brogue.Engine
             mainMenuOpen = false;
             gameStarted = true;
         }
-
-
 
         public static void ClearGridSelections()
         {
@@ -389,7 +385,7 @@ namespace Brogue.Engine
             mainMenuOpen = false;
             showSaveSlotSelection = false;
             GenerateLevel();
-            //LoadContent(contentManager);
+            Audio.playMusic("Brogue II", 1.0f);
 
         }
 
@@ -402,11 +398,7 @@ namespace Brogue.Engine
             healthBarPosition = new Vector2(40, game.Height / 2 - healthbar.texture.Height / 2);
             font = content.Load<SpriteFont>("UI/Font");
 
-            //////////////////////////////////
             Audio.LoadContent(content);
-            Audio.playMusic("Brogue II", 1.0f);
-            //Audio.playMusic("Doom", 0.15f);
-            //////////////////////////////////
 
             /////////////////////////////////////
             //auxerTests = new AuxerTestingZone();
@@ -557,7 +549,10 @@ namespace Brogue.Engine
 
             }
 
-            Audio.update();
+            if (gameStarted)
+            {
+                Audio.update();
+            }
         }
 
 
