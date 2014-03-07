@@ -54,7 +54,7 @@ namespace Brogue
             }
         }
 
-        private void checkElementDamage()
+        private void CheckElementDamage()
         {
             if (elementDamageTime > 0)
             {
