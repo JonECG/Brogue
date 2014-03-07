@@ -80,7 +80,7 @@ namespace Brogue.EnviromentObjects.Interactive
         public void actOn(GameCharacter actingCharacter)
         {
             changeState();
-            target.actOn(actingCharacter);
+            target.actOn(null);
             Audio.playSound("switch");
             //actingCharacter.position = new IntVec()
         }
