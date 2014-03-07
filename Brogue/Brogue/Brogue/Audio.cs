@@ -8,7 +8,6 @@ using Microsoft.Xna.Framework.Content;
 namespace Brogue
 {
 
-
     public class audioFile
     {
         public string keyName;
@@ -46,12 +45,26 @@ namespace Brogue
         private static int MAX_LIABBARY_SIZE = 10;
         private static Random random = new Random();
 
-        private static int DEALY_DEFALT_TIME = 10;
+        private static int DEALY_MAX_DEFALT_TIME = 300;
+        private static int DEALY_MIN_DEFALT_TIME = 10;
         private static int delay;
         
         private static audioFile[] music;
         private static audioFile[] sound;
         private static audioFile defualtSound;
+
+        private static void backgroundSound()
+        {
+            if (delay <= 0)
+            {
+                playRandomSound();
+                delay = random.Next(DEALY_MIN_DEFALT_TIME, DEALY_MAX_DEFALT_TIME);
+            }
+            else if (delay > 0)
+            {
+                delay -= 1;
+            }
+        }
 
         public static void stopAllAudio()
         {
@@ -102,12 +115,12 @@ namespace Brogue
             music[selected].playFile(volume);
         }
 
-        public static void playRandomSound(float volume = 0.75f)
+        public static void playRandomSound(float volume = 0.05f)
         {
-            int selected = random.Next(0, MAX_LIABBARY_SIZE); ;
+            int selected = random.Next(1, MAX_LIABBARY_SIZE); ;
             while (sound[selected] == null)
             {
-                selected = random.Next(0, MAX_LIABBARY_SIZE);
+                selected = random.Next(2, MAX_LIABBARY_SIZE);
             }
             sound[selected].playFile(volume);
         }
@@ -158,37 +171,28 @@ namespace Brogue
             music = new audioFile[MAX_LIABBARY_SIZE];
             sound = new audioFile[MAX_LIABBARY_SIZE];
 
-            //Load Music Brogue II
-            //music[0] = new audioFile(content.Load<SoundEffect>("Music/SOMITEST"), "Monkey Island", true);
+            //Load Music
             music[0] = new audioFile(content.Load<SoundEffect>("Music/BrogueII"), "Brogue II", true);
             music[1] = new audioFile(content.Load<SoundEffect>("Music/The_Thing"), "The_Thing", true);
             music[2] = new audioFile(content.Load<SoundEffect>("Music/E1M1"), "Doom", true);
+            //music[3] = new audioFile(content.Load<SoundEffect>("Music/SOMITEST"), "Monkey Island", true);
 
             //Load Sound
             defualtSound = new audioFile(content.Load<SoundEffect>("Sound/Whammy"), "Whammy");
-            sound[0] = new audioFile(content.Load<SoundEffect>("Sound/Water_Drop"), "waterDrop");
-            sound[1] = new audioFile(content.Load<SoundEffect>("Sound/door"), "door");
-            sound[2] = new audioFile(content.Load<SoundEffect>("Sound/switch"), "switch");
-            sound[3] = new audioFile(content.Load<SoundEffect>("Sound/stairs"), "stairs");
-            sound[4] = new audioFile(content.Load<SoundEffect>("Sound/Chest"), "chest");
+            sound[0] = new audioFile(content.Load<SoundEffect>("Sound/stairs"), "stairs");
+            sound[1] = new audioFile(content.Load<SoundEffect>("Sound/Chest"), "chest");
+            sound[2] = new audioFile(content.Load<SoundEffect>("Sound/Water_Drop"), "waterDrop");
+            sound[3] = new audioFile(content.Load<SoundEffect>("Sound/door"), "door");
+            sound[4] = new audioFile(content.Load<SoundEffect>("Sound/switch"), "switch");
+            sound[5] = new audioFile(content.Load<SoundEffect>("Sound/stairs"), "stairs");
+
+            //defualt
+            delay = random.Next(DEALY_MIN_DEFALT_TIME, DEALY_MAX_DEFALT_TIME);
         }
 
         public static void update()
         {
-
-            if (delay == null || delay <= 0)
-            {
-                delay = random.Next(1, DEALY_DEFALT_TIME);
-            }
-            else if (delay > 0)
-            {
-                delay -= 1;
-            }
-            else
-            {
-               playRandomSound();
-            }
-       
+           backgroundSound();
         }
 
     }
