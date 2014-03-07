@@ -77,8 +77,10 @@ namespace Brogue.Engine
         static DynamicTexture standard = Engine.GetTexture("UI/InvSlot");
         static DynamicTexture highlighted = Engine.GetTexture("UI/InvSlotHighlighted");
         Texture2D currentBackTex;
+        public string toolTip = "";
         public DynamicTexture drawOver;
         public bool doDrawOver;
+        bool doToolTip = false;
         string caption;
         Vector2 pos;
         public UIButton(Vector2 position, bool centered, string drawOverTexture, string caption)
@@ -108,10 +110,12 @@ namespace Brogue.Engine
                 if (isMouseOver)
                 {
                     currentBackTex = highlighted.texture;
+                    doToolTip = true;
                 }
                 else
                 {
                     currentBackTex = standard.texture;
+                    doToolTip = false;
                 }
             }
 
@@ -131,6 +135,11 @@ namespace Brogue.Engine
                 sb.Draw(drawOver.texture, pos, Color.White);
                 sb.DrawString(Engine.font, caption,
                     new Vector2(pos.X + currentBackTex.Width / 2 - Engine.font.MeasureString(caption).X / 2, pos.Y - 20), Color.Red);
+                if (doToolTip)
+                {
+                    Vector2 toolTipMeasure = Engine.font.MeasureString(toolTip);
+                    sb.DrawString(Engine.font, toolTip, new Vector2(pos.X + currentBackTex.Width / 2 - toolTipMeasure.X / 2, pos.Y - 20 - toolTipMeasure.Y), Color.BlanchedAlmond);
+                }
             }
         }
     }
@@ -345,10 +354,12 @@ namespace Brogue.Engine
                     if (File.Exists("saveSlot" + (i + 1) + ".bro"))
                     {
                         saveSlots[i] = new UIButton(new Vector2(postemp.X + (CELLWIDTH + 20) * i, postemp.Y), true, "UI/FilledSaveSlot", "Slot " + (i + 1));
+                        saveSlots[i].toolTip = "Selecting this save slot\nwill overwrite the previous save!";
                     }
                     else
                     {
                         saveSlots[i] = new UIButton(new Vector2(postemp.X + (CELLWIDTH + 20) * i, postemp.Y), true, "UI/FreeSaveSlot", "Slot " + (i + 1));
+                        saveSlots[i].toolTip = "Select a save slot to start a game.";
                     }
                     
                 }
@@ -885,7 +896,7 @@ namespace Brogue.Engine
                     new Rectangle(0, 0, jar.texture.Width, jar.texture.Height), Color.White,
                     0,
                     new Vector2(jar.texture.Width / 2, jar.texture.Height),
-                    new Vector2(1, hero.jarBarAmount / hero.MaxJarBarAmount),
+                    new Vector2(1, (float)hero.jarBarAmount / (float)hero.MaxJarBarAmount),
                     SpriteEffects.None, 0);
                 //uisb.Draw(bar.texture, new Vector2(game.Width - 50 - jar.texture.Width, game.Height / 2 - bar.texture.Height / 2), Color.White);
                 uisb.Draw(invButton.texture, InvButtonPosition, Color.White);
