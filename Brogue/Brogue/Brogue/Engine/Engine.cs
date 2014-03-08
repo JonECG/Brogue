@@ -14,6 +14,8 @@ using Brogue.EnviromentObjects.Interactive;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
+using Brogue.Items.Equipment.Weapon;
+using Brogue.Items.Equipment;
 
 
 namespace Brogue.Engine
@@ -1044,7 +1046,7 @@ namespace Brogue.Engine
                 {
                     if (hero.currentlyEquippedItems.equippedWeapons[0] != null)
                     {
-                        hero.GetInventory().addItem(hero.currentlyEquippedItems.removeWeapon(0));
+                        hero.GetInventory().addItem(hero.currentlyEquippedItems.removeWeapon(null, 0));
                         didSomething = true;
                     }
                 }
@@ -1052,7 +1054,7 @@ namespace Brogue.Engine
                 {
                     if (hero.currentlyEquippedItems.equippedWeapons[1] != null)
                     {
-                        hero.GetInventory().addItem(hero.currentlyEquippedItems.removeWeapon(1));
+                        hero.GetInventory().addItem(hero.currentlyEquippedItems.removeWeapon(null, 1));
                         didSomething = true;
                     }
                 }
@@ -1082,7 +1084,7 @@ namespace Brogue.Engine
                     {
                         if (inventoryButtons[i].currentItem != null)
                         {
-                            hero.equipWeapon(i, 0);
+                            hero.equipWeapon(i);
                             hero.equipArmor(i);
                             hero.equipAccessory(i);
                         }
