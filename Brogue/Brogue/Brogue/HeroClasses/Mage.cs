@@ -20,9 +20,11 @@ namespace Brogue.HeroClasses
             Hero.sprite = new Sprite(texture);
             heroRole = Classes.Mage;
             inventory.addItem(new Staff(1, 1));
+            inventory.addItem(new Staff(1, 1));
             inventory.addItem(new SpellBook(1, 1));
-            inventory.addItem(new Potion(1,1));
-            equipWeapon(0, 0);
+            healthPerLevel = 30;
+            resetLevel();
+            resetHealth();
         }
     }
 }

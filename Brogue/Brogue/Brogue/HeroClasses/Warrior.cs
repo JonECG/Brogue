@@ -20,13 +20,10 @@ namespace Brogue.HeroClasses
             Hero.sprite = new Sprite(texture);
             heroRole = Classes.Warrior;
             inventory.addItem(new Sword(1, 1));
-            equipWeapon(0, 0);
-            pickupItem(new MailHelm(1, 1));
-            pickupItem(new MailLegs(1, 1));
-            pickupItem(new Ring(1, 1));
-            pickupItem(new Ring(1, 1));
-            pickupItem(new Ring(1, 1));
-            pickupItem(new Ring(1, 1));
+            inventory.addItem(new Sword(1, 1));
+            inventory.addItem(new GreatAxe(1, 1));
+            inventory.addItem(new Axe(1, 1));
+            healthPerLevel = 50;
             resetLevel();
             resetHealth();
         }

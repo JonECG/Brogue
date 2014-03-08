@@ -28,6 +28,8 @@ namespace Brogue.HeroClasses
 
     [Serializable] public abstract class Hero : GameCharacter, IRenderable
     {
+        const int jarBarIncrease = 25;
+
         public int level { get; set; }
         
         public List<ElementAttributes> Element { get; set; }
@@ -39,10 +41,11 @@ namespace Brogue.HeroClasses
         public static Classes heroRole;
 
         protected int baseHealth;
+        protected bool turnOver;
         protected int armorRating;
         protected int experience = 0;
         protected int expRequired = 100;
-        protected int healthPerLevel;
+        protected int healthPerLevel { get; set; }
         protected Ability[] abilities;
         public int jarBarAmount;
         protected static Sprite sprite;
@@ -140,6 +143,8 @@ namespace Brogue.HeroClasses
                 int addedExp = experience - expRequired;
                 level += 1;
                 health += healthPerLevel;
+                MaxJarBarAmount += jarBarIncrease;
+                Engine.Engine.Log(MaxJarBarAmount.ToString());
                 experience = 0 + addedExp;
                 expRequired = 50 + 25 * (level-1);
             }
@@ -162,7 +167,7 @@ namespace Brogue.HeroClasses
 
         public override bool TakeTurn(Mapping.Level mapLevel)
         {
-            bool turnOver = false;
+            turnOver = false;
             bool casting = false;
             /*for (int i = 0; i < numAbilities && !casting; i++)
             {
@@ -170,107 +175,113 @@ namespace Brogue.HeroClasses
             }*/
             resetArmor();
             resetLevel();
-            if (MouseController.LeftClicked())
+            CheckElementDamage();
+            if (!isFrozen)
             {
-               
-                IInteractable interactableObj = mapLevel.InteractableEnvironment.FindEntity(MouseController.MouseGridPosition());
-                if (interactableObj != null)
+                if (MouseController.LeftClicked())
                 {
-                    Engine.Engine.Log(interactableObj.ToString());
-                    interactableObj.actOn(this);
-                    turnOver = true;
+
+                    IInteractable interactableObj = mapLevel.InteractableEnvironment.FindEntity(MouseController.MouseGridPosition());
+                    if (interactableObj != null)
+                    {
+                        Engine.Engine.Log(interactableObj.ToString());
+                        interactableObj.actOn(this);
+                    }
+                }
+
+                if (!casting && !viewingCast)
+                {
+                    if (Mapping.KeyboardController.IsTyped(Keys.A))
+                    {
+                        turnOver = mapLevel.Move(this, move(Direction.LEFT));
+                    }
+                    else if (Mapping.KeyboardController.IsTyped(Keys.W))
+                    {
+                        turnOver = mapLevel.Move(this, move(Direction.UP));
+                    }
+                    else if (Mapping.KeyboardController.IsTyped(Keys.D))
+                    {
+                        turnOver = mapLevel.Move(this, move(Direction.RIGHT));
+                    }
+                    else if (Mapping.KeyboardController.IsTyped(Keys.S))
+                    {
+                        turnOver = mapLevel.Move(this, move(Direction.DOWN));
+                    }
+                    else if (MouseController.LeftClicked())
+                    {
+                        attack(mapLevel);
+                    }
+                    // THESE ARE JUST FOR TESTING
+                    else if (Mapping.KeyboardController.IsTyped(Keys.B))
+                    {
+                        level += 1;
+                    }
+                    else if (Mapping.KeyboardController.IsTyped(Keys.LeftShift))
+                    {
+                        checkGround(mapLevel);
+                    }
+                    else if (Mapping.KeyboardController.IsTyped(Keys.RightShift))
+                    {
+                        drinkFromJarBar();
+                    }
+                    else if (Mapping.KeyboardController.IsPressed(Keys.R))
+                    {
+                        inventory.sortInventory();
+                    }
+
+                    else if (Mapping.KeyboardController.IsPressed(Keys.D1))
+                    {
+                        if (abilities[0].cooldown == 0)
+                        {
+                            viewingCast = true;
+                            viewedAbility = 0;
+                            abilityKey = Keys.D1;
+                        }
+                    }
+                    else if (Mapping.KeyboardController.IsPressed(Keys.D2))
+                    {
+                        if (abilities[1].cooldown == 0)
+                        {
+                            viewingCast = true;
+                            viewedAbility = 1;
+                            abilityKey = Keys.D2;
+                        }
+                    }
+                    else if (Mapping.KeyboardController.IsPressed(Keys.D3))
+                    {
+                        if (abilities[2].cooldown == 0)
+                        {
+                            viewingCast = true;
+                            viewedAbility = 2;
+                            abilityKey = Keys.D3;
+                        }
+                    }
+
+                    else turnOver = (Mapping.KeyboardController.IsTyped(Keys.Space));
+                }
+
+                if (viewingCast)
+                {
+                    turnOver = castAbility(viewedAbility, mapLevel);
+
+                    if (Mapping.KeyboardController.IsReleased(abilityKey))
+                    {
+                        if (abilities[viewedAbility].type != AbilityTypes.Toggle)
+                        {
+                            Engine.Engine.ClearGridSelections();
+                            abilities[viewedAbility].resetSquares();
+                        }
+                        viewingCast = !viewingCast;
+                    }
+                }
+                if (turnOver)
+                {
+                    cooldownAbilities();
                 }
             }
-
-            if (!casting && !viewingCast)
+            else
             {
-                if (Mapping.KeyboardController.IsTyped(Keys.A))
-                {
-                    turnOver = mapLevel.Move(this, move(Direction.LEFT));
-                }
-                else if (Mapping.KeyboardController.IsTyped(Keys.W))
-                {
-                    turnOver = mapLevel.Move(this, move(Direction.UP));
-                }
-                else if (Mapping.KeyboardController.IsTyped(Keys.D))
-                {
-                    turnOver = mapLevel.Move(this, move(Direction.RIGHT));
-                }
-                else if (Mapping.KeyboardController.IsTyped(Keys.S))
-                {
-                    turnOver = mapLevel.Move(this, move(Direction.DOWN));
-                }
-                else if (MouseController.LeftClicked())
-                {
-                    attack(mapLevel);
-                    turnOver = true;
-                }
-                // THESE ARE JUST FOR TESTING
-                else if (Mapping.KeyboardController.IsTyped(Keys.B))
-                {
-                    level += 1;
-                }
-                else if (Mapping.KeyboardController.IsTyped(Keys.LeftShift))
-                {
-                    checkGround(mapLevel);
-                }
-                else if (Mapping.KeyboardController.IsTyped(Keys.RightShift))
-                {
-                    drinkFromJarBar();
-                }
-                else if (Mapping.KeyboardController.IsPressed(Keys.R))
-                {
-                    inventory.sortInventory();
-                }
-
-                else if (Mapping.KeyboardController.IsPressed(Keys.D1))
-                {
-                    if (abilities[0].cooldown == 0)
-                    {
-                        viewingCast = true;
-                        viewedAbility = 0;
-                        abilityKey = Keys.D1;
-                    }
-                }
-                else if (Mapping.KeyboardController.IsPressed(Keys.D2))
-                {
-                    if (abilities[1].cooldown == 0)
-                    {
-                        viewingCast = true;
-                        viewedAbility = 1;
-                        abilityKey = Keys.D2;
-                    }
-                }
-                else if (Mapping.KeyboardController.IsPressed(Keys.D3))
-                {
-                    if (abilities[2].cooldown == 0)
-                    {
-                        viewingCast = true;
-                        viewedAbility = 2;
-                        abilityKey = Keys.D3;
-                    }
-                }
-
-                else turnOver = (Mapping.KeyboardController.IsTyped(Keys.Space));
-            }
-
-            if (viewingCast)
-            {
-                turnOver = castAbility(viewedAbility, mapLevel);
-               
-                if (Mapping.KeyboardController.IsReleased(abilityKey))
-                {
-                    if (abilities[viewedAbility].type != AbilityTypes.Toggle)
-                    {
-                        Engine.Engine.ClearGridSelections();
-                        abilities[viewedAbility].resetSquares();
-                    }
-                    viewingCast = !viewingCast;
-                }
-            }
-            if (turnOver)
-            {
-                cooldownAbilities();
+                turnOver = true;
             }
             return turnOver;
         }
@@ -330,7 +341,7 @@ namespace Brogue.HeroClasses
         {
             if (mapLevel.CharacterEntities.FindEntity(MouseController.MouseGridPosition()) != this)
             {
-                Enemies.Enemy testEnemy = (Enemies.Enemy)mapLevel.CharacterEntities.FindEntity(MouseController.MouseGridPosition());
+                GameCharacter testEnemy = (GameCharacter)mapLevel.CharacterEntities.FindEntity(MouseController.MouseGridPosition());
                 if (testEnemy != null)
                 {
                     int weaponRange1 = currentlyEquippedItems.getPrimaryWeaponRange();
@@ -339,11 +350,29 @@ namespace Brogue.HeroClasses
                     IntVec[] weaponHitbox2 = AStar.getPossiblePositionsFrom(mapLevel, mapLevel.CharacterEntities.FindPosition(this), weaponRange2, true);
                     damageEnemyIfInRange(weaponHitbox1, mapLevel, testEnemy, currentlyEquippedItems.getPrimaryWeaponDamage());
                     damageEnemyIfInRange(weaponHitbox2, mapLevel, testEnemy, currentlyEquippedItems.getAuxilaryWeaponDamage());
+                    if (Element != null)
+                    {
+                        for (int i = 0; i < Element.Count; i++)
+                        {
+                            switch (Element[i])
+                            {
+                                case ElementAttributes.Fire:
+                                    testEnemy.DealElementalDamage(Element[i], 5);
+                                    break;
+                                case ElementAttributes.Ice:
+                                    testEnemy.DealElementalDamage(Element[i], 3);
+                                    break;
+                                case ElementAttributes.Lighting:
+                                    testEnemy.DealElementalDamage(Element[i], 1);
+                                    break;
+                            }
+                        }
+                    }
                 }
             }
         }
 
-        private void damageEnemyIfInRange(IntVec[] hitBox, Level mapLevel, Enemies.Enemy enemy, int damage)
+        private void damageEnemyIfInRange(IntVec[] hitBox, Level mapLevel, GameCharacter enemy, int damage)
         {
             bool found = false;
             for (int i = 0; i < hitBox.Length&&!found; i++)
@@ -353,10 +382,10 @@ namespace Brogue.HeroClasses
                 {
                     found = true;
                     enemy.TakeDamage(damage, this);
+                    turnOver = true;
                 }
             }
         }
-
 
         private bool IsInRange(IntVec firstPosition, IntVec secondPosition, int range)
         {
@@ -364,7 +393,6 @@ namespace Brogue.HeroClasses
             Engine.Engine.Log(gridSquaresAway.ToString());
             return (gridSquaresAway <= range);
         }
-        //public void useItem();
 
         public void cooldownAbilities()
         {
@@ -389,12 +417,7 @@ namespace Brogue.HeroClasses
         private void checkGround(Mapping.Level mapLevel)
         {
             Item temp = mapLevel.DroppedItems.FindEntity(mapLevel.CharacterEntities.FindPosition(this));
-            pickupItem(temp);
-            if (temp != null)
-            {
-                mapLevel.DroppedItems.RemoveEntity(temp);
-                Engine.Engine.Log("item picked up");
-            }
+            pickupItem(temp, mapLevel);
         }
 
         public void equipAccessory(int itemToEquip)
@@ -425,7 +448,7 @@ namespace Brogue.HeroClasses
             }
         }
 
-        public void equipWeapon(int inventoryIndex, int weaponIndex)
+        public void equipWeapon(int inventoryIndex)
         {
             if (inventory.stored[inventoryIndex].item != null && (inventory.stored[inventoryIndex].item.ItemType == ITypes.Weapon || inventory.stored[inventoryIndex].item.ItemType == ITypes.Offhand))
             {
@@ -433,8 +456,17 @@ namespace Brogue.HeroClasses
                 if(currentlyEquippedItems.isWeaponEquipable((Gear)newlyEquippedItem, heroRole, level))
                 {
                     inventory.removeItem(inventoryIndex);
-                    inventory.addItem(currentlyEquippedItems.removeWeapon(weaponIndex));
-                    currentlyEquippedItems.equipWeapon((Gear)newlyEquippedItem, weaponIndex, this);
+                    Gear item = (Gear)newlyEquippedItem;
+                    if (item.EquipableIn.Contains(Slots.Hand_Both))
+                    {
+                        inventory.addItem(currentlyEquippedItems.removeWeapon(null, 0));
+                        inventory.addItem(currentlyEquippedItems.removeWeapon(null, 1));
+                    }
+                    else
+                    {
+                        inventory.addItem(currentlyEquippedItems.removeWeapon((Gear)newlyEquippedItem));
+                    }
+                    currentlyEquippedItems.equipWeapon((Gear)newlyEquippedItem, this);
                 }
             }
         }
@@ -449,12 +481,14 @@ namespace Brogue.HeroClasses
             return inventory;
         }
 
-        public void pickupItem(Item item)
+        public void pickupItem(Item item, Level mapLevel)
         {
             if (item != null && !inventory.inventoryMaxed())
             {
                 inventory.addItem(item.PickUpEffect(this));
                 Engine.Engine.Log("" + jarBarAmount);
+                mapLevel.DroppedItems.RemoveEntity(item);
+                Engine.Engine.Log("item picked up");
             }
 
         }

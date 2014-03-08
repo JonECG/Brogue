@@ -114,7 +114,6 @@ namespace Brogue.HeroClasses
         }
 
         public bool isWeaponEquipable(Gear weapon, Classes heroRole, int level)
-
         {
             bool result = false;
             string logInfo = "You can't equip this weapon";
@@ -128,12 +127,8 @@ namespace Brogue.HeroClasses
                     {
                         equipable = (weapon.UsedBy[i] == heroRole);
                     }
-                    if (equipable && weapon.LevelReq <= level)
-                    {
-                        int handsTaken = (weapon.EquipableIn.Contains(Enums.Slots.Hand_Both)) ? 2 : 1;
-                        result = (slotsOpen >= handsTaken);
-                    }
-                    else if(equipable && weapon.LevelReq > level)
+                    result = (equipable && weapon.LevelReq <= level);
+                    if (!result)
                     {
                         logInfo = "You aren't a high enough level to equip this weapon.";
                     }
@@ -232,31 +227,91 @@ namespace Brogue.HeroClasses
             }
         }
 
-        public void equipWeapon(Gear weapon, int index, Hero hero)
+        public void equipWeapon(Gear weapon, Hero hero)
         {
             int handsTaken = (weapon.EquipableIn.Contains(Enums.Slots.Hand_Both)) ? 2 : 1;
-            if (slotsOpen >= handsTaken)
+            bool equipped = false;
+            for (int i = 0; i < weapon.EquipableIn.Count && !equipped; i++)
             {
-                if (equippedWeapons[index] == null)
+                switch (weapon.EquipableIn[i])
                 {
-                    if (weapon.ItemType == ITypes.Offhand)
-                    {
-                        equippedWeapons[1] = weapon;
-                        SpellBook elements = (SpellBook)weapon;
-                        hero.Element = elements.Element;
-
-                    }
-                    else if (handsTaken == 2)
-                    {
-                        equippedWeapons[0] = weapon;
-                    }
-                    else
-                    {
-                        equippedWeapons[index] = weapon;
-                    }
-                    slotsOpen -= handsTaken;
+                    case Slots.Hand_Both:
+                        if (equippedWeapons[0] == null && equippedWeapons[1] == null && slotsOpen == 2)
+                        {
+                            equippedWeapons[0] = weapon;
+                            equipped = true;
+                        }
+                        break;
+                    case Slots.Hand_Primary:
+                        if (equippedWeapons[0] == null && slotsOpen >= 1)
+                        {
+                            equippedWeapons[0] = weapon;
+                            equipped = true;
+                        }
+                        break;
+                    case Slots.Hand_Auxillary:
+                        if (equippedWeapons[1] == null && slotsOpen >= 1)
+                        {
+                            equippedWeapons[1] = weapon;
+                            equipped = true;
+                        }
+                        break;
                 }
             }
+            slotsOpen -= (equipped) ? handsTaken : 0;
+            //if (handsTaken == 2 && equippedWeapons[0] == null && equippedWeapons[1] == null)
+            //{
+            //    equippedWeapons[0] = (Weapon)weapon;
+            //    slotsOpen -= handsTaken;
+            //}
+            //else if (handsTaken == 1 && weapon.EquipableIn[0] == Slots.Hand_Auxillary && equippedWeapons[1] == null)
+            //{
+            //    if (weapon.ItemType == ITypes.Offhand)
+            //    {
+            //        equippedWeapons[1] = (Offhand)weapon;
+            //    }
+            //    else
+            //    {
+            //        equippedWeapons[1] = (Weapon)weapon;
+            //    }
+            //    slotsOpen -= handsTaken;
+            //}
+            //else if (handsTaken == 1 && equippedWeapons[0] == null)
+            //{
+            //    equippedWeapons[0] = (Weapon)weapon;
+            //    slotsOpen -= handsTaken;
+            //}
+            //else if (handsTaken == 1 && equippedWeapons[1] == null)
+            //{
+            //    equippedWeapons[1] = (Weapon)weapon;
+            //    slotsOpen -= handsTaken;
+            //}
+
+            //if (slotsOpen >= handsTaken)
+            //{
+            //    if (equippedWeapons[removedWeapon] == null)
+            //    {
+            //        if (weapon.ItemType == ITypes.Offhand)
+            //        {
+            //            equippedWeapons[1] = weapon;
+            //            SpellBook elements = (SpellBook)weapon;
+            //            hero.Element = elements.Element;
+            //        }
+            //        else if (weapon.EquipableIn[0] == Slots.Hand_Auxillary)
+            //        {
+            //            equippedWeapons[1] = weapon;
+            //        }
+            //        else if (handsTaken == 2)
+            //        {
+            //            equippedWeapons[0] = weapon;
+            //        }
+            //        else
+            //        {
+            //            equippedWeapons[removedWeapon] = weapon;
+            //        }
+            //        slotsOpen -= handsTaken;
+            //    }
+            //}
         }
 
         public Armor removeArmor(Armor type)
@@ -283,48 +338,92 @@ namespace Brogue.HeroClasses
             return removedArmor;
         }
 
+        public Gear removeWeapon(Gear newlyEquippedWeapon, int removedWeaponIndex = -1)
+        {
+            Gear removed = null;
+            if (removedWeaponIndex != -1)
+            {
+                removed = equippedWeapons[removedWeaponIndex];
+                equippedWeapons[removedWeaponIndex] = null;
+                if (removed != null)
+                {
+                    slotsOpen += (removed.EquipableIn.Contains(Slots.Hand_Both)) ? 2 : 1;
+                }
+            }
+            else
+            {
+                if (equippedWeapons[0] != null && equippedWeapons[0].EquipableIn.Contains(Slots.Hand_Both))
+                {
+                    removed = equippedWeapons[0];
+                    equippedWeapons[0] = null;
+                    slotsOpen += (removed != null) ? 2 : 0;
+                }
+                else if (newlyEquippedWeapon.EquipableIn.Contains(Slots.Hand_Primary) && newlyEquippedWeapon.EquipableIn.Contains(Slots.Hand_Auxillary))
+                {
+                    removed = equippedWeapons[1];
+                    equippedWeapons[1] = null;
+                    slotsOpen += (removed != null)?1:0;
+                }
+                else if (newlyEquippedWeapon.EquipableIn.Contains(Slots.Hand_Primary))
+                {
+                    removed = equippedWeapons[0];
+                    equippedWeapons[0] = null;
+                    slotsOpen += (removed != null) ? 1 : 0;
+                }
+                else if (newlyEquippedWeapon.EquipableIn.Contains(Slots.Hand_Auxillary))
+                {
+                    removed = equippedWeapons[1];
+                    equippedWeapons[1] = null;
+                    slotsOpen += (removed != null) ? 1 : 0;
+                }
+                
+            }
+            return removed;
+        }
+
         public Gear removeWeapon(int index)
         {
-            Gear removedWeapon = null;
-            if (equippedWeapons[index] != null)
-            {
-                int handsTaken = (equippedWeapons[index].EquipableIn.Contains(Enums.Slots.Hand_Both)) ? 2 : 1;
-                removedWeapon = equippedWeapons[index];
-                equippedWeapons[index] = null;
-                slotsOpen += handsTaken;
-            }
-            return removedWeapon;
+            return equippedWeapons[index];
         }
 
         public Accessory removeAccessory(Accessory type)
         {
-            Accessory removedAccesory = null;
+            Accessory removedAccessory = null;
             bool found = false;
-            for (int i = 0; i < type.EquipableIn.Count && !found; i++)
+            if (type != null)
             {
-                switch (type.EquipableIn[i])
+                for (int i = 0; i < type.EquipableIn.Count && !found; i++)
                 {
-                    case Slots.Neck:
-                        removedAccesory = necklace;
-                        necklace = null;
-                        found = true;
-                        break;
-                    case Slots.Finger_One:
-                        if (rings[0] != null && rings[1] != null)
-                        {
-                            removedAccesory = rings[1];
+                    switch (type.EquipableIn[i])
+                    {
+                        case Slots.Neck:
+                            removedAccessory = necklace;
+                            necklace = null;
                             found = true;
-                            rings[1] = null;
-                        }
-                        break;
+                            break;
+                        case Slots.Finger_One:
+                            if (rings[0] != null && rings[0].Equals((Ring)type))
+                            {
+                                removedAccessory = rings[0];
+                                found = true;
+                                rings[0] = null;
+                            }
+                            if (rings[1] != null && rings[1].Equals((Ring)type))
+                            {
+                                removedAccessory = rings[1];
+                                found = true;
+                                rings[1] = null;
+                            }
+                            break;
+                    }
                 }
             }
-            return removedAccesory;
+            return removedAccessory;
         }
 
         public int getPrimaryWeaponRange()
         {
-            Weapon primary = (equippedWeapons[0] != null)? (Weapon)equippedWeapons[0]:null;
+            Weapon primary = (equippedWeapons[0] != null) ? (Weapon)equippedWeapons[0] : null;
             int range = (primary != null) ? primary.Range : 0;
             return range;
         }
