@@ -193,6 +193,79 @@ namespace Brogue.Engine
         }
     }
 
+    class InventoryButton
+    {
+        static DynamicTexture standard = Engine.GetTexture("UI/InvSlot");
+        static DynamicTexture highlighted = Engine.GetTexture("UI/InvSlotHighlighted");
+        Texture2D currentBackTex;
+        public Items.Item currentItem;
+        public bool doDrawOver;
+        bool doToolTip = false;
+        string caption;
+        Vector2 pos;
+        public InventoryButton(Vector2 position, bool centered)
+        {
+            pos = position;
+            if (centered)
+            {
+                pos.X -= Engine.CELLWIDTH / 2;//standard.texture.Width / 2;
+                pos.Y -= Engine.CELLWIDTH / 2;//standard.texture.Height / 2;
+            }
+            currentItem = null;
+            doDrawOver = true;
+            currentBackTex = standard.texture;
+        }
+        public bool isMouseOver()
+        {
+            bool isMouseOver = false;
+            if (currentBackTex != null)
+            {
+                IntVec mpos = MouseController.MouseScreenPosition();
+                isMouseOver = mpos.X > pos.X && mpos.X < pos.X + currentBackTex.Width &&
+                    mpos.Y > pos.Y && mpos.Y < pos.Y + currentBackTex.Height;
+                if (isMouseOver)
+                {
+                    currentBackTex = highlighted.texture;
+                    doToolTip = true;
+                }
+                else
+                {
+                    currentBackTex = standard.texture;
+                    doToolTip = false;
+                }
+            }
+
+            return isMouseOver;
+        }
+
+        public bool isClicked()
+        {
+            return isMouseOver() && MouseController.LeftClicked();
+        }
+        public bool isRightClicked()
+        {
+            return isMouseOver() && MouseController.RightClicked();
+        }
+
+        public void Draw(SpriteBatch sb)
+        {
+            if (currentBackTex != null)
+            {
+                sb.Draw(currentBackTex, pos, Color.White);
+                if (currentItem != null)
+                {
+                    sb.Draw(currentItem.GetTexture().texture, pos, Color.White);
+                }
+                
+                if (doToolTip && currentItem != null)
+                {
+                    Vector2 toolTipMeasure = Engine.font.MeasureString(currentItem.Name);
+                    sb.DrawString(Engine.font, currentItem.Name, new Vector2(pos.X + currentBackTex.Width / 2 - toolTipMeasure.X / 2, pos.Y - 20 - toolTipMeasure.Y), Color.DarkRed);
+                }
+            }
+        }
+    }
+
     partial class Engine
     {
         public const bool DOLIGHTING = true;
@@ -229,7 +302,7 @@ namespace Brogue.Engine
 
         private static DynamicTexture visualAttackTex = GetTexture("attackDefault");
 
-
+        private static InventoryButton[] inventoryButtons = new InventoryButton[16];
         private static UIButton headSlot, chestSlot, ringSlot1, ringSlot2, legSlot, neckSlot;
         private static UIButton weaponSlot1, weaponSlot2;
 
@@ -366,7 +439,6 @@ namespace Brogue.Engine
         public static void Start(Game1 injectedGame)
         {
             game = injectedGame;
-            LoadMainMenu();
 
             //GenerateLevel();
             LogPosition = new Vector2(12, 12);
@@ -378,6 +450,8 @@ namespace Brogue.Engine
             armorEquipPosition = new Vector2(0, game.Height - CELLWIDTH);
             windowSizeInTiles = new IntVec(game.Width / CELLWIDTH, game.Height / CELLWIDTH);
             game.IsMouseVisible = true;
+
+            LoadMainMenu();
 
             saveButton = new UIButton(new Vector2(game.Width / 2 - 150, game.Height / 2), true, "UI/Save", "Save and quit");
             continueButton = new UIButton(new Vector2(game.Width / 2 + 150, game.Height / 2), true, "UI/Continue", "Continue");
@@ -441,6 +515,13 @@ namespace Brogue.Engine
                     }
                     
                 }
+                for (int i = 0; i < 4; i ++)
+                {
+                    for (int j = 0; j < 4; j ++)
+                    {
+                        inventoryButtons[i + j  * 4] = new InventoryButton(InventoryPosition + new Vector2(CELLWIDTH * i, CELLWIDTH * j), false);
+                    }
+                }
             }
             else
             {
@@ -461,7 +542,7 @@ namespace Brogue.Engine
             }
             currentLevel = nextLevel.RetrieveLevel();
             currentDungeonLevel++;
-            nextLevel = new GeneratedLevel(levelSeed, levelComplexity, currentDungeonLevel);
+            nextLevel = new GeneratedLevel(levelSeed, levelComplexity, currentDungeonLevel++);
             currentLevel = LevelGenerator.generate(levelSeed, levelComplexity, currentDungeonLevel);
             Log("Level generated.");
             currentLevel.CharacterEntities.Add(hero, currentLevel.GetStartPoint());
@@ -539,6 +620,8 @@ namespace Brogue.Engine
                     }
                 }
 
+                
+
                 if (!GameCommands())
                 {
                     currentLevel.testUpdate();
@@ -569,7 +652,6 @@ namespace Brogue.Engine
                             else
                             {
                                 charIndex++;
-
                             }
                         }
                         /*
@@ -585,7 +667,6 @@ namespace Brogue.Engine
                     modifiedCameraPosition.X = cameraPosition.X - (windowSizeInTiles.X / 2);
                     modifiedCameraPosition.Y = cameraPosition.Y - (windowSizeInTiles.Y / 2);
                     currentLevel.InvalidateCache();
-
                 }
             }
             else
@@ -739,6 +820,9 @@ namespace Brogue.Engine
             }
             IntVec screenpos = MouseController.MouseScreenPosition();
             IntVec worldPos = MouseController.MouseGridPosition();
+
+            didSomething = InventoryInteraction(true, screenpos);
+
             if (MouseController.LeftClicked())
             {
                 if (screenpos.X >= InvButtonPosition.X && screenpos.X <= InvButtonPosition.X + invButton.texture.Width &&
@@ -753,7 +837,7 @@ namespace Brogue.Engine
 
                 if (!didSomething)
                 {
-                    didSomething = InventoryInteraction(true, screenpos);
+                    
                 }
             }
             if (MouseController.RightClicked())
@@ -847,30 +931,25 @@ namespace Brogue.Engine
         private static bool InventoryInteraction(bool leftButton, IntVec screenpos)
         {
             bool didsomething = false;
-            if (inventoryOpen &&
-                    screenpos.X > InventoryPosition.X && screenpos.Y > InventoryPosition.Y &&
-                    screenpos.X < InventoryPosition.X + InventorySize.X &&
-                    screenpos.Y < InventoryPosition.Y + InventorySize.Y)
+            if (inventoryOpen)
             {
-                //clicked in the inventory somewhere. Figure out which cell it was and adjust appropriately.
-                Vector2 relativeInventoryLocation = new Vector2(screenpos.X, screenpos.Y) - InventoryPosition;
-                IntVec inventoryCell = new IntVec((int)(relativeInventoryLocation.X / CELLWIDTH), (int)(relativeInventoryLocation.Y / CELLWIDTH));
-
-                int inventorySlotIndex = inventoryCell.Y * 4 + inventoryCell.X;
-
-                if (leftButton)
+                for (int i = 0; i < inventoryButtons.Length; i++)
                 {
-
-                    hero.equipWeapon(inventorySlotIndex, 0);
-                    hero.equipArmor(inventorySlotIndex);
-                    hero.equipAccessory(inventorySlotIndex);
-
+                    inventoryButtons[i].currentItem = hero.GetInventory().GetItemAt(i);
+                    if (inventoryButtons[i].isClicked())
+                    {
+                        if (inventoryButtons[i].currentItem != null)
+                        {
+                            hero.equipWeapon(i, 0);
+                            hero.equipArmor(i);
+                            hero.equipAccessory(i);
+                        }
+                    }
+                    if (inventoryButtons[i].isRightClicked())
+                    {
+                        hero.dropItem(i, currentLevel);
+                    }
                 }
-                else
-                {
-                    hero.dropItem(inventorySlotIndex, currentLevel);
-                }
-                //didsomething = true;
             }
 
             
@@ -881,17 +960,12 @@ namespace Brogue.Engine
 
         public static void DrawInventory(SpriteBatch sb)
         {
-            InventorySystem.Inventory inv = hero.GetInventory();
-            for (int i = 0; i < 4; i++)
+            //InventorySystem.Inventory inv = hero.GetInventory();
+            if (inventoryOpen)
             {
-                for (int j = 0; j < 4; j++)
+                for (int i = 0; i < inventoryButtons.Length; i++)
                 {
-                    Vector2 curpos = new Vector2(InventoryPosition.X + (invSlot.texture.Width * i), InventoryPosition.Y + (invSlot.texture.Height * j));
-                    sb.Draw(invSlot.texture, curpos, Color.White);
-                    Items.Item item = inv.GetItemAt(j * 4 + i);
-                    if (item != null){
-                        sb.Draw(inv.GetItemAt(j * 4 + i).GetTexture().texture, curpos, Color.White);
-                    }
+                    inventoryButtons[i].Draw(sb);
                 }
             }
         }
@@ -1012,7 +1086,6 @@ namespace Brogue.Engine
 
             else
             {
-
                 //game.GraphicsDevice.Clear(Color);
                 if (mainMenuOpen)
                 {
