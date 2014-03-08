@@ -15,8 +15,8 @@ namespace Brogue.Abilities.AOE
     {
         protected IntVec[] radiusSquares;
         protected bool isActuallyFilled;
-        protected int baseDamage;
-        protected int abilityCooldown;
+        protected int baseDamage, abilityCooldown, damageRadius;
+        protected Level mapLevel;
 
         public RangedAreaOfEffect()
         {
@@ -25,33 +25,53 @@ namespace Brogue.Abilities.AOE
 
         public override IntVec[] viewCastRange(Level level, IntVec start)
         {
-            radiusSquares = AStar.getPossiblePositionsFrom(level, start, radius, true);
+            radiusSquares =  AStar.getPossiblePositionsFrom(level, start, radius, true);
+            mapLevel = level;
             return radiusSquares;
         }
 
         public override void addCastingSquares(IntVec cursorPosition)
         {
-            if (castSquares[0].X == 0 && castSquares[0].Y == 0)
+            IntVec mouse = new IntVec(cursorPosition.X, cursorPosition.Y);
+            for (int i = 0; i < castSquares.Length && !isActuallyFilled; i++)
             {
-                castSquares = radiusSquares;
+                isActuallyFilled = !(castSquares[i].Equals(new IntVec(0,0)));
             }
-            else
+            if (!isActuallyFilled)
             {
-                isActuallyFilled = true;
-            }
-        }
-
-        public override void removeCastingSquares(IntVec cursorPosition)
-        {
-            for (int i = 0; i < castSquares.Length; i++)
-            {
-                castSquares[i] = new IntVec(0, 0);
+                for (int i = 0; i < radiusSquares.Length; i++)
+                {
+                    if (radiusSquares[i].Equals(mouse))
+                    {
+                        IntVec[] additions = AStar.getPossiblePositionsFrom(mapLevel, mouse, damageRadius, true);
+                        castSquares[0] = mouse;
+                        for (int j = 0; j < additions.Length; j++)
+                        {
+                            castSquares[j + 1] = additions[j];
+                        }
+                    }
+                }
             }
         }
 
         public override bool filledSquares()
         {
             return isActuallyFilled;
+        }
+
+        public override void removeCastingSquares(IntVec cursorPosition)
+        {
+            for (int i = 0; i < castSquares.Length; i++)
+            {
+                if (castSquares[i].Equals(cursorPosition))
+                {
+                    Engine.Engine.Log("Removing grid square");
+                    for (int j = 0; j < castSquares.Length; j++)
+                    {
+                        castSquares[j] = new IntVec(0, 0);
+                    }
+                }
+            }
         }
 
         public override IntVec[] getCastingSquares()
@@ -61,19 +81,19 @@ namespace Brogue.Abilities.AOE
 
         public override void finishCastandDealDamage(int heroLevel, int heroDamage, Level mapLevel, HeroClasses.Hero hero)
         {
-            int damage = baseDamage * (heroLevel + heroDamage / 2);
+            int baseSpellDamage = baseDamage * heroLevel;
+            damage = baseSpellDamage + heroDamage;
             cooldown = abilityCooldown;
             wasJustCast = true;
             for (int i = 0; i < castSquares.Length; i++)
             {
-                GameCharacter enemy = (GameCharacter)mapLevel.CharacterEntities.FindEntity(castSquares[i]);
-                if (enemy != null)
+                GameCharacter test = (GameCharacter)mapLevel.CharacterEntities.FindEntity(castSquares[i]);
+                if (test != null)
                 {
-                    enemy.TakeDamage(damage, hero);
+                    test.TakeDamage(damage, hero);
                 }
                 castSquares[i] = new IntVec(0, 0);
             }
-            isActuallyFilled = false;
         }
     }
 }
