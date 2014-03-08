@@ -28,6 +28,7 @@ namespace Brogue.Abilities
         abstract public IntVec[] viewCastRange(Level level, IntVec start);
         abstract public bool filledSquares();
         abstract public void finishCastandDealDamage(int heroLevel, int heroDamage, Level mapLevel, Hero hero);
+        abstract public int calculateDamage(int heroLevel, int heroDamage);
 
         public void resetSquares()
         {

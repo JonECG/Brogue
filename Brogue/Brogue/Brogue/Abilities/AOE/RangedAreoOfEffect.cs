@@ -81,10 +81,10 @@ namespace Brogue.Abilities.AOE
 
         public override void finishCastandDealDamage(int heroLevel, int heroDamage, Level mapLevel, HeroClasses.Hero hero)
         {
-            int baseSpellDamage = baseDamage * heroLevel;
-            damage = baseSpellDamage + heroDamage;
+            damage = calculateDamage(heroLevel, heroDamage);
             cooldown = abilityCooldown;
             wasJustCast = true;
+            isActuallyFilled = false;
             for (int i = 0; i < castSquares.Length; i++)
             {
                 GameCharacter test = (GameCharacter)mapLevel.CharacterEntities.FindEntity(castSquares[i]);

@@ -26,5 +26,10 @@ namespace Brogue.Abilities.Damaging.SingleTargets
             radius = 1;
             abilityCooldown = 5;
         }
+
+        public override int calculateDamage(int heroLevel, int heroDamage)
+        {
+            return (baseDamage * heroLevel) + heroDamage;
+        }
     }
 }

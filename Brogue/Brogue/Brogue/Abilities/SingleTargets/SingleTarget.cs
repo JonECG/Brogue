@@ -67,8 +67,7 @@ namespace Brogue.Abilities.Damaging
 
         public override void finishCastandDealDamage(int heroLevel, int heroDamage, Level mapLevel, HeroClasses.Hero hero)
         {
-            int baseSpellDamage = baseDamage * heroLevel;
-            damage = baseSpellDamage + heroDamage;
+            damage = calculateDamage(heroLevel, heroDamage);
             cooldown = abilityCooldown;
             wasJustCast = true;
             for (int i = 0; i < castSquares.Length; i++)
