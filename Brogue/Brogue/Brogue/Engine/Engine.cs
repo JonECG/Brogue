@@ -203,9 +203,11 @@ namespace Brogue.Engine
         bool doToolTip = false;
         string caption;
         Vector2 pos;
-        public InventoryButton(Vector2 position, bool centered)
+        Vector2 toolTipPos;
+        public InventoryButton(Vector2 position, bool centered, Vector2 toolTipPos)
         {
             pos = position;
+            this.toolTipPos = toolTipPos;
             if (centered)
             {
                 pos.X -= Engine.CELLWIDTH / 2;//standard.texture.Width / 2;
@@ -252,6 +254,8 @@ namespace Brogue.Engine
             if (currentBackTex != null)
             {
                 sb.Draw(currentBackTex, pos, Color.White);
+
+                
                 if (currentItem != null)
                 {
                     sb.Draw(currentItem.GetTexture().texture, pos, Color.White);
@@ -260,7 +264,12 @@ namespace Brogue.Engine
                 if (doToolTip && currentItem != null)
                 {
                     Vector2 toolTipMeasure = Engine.font.MeasureString(currentItem.Name);
-                    sb.DrawString(Engine.font, currentItem.Name, new Vector2(pos.X + currentBackTex.Width / 2 - toolTipMeasure.X / 2, pos.Y - 20 - toolTipMeasure.Y), Color.DarkRed);
+                    sb.DrawString(Engine.font, currentItem.Name, toolTipPos, Color.DarkRed);
+                    if (currentItem.ItemType == Enums.ITypes.Legendary)
+                    {
+                        Items.Equipment.Weapon.Legendary.LegendaryWeapon lweap = (Items.Equipment.Weapon.Legendary.LegendaryWeapon)currentItem;
+                        sb.DrawString(Engine.font, lweap.FlavorText, toolTipPos + new Vector2(10, 15), Color.DarkRed);
+                    }
                 }
             }
         }
@@ -271,6 +280,7 @@ namespace Brogue.Engine
         public const bool DOLIGHTING = true;
         public const bool DOAUDIO = false;
         public const bool DOSTARTMENU = true;
+        public const bool DOLOG = true;
         public const float sightDistance = 1;
         public static bool inventoryOpen = false;
         public static bool mainMenuOpen = true;
@@ -333,7 +343,6 @@ namespace Brogue.Engine
             invSlot = GetTexture("UI/InvSlot"),
             invHighlightSlot = GetTexture("UI/InvSlotHighlighted"),
             invButton = GetTexture("UI/InventoryIcon");
-
 
         const int SAVE_SLOTS = 8;
         static UIButton mageButton, warriorButton, rogueButton;
@@ -519,7 +528,7 @@ namespace Brogue.Engine
                 {
                     for (int j = 0; j < 4; j ++)
                     {
-                        inventoryButtons[i + j  * 4] = new InventoryButton(InventoryPosition + new Vector2(CELLWIDTH * i, CELLWIDTH * j), false);
+                        inventoryButtons[i + j  * 4] = new InventoryButton(InventoryPosition + new Vector2(CELLWIDTH * i, CELLWIDTH * j), false, InventoryPosition + new Vector2(0, -40));
                     }
                 }
             }
@@ -543,7 +552,6 @@ namespace Brogue.Engine
             currentLevel = nextLevel.RetrieveLevel();
             currentDungeonLevel++;
             nextLevel = new GeneratedLevel(levelSeed, levelComplexity, currentDungeonLevel++);
-            currentLevel = LevelGenerator.generate(levelSeed, levelComplexity, currentDungeonLevel);
             Log("Level generated.");
             currentLevel.CharacterEntities.Add(hero, currentLevel.GetStartPoint());
         }
@@ -556,7 +564,6 @@ namespace Brogue.Engine
             showSaveSlotSelection = false;
             GenerateLevel();
             Audio.playMusic("Brogue II", 1.0f);
-
         }
 
         public static void ContentLoaded(ContentManager content)
@@ -590,7 +597,6 @@ namespace Brogue.Engine
             }
         }
         
-
         static int charIndex = 0;
         static IntVec heroPos;
 
@@ -734,7 +740,6 @@ namespace Brogue.Engine
                 Audio.update();
             }
         }
-
 
         private static void LoadFromSlot(int slot)
         {
@@ -972,11 +977,14 @@ namespace Brogue.Engine
 
         public static void DrawLog(SpriteBatch spriteBatch)
         {
-            int inc = 0;
-            foreach (string s in log)
+            if (DOLOG)
             {
-                if (s != null)
-                spriteBatch.DrawString(font, s, new Vector2(LogPosition.X, LogPosition.Y + 12 * inc++), Color.Red);
+                int inc = 0;
+                foreach (string s in log)
+                {
+                    if (s != null)
+                        spriteBatch.DrawString(font, s, new Vector2(LogPosition.X, LogPosition.Y + 12 * inc++), Color.Red);
+                }
             }
         }
         
