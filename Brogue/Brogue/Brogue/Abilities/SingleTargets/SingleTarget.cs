@@ -21,7 +21,6 @@ namespace Brogue.Abilities.Damaging
 
         public override IntVec[] viewCastRange(Level level, IntVec start)
         {
-            radius = 1;
             IntVec[] test = AStar.getPossiblePositionsFrom(level, start, radius, true);
             return test;
         }

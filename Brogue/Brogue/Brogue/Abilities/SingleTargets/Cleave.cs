@@ -23,6 +23,7 @@ namespace Brogue.Abilities.Damaging.SingleTargets
                 castSquares[i] = new IntVec(0, 0);
             }
             baseDamage = 5;
+            radius = 1;
             abilityCooldown = 5;
         }
     }
