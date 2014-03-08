@@ -6,15 +6,81 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Brogue.Engine;
+using Brogue.Mapping;
 
 namespace Brogue.Abilities.Damaging
 {
     [Serializable] public abstract class SingleTarget : Ability
     {
-        protected int width, height;
+        protected int abilityCooldown, baseDamage;
+
         public SingleTarget()
         {
             type = Enums.AbilityTypes.Single;
+        }
+
+        public override IntVec[] viewCastRange(Level level, IntVec start)
+        {
+            radius = 1;
+            IntVec[] test = AStar.getPossiblePositionsFrom(level, start, radius, true);
+            return test;
+        }
+
+        public override void addCastingSquares(IntVec cursorPosition)
+        {
+            IntVec mouse = new IntVec(cursorPosition.X, cursorPosition.Y);
+            for (int i = 0; i < castSquares.Length; i++)
+            {
+                if ((castSquares[i].X == 0 && castSquares[i].Y == 0) && !castSquares.Contains(mouse))
+                {
+                    castSquares[i] = mouse;
+                }
+            }
+        }
+
+        public override bool filledSquares()
+        {
+            bool filled = true;
+            IntVec test = new IntVec(0, 0);
+            for (int i = 0; i < castSquares.Length && filled; i++)
+            {
+                filled = !(castSquares[i].Equals(test));
+            }
+            return filled;
+        }
+
+        public override void removeCastingSquares(IntVec cursorPosition)
+        {
+            for (int i = 0; i < castSquares.Length; i++)
+            {
+                if (castSquares[i].Equals(cursorPosition))
+                {
+                    Engine.Engine.Log("Removing grid square");
+                    castSquares[i] = new IntVec(0, 0);
+                }
+            }
+        }
+
+        public override IntVec[] getCastingSquares()
+        {
+            return castSquares;
+        }
+
+        public override void finishCastandDealDamage(int heroLevel, int heroDamage, Level mapLevel, HeroClasses.Hero hero)
+        {
+            int baseSpellDamage = baseDamage * heroLevel;
+            damage = baseSpellDamage + heroDamage;
+            cooldown = abilityCooldown;
+            wasJustCast = true;
+            for (int i = 0; i < castSquares.Length; i++)
+            {
+                GameCharacter test = (GameCharacter)mapLevel.CharacterEntities.FindEntity(castSquares[i]);
+                if (test != null)
+                {
+                    test.TakeDamage(damage, hero);
+                }
+                castSquares[i] = new IntVec(0, 0);
+            }
         }
     }
 }

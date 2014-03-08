@@ -10,14 +10,15 @@ using System.Threading.Tasks;
 
 namespace Brogue.Abilities.AOE
 {
-    [Serializable] public abstract class AreaOfEffect : Ability
+    [Serializable]
+    public abstract class RangedAreaOfEffect : Ability
     {
         protected IntVec[] radiusSquares;
         protected bool isActuallyFilled;
         protected int baseDamage;
         protected int abilityCooldown;
 
-        public AreaOfEffect()
+        public RangedAreaOfEffect()
         {
             type = Enums.AbilityTypes.AOE;
         }
