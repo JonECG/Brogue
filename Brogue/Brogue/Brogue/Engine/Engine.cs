@@ -129,7 +129,7 @@ namespace Brogue.Engine
         public string toolTip = "";
         public DynamicTexture drawOver;
         public bool doDrawOver;
-        bool doToolTip = false;
+        public bool doToolTip = false;
         string caption;
         Vector2 pos;
         public UIButton(Vector2 position, bool centered, string drawOverTexture, string caption)
@@ -249,7 +249,7 @@ namespace Brogue.Engine
             return isMouseOver() && MouseController.RightClicked();
         }
 
-        public void Draw(SpriteBatch sb)
+        public void Draw(SpriteBatch sb, HeroClasses.Hero hero)
         {
             if (currentBackTex != null)
             {
@@ -263,6 +263,7 @@ namespace Brogue.Engine
                 
                 if (doToolTip && currentItem != null)
                 {
+                    /*Old tool tip drawing
                     Vector2 toolTipMeasure = Engine.font.MeasureString(currentItem.Name);
                     sb.DrawString(Engine.font, currentItem.Name, toolTipPos, Color.DarkRed);
                     if (currentItem.ItemType == Enums.ITypes.Legendary)
@@ -270,8 +271,145 @@ namespace Brogue.Engine
                         Items.Equipment.Weapon.Legendary.LegendaryWeapon lweap = (Items.Equipment.Weapon.Legendary.LegendaryWeapon)currentItem;
                         sb.DrawString(Engine.font, lweap.FlavorText, toolTipPos + new Vector2(10, 15), Color.DarkRed);
                     }
+                    */
+                    ToolTip.Draw(sb, (Items.Equipment.Gear)currentItem, toolTipPos, hero);
                 }
             }
+        }
+    }
+
+    class ToolTip
+    {
+        static Vector2 
+            namePosition = new Vector2(10, 10),
+            mainStatPosition = new Vector2(10, 30),
+            requiredLevelPosition = new Vector2(10, 50),
+            classesPosition = new Vector2(10, 70),
+            flavPosition = new Vector2(10, 90)
+            ;
+
+        static DynamicTexture background = Engine.GetTexture("UI/ToolTipBack");
+        public static void Draw(SpriteBatch sb, Items.Equipment.Gear gear, Vector2 position, HeroClasses.Hero hero)
+        {
+            sb.Draw(background.texture, position, Color.White);
+            //sb.Draw(background.texture, position, new Rectangle(0, 0, background.texture.Width, background.texture.Height), Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 0);
+            DrawOutlined(sb, position + namePosition, gear.Name, Color.Black, Color.White);
+            
+            string mstext = "";
+            Color front = Color.White;
+            switch (gear.ItemType){
+                case Enums.ITypes.Armor:
+                    int av  = ((Items.Equipment.Armor.Armor)gear).ArmorValue;
+                    mstext = "Armor Value : " + av;
+                    front = GetArmorColor((Items.Equipment.Armor.Armor)gear, hero);
+                    break;
+                case Enums.ITypes.Accessory:
+                    int iv = ((Items.Equipment.Accessory.Accessory)gear).BaseIncrease;
+                    string statI = ((Items.Equipment.Accessory.Accessory)gear).StatIncreased[0].ToString();
+                    mstext = statI + " + " + iv;
+                    front = GetAccessoryColor(((Items.Equipment.Accessory.Accessory)gear), hero);
+                    break;
+                case Enums.ITypes.Weapon:
+                    mstext = "Damage : " + ((Items.Equipment.Weapon.Weapon)gear).Damage;
+                    front = GetWeaponColor((Items.Equipment.Weapon.Weapon)gear, hero);
+                    break;
+            }
+            DrawOutlined(sb, position + mainStatPosition, mstext, Color.Black, front);
+
+            Color levelColor = hero.level >= gear.LevelReq ? Color.Green : Color.Red;
+            DrawOutlined(sb, position + requiredLevelPosition, "Level required : " + gear.LevelReq, Color.Black, levelColor);
+
+            Color classColor = gear.UsedBy.Contains(HeroClasses.Hero.heroRole) ? Color.Green : Color.Red;
+            string classString = gear.UsedBy.Contains(HeroClasses.Hero.heroRole) ? "Your class can use this!" : "Your class can't use this.";
+            DrawOutlined(sb, position + classesPosition, classString, Color.Black, classColor);
+
+            if (gear.ItemType == Enums.ITypes.Legendary)
+            {
+                DrawOutlined(sb, position + flavPosition, ((Items.Equipment.Weapon.Legendary.LegendaryWeapon)gear).FlavorText, Color.Black, Color.BlanchedAlmond);
+            }
+        }
+
+        public static Color GetArmorColor(Items.Equipment.Armor.Armor armor, HeroClasses.Hero hero)
+        {
+            Color aColor = Color.White;
+
+            switch (armor.EquipableIn[0])
+            {
+                case Enums.Slots.Head:
+                    if (hero.currentlyEquippedItems.helmet != null)
+                    {
+                        aColor = hero.currentlyEquippedItems.helmet.ArmorValue < armor.ArmorValue ?
+                            Color.Green :
+                            hero.currentlyEquippedItems.helmet.ArmorValue == armor.ArmorValue ?
+                            Color.Gray :
+                            Color.Red;
+                    }
+                    break;
+                case Enums.Slots.Legs:
+                    if (hero.currentlyEquippedItems.grieves != null)
+                    {
+                        aColor = hero.currentlyEquippedItems.grieves.ArmorValue < armor.ArmorValue ?
+                            Color.Green :
+                            hero.currentlyEquippedItems.grieves.ArmorValue == armor.ArmorValue ?
+                            Color.Gray :
+                            Color.Red;
+                    }
+                    break;
+                case Enums.Slots.Chest:
+                    if (hero.currentlyEquippedItems.chestPlate != null)
+                    {
+                    aColor = hero.currentlyEquippedItems.chestPlate.ArmorValue < armor.ArmorValue ?
+                        Color.Green :
+                        hero.currentlyEquippedItems.chestPlate.ArmorValue == armor.ArmorValue ?
+                        Color.Gray :
+                        Color.Red;
+                    }
+                    break;
+            }
+            return aColor;
+        }
+        public static Color GetAccessoryColor(Items.Equipment.Accessory.Accessory acc, HeroClasses.Hero hero)
+        {
+            Color aColor = Color.White;
+
+            switch (acc.EquipableIn[0])
+            {
+                case Enums.Slots.Neck:
+                    if (hero.currentlyEquippedItems.necklace != null)
+                    {
+                        aColor = hero.currentlyEquippedItems.necklace.BaseIncrease < acc.BaseIncrease ?
+                            Color.Green :
+                            hero.currentlyEquippedItems.necklace.BaseIncrease == acc.BaseIncrease ?
+                            Color.Gray :
+                            Color.Red;
+                    }
+                    break;
+                case Enums.Slots.Finger_One:
+                    aColor = Color.Gray;
+                    break;
+            }
+            return aColor;
+        }
+
+        public static Color GetWeaponColor(Items.Equipment.Weapon.Weapon wep, HeroClasses.Hero hero)
+        {
+            Color aColor = hero.currentlyEquippedItems.getPrimaryWeaponDamage() < wep.Damage ?
+                        Color.Green :
+                        hero.currentlyEquippedItems.getPrimaryWeaponDamage() == wep.Damage ?
+                        Color.Gray :
+                        Color.Red;
+                   
+            return aColor;
+        }
+
+
+        public static void DrawOutlined(SpriteBatch sb, Vector2 pos, string text, Color back, Color front)
+        {
+            foreach (Direction dir in Direction.Values)
+            {
+                sb.DrawString(Engine.font, text, pos + new Vector2(dir.X, dir.Y), back);
+            }
+            sb.DrawString(Engine.font, text, pos, front);
         }
     }
 
@@ -293,7 +431,7 @@ namespace Brogue.Engine
         private static Queue<String> log = new Queue<string>(10);
         private static Vector2 LogPosition, InvButtonPosition, InventoryPosition, InventorySize;
         private static HeroClasses.Hero hero;
-        //private static bool heroesTurn = true;
+        
         private static RenderTarget2D lightsTarget;
         private static RenderTarget2D mainTarget;
         private const int AIDist = 15;
@@ -522,13 +660,12 @@ namespace Brogue.Engine
                         saveSlots[i] = new UIButton(new Vector2(postemp.X + (CELLWIDTH + 20) * i, postemp.Y), true, "UI/FreeSaveSlot", "Slot " + (i + 1));
                         saveSlots[i].toolTip = "Select a save slot to start a game.";
                     }
-                    
                 }
                 for (int i = 0; i < 4; i ++)
                 {
                     for (int j = 0; j < 4; j ++)
                     {
-                        inventoryButtons[i + j  * 4] = new InventoryButton(InventoryPosition + new Vector2(CELLWIDTH * i, CELLWIDTH * j), false, InventoryPosition + new Vector2(0, -40));
+                        inventoryButtons[i + j  * 4] = new InventoryButton(InventoryPosition + new Vector2(CELLWIDTH * i, CELLWIDTH * j), false, InventoryPosition + new Vector2(-300, -200));
                     }
                 }
             }
@@ -956,11 +1093,8 @@ namespace Brogue.Engine
                     }
                 }
             }
-
-            
             return didsomething;
 
-            
         }
 
         public static void DrawInventory(SpriteBatch sb)
@@ -970,7 +1104,7 @@ namespace Brogue.Engine
             {
                 for (int i = 0; i < inventoryButtons.Length; i++)
                 {
-                    inventoryButtons[i].Draw(sb);
+                    inventoryButtons[i].Draw(sb, hero);
                 }
             }
         }
@@ -1087,6 +1221,12 @@ namespace Brogue.Engine
                 if (mainMenuOpen)
                 {
                     DrawMainMenu(uisb);
+                }
+
+                Items.Item it = currentLevel.DroppedItems.FindEntity(MouseController.MouseGridPosition());
+                if (it != null && (it.ItemType == Enums.ITypes.Legendary || it.ItemType == Enums.ITypes.Armor || it.ItemType == Enums.ITypes.Weapon || it.ItemType == Enums.ITypes.Accessory))
+                {
+                    ToolTip.Draw(uisb, (Items.Equipment.Gear)it, new Vector2(MouseController.MouseScreenPosition().X - 200, MouseController.MouseScreenPosition().Y - 250), hero);
                 }
 
                 DrawEquip(uisb);
@@ -1209,14 +1349,46 @@ namespace Brogue.Engine
 
 
             headSlot.Draw(sb);
+            if (headSlot.doToolTip && hero.currentlyEquippedItems.helmet != null)
+            {
+                ToolTip.Draw(sb, hero.currentlyEquippedItems.helmet, armorEquipPosition + new Vector2(100, -250), hero);
+            }
             chestSlot.Draw(sb);
+            if (chestSlot.doToolTip && hero.currentlyEquippedItems.chestPlate != null)
+            {
+                ToolTip.Draw(sb, hero.currentlyEquippedItems.chestPlate, armorEquipPosition + new Vector2(100, -250), hero);
+            }
             legSlot.Draw(sb);
+            if (legSlot.doToolTip && hero.currentlyEquippedItems.grieves != null)
+            {
+                ToolTip.Draw(sb, hero.currentlyEquippedItems.grieves, armorEquipPosition + new Vector2(100, -250), hero);
+            }
             ringSlot1.Draw(sb);
+            if (ringSlot1.doToolTip && hero.currentlyEquippedItems.rings[0] != null)
+            {
+                ToolTip.Draw(sb, hero.currentlyEquippedItems.rings[0], armorEquipPosition + new Vector2(100, -250), hero);
+            }
             ringSlot2.Draw(sb);
+            if (ringSlot2.doToolTip && hero.currentlyEquippedItems.rings[1] != null)
+            {
+                ToolTip.Draw(sb, hero.currentlyEquippedItems.rings[1], armorEquipPosition + new Vector2(100, -250), hero);
+            }
             neckSlot.Draw(sb);
+            if (neckSlot.doToolTip && hero.currentlyEquippedItems.necklace != null)
+            {
+                ToolTip.Draw(sb, hero.currentlyEquippedItems.necklace, armorEquipPosition + new Vector2(100, -250), hero);
+            }
 
             weaponSlot1.Draw(sb);
+            if (weaponSlot1.doToolTip && hero.currentlyEquippedItems.equippedWeapons[0] != null)
+            {
+                ToolTip.Draw(sb, hero.currentlyEquippedItems.equippedWeapons[0], weaponEquipPosition + new Vector2(-200, -250), hero);
+            }
             weaponSlot2.Draw(sb);
+            if (weaponSlot2.doToolTip && hero.currentlyEquippedItems.equippedWeapons[1] != null)
+            {
+                ToolTip.Draw(sb, hero.currentlyEquippedItems.equippedWeapons[1], armorEquipPosition + new Vector2(-200, -250), hero);
+            }
 
         }
 
