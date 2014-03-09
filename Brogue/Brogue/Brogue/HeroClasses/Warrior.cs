@@ -1,4 +1,6 @@
-﻿using Brogue.Enums;
+﻿using Brogue.Abilities.AOE;
+using Brogue.Abilities.Damaging.SingleTargets;
+using Brogue.Enums;
 using Brogue.Items.Equipment.Accessory;
 using Brogue.Items.Equipment.Armor.Helm;
 using Brogue.Items.Equipment.Armor.Legs;
@@ -23,9 +25,13 @@ namespace Brogue.HeroClasses
             inventory.addItem(new Sword(1, 1));
             inventory.addItem(new GreatAxe(1, 1));
             inventory.addItem(new Axe(1, 1));
+            baseHealth = 300;
             healthPerLevel = 50;
             resetLevel();
             resetHealth();
+            abilities[0] = new Cleave();
+            abilities[1] = new WhirlwindSlash();
+            Engine.Engine.Log(health.ToString());
         }
     }
 }

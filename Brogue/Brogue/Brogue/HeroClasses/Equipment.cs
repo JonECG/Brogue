@@ -253,6 +253,11 @@ namespace Brogue.HeroClasses
                         if (equippedWeapons[1] == null && slotsOpen >= 1)
                         {
                             equippedWeapons[1] = weapon;
+                            if (weapon.ItemType == ITypes.Offhand)
+                            {
+                                SpellBook spellbook = (SpellBook)weapon;
+                                hero.Element = spellbook.Element;
+                            }
                             equipped = true;
                         }
                         break;
@@ -373,17 +378,16 @@ namespace Brogue.HeroClasses
                 else if (newlyEquippedWeapon.EquipableIn.Contains(Slots.Hand_Auxillary))
                 {
                     removed = equippedWeapons[1];
+                    if (removed.ItemType == ITypes.Offhand)
+                    {
+                        //remove element here
+                    }
                     equippedWeapons[1] = null;
                     slotsOpen += (removed != null) ? 1 : 0;
                 }
                 
             }
             return removed;
-        }
-
-        public Gear removeWeapon(int index)
-        {
-            return equippedWeapons[index];
         }
 
         public Accessory removeAccessory(Accessory type)

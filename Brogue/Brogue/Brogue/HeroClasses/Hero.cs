@@ -76,9 +76,6 @@ namespace Brogue.HeroClasses
             isFriendly = true;
             numAbilities = 2;
             abilities = new Ability[6];
-            abilities[0] = new Cleave();
-            abilities[1] = new WhirlwindSlash();
-            abilities[2] = new Fireball();
         }
 
         public IntVec move(Direction dir)
@@ -232,7 +229,7 @@ namespace Brogue.HeroClasses
 
                     else if (Mapping.KeyboardController.IsPressed(Keys.D1))
                     {
-                        if (abilities[0].cooldown == 0)
+                        if (abilities[0] != null && abilities[0].cooldown == 0)
                         {
                             viewingCast = true;
                             viewedAbility = 0;
@@ -241,7 +238,7 @@ namespace Brogue.HeroClasses
                     }
                     else if (Mapping.KeyboardController.IsPressed(Keys.D2))
                     {
-                        if (abilities[1].cooldown == 0)
+                        if (abilities[1] != null && abilities[1].cooldown == 0)
                         {
                             viewingCast = true;
                             viewedAbility = 1;
@@ -250,7 +247,7 @@ namespace Brogue.HeroClasses
                     }
                     else if (Mapping.KeyboardController.IsPressed(Keys.D3))
                     {
-                        if (abilities[2].cooldown == 0)
+                        if (abilities[2] != null && abilities[2].cooldown == 0)
                         {
                             viewingCast = true;
                             viewedAbility = 2;
@@ -502,6 +499,11 @@ namespace Brogue.HeroClasses
             {
                 mapLevel.DroppedItems.Add(tempItem, itemPosition);
             }
+        }
+
+        public bool isAlive()
+        {
+            return health > 0;
         }
 
         Sprite IRenderable.GetSprite()
