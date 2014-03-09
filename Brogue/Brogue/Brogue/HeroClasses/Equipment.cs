@@ -19,11 +19,11 @@ namespace Brogue.HeroClasses
     {
         public const int MAX_ARMOR_SLOTS = 6;
         public const int MAX_WEAPON_SLOTS = 2;
-        public Helm helmet;
-        public Chest chestPlate;
-        public Legs grieves;
-        public Necklace necklace;
-        public Ring[] rings = new Ring[2];
+        public Armor helmet;
+        public Armor chestPlate;
+        public Armor grieves;
+        public Accessory necklace;
+        public Accessory[] rings = new Accessory[2];
         public Gear[] equippedWeapons = new Gear[MAX_WEAPON_SLOTS];
         public int slotsOpen = 2;
 
@@ -192,13 +192,13 @@ namespace Brogue.HeroClasses
                 switch (armor.EquipableIn[i])
                 {
                     case Slots.Head:
-                        helmet = (Helm)armor;
+                        helmet = (Armor)armor;
                         break;
                     case Slots.Chest:
-                        chestPlate = (Chest)armor;
+                        chestPlate = (Armor)armor;
                         break;
                     case Slots.Legs:
-                        grieves = (Legs)armor;
+                        grieves = (Armor)armor;
                         break;
                 }
             }
@@ -211,16 +211,16 @@ namespace Brogue.HeroClasses
                 switch (accessory.EquipableIn[i])
                 {
                     case Slots.Neck:
-                        necklace = (Necklace)accessory;
+                        necklace = accessory;
                         break;
                     case Slots.Finger_One:
                         if (rings[0] != null && rings[1] == null)
                         {
-                            rings[1] = (Ring)accessory;
+                            rings[1] = accessory;
                         }
                         else
                         {
-                            rings[0] = (Ring)accessory;
+                            rings[0] = accessory;
                         }
                         break;
                 }
@@ -255,7 +255,7 @@ namespace Brogue.HeroClasses
                             equippedWeapons[1] = weapon;
                             if (weapon.ItemType == ITypes.Offhand)
                             {
-                                SpellBook spellbook = (SpellBook)weapon;
+                                Offhand spellbook = (Offhand)weapon;
                                 hero.Element = spellbook.Element;
                             }
                             equipped = true;
@@ -406,13 +406,13 @@ namespace Brogue.HeroClasses
                             found = true;
                             break;
                         case Slots.Finger_One:
-                            if (rings[0] != null && rings[0].Equals((Ring)type))
+                            if (rings[0] != null && rings[0].Equals(type))
                             {
                                 removedAccessory = rings[0];
                                 found = true;
                                 rings[0] = null;
                             }
-                            if (rings[1] != null && rings[1].Equals((Ring)type))
+                            if (rings[1] != null && rings[1].Equals(type))
                             {
                                 removedAccessory = rings[1];
                                 found = true;
