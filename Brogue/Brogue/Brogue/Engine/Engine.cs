@@ -345,31 +345,31 @@ namespace Brogue.Engine
             switch (armor.EquipableIn[0])
             {
                 case Enums.Slots.Head:
-                    if (hero.currentlyEquippedItems.helmet != null)
+                    if (hero.GetEquipment().helmet != null)
                     {
-                        aColor = hero.currentlyEquippedItems.helmet.ArmorValue < armor.ArmorValue ?
+                        aColor = hero.GetEquipment().helmet.ArmorValue < armor.ArmorValue ?
                             Color.Green :
-                            hero.currentlyEquippedItems.helmet.ArmorValue == armor.ArmorValue ?
+                            hero.GetEquipment().helmet.ArmorValue == armor.ArmorValue ?
                             Color.Gray :
                             Color.Red;
                     }
                     break;
                 case Enums.Slots.Legs:
-                    if (hero.currentlyEquippedItems.grieves != null)
+                    if (hero.GetEquipment().grieves != null)
                     {
-                        aColor = hero.currentlyEquippedItems.grieves.ArmorValue < armor.ArmorValue ?
+                        aColor = hero.GetEquipment().grieves.ArmorValue < armor.ArmorValue ?
                             Color.Green :
-                            hero.currentlyEquippedItems.grieves.ArmorValue == armor.ArmorValue ?
+                            hero.GetEquipment().grieves.ArmorValue == armor.ArmorValue ?
                             Color.Gray :
                             Color.Red;
                     }
                     break;
                 case Enums.Slots.Chest:
-                    if (hero.currentlyEquippedItems.chestPlate != null)
+                    if (hero.GetEquipment().chestPlate != null)
                     {
-                    aColor = hero.currentlyEquippedItems.chestPlate.ArmorValue < armor.ArmorValue ?
+                    aColor = hero.GetEquipment().chestPlate.ArmorValue < armor.ArmorValue ?
                         Color.Green :
-                        hero.currentlyEquippedItems.chestPlate.ArmorValue == armor.ArmorValue ?
+                        hero.GetEquipment().chestPlate.ArmorValue == armor.ArmorValue ?
                         Color.Gray :
                         Color.Red;
                     }
@@ -384,11 +384,11 @@ namespace Brogue.Engine
             switch (acc.EquipableIn[0])
             {
                 case Enums.Slots.Neck:
-                    if (hero.currentlyEquippedItems.necklace != null)
+                    if (hero.GetEquipment().necklace != null)
                     {
-                        aColor = hero.currentlyEquippedItems.necklace.BaseIncrease < acc.BaseIncrease ?
+                        aColor = hero.GetEquipment().necklace.BaseIncrease < acc.BaseIncrease ?
                             Color.Green :
-                            hero.currentlyEquippedItems.necklace.BaseIncrease == acc.BaseIncrease ?
+                            hero.GetEquipment().necklace.BaseIncrease == acc.BaseIncrease ?
                             Color.Gray :
                             Color.Red;
                     }
@@ -402,9 +402,9 @@ namespace Brogue.Engine
 
         public static Color GetWeaponColor(Items.Equipment.Weapon.Weapon wep, HeroClasses.Hero hero)
         {
-            Color aColor = hero.currentlyEquippedItems.getPrimaryWeaponDamage() < wep.Damage ?
+            Color aColor = hero.GetEquipment().getPrimaryWeaponDamage() < wep.Damage ?
                         Color.Green :
-                        hero.currentlyEquippedItems.getPrimaryWeaponDamage() == wep.Damage ?
+                        hero.GetEquipment().getPrimaryWeaponDamage() == wep.Damage ?
                         Color.Gray :
                         Color.Red;
                    
@@ -825,6 +825,28 @@ namespace Brogue.Engine
                          * */
                     }
                     charIndex += hero.TakeTurn(currentLevel) ? 1 : 0;
+                    if (hero.hasReachedBranchLevel())
+                    {
+                        IntVec position = currentLevel.CharacterEntities.FindPosition(hero);
+                        HeroClasses.Equipment tempEquip = hero.GetEquipment();
+                        InventorySystem.Inventory tempInventory = hero.GetInventory();
+                        currentLevel.CharacterEntities.Remove(hero);
+                        if (HeroClasses.Hero.heroRole == Enums.Classes.Warrior)
+                        {
+                            if (enginerand.Next(2) == 1)
+                            {
+                                hero = new HeroClasses.Brawler();
+                                Log("You are now a brawler.");
+                            }
+                            else
+                            {
+                                hero = new HeroClasses.Sentinel();
+                                Log("You are now a sentinel.");
+                            }
+                        }
+                        hero.ObtainItems(tempInventory, tempEquip);
+                        currentLevel.CharacterEntities.Add(hero, position);
+                    }
 
                     cameraPosition = currentLevel.CharacterEntities.FindPosition(hero);
                     modifiedCameraPosition.X = cameraPosition.X - (windowSizeInTiles.X / 2);
@@ -1014,65 +1036,65 @@ namespace Brogue.Engine
             {
                 if (headSlot.isClicked())
                 {
-                    if (hero.currentlyEquippedItems.helmet != null)
+                    if (hero.GetEquipment().helmet != null)
                     {
-                        hero.GetInventory().addItem(hero.currentlyEquippedItems.removeArmor(hero.currentlyEquippedItems.helmet));
+                        hero.GetInventory().addItem(hero.GetEquipment().removeArmor(hero.GetEquipment().helmet));
                         didSomething = true;
                     }
                 }
                 if (chestSlot.isClicked())
                 {
-                    if (hero.currentlyEquippedItems.chestPlate != null)
+                    if (hero.GetEquipment().chestPlate != null)
                     {
                         didSomething = true;
-                        hero.GetInventory().addItem(hero.currentlyEquippedItems.removeArmor(hero.currentlyEquippedItems.chestPlate));
+                        hero.GetInventory().addItem(hero.GetEquipment().removeArmor(hero.GetEquipment().chestPlate));
                     }
                 }
                 if (legSlot.isClicked())
                 {
-                    if (hero.currentlyEquippedItems.grieves != null)
+                    if (hero.GetEquipment().grieves != null)
                     {
-                        hero.GetInventory().addItem(hero.currentlyEquippedItems.removeArmor(hero.currentlyEquippedItems.grieves));
+                        hero.GetInventory().addItem(hero.GetEquipment().removeArmor(hero.GetEquipment().grieves));
                         didSomething = true;
                     }
                 }
                 if (ringSlot1.isClicked())
                 {
-                    if (hero.currentlyEquippedItems.rings[0] != null)
+                    if (hero.GetEquipment().rings[0] != null)
                     {
-                        hero.GetInventory().addItem(hero.currentlyEquippedItems.removeAccessory(hero.currentlyEquippedItems.rings[0]));
+                        hero.GetInventory().addItem(hero.GetEquipment().removeAccessory(hero.GetEquipment().rings[0]));
                         didSomething = true;
                     }
                 }
                 if (ringSlot2.isClicked())
                 {
-                    if (hero.currentlyEquippedItems.rings[1] != null)
+                    if (hero.GetEquipment().rings[1] != null)
                     {
-                        hero.GetInventory().addItem(hero.currentlyEquippedItems.removeAccessory(hero.currentlyEquippedItems.rings[1]));
+                        hero.GetInventory().addItem(hero.GetEquipment().removeAccessory(hero.GetEquipment().rings[1]));
                         didSomething = true;
                     }
                 }
                 if (neckSlot.isClicked())
                 {
-                    if (hero.currentlyEquippedItems.necklace != null)
+                    if (hero.GetEquipment().necklace != null)
                     {
-                        hero.GetInventory().addItem(hero.currentlyEquippedItems.removeAccessory(hero.currentlyEquippedItems.necklace));
+                        hero.GetInventory().addItem(hero.GetEquipment().removeAccessory(hero.GetEquipment().necklace));
                         didSomething = true;
                     }
                 }
                 if (weaponSlot1.isClicked())
                 {
-                    if (hero.currentlyEquippedItems.equippedWeapons[0] != null)
+                    if (hero.GetEquipment().equippedWeapons[0] != null)
                     {
-                        hero.GetInventory().addItem(hero.currentlyEquippedItems.removeWeapon(null, 0));
+                        hero.GetInventory().addItem(hero.GetEquipment().removeWeapon(null, 0));
                         didSomething = true;
                     }
                 }
                 if (weaponSlot2.isClicked())
                 {
-                    if (hero.currentlyEquippedItems.equippedWeapons[1] != null)
+                    if (hero.GetEquipment().equippedWeapons[1] != null)
                     {
-                        hero.GetInventory().addItem(hero.currentlyEquippedItems.removeWeapon(null, 1));
+                        hero.GetInventory().addItem(hero.GetEquipment().removeWeapon(null, 1));
                         didSomething = true;
                     }
                 }
@@ -1300,67 +1322,67 @@ namespace Brogue.Engine
 
         private static void DrawEquip(SpriteBatch sb)
         {
-            if (hero.currentlyEquippedItems.helmet != null)
+            if (hero.GetEquipment().helmet != null)
             {
-                headSlot.drawOver = hero.currentlyEquippedItems.helmet.GetTexture();
+                headSlot.drawOver = hero.GetEquipment().helmet.GetTexture();
             }
             else
             {
                 headSlot.drawOver = GetTexture("UI/HelmOverlay");
             } 
-            if (hero.currentlyEquippedItems.chestPlate != null)
+            if (hero.GetEquipment().chestPlate != null)
             {
-                chestSlot.drawOver = hero.currentlyEquippedItems.chestPlate.GetTexture();
+                chestSlot.drawOver = hero.GetEquipment().chestPlate.GetTexture();
             }
             else
             {
                 chestSlot.drawOver = GetTexture("UI/ChestOverlay");
             }
-            if (hero.currentlyEquippedItems.grieves != null)
+            if (hero.GetEquipment().grieves != null)
             {
-                legSlot.drawOver = hero.currentlyEquippedItems.grieves.GetTexture();
+                legSlot.drawOver = hero.GetEquipment().grieves.GetTexture();
             }
             else
             {
                 legSlot.drawOver = GetTexture("UI/LegsOverlay");
             }
-            if (hero.currentlyEquippedItems.rings[0] != null)
+            if (hero.GetEquipment().rings[0] != null)
             {
-                ringSlot1.drawOver = hero.currentlyEquippedItems.rings[0].GetTexture();
+                ringSlot1.drawOver = hero.GetEquipment().rings[0].GetTexture();
             }
             else
             {
                 ringSlot1.drawOver = GetTexture("UI/RingOverlay");
             }
-            if (hero.currentlyEquippedItems.rings[1] != null)
+            if (hero.GetEquipment().rings[1] != null)
             {
-                ringSlot2.drawOver = hero.currentlyEquippedItems.rings[1].GetTexture();
+                ringSlot2.drawOver = hero.GetEquipment().rings[1].GetTexture();
             }
             else
             {
                 ringSlot2.drawOver = GetTexture("UI/RingOverlay");
             }
-            if (hero.currentlyEquippedItems.necklace != null)
+            if (hero.GetEquipment().necklace != null)
             {
-                neckSlot.drawOver = hero.currentlyEquippedItems.necklace.GetTexture();
+                neckSlot.drawOver = hero.GetEquipment().necklace.GetTexture();
             }
             else
             {
                 neckSlot.drawOver = GetTexture("UI/NeckOverlay");
             }
 
-            if (hero.currentlyEquippedItems.equippedWeapons[0] != null)
+            if (hero.GetEquipment().equippedWeapons[0] != null)
             {
-                weaponSlot1.drawOver = hero.currentlyEquippedItems.equippedWeapons[0].GetTexture();
+                weaponSlot1.drawOver = hero.GetEquipment().equippedWeapons[0].GetTexture();
             }
             else
             {
                 weaponSlot1.drawOver = GetTexture("UI/InvSlot");
             }
 
-            if (hero.currentlyEquippedItems.equippedWeapons[1] != null)
+            if (hero.GetEquipment().equippedWeapons[1] != null)
             {
-                weaponSlot2.drawOver = hero.currentlyEquippedItems.equippedWeapons[1].GetTexture();
+                weaponSlot2.drawOver = hero.GetEquipment().equippedWeapons[1].GetTexture();
             }
             else
             {
@@ -1369,45 +1391,45 @@ namespace Brogue.Engine
 
 
             headSlot.Draw(sb);
-            if (headSlot.doToolTip && hero.currentlyEquippedItems.helmet != null)
+            if (headSlot.doToolTip && hero.GetEquipment().helmet != null)
             {
-                ToolTip.Draw(sb, hero.currentlyEquippedItems.helmet, armorEquipPosition + new Vector2(100, -250), hero);
+                ToolTip.Draw(sb, hero.GetEquipment().helmet, armorEquipPosition + new Vector2(100, -250), hero);
             }
             chestSlot.Draw(sb);
-            if (chestSlot.doToolTip && hero.currentlyEquippedItems.chestPlate != null)
+            if (chestSlot.doToolTip && hero.GetEquipment().chestPlate != null)
             {
-                ToolTip.Draw(sb, hero.currentlyEquippedItems.chestPlate, armorEquipPosition + new Vector2(100, -250), hero);
+                ToolTip.Draw(sb, hero.GetEquipment().chestPlate, armorEquipPosition + new Vector2(100, -250), hero);
             }
             legSlot.Draw(sb);
-            if (legSlot.doToolTip && hero.currentlyEquippedItems.grieves != null)
+            if (legSlot.doToolTip && hero.GetEquipment().grieves != null)
             {
-                ToolTip.Draw(sb, hero.currentlyEquippedItems.grieves, armorEquipPosition + new Vector2(100, -250), hero);
+                ToolTip.Draw(sb, hero.GetEquipment().grieves, armorEquipPosition + new Vector2(100, -250), hero);
             }
             ringSlot1.Draw(sb);
-            if (ringSlot1.doToolTip && hero.currentlyEquippedItems.rings[0] != null)
+            if (ringSlot1.doToolTip && hero.GetEquipment().rings[0] != null)
             {
-                ToolTip.Draw(sb, hero.currentlyEquippedItems.rings[0], armorEquipPosition + new Vector2(100, -250), hero);
+                ToolTip.Draw(sb, hero.GetEquipment().rings[0], armorEquipPosition + new Vector2(100, -250), hero);
             }
             ringSlot2.Draw(sb);
-            if (ringSlot2.doToolTip && hero.currentlyEquippedItems.rings[1] != null)
+            if (ringSlot2.doToolTip && hero.GetEquipment().rings[1] != null)
             {
-                ToolTip.Draw(sb, hero.currentlyEquippedItems.rings[1], armorEquipPosition + new Vector2(100, -250), hero);
+                ToolTip.Draw(sb, hero.GetEquipment().rings[1], armorEquipPosition + new Vector2(100, -250), hero);
             }
             neckSlot.Draw(sb);
-            if (neckSlot.doToolTip && hero.currentlyEquippedItems.necklace != null)
+            if (neckSlot.doToolTip && hero.GetEquipment().necklace != null)
             {
-                ToolTip.Draw(sb, hero.currentlyEquippedItems.necklace, armorEquipPosition + new Vector2(100, -250), hero);
+                ToolTip.Draw(sb, hero.GetEquipment().necklace, armorEquipPosition + new Vector2(100, -250), hero);
             }
 
             weaponSlot1.Draw(sb);
-            if (weaponSlot1.doToolTip && hero.currentlyEquippedItems.equippedWeapons[0] != null)
+            if (weaponSlot1.doToolTip && hero.GetEquipment().equippedWeapons[0] != null)
             {
-                ToolTip.Draw(sb, hero.currentlyEquippedItems.equippedWeapons[0], weaponEquipPosition + new Vector2(-200, -250), hero);
+                ToolTip.Draw(sb, hero.GetEquipment().equippedWeapons[0], weaponEquipPosition + new Vector2(-200, -250), hero);
             }
             weaponSlot2.Draw(sb);
-            if (weaponSlot2.doToolTip && hero.currentlyEquippedItems.equippedWeapons[1] != null)
+            if (weaponSlot2.doToolTip && hero.GetEquipment().equippedWeapons[1] != null)
             {
-                ToolTip.Draw(sb, hero.currentlyEquippedItems.equippedWeapons[1], armorEquipPosition + new Vector2(-200, -250), hero);
+                ToolTip.Draw(sb, hero.GetEquipment().equippedWeapons[1], armorEquipPosition + new Vector2(-200, -250), hero);
             }
 
         }
