@@ -482,7 +482,7 @@ namespace Brogue.Mapping
                     foreach (IntVec pos in room.GetCells())
                     {
                         //Scratches on the floor
-                        if (rand.NextDouble() > 0.7)
+                        if (rand.NextDouble() > 0.8)
                             environ.Add( ChooseOne(rand, scratches) , pos);
                     }
                     goto case __FloorPlan.__Room.__RoomType.MOB_ROOM;
@@ -492,7 +492,7 @@ namespace Brogue.Mapping
                     foreach (IntVec pos in room.GetCells())
                     {
                         //Blood on the floor
-                        if (rand.NextDouble() > 0.7)
+                        if (rand.NextDouble() > 0.8)
                             environ.Add(ChooseOne(rand, bloods), pos);
                     }
                     break;
@@ -502,10 +502,23 @@ namespace Brogue.Mapping
                         if (rand.NextDouble() > 0.9)
                             environ.Add(new Plant(), pos.Item1);
                     }
+
+                    Decoration[] floorStuff = {  new Decoration(new Sprite(Engine.Engine.GetTexture("Enviroment/FloorStuff"), new IntVec(0,0))), 
+                                                new Decoration(new Sprite(Engine.Engine.GetTexture("Enviroment/FloorStuff"), new IntVec(1,0))),
+                                                new Decoration(new Sprite(Engine.Engine.GetTexture("Enviroment/FloorStuff"), new IntVec(2,0))) };
+                    foreach (IntVec pos in room.GetCells())
+                    {
+                        //Random stuff on the floor
+                        if (rand.NextDouble() > 0.95)
+                            environ.Add(ChooseOne(rand, floorStuff), pos);
+                    }
                     break;
                 case __FloorPlan.__Room.__RoomType.FOYER:
                     Decoration[] tableItems = {  new Decoration(new Sprite(Engine.Engine.GetTexture("Enviroment/Plate"), new IntVec(0,0) )), 
-                                                new Decoration(new Sprite(Engine.Engine.GetTexture("Enviroment/Plate"), new IntVec(0,0))) };
+                                                new Decoration(new Sprite(Engine.Engine.GetTexture("Enviroment/Plate"), new IntVec(0,0) )), 
+                                                new Decoration(new Sprite(Engine.Engine.GetTexture("Enviroment/Plate"), new IntVec(0,0) )), 
+                                                new Decoration(new Sprite(Engine.Engine.GetTexture("Enviroment/Plate"), new IntVec(1,0) )), 
+                                                new Decoration(new Sprite(Engine.Engine.GetTexture("Enviroment/Plate"), new IntVec(2,0))) };
                     //Table
                     for (int x = 2; x < room.dimensions.Width - 2; x++)
                     {
@@ -514,7 +527,7 @@ namespace Brogue.Mapping
                             room.setUnfree(room.dimensions.X + x, room.dimensions.Y + y);
                             environ.Add(new Decoration(new Sprite(Engine.Engine.GetTexture("Enviroment/Table"), new IntVec(1 - ((x == 2) ? 1 : 0) + ((x == room.dimensions.Width - 3) ? 1 : 0), 1 - ((y == 2) ? 1 : 0) + ((y == room.dimensions.Height - 3) ? 1 : 0))), true), new IntVec(room.dimensions.X + x, room.dimensions.Y + y));
                             //environ.Add(new ColorEnvironment( Color.Aqua, true ) , new IntVec( room.dimensions.X + x, room.dimensions.Y + y ) );
-                            if (rand.NextDouble() > 0.6)
+                            if (rand.NextDouble() > 0.8)
                             {
                                 //Something on the table
                                 environ.Add(ChooseOne(rand, tableItems), new IntVec(room.dimensions.X + x, room.dimensions.Y + y));
