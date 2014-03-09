@@ -6,33 +6,35 @@ using System.Text;
 
 namespace Brogue.Abilities.SingleTargets
 {
-    [Serializable] public class Execute : SingleTarget
+    [Serializable] public class ShieldBlock : SingleTarget
     {
-        public Execute()
+        public ShieldBlock()
         {
-            description = "The warrior strikes the enemy chosen. If the enemy \nis killed, this ability's cooldown is reset.";
-            castSquares = new IntVec[1];
+            description = "The sentinel braces himself for the next attack, gaining armor for a single hit.";
+            castSquares = new IntVec[0];
             for (int i = 0; i < castSquares.Length; i++)
             {
                 castSquares[i] = new IntVec(0, 0);
             }
-            baseDamage = 8;
+            baseDamage = 0;
             radius = 1;
-            abilityCooldown = 8;
+            abilityCooldown = 5;
         }
 
         protected override int getCooldown(GameCharacter enemy)
         {
-            return (enemy.health<= 0)? 0: abilityCooldown;
+            return abilityCooldown;
         }
 
         protected override void heroEffect(HeroClasses.Hero hero)
         {
+            int test = (hero.level / 3) * (hero.GetArmorRating() + 1);
+            hero.ApplyArmorBoost((hero.level / 3) * (hero.GetArmorRating()+1), 1);
         }
 
         public override int calculateDamage(int heroLevel, int heroDamage)
         {
-            return (baseDamage * heroLevel) + heroDamage;
+            return 0;
         }
     }
 }

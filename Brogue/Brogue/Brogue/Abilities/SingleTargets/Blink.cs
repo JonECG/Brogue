@@ -31,6 +31,10 @@ namespace Brogue.Abilities.SingleTargets
             return abilityCooldown;
         }
 
+        protected override void heroEffect(HeroClasses.Hero hero)
+        {
+        }
+
         public override void finishCastandDealDamage(int heroLevel, int heroDamage, Mapping.Level mapLevel, HeroClasses.Hero hero)
         {
             

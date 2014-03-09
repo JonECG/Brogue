@@ -26,6 +26,10 @@ namespace Brogue.Abilities.SingleTargets
             return abilityCooldown;
         }
 
+        protected override void heroEffect(HeroClasses.Hero hero)
+        {
+        }
+
         public override int calculateDamage(int heroLevel, int heroDamage)
         {
             return (baseDamage * heroLevel) + heroDamage;

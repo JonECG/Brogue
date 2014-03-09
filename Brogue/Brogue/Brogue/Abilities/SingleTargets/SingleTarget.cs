@@ -21,7 +21,7 @@ namespace Brogue.Abilities.Damaging
 
         public override IntVec[] viewCastRange(Level level, IntVec start)
         {
-            IntVec[] test = AStar.getPossiblePositionsFrom(level, start, radius, true);
+            IntVec[] test = AStar.getPossiblePositionsFrom(level, start, radius, AStar.CharacterTargeting.TARGET_FIRST, true);
             return test;
         }
 
@@ -80,8 +80,11 @@ namespace Brogue.Abilities.Damaging
                 }
                 castSquares[i] = new IntVec(0, 0);
             }
+            heroEffect(hero);
         }
 
         abstract protected int getCooldown(GameCharacter enemy);
+
+        abstract protected void heroEffect(HeroClasses.Hero hero);
     }
 }

@@ -25,7 +25,7 @@ namespace Brogue.Abilities.AOE
 
         public override IntVec[] viewCastRange(Level level, IntVec start)
         {
-            radiusSquares =  AStar.getPossiblePositionsFrom(level, start, radius, true);
+            radiusSquares =  AStar.getPossiblePositionsFrom(level, start, radius, AStar.CharacterTargeting.PASS_THROUGH, true);
             mapLevel = level;
             return radiusSquares;
         }
