@@ -195,6 +195,63 @@ namespace Brogue.Engine
         }
     }
 
+    class CharButton
+    {
+        public DynamicTexture standard;
+        public DynamicTexture highlighted;
+        Texture2D currentBackTex;
+        Vector2 pos;
+        public CharButton(Vector2 position, bool centered, string standardS, string highS)
+        {
+            standard = Engine.GetTexture(standardS);
+            highlighted = Engine.GetTexture(highS);
+            pos = position;
+            if (centered)
+            {
+                pos.X -= standard.texture.Width / 2;//standard.texture.Width / 2;
+                pos.Y -= standard.texture.Height / 2;//standard.texture.Height / 2;
+            }
+            
+            currentBackTex = standard.texture;
+        }
+        public bool isMouseOver()
+        {
+            bool isMouseOver = false;
+            if (currentBackTex != null)
+            {
+                IntVec mpos = MouseController.MouseScreenPosition();
+                isMouseOver = mpos.X > pos.X && mpos.X < pos.X + currentBackTex.Width &&
+                    mpos.Y > pos.Y && mpos.Y < pos.Y + currentBackTex.Height;
+                if (isMouseOver)
+                {
+                    currentBackTex = highlighted.texture;
+                   
+                }
+                else
+                {
+                    currentBackTex = standard.texture;
+                    
+                }
+            }
+
+            return isMouseOver;
+        }
+
+        public bool isClicked()
+        {
+            return isMouseOver() && MouseController.LeftClicked();
+        }
+
+        public void Draw(SpriteBatch sb)
+        {
+            if (currentBackTex != null)
+            {
+                sb.Draw(currentBackTex, pos, Color.White);
+                
+            }
+        }
+    }
+
     class InventoryButton
     {
         static DynamicTexture standard = Engine.GetTexture("UI/InvSlot");
@@ -432,6 +489,7 @@ namespace Brogue.Engine
         public static bool inventoryOpen = false;
         public static bool mainMenuOpen = true;
         public static bool savePromptOpen = false;
+        public static bool showDeathScreen = false;
         public static int CELLWIDTH = 48;
         private static int logSize = 20;
         private static Game1 game;
@@ -489,11 +547,13 @@ namespace Brogue.Engine
             xpbar = GetTexture("UI/XPBar"),
             invSlot = GetTexture("UI/InvSlot"),
             invHighlightSlot = GetTexture("UI/InvSlotHighlighted"),
-            invButton = GetTexture("UI/InventoryIcon");
+            invButton = GetTexture("UI/InventoryIcon"),
+            deathNote = GetTexture("UI/DeathNote");
 
         const int SAVE_SLOTS = 8;
-        static UIButton mageButton, warriorButton, rogueButton;
+        static CharButton mageButton, warriorButton, rogueButton;
         static UIButton saveButton, continueButton, quitButton;
+        static UIButton restartButton, quitDeathButton;
         static UIButton[] saveSlots = new UIButton[SAVE_SLOTS];
         public static SpriteFont font;
         static List<GridSelection> gridSelection = new List<GridSelection>();
@@ -663,10 +723,13 @@ namespace Brogue.Engine
             LoadContent(game.Content);
             if (DOSTARTMENU)
             {
-                warriorButton = new UIButton(new Vector2(game.Width / 2, game.Height / 2), true, "Hero/WarriorSprite", "Warrior");
-                mageButton = new UIButton(new Vector2(game.Width / 2 - 60, game.Height / 2), true, "Hero/MageSprite", "Mage");
-                rogueButton = new UIButton(new Vector2(game.Width / 2 + 60, game.Height / 2), true, "Hero/RogueSprite", "Rogue");
+                warriorButton = new CharButton(new Vector2(game.Width / 2, game.Height / 2), true, "UI/WarriorCharCreation", "UI/WarriorCharCreationHigh");
+                mageButton = new CharButton(new Vector2(game.Width / 2 - 220, game.Height / 3), true, "UI/MageCharCreation", "UI/MageCharCreationHigh");
+                rogueButton = new CharButton(new Vector2(game.Width / 2 + 220, game.Height / 3), true, "UI/RogueCharCreation", "UI/RogueCharCreationHigh");
                 quitButton = new UIButton(new Vector2(game.Width - CELLWIDTH, 0), false, "UI/QuitButton", "");
+
+                restartButton = new UIButton(new Vector2(game.Width / 2 - 40, game.Height / 2), true, "UI/RestartButton", "");
+                quitDeathButton = new UIButton(new Vector2(game.Width / 2 + 40, game.Height / 2), true, "UI/QuitButton", "");
                 mainMenuOpen = true;
 
                 Vector2 postemp = new Vector2(game.Width / 2 - (CELLWIDTH + 20) * SAVE_SLOTS / 2, game.Height - 100);
@@ -911,12 +974,30 @@ namespace Brogue.Engine
                     }
 
                 }
+                else if (showDeathScreen)
+                {
+                    if (quitDeathButton.isClicked())
+                    {
+                        Environment.Exit(0);
+                    }
+                    if (restartButton.isClicked())
+                    {
+                        showDeathScreen = false;
+                        mainMenuOpen = true;
+                    }
+                }
 
             }
 
             if (gameStarted)
             {
                 Audio.update();
+            }
+
+            if (hero != null && !hero.isAlive())
+            {
+                gameStarted = false;
+                showDeathScreen = true;
             }
         }
 
@@ -1289,8 +1370,18 @@ namespace Brogue.Engine
                 {
                     DrawSaveSelection(uisb);
                 }
+                else if (showDeathScreen)
+                {
+                    DrawDeathScreen(uisb);
+                }
             }
             DrawLog(uisb);
+        }
+
+        private static void DrawDeathScreen(SpriteBatch sb)
+        {
+            restartButton.Draw(sb);
+            quitDeathButton.Draw(sb);
         }
 
         private static void DrawMainMenu(SpriteBatch sb)
