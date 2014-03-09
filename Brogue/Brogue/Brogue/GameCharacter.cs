@@ -59,7 +59,7 @@ namespace Brogue
             if (elementDamageTime > 0)
             {
                 health -= elementDamage;
-                elementDamage--;
+                elementDamageTime--;
             }
             else
             {
