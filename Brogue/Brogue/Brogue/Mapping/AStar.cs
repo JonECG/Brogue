@@ -12,6 +12,13 @@ namespace Brogue.Mapping
     /// </summary>
     static class AStar
     {
+        public enum CharacterTargeting { TREAT_AS_SOLID, TARGET_FIRST, PASS_THROUGH };
+
+        public static IntVec[] getPossiblePositionsFrom(Level level, IntVec start, int budget = -1, bool targetCharacters = false, bool straight = false)
+        {
+            return getPossiblePositionsFrom(level, start, budget, targetCharacters ? CharacterTargeting.TARGET_FIRST : CharacterTargeting.TREAT_AS_SOLID, straight);
+        }
+
         /// <summary>
         /// Returns an array of positions that are able to be reached from a certain position given a move budget
         /// </summary>
@@ -20,11 +27,11 @@ namespace Brogue.Mapping
         /// <param name="budget">How many movements it can make (-1 is infinite)</param>
         /// <param name="straight">Whether the positions should be in direct view</param>
         /// <returns>An unordered array of positions</returns>
-        public static IntVec[] getPossiblePositionsFrom( Level level, IntVec start, int budget = -1, bool targetCharacters = false, bool straight = false )
+        public static IntVec[] getPossiblePositionsFrom(Level level, IntVec start, int budget = -1, CharacterTargeting targetCharacters = CharacterTargeting.TREAT_AS_SOLID, bool straight = false)
         {
             List<IntVec> positions = new List<IntVec>();
 
-            int[,] used = level.getIntSolid();
+            int[,] used = level.getIntSolid( targetCharacters!=CharacterTargeting.PASS_THROUGH );
             //used[start.X, start.Y] = int.MaxValue - 1;
 
             possiblePositionsFromStep(level, positions, used, start, start, budget, targetCharacters, straight, true);
@@ -32,9 +39,9 @@ namespace Brogue.Mapping
             return positions.ToArray<IntVec>();
         }
 
-        private static void possiblePositionsFromStep(Level level, List<IntVec> positions, int[,] used, IntVec start, IntVec position, int budget, bool targetCharacters, bool straight, bool expand)
+        private static void possiblePositionsFromStep(Level level, List<IntVec> positions, int[,] used, IntVec start, IntVec position, int budget, CharacterTargeting targetCharacters, bool straight, bool expand)
         {
-            if ( (!straight || lineIsFree(level, start, position))) 
+            if ((!straight || lineIsFree(level, start, position, targetCharacters != CharacterTargeting.PASS_THROUGH ))) 
             {
                 used[position.X, position.Y] = budget;
 
@@ -45,46 +52,75 @@ namespace Brogue.Mapping
                 foreach (Direction dir in Direction.Values)
                 {
                     IntVec target = position + dir;
-                    if (used[target.X, target.Y] < budget - 1 || (used[target.X, target.Y] == int.MaxValue && targetCharacters && level.CharacterEntities.FindEntity(target) != null))
+                    if (used[target.X, target.Y] < budget - 1 || (used[target.X, target.Y] == int.MaxValue && ( targetCharacters==CharacterTargeting.PASS_THROUGH || targetCharacters==CharacterTargeting.TARGET_FIRST ) && level.CharacterEntities.FindEntity(target) != null))
                     {
-                        possiblePositionsFromStep(level, positions, used, start, target, budget - 1, targetCharacters, straight, !(used[target.X, target.Y] == int.MaxValue) );
+                        possiblePositionsFromStep(level, positions, used, start, target, budget - 1, targetCharacters, straight, !(used[target.X, target.Y] == int.MaxValue ) );
                     }
                 }
             }
         }
 
-        private static bool lineIsFree(Level level, IntVec start, IntVec end)
+        public static IntVec[] getTargetLine(Level level, IntVec start, IntVec end, bool solidCharacters = true)
+        {
+            List<IntVec> positions = new List<IntVec>();
+
+            bool stillAdding = true;
+            foreach (IntVec vec in lineBetween(level, start, end))
+            {
+                if (stillAdding)
+                {
+                    if (!vec.Equals(end) && level.isSolid(vec) && (solidCharacters || level.CharacterEntities.FindEntity(vec) == null))
+                        stillAdding = false;
+                    else
+                        positions.Add(vec);
+                }
+            }
+
+            return positions.ToArray<IntVec>();
+        }
+
+        private static IEnumerable<IntVec> lineBetween(Level level, IntVec start, IntVec end )
         {
             IntVec delta = new IntVec(Math.Abs(end.X - start.X), Math.Abs(end.Y - start.Y));
             int sx = (end.X > start.X) ? 1 : -1;
             int sy = (end.Y > start.Y) ? 1 : -1;
             int err = delta.X - delta.Y;
 
-            IntVec current = new IntVec( start );
+            IntVec current = new IntVec(start);
 
-            bool result = true;
-
-            while ( result && !current.Equals( end ) )
+            while (!current.Equals(end))
             {
-                int e2 = 2*err;
+                int e2 = 2 * err;
 
                 if (e2 > -delta.Y)
                 {
                     err -= delta.Y;
                     current.X += sx;
                 }
-                if (e2 < delta.X )
+                if (e2 < delta.X)
                 {
                     err += delta.X;
                     current.Y += sy;
                 }
 
-                if (!current.Equals(end) && level.isSolid( current ))
+                yield return new IntVec(current);
+            }
+        }
+
+        private static bool lineIsFree(Level level, IntVec start, IntVec end, bool solidCharacters = true)
+        {
+            bool result = true;
+
+            foreach (IntVec vec in lineBetween(level, start, end))
+            {
+                if (result && !vec.Equals(end) && level.isSolid(vec) && (solidCharacters || level.CharacterEntities.FindEntity(vec) == null))
                     result = false;
             }
 
             return result;
         }
+
+
 
 
         [Serializable] public class __AStarNode : IComparable<__AStarNode>

@@ -51,7 +51,7 @@ namespace Brogue.Mapping
             a = GetStartPoint();
             b = findRandomOpenPosition();
             path = AStar.getPathBetween(this, a, b);
-            moveset = AStar.getPossiblePositionsFrom(this, a, 15);
+            moveset = AStar.getPossiblePositionsFrom(this, a, 15,false,false);
 
             for (int i = 0; i < 28; i++)
             {
@@ -146,7 +146,7 @@ namespace Brogue.Mapping
             return result;
         }
 
-        public int[,] getIntSolid()
+        public int[,] getIntSolid( bool treatCharactersSolid = true )
         {
             cache();
 
@@ -157,6 +157,14 @@ namespace Brogue.Mapping
                 for (int y = 0; y < result.GetLength(1); y++)
                 {
                     result[x, y] = (cachedSolid[x, y]) ? int.MaxValue : int.MinValue;
+                }
+            }
+
+            if (!treatCharactersSolid)
+            {
+                foreach (IntVec vec in CharacterEntities.Positions())
+                {
+                    result[vec.X, vec.Y] = int.MinValue;
                 }
             }
 
@@ -257,7 +265,7 @@ namespace Brogue.Mapping
             }
 
             Environment.Draw();
-            //drawAStar();
+            drawAStar();
             InteractableEnvironment.Draw();
             
             DroppedItems.Draw();
@@ -316,7 +324,7 @@ namespace Brogue.Mapping
 
             bool[,] solidCopy = getSolid();
 
-            IntVec[] moveset = AStar.getPossiblePositionsFrom(this, pos, -1);
+            IntVec[] moveset = AStar.getPossiblePositionsFrom(this, pos, -1, false, false);
 
             foreach( IntVec move in moveset )
             {
@@ -363,7 +371,8 @@ namespace Brogue.Mapping
                 if (previousPathDistance != -1 && Math.Abs(previousPathDistance - path.Length) > movement)
                     Engine.Engine.Log(string.Format("<INCONSISTENT PATHFIND; MOVEMENTDELTA={0},PATHDELTA={1}>", movement, Math.Abs(previousPathDistance - path.Length)));
 
-                moveset = AStar.getPossiblePositionsFrom(this, a, 2, false, true);
+                moveset = AStar.getTargetLine(this, startPoint, a, true);
+                //moveset = AStar.getPossiblePositionsFrom(this, a, 5, AStar.CharacterTargeting.TARGET_FIRST, true);
 
                 previousPathDistance = path.Length;
             }

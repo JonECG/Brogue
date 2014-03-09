@@ -18,7 +18,7 @@ namespace Brogue.Mapping
         {
             public struct __Room
             {
-                public enum __RoomType { EMPTY, NOTHING_SPECIAL, DOORWAY, HALLWAY, TREASURE_ROOM, FOYER, BOSS_ROOM, MOB_ROOM };
+                public enum __RoomType { EMPTY, NOTHING_SPECIAL, DOORWAY, HALLWAY, TREASURE_ROOM, SUPAH_TREASURE_ROOM, FOYER, BOSS_ROOM, MOB_ROOM };
 
                 public __RoomType type;
 
@@ -45,17 +45,25 @@ namespace Brogue.Mapping
                             type = __RoomType.FOYER;
                     }
 
-                    if (dimensions.Width > 3 && dimensions.Height > 3 && dimensions.Width < 7 && dimensions.Height < 7)
+                    if (dimensions.Width > 3 && dimensions.Height >3 && dimensions.Width < 7 && dimensions.Height < 7)
                     {
-                        if ( getOpenings() < 6 )
+                        if (getOpenings() < 6)
                             type = __RoomType.TREASURE_ROOM;
                         else
                             type = __RoomType.MOB_ROOM;
                     }
 
-                    if (dimensions.Width == 1 || dimensions.Height == 1)
-                        type = __RoomType.HALLWAY;
+                    if (dimensions.Width > 3 && dimensions.Height > 3 && getOpenings() <= 2 && ( getOpenings() == getLargestOpening() ) )
+                    {
+                        Engine.Engine.Log(string.Format("SEED: {2} with {3} -- SUPER TREASURE GENERATED AT <{0}, {1}>", dimensions.X, dimensions.Y, seedDebug, levelDebug));
+                        type = __RoomType.SUPAH_TREASURE_ROOM;
+                    }
 
+                    if (dimensions.Width == 1 || dimensions.Height == 1)
+                    {
+                        type = __RoomType.HALLWAY;
+                    }
+                    
                     if (dimensions.Width == 1 && dimensions.Height == 1
                         && !((floorPlan[dimensions.X + 1, dimensions.Y] ^ floorPlan[dimensions.X - 1, dimensions.Y]) || (floorPlan[dimensions.X, dimensions.Y - 1] ^ floorPlan[dimensions.X, dimensions.Y + 1])))
                         type = __RoomType.DOORWAY;
@@ -77,21 +85,21 @@ namespace Brogue.Mapping
                     }
                 }
 
-                public IEnumerable<Tuple<IntVec,Direction>> GetWalls( bool inside = false )
+                public IEnumerable<Tuple<IntVec,Direction>> GetWalls( bool inside = false, bool checkForSolid = true )
                 {
                     int offset = (inside) ? 1 : 0 ;
                     IntVec pos;
                     for (int i = 0; i < dimensions.Height; i++)
                     {
                         pos = new IntVec(dimensions.X + offset - 1, dimensions.Y + i);
-                        if (!floorPlan[pos.X - offset, pos.Y])
+                        if (floorPlan[pos.X - offset, pos.Y] != checkForSolid)
                             yield return Tuple.Create<IntVec, Direction>(pos, Direction.RIGHT);
                     }
 
                     for (int i = 0; i < dimensions.Width; i++)
                     {
                         pos = new IntVec(dimensions.X + i, dimensions.Y + offset - 1);
-                        if (!floorPlan[pos.X, pos.Y-offset])
+                        if (floorPlan[pos.X, pos.Y - offset] != checkForSolid)
                             yield return Tuple.Create<IntVec, Direction>(pos, Direction.DOWN);
                     }
 
@@ -99,7 +107,7 @@ namespace Brogue.Mapping
                     for (int i = 0; i < dimensions.Height; i++)
                     {
                         pos = new IntVec(dimensions.X + dimensions.Width - offset, dimensions.Y + i);
-                        if (!floorPlan[pos.X+offset, pos.Y])
+                        if (floorPlan[pos.X + offset, pos.Y] != checkForSolid)
                             yield return Tuple.Create<IntVec, Direction>(pos, Direction.LEFT);
                     }
 
@@ -107,7 +115,7 @@ namespace Brogue.Mapping
                     for (int i = 0; i < dimensions.Width; i++)
                     {
                         pos = new IntVec(dimensions.X + i, dimensions.Y + dimensions.Height - offset);
-                        if (!floorPlan[pos.X, pos.Y + offset])
+                        if (floorPlan[pos.X, pos.Y + offset] != checkForSolid)
                             yield return Tuple.Create<IntVec, Direction>(pos, Direction.UP);
                     }
                 }
@@ -203,6 +211,11 @@ namespace Brogue.Mapping
                 public bool setUnfree(IntVec pos)
                 {
                     return setUnfree(pos.X, pos.Y);
+                }
+
+                internal bool isFree(IntVec pos)
+                {
+                    return floorPlan[pos.X, pos.Y];
                 }
             }
 
@@ -331,8 +344,15 @@ namespace Brogue.Mapping
         }
         #endregion
 
+        static int seedDebug, levelDebug;
         public static Level generate(int seed, int levels, int dungeonLevel = 1, int heroLevel = 1 )
         {
+            //seed = 1599313429;
+            //levels = 215;
+
+            seedDebug = seed;
+            levelDebug = levels;
+
             Random rand = new Random(seed);
 
             __FloorPlan floorPlan = createFloorPlan(rand, levels);
@@ -344,13 +364,19 @@ namespace Brogue.Mapping
 
             IntVec startPoint = findEndPoints(floorPlan, interactableEnvironment, rand);
 
+            Tuple<HiddenPassage, IntVec>[] previousPassage = new Tuple<HiddenPassage,IntVec>[1];
+            List<IInteractable> subscribedForSwitches = new List<IInteractable>();
+
+
             foreach (var room in floorPlan.rooms)
             {
                 populateEnvironmentObjects(room, environment, rand);
-                populateInteractiveEnvironmentObjects(room, interactableEnvironment, rand, dungeonLevel, heroLevel);
+                populateInteractiveEnvironmentObjects(room, interactableEnvironment, rand, dungeonLevel, heroLevel, previousPassage, subscribedForSwitches);
                 populateLightSources(room, lightSources, rand);
                 populateGameCharacters(room, characters, rand, dungeonLevel, heroLevel);
             }
+
+            populateSwitches(floorPlan, interactableEnvironment, rand, subscribedForSwitches);
 
             Level result = new Level( startPoint, floorPlan.tiles, environment, interactableEnvironment, lightSources, characters, dungeonLevel );
 
@@ -360,6 +386,26 @@ namespace Brogue.Mapping
             }
 
             return result;
+        }
+
+        private static void populateSwitches(__FloorPlan floorPlan, GridBoundList<IInteractable> interactableEnvironment, Random rand, List<IInteractable> subscribedForSwitches)
+        {
+            while (subscribedForSwitches.Count > 0)
+            {
+                Brogue.Mapping.LevelGenerator.__FloorPlan.__Room room = floorPlan.rooms[rand.Next(floorPlan.rooms.Length)];
+
+                if (room.type == __FloorPlan.__Room.__RoomType.NOTHING_SPECIAL)
+                {
+                    foreach (var wall in room.GetWalls(true))
+                    {
+                        if (subscribedForSwitches.Count > 0 && rand.NextDouble() > 0.99 )
+                        {
+                            interactableEnvironment.Add(new Switch(subscribedForSwitches[0], wall.Item2), wall.Item1);
+                            subscribedForSwitches.RemoveAt(0);
+                        }
+                    }
+                }
+            }
         }
 
         private static IntVec findEndPoints(__FloorPlan floorPlan, GridBoundList<IInteractable> interactableEnvironment, Random rand)
@@ -427,6 +473,7 @@ namespace Brogue.Mapping
             }
 
 
+
             switch (room.type)
             {
                 case __FloorPlan.__Room.__RoomType.BOSS_ROOM:
@@ -490,16 +537,39 @@ namespace Brogue.Mapping
             }
         }
 
-        private static void populateInteractiveEnvironmentObjects(__FloorPlan.__Room room, GridBoundList<IInteractable> interact, Random rand, int dungeonLevel, int heroLevel)
+
+        private static void populateInteractiveEnvironmentObjects(__FloorPlan.__Room room, GridBoundList<IInteractable> interact, Random rand, int dungeonLevel, int heroLevel, Tuple<HiddenPassage, IntVec>[] previousPassage, List<IInteractable> subscribedForSwitches)
         {
+
             switch (room.type)
             {
                 case __FloorPlan.__Room.__RoomType.DOORWAY:
                     if ( room.setUnfree(room.dimensions.X, room.dimensions.Y) )
                         interact.Add(new Door( (room.floorPlan[room.dimensions.X-1,room.dimensions.Y]) ? Direction.RIGHT: Direction.UP ), new IntVec(room.dimensions.X, room.dimensions.Y));
                     break;
+                case __FloorPlan.__Room.__RoomType.SUPAH_TREASURE_ROOM:
+                    if (room.setUnfree(room.GetCenter()))
+                    {
+                        Item[] items = new Item[rand.Next(2, 8)];
+                        for (int i = 0; i < items.Length; i++)
+                        {
+                            items[i] = Item.randomLegendary(dungeonLevel,heroLevel);
+                        }
+                        interact.Add(new Chest(items), room.GetCenter());
+                    }
+
+                    foreach (var wall in room.GetWalls(false,false))
+                    {
+                        room.setUnfree( wall.Item1 );
+
+                        interact.RemoveAtPosition(wall.Item1);
+                        Gate door = new Gate(wall.Item2);
+                        interact.Add(door, wall.Item1);
+                        subscribedForSwitches.Add(door);
+                    }
+                    break;
                 case __FloorPlan.__Room.__RoomType.TREASURE_ROOM:
-                    if (room.setUnfree(room.dimensions.X, room.dimensions.Y))
+                    if (room.setUnfree(room.GetCenter()))
                     {
                         Item[] items = new Item[rand.Next(2, 8)];
                         for (int i = 0; i < items.Length; i++)
@@ -507,7 +577,25 @@ namespace Brogue.Mapping
                             items[i] = Item.randomItem(dungeonLevel, heroLevel);
                         }
                         interact.Add(new Chest(items), room.GetCenter());
-                        //interact.Add(new ColorEnvironment( Color.Brown, true ), room.GetCenter());
+                    }
+                    break;
+
+                case __FloorPlan.__Room.__RoomType.NOTHING_SPECIAL:
+                    foreach (var wall in room.GetWalls(false))
+                    {
+                        if (rand.NextDouble() > 0.99)
+                        {
+                            if( previousPassage[0] == null )
+                            {
+                                previousPassage[0] = Tuple.Create<HiddenPassage, IntVec>(new HiddenPassage(wall.Item2), wall.Item1);
+                            }
+                            else
+                            {
+                                interact.Add(previousPassage[0].Item1, previousPassage[0].Item2);
+                                interact.Add(new HiddenPassage(previousPassage[0].Item1, wall.Item2), wall.Item1);
+                                previousPassage[0] = null;
+                            }
+                        }
                     }
                     break;
             }
@@ -532,7 +620,7 @@ namespace Brogue.Mapping
             switch (room.type)
             {
                 case __FloorPlan.__Room.__RoomType.BOSS_ROOM:
-                    if (room.setUnfree(room.GetCenter()))
+                    if (room.isFree(room.GetCenter()))
                     {
                         chars.Add(EnemyCreator.GetRandomBoss(dungeonLevel), room.GetCenter());
                     }
@@ -540,7 +628,7 @@ namespace Brogue.Mapping
                 case __FloorPlan.__Room.__RoomType.NOTHING_SPECIAL:
                     foreach (var pos in room.GetCells())
                     {
-                        if (rand.NextDouble() > 0.98 && room.setUnfree(pos) )
+                        if (rand.NextDouble() > 0.98 && room.isFree(pos))
                             chars.Add(EnemyCreator.GetRandomEnemy(1, dungeonLevel)[0], pos);
                         //lights.Add(new ColorEnvironment(new Color(rand.Next(100,256), rand.Next(100,256), rand.Next(100,256)), false), position);
                     }
@@ -551,7 +639,7 @@ namespace Brogue.Mapping
                     chars.Add(enemies[0], room.GetCenter() );
                     foreach (var dir in Direction.Values)
                     {
-                        if (dropped < enemies.Length && (room.setUnfree(room.GetCenter() + dir)))
+                        if (dropped < enemies.Length && (room.isFree(room.GetCenter() + dir)))
                         {
                             chars.Add(enemies[dropped], room.GetCenter() + dir);
                             dropped++;

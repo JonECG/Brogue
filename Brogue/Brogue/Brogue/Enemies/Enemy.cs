@@ -100,7 +100,7 @@ namespace Brogue.Enemies
 
             foreach (GameCharacter g in level.GetCharactersIsFriendly(false))
             {
-                if (AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(g)).Length <= 2)
+                //if (AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(g)).Length <= 2)
                 {
                     if (g is Enemy)
                     {

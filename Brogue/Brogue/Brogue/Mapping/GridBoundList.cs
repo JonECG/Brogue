@@ -117,11 +117,18 @@ namespace Brogue.Mapping
 
         public void RemoveAtPosition(IntVec position)
         {
+            bool found = false;
             for (int i = 0; i < list.Count; i++)
             {
-                Tuple<T, IntVec> tup = list.ElementAt(i);
-                if (position.Equals(tup.Item2))
-                    list.Remove(tup);
+                if (!found)
+                {
+                    Tuple<T, IntVec> tup = list.ElementAt(i);
+                    if (position.Equals(tup.Item2))
+                    {
+                        list.RemoveAt(i);
+                        found = true;
+                    }
+                }
             }
         }
 

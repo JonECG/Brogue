@@ -433,7 +433,7 @@ namespace Brogue.Engine
         public static bool mainMenuOpen = true;
         public static bool savePromptOpen = false;
         public static int CELLWIDTH = 48;
-        private static int logSize = 10;
+        private static int logSize = 20;
         private static Game1 game;
         private static bool gameStarted = false;
         public static IntVec cameraPosition = new IntVec(12, 8);
