@@ -186,11 +186,7 @@ namespace Brogue.Engine
                 sb.Draw(drawOver.texture, pos, Color.White);
                 sb.DrawString(Engine.font, caption,
                     new Vector2(pos.X + currentBackTex.Width / 2 - Engine.font.MeasureString(caption).X / 2, pos.Y - 20), Color.Red);
-                if (doToolTip)
-                {
-                    Vector2 toolTipMeasure = Engine.font.MeasureString(toolTip);
-                    sb.DrawString(Engine.font, toolTip, new Vector2(pos.X + currentBackTex.Width / 2 - toolTipMeasure.X / 2, pos.Y - 20 - toolTipMeasure.Y), Color.BlanchedAlmond);
-                }
+               
             }
         }
     }
@@ -548,7 +544,11 @@ namespace Brogue.Engine
             invSlot = GetTexture("UI/InvSlot"),
             invHighlightSlot = GetTexture("UI/InvSlotHighlighted"),
             invButton = GetTexture("UI/InventoryIcon"),
-            deathNote = GetTexture("UI/DeathNote");
+            deathNote = GetTexture("UI/DeathNote"),
+            obscure = GetTexture("UI/Obscure"),
+            newGame = GetTexture("UI/NewGame"),
+            loadGame = GetTexture("UI/Load"),
+            selectSave = GetTexture("UI/SelectSave");
 
         const int SAVE_SLOTS = 8;
         static CharButton mageButton, warriorButton, rogueButton;
@@ -723,29 +723,19 @@ namespace Brogue.Engine
             LoadContent(game.Content);
             if (DOSTARTMENU)
             {
-                warriorButton = new CharButton(new Vector2(game.Width / 2, game.Height / 2), true, "UI/WarriorCharCreation", "UI/WarriorCharCreationHigh");
-                mageButton = new CharButton(new Vector2(game.Width / 2 - 220, game.Height / 3), true, "UI/MageCharCreation", "UI/MageCharCreationHigh");
-                rogueButton = new CharButton(new Vector2(game.Width / 2 + 220, game.Height / 3), true, "UI/RogueCharCreation", "UI/RogueCharCreationHigh");
+                warriorButton = new CharButton(new Vector2(game.Width / 3, 2 * game.Height / 3), true, "UI/WarriorCharCreation", "UI/WarriorCharCreationHigh");
+                mageButton = new CharButton(new Vector2(game.Width / 3 - 220, game.Height / 4), true, "UI/MageCharCreation", "UI/MageCharCreationHigh");
+                rogueButton = new CharButton(new Vector2(game.Width / 3 + 220,game.Height / 4), true, "UI/RogueCharCreation", "UI/RogueCharCreationHigh");
                 quitButton = new UIButton(new Vector2(game.Width - CELLWIDTH, 0), false, "UI/QuitButton", "");
 
                 restartButton = new UIButton(new Vector2(game.Width / 2 - 40, game.Height / 2), true, "UI/RestartButton", "");
                 quitDeathButton = new UIButton(new Vector2(game.Width / 2 + 40, game.Height / 2), true, "UI/QuitButton", "");
                 mainMenuOpen = true;
 
-                Vector2 postemp = new Vector2(game.Width / 2 - (CELLWIDTH + 20) * SAVE_SLOTS / 2, game.Height - 100);
-                for (int i = 0; i < SAVE_SLOTS; i++)
-                {
-                    if (File.Exists("saveSlot" + (i + 1) + ".bro"))
-                    {
-                        saveSlots[i] = new UIButton(new Vector2(postemp.X + (CELLWIDTH + 20) * i, postemp.Y), true, "UI/FilledSaveSlot", "Slot " + (i + 1));
-                        saveSlots[i].toolTip = "Selecting this save slot\nwill overwrite the previous save!";
-                    }
-                    else
-                    {
-                        saveSlots[i] = new UIButton(new Vector2(postemp.X + (CELLWIDTH + 20) * i, postemp.Y), true, "UI/FreeSaveSlot", "Slot " + (i + 1));
-                        saveSlots[i].toolTip = "Select a save slot to start a game.";
-                    }
-                }
+                
+
+                LoadSaveSlots();
+
                 for (int i = 0; i < 4; i ++)
                 {
                     for (int j = 0; j < 4; j ++)
@@ -759,6 +749,24 @@ namespace Brogue.Engine
                 hero = new HeroClasses.Warrior();
                 currentSaveSlot = 1;
                 StartGame();
+            }
+        }
+
+        public static void LoadSaveSlots()
+        {
+            Vector2 postemp = new Vector2(5 * game.Width / 6, 60 + game.Height/ 2 - (((CELLWIDTH + 20) * SAVE_SLOTS) / 2));
+            for (int i = 0; i < SAVE_SLOTS; i++)
+            {
+                if (File.Exists("saveSlot" + (i + 1) + ".bro"))
+                {
+                    saveSlots[i] = new UIButton(new Vector2(postemp.X, postemp.Y + (CELLWIDTH + 20) * i), false, "UI/FilledSaveSlot", "Slot " + (i + 1));
+                    saveSlots[i].toolTip = "Selecting this save slot\nwill overwrite the previous save!";
+                }
+                else
+                {
+                    saveSlots[i] = new UIButton(new Vector2(postemp.X, postemp.Y + (CELLWIDTH + 20) * i), false, "UI/FreeSaveSlot", "Slot " + (i + 1));
+                    saveSlots[i].toolTip = "Select a save slot to start a game.";
+                }
             }
         }
 
@@ -983,6 +991,9 @@ namespace Brogue.Engine
                     if (restartButton.isClicked())
                     {
                         showDeathScreen = false;
+                        xpList.Clear();
+                        LoadSaveSlots();
+                        vattacks.Clear();
                         mainMenuOpen = true;
                     }
                 }
@@ -1048,7 +1059,6 @@ namespace Brogue.Engine
             if (KeyboardController.IsPressed(Keys.O))
             {
                 //Go to next level hacked.
-
                 GoToNextLevel();
             }
 
@@ -1100,10 +1110,6 @@ namespace Brogue.Engine
                     didSomething = true;
                 }
 
-                if (!didSomething)
-                {
-                    
-                }
             }
             if (MouseController.RightClicked())
             {
@@ -1181,7 +1187,7 @@ namespace Brogue.Engine
                 }
             }
             return didSomething;
-        }
+        } 
 
         private static void GoToNextLevel()
         {
@@ -1247,7 +1253,7 @@ namespace Brogue.Engine
         
         public static void DrawGame(GameTime gameTime)
         {
-            if (gameStarted)
+            if (gameStarted || currentLevel != null)
             {
                 worldToView = Matrix.CreateTranslation(-cameraPosition.X * CELLWIDTH + game.Width / 2, -cameraPosition.Y * CELLWIDTH + game.Height / 2, 1.0f)
                         * Matrix.CreateScale(1.0f, 1.0f, 1);
@@ -1287,6 +1293,10 @@ namespace Brogue.Engine
 
         public static void DrawUI(SpriteBatch uisb)
         {
+            if (!gameStarted && currentLevel != null)
+            {
+                uisb.Draw(obscure.texture, new Vector2(0, 0), Color.White);
+            }
             if (gameStarted)
             {
                 foreach (XPParticle xp in xpList)
@@ -1376,10 +1386,14 @@ namespace Brogue.Engine
                 }
             }
             DrawLog(uisb);
+
+            
         }
 
         private static void DrawDeathScreen(SpriteBatch sb)
         {
+            
+            sb.Draw(deathNote.texture, new Vector2(game.Width / 2 - (deathNote.texture.Width / 2), game.Height / 4), Color.White);
             restartButton.Draw(sb);
             quitDeathButton.Draw(sb);
         }
@@ -1390,6 +1404,9 @@ namespace Brogue.Engine
             warriorButton.Draw(sb);
             rogueButton.Draw(sb);
             quitButton.Draw(sb);
+            sb.Draw(newGame.texture, new Vector2(game.Width / 3 - newGame.texture.Width / 2, game.Height / 6), Color.White);
+            sb.Draw(loadGame.texture, new Vector2(5 * game.Width / 6 - loadGame.texture.Width / 2 + (CELLWIDTH / 2), game.Height / 10), Color.White);
+
 
             for (int i = 0; i < saveSlots.Count(); i++)
             {
@@ -1399,6 +1416,7 @@ namespace Brogue.Engine
 
         private static void DrawSaveSelection(SpriteBatch sb)
         {
+            sb.Draw(selectSave.texture, new Vector2(game.Width / 2 - selectSave.texture.Width / 2, game.Height / 2), Color.White);
             for (int i = 0; i < saveSlots.Count(); i++)
             {
                 saveSlots[i].Draw(sb);
@@ -1562,11 +1580,16 @@ namespace Brogue.Engine
 
 
                 IntVec charpos = currentLevel.CharacterEntities.FindPosition(hero);
-                Vector3 test = Vector3.Transform(new Vector3(charpos.X * CELLWIDTH, charpos.Y * CELLWIDTH, 0), transform);
-                
-                game.spriteBatch.Draw(sightMask.texture, new Vector2((test.X), (test.Y)), new Rectangle(0, 0, sightMask.texture.Width, sightMask.texture.Height), Color.White, 0, new Vector2(sightMask.texture.Width / 2, sightMask.texture.Height / 2), sightDistance, SpriteEffects.None, 0);
+                if (charpos != null)
+                {
+                    Vector3 test = Vector3.Transform(new Vector3(charpos.X * CELLWIDTH, charpos.Y * CELLWIDTH, 0), transform);
 
-                Vector3 test2 = Vector3.Transform(new Vector3(50 * CELLWIDTH, 50 * CELLWIDTH, 0), transform);
+
+                    game.spriteBatch.Draw(sightMask.texture, new Vector2((test.X), (test.Y)), new Rectangle(0, 0, sightMask.texture.Width, sightMask.texture.Height), Color.White, 0, new Vector2(sightMask.texture.Width / 2, sightMask.texture.Height / 2), sightDistance, SpriteEffects.None, 0);
+                }
+
+
+                //Vector3 test2 = Vector3.Transform(new Vector3(50 * CELLWIDTH, 50 * CELLWIDTH, 0), transform);
                 foreach (ILightSource l in currentLevel.LightSources.Entities())
                 {
                     IntVec lightPos = currentLevel.LightSources.FindPosition(l);
