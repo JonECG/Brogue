@@ -1,30 +1,25 @@
-﻿using Brogue;
-using Brogue.Engine;
-using Brogue.HeroClasses;
-using Brogue.Mapping;
+﻿using Brogue.Abilities.Damaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace Brogue.Abilities.Damaging.SingleTargets
+namespace Brogue.Abilities.SingleTargets
 {
-    [Serializable]
-    public class Cleave : SingleTarget
+    class DoubleSlash : SingleTarget
     {
 
-        public Cleave()
+        public DoubleSlash()
         {
-            description = "The warrior strikes two immideately adjacent squares.";
-            castSquares = new IntVec[2];
+            description = "The warrior strikes a single target to deal double damage.";
+            castSquares = new IntVec[1];
             for (int i = 0; i < castSquares.Length; i++)
             {
                 castSquares[i] = new IntVec(0, 0);
             }
-            baseDamage = 5;
+            baseDamage = 0;
             radius = 1;
-            abilityCooldown = 5;
+            abilityCooldown = 6;
         }
 
         protected override int getCooldown(GameCharacter enemy)
@@ -34,7 +29,7 @@ namespace Brogue.Abilities.Damaging.SingleTargets
 
         public override int calculateDamage(int heroLevel, int heroDamage)
         {
-            return (baseDamage * heroLevel) + heroDamage;
+            return heroDamage * 2;
         }
     }
 }

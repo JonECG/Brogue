@@ -76,9 +76,12 @@ namespace Brogue.Abilities.Damaging
                 if (test != null)
                 {
                     test.TakeDamage(damage, hero);
+                    cooldown = getCooldown(test);
                 }
                 castSquares[i] = new IntVec(0, 0);
             }
         }
+
+        abstract protected int getCooldown(GameCharacter enemy);
     }
 }
