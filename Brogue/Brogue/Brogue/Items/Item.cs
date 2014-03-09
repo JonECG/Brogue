@@ -83,6 +83,7 @@ namespace Brogue.Items
             Items.Equipment.Armor.Chest.PlateChest.Texture = Engine.Engine.GetTexture("Items/PlateChest");
             Items.Equipment.Armor.Legendary.Chest.AbyssalChest.Texture = Engine.Engine.GetTexture("Items/PlateChest");
             Items.Equipment.Armor.Legendary.Chest.GladiatorChest.Texture = Engine.Engine.GetTexture("Items/MailChest");
+            Items.Equipment.Armor.Legendary.Chest.ProwlerChest.Texture = Engine.Engine.GetTexture("Items/LeatherChest");
             Items.Equipment.Armor.Legendary.Chest.MagistrateChest.Texture = Engine.Engine.GetTexture("Items/ClothChest");
 
             Items.Equipment.Armor.Legs.ClothLegs.Texture = Engine.Engine.GetTexture("Items/ClothLegs");
@@ -467,6 +468,11 @@ namespace Brogue.Items
         public static Item getDesiredDitem(int dLevel, int cLevel)
         {
             return new Sword(dLevel, cLevel);
+        }
+
+        public static Item getDesireditem(int dLevel, int cLevel)
+        {
+            return new BastardSword(dLevel, cLevel);
         }
 
         public abstract Item PickUpEffect(Hero Player);

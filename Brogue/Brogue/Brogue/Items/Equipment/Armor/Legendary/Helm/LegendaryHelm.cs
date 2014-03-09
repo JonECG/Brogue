@@ -8,7 +8,7 @@ namespace Brogue.Items.Equipment.Armor.Legendary.Helm
 {
     public abstract class LegendaryHelm : LegendaryArmor
     {
-        Random rand = new Random();
+        private static Random rand = new Random();
 
         public LegendaryHelm()
         {

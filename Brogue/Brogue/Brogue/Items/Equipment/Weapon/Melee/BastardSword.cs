@@ -24,7 +24,12 @@ namespace Brogue.Items.Equipment.Weapon.Melee
             LevelReq = findLevelReq(dLevel, cLevel);
             Damage = findDamage(BaseDamage, dLevel, LevelReq);
             Name = findName("Bastard Sword", LevelReq);
+            TwoHanded = true;
 
+            if (TwoHanded)
+            {
+                Damage += TwoHandedBonus;
+            }
         }
     }
 }

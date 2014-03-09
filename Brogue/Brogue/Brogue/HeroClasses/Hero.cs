@@ -22,6 +22,7 @@ using Brogue.Items.Equipment.Weapon.Ranged;
 using Brogue.Abilities.AOE;
 using Brogue.Items.Equipment.Accessory;
 using Brogue.Abilities.Togglable;
+using Brogue.Abilities.SingleTargets;
 
 namespace Brogue.HeroClasses
 {
@@ -77,7 +78,7 @@ namespace Brogue.HeroClasses
             abilities = new Ability[6];
             abilities[0] = new Cleave();
             abilities[1] = new WhirlwindSlash();
-            abilities[2] = new Rage();
+            abilities[2] = new Fireball();
         }
 
         public IntVec move(Direction dir)

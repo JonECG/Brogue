@@ -8,7 +8,7 @@ namespace Brogue.Items.Equipment.Armor.Legendary.Legs
 {
     public abstract class LegendaryLegs : LegendaryArmor
     {
-        Random rand = new Random();
+        private static Random rand = new Random();
 
         public LegendaryLegs()
         {

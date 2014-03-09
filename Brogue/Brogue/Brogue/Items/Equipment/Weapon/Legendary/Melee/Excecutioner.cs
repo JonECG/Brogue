@@ -24,6 +24,12 @@ namespace Brogue.Items.Equipment.Weapon.Legendary.Melee
             EquipableIn = new List<Slots> { Slots.Hand_Both };
             LevelReq = findLevelReq(dLevel, cLevel);
             Damage = findDamage(BaseDamage, dLevel, LevelReq);
+            TwoHanded = true;
+
+            if (TwoHanded)
+            {
+                Damage += TwoHandedBonus;
+            }
         }
     }
 }

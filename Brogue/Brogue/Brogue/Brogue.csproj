@@ -78,13 +78,19 @@
     <Compile Include="Abilities\AOE\AreaOfEffect.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Abilities\AOE\FlameStrike.cs" />
+    <Compile Include="Abilities\AOE\LightningStorm.cs" />
+    <Compile Include="Abilities\AOE\RangedAreoOfEffect.cs" />
     <Compile Include="Abilities\AOE\WhirlwindSlash.cs" />
     <Compile Include="Abilities\SingleTargets\Cleave.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Abilities\SingleTargets\Fireball.cs" />
     <Compile Include="Abilities\SingleTargets\SingleTarget.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Abilities\Togglable\Rage.cs" />
+    <Compile Include="Abilities\Togglable\ToggleAbility.cs" />
     <Compile Include="Audio.cs" />
     <Compile Include="Enemies\BossEnemy.cs">
       <SubType>Code</SubType>
@@ -124,6 +130,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Engine\JonEngine.cs" />
+    <Compile Include="Enums\AbilityTypes.cs" />
     <Compile Include="Enums\AccessoryTypes.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -230,13 +237,13 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="IntVec.cs" />
-    <Compile Include="InventorySystem\Inventory.cs">
+    <Compile Include="HeroClasses\InventorySystem\Inventory.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="InventorySystem\InventorySlot.cs">
+    <Compile Include="HeroClasses\InventorySystem\InventorySlot.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="InventorySystem\ItemCount.cs" />
+    <Compile Include="HeroClasses\InventorySystem\ItemCount.cs" />
     <Compile Include="IRenderable.cs">
       <SubType>Code</SubType>
     </Compile>

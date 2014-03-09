@@ -7,7 +7,7 @@ namespace Brogue.Items.Equipment.Armor.Helm
 {
     [Serializable] public abstract class Helm : Armor
     {
-        Random rand = new Random();
+        private static Random rand = new Random();
 
         public Helm()
         {

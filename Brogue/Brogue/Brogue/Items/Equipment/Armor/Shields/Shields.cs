@@ -8,7 +8,7 @@ namespace Brogue.Items.Equipment.Armor.Shields
 {
     [Serializable] public abstract class Shields : Armor
     {
-        Random rand = new Random();
+        private static Random rand = new Random();
 
         public Shields()
         {

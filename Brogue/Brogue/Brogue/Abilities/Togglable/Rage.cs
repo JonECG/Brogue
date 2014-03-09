@@ -59,5 +59,10 @@ namespace Brogue.Abilities.Togglable
             }
             cooldown = 0;
         }
+
+        public override int calculateDamage(int heroLevel, int heroDamage)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

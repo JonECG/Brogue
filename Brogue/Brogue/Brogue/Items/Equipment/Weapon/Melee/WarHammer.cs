@@ -24,6 +24,12 @@ namespace Brogue.Items.Equipment.Weapon.Melee
             LevelReq = findLevelReq(dLevel, cLevel);
             Damage = findDamage(BaseDamage, dLevel, LevelReq);
             Name = findName("War Hammer", LevelReq);
+            TwoHanded = true;
+
+            if (TwoHanded)
+            {
+                Damage += TwoHandedBonus;
+            }
         }
     }
 }

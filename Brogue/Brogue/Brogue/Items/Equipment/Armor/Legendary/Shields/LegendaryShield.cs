@@ -8,7 +8,7 @@ namespace Brogue.Items.Equipment.Armor.Legendary.Shields
 {
     [Serializable] public abstract class LegendaryShield : LegendaryArmor
     {
-        Random rand = new Random();
+        private static Random rand = new Random();
 
         public LegendaryShield()
         {

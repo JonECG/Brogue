@@ -1,21 +1,19 @@
-﻿using Brogue.Mapping;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace Brogue.Abilities.AOE
 {
-    [Serializable] public class WhirlwindSlash : AreaOfEffect
+    class FlameStrike : AreaOfEffect
     {
-
-        public WhirlwindSlash()
+        public FlameStrike()
         {
-            radius = 2;
+            radius = 15;
             isActuallyFilled = false;
-            castSquares = new IntVec[12];
-            baseDamage = 3;
-            abilityCooldown = 7;
+            castSquares = new IntVec[1200];
+            baseDamage = 15;
+            abilityCooldown = 30;
             for (int i = 0; i < castSquares.Length; i++)
             {
                 castSquares[i] = new IntVec(0, 0);
@@ -24,7 +22,7 @@ namespace Brogue.Abilities.AOE
 
         public override int calculateDamage(int heroLevel, int heroDamage)
         {
-            throw new NotImplementedException();
+            return ((baseDamage * baseDamage) + heroLevel) * heroDamage;
         }
     }
 }
