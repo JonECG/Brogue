@@ -1,5 +1,6 @@
 ﻿using Brogue.Abilities.AOE;
 using Brogue.Abilities.Damaging.SingleTargets;
+using Brogue.Abilities.SingleTargets;
 using Brogue.Enums;
 using Brogue.Items.Equipment.Accessory;
 using Brogue.Items.Equipment.Armor.Helm;
@@ -13,23 +14,23 @@ using System.Threading.Tasks;
 
 namespace Brogue.HeroClasses
 {
-    [Serializable] class Warrior : Hero
+    [Serializable]
+    class Sentinel : Hero
     {
-        public Warrior()
+        public Sentinel()
         {
             texture = Engine.Engine.GetTexture("Hero/WarriorSprite");
             Hero.sprite = new Sprite(texture);
-            heroRole = Classes.Warrior;
-            inventory.addItem(new Sword(1, 1));
-            inventory.addItem(new Sword(1, 1));
-            inventory.addItem(new GreatAxe(1, 1));
-            inventory.addItem(new Axe(1, 1));
-            baseHealth = 300;
-            healthPerLevel = 50;
+            heroRole = Classes.Sentinel;
+            baseHealth = 400;
+            healthPerLevel = 65;
+            level = 10;
             resetLevel();
             resetHealth();
             abilities[0] = new Cleave();
             abilities[1] = new WhirlwindSlash();
+            abilities[2] = new ShieldBlock();
+            abilities[3] = new ShieldBash();
             Engine.Engine.Log(health.ToString());
         }
     }

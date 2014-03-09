@@ -45,6 +45,9 @@ namespace Brogue.HeroClasses
         protected int baseHealth;
         protected bool turnOver;
         protected int armorRating;
+        protected int armorBoost, currentBoost;
+        public int armorBoostTurnCount;
+        protected int requiredBranchLevel;
         protected int experience = 0;
         protected int expRequired = 100;
         protected int healthPerLevel { get; set; }
@@ -55,7 +58,7 @@ namespace Brogue.HeroClasses
         static Sprite castingSprite;
         public static DynamicTexture abilitySprite;
         public static DynamicTexture castingSquareSprite;
-        public Equipment currentlyEquippedItems = new Equipment();
+        protected Equipment currentlyEquippedItems = new Equipment();
         protected Inventory inventory = new Inventory();
         //Variable for testing, delete
         private bool viewingCast = false;
@@ -65,17 +68,17 @@ namespace Brogue.HeroClasses
         public Hero()
         {
             level = 5;
-            numAbilities = 0;
+            currentBoost = 0;
             baseHealth = 200;
             health = baseHealth;
             maxHealth = health;
             healthPerLevel = 50;
-            damageBoost = 0;
+            requiredBranchLevel = 10;
+            damageBoost = 1;
             experience = 0;
             expRequired = 50;
             jarBarAmount = 0;
             isFriendly = true;
-            numAbilities = 2;
             abilities = new Ability[6];
         }
 
@@ -104,6 +107,7 @@ namespace Brogue.HeroClasses
 
         public override void TakeDamage(int damage, GameCharacter attacker)
         {
+            armorBoostTurnCount -= (armorBoostTurnCount > 0) ? 1 : 0;
             int damagePostReduction = damage - armorRating;
             damagePostReduction = (damagePostReduction < 1) ? 1 : damagePostReduction;
             health -= damagePostReduction;
@@ -132,6 +136,27 @@ namespace Brogue.HeroClasses
         private void resetArmor()
         {
             armorRating = currentlyEquippedItems.getTotalArmorRating();
+            armorRating += (armorBoostTurnCount > 0) ? armorBoost : 0;
+        }
+
+        public void ApplyArmorBoost(int boost, int turnCount)
+        {
+            armorBoost -= currentBoost;
+            currentBoost = boost;
+            armorBoost += boost;
+            armorBoostTurnCount = turnCount;
+        }
+
+        public int GetArmorRating()
+        {
+            return armorRating;
+        }
+
+        public bool hasReachedBranchLevel()
+        {
+            bool reached = requiredBranchLevel <= level;
+            requiredBranchLevel = (reached) ? 700 : requiredBranchLevel;
+            return reached;
         }
 
         protected void resetLevel()
@@ -169,9 +194,6 @@ namespace Brogue.HeroClasses
             turnOver = false;
             bool casting = false;
             int test = health;
-            resetArmor();
-            resetLevel();
-            CheckElementDamage();
 
             if (!isFrozen)
             {
@@ -209,7 +231,7 @@ namespace Brogue.HeroClasses
                         attack(mapLevel);
                     }
                     // THESE ARE JUST FOR TESTING
-                    else if (Mapping.KeyboardController.IsTyped(Keys.B))
+                    else if (Mapping.KeyboardController.IsTyped(Keys.L))
                     {
                         level += 1;
                     }
@@ -253,6 +275,33 @@ namespace Brogue.HeroClasses
                             abilityKey = Keys.D3;
                         }
                     }
+                    else if (Mapping.KeyboardController.IsPressed(Keys.D4))
+                    {
+                        if (abilities[3] != null && abilities[3].cooldown == 0)
+                        {
+                            viewingCast = true;
+                            viewedAbility = 3;
+                            abilityKey = Keys.D4;
+                        }
+                    }
+                    else if (Mapping.KeyboardController.IsPressed(Keys.D5))
+                    {
+                        if (abilities[4] != null && abilities[4].cooldown == 0)
+                        {
+                            viewingCast = true;
+                            viewedAbility = 4;
+                            abilityKey = Keys.D5;
+                        }
+                    }
+                    else if (Mapping.KeyboardController.IsPressed(Keys.D6))
+                    {
+                        if (abilities[5] != null && abilities[5].cooldown == 0)
+                        {
+                            viewingCast = true;
+                            viewedAbility = 5;
+                            abilityKey = Keys.D6;
+                        }
+                    }
 
                     else turnOver = (Mapping.KeyboardController.IsTyped(Keys.Space));
                 }
@@ -280,7 +329,9 @@ namespace Brogue.HeroClasses
             {
                 turnOver = true;
             }
-
+            resetArmor();
+            resetLevel();
+            CheckElementDamage();
             return turnOver;
         }
 
@@ -309,7 +360,7 @@ namespace Brogue.HeroClasses
                             if (abilities[ability].filledSquares())
                             {
                                 turnOver = true;
-                                abilities[ability].finishCastandDealDamage(level, currentlyEquippedItems.getTotalDamageIncrease(), mapLevel, this);
+                                abilities[ability].finishCastandDealDamage(level, currentlyEquippedItems.getTotalDamageIncrease()+damageBoost, mapLevel, this);
                                 Engine.Engine.ClearGridSelections();
                                 viewingCast = false;
                             }
@@ -346,8 +397,8 @@ namespace Brogue.HeroClasses
                     int weaponRange2 = currentlyEquippedItems.getAuxilaryWeaponRange();
                     IntVec[] weaponHitbox1 = AStar.getPossiblePositionsFrom(mapLevel, mapLevel.CharacterEntities.FindPosition(this), weaponRange1, true);
                     IntVec[] weaponHitbox2 = AStar.getPossiblePositionsFrom(mapLevel, mapLevel.CharacterEntities.FindPosition(this), weaponRange2, true);
-                    damageEnemyIfInRange(weaponHitbox1, mapLevel, testEnemy, currentlyEquippedItems.getPrimaryWeaponDamage());
-                    damageEnemyIfInRange(weaponHitbox2, mapLevel, testEnemy, currentlyEquippedItems.getAuxilaryWeaponDamage());
+                    damageEnemyIfInRange(weaponHitbox1, mapLevel, testEnemy, currentlyEquippedItems.getPrimaryWeaponDamage()+damageBoost);
+                    damageEnemyIfInRange(weaponHitbox2, mapLevel, testEnemy, currentlyEquippedItems.getAuxilaryWeaponDamage()+damageBoost);
                     if (Element != null)
                     {
                         for (int i = 0; i < Element.Count; i++)
@@ -477,6 +528,17 @@ namespace Brogue.HeroClasses
         public Inventory GetInventory()
         {
             return inventory;
+        }
+
+        public Equipment GetEquipment()
+        {
+            return currentlyEquippedItems;
+        }
+
+        public void ObtainItems(Inventory oldInventory, Equipment oldEquipment)
+        {
+            inventory = oldInventory;
+            currentlyEquippedItems = oldEquipment;
         }
 
         public void pickupItem(Item item, Level mapLevel)

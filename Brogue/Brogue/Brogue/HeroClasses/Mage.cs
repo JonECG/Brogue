@@ -17,7 +17,6 @@ namespace Brogue.HeroClasses
     {
         public Mage()
         {
-            numAbilities = 2;
             texture = Engine.Engine.GetTexture("Hero/MageSprite");
             Hero.sprite = new Sprite(texture);
             heroRole = Classes.Mage;
@@ -29,7 +28,7 @@ namespace Brogue.HeroClasses
             resetLevel();
             resetHealth();
             abilities[0] = new Fireball();
-            abilities[1] = new FlameStrike();
+            abilities[1] = new Blink();
             Engine.Engine.Log(health.ToString());
         }
     }
