@@ -179,7 +179,7 @@ namespace Brogue.HeroClasses
                 {
 
                     IInteractable interactableObj = mapLevel.InteractableEnvironment.FindEntity(MouseController.MouseGridPosition());
-                    if (interactableObj != null)
+                    if (interactableObj != null && Engine.Engine.IsMouseAdjacentToHero())
                     {
                         Engine.Engine.Log(interactableObj.ToString());
                         interactableObj.actOn(this);

@@ -316,7 +316,11 @@ namespace Brogue.Engine
                     front = GetWeaponColor((Items.Equipment.Weapon.Weapon)gear, hero);
                     break;
                 case Enums.ITypes.Offhand:
-                    mstext = "";
+                    mstext = ((Items.Equipment.Offhand.Offhand)gear).Element[0].ToString();
+                    for (int i = 1; i < ((Items.Equipment.Offhand.Offhand)gear).Element.Count; i++)
+                    {
+                        mstext += "," + ((Items.Equipment.Offhand.Offhand)gear).Element[i].ToString();
+                    }
                     break;
             }
             DrawOutlined(sb, position + mainStatPosition, mstext, Color.Black, front);
@@ -588,6 +592,19 @@ namespace Brogue.Engine
             }
         }
 
+        public static bool IsMouseAdjacentToHero()
+        {
+            bool result = false;
+            IntVec hpos = currentLevel.CharacterEntities.FindPosition(hero);
+            IntVec mpos = MouseController.MouseGridPosition();
+
+            result = (Math.Abs(hpos.X - mpos.X) == 1 && hpos.Y - mpos.Y == 0)
+                || (Math.Abs(hpos.Y - mpos.Y) == 1 && hpos.X - mpos.X == 0);
+
+            return result;
+
+        }
+
         public static void Start(Game1 injectedGame)
         {
             game = injectedGame;
@@ -595,7 +612,7 @@ namespace Brogue.Engine
             //GenerateLevel();
             LogPosition = new Vector2(12, 12);
             // = new Vector2(game.Width - 48, game.Height - 48);
-            InventoryPosition = new Vector2(game.Width - 5 * (CELLWIDTH), game.Height - 5 * (CELLWIDTH));
+            InventoryPosition = new Vector2(game.Width - 5 * (CELLWIDTH), game.Height - 4 * (CELLWIDTH));
             InvButtonPosition = new Vector2(game.Width - CELLWIDTH, game.Height - CELLWIDTH);
             InventorySize = new Vector2(4 * CELLWIDTH, 4 * CELLWIDTH);
             weaponEquipPosition = new Vector2(game.Width / 2 - CELLWIDTH, game.Height - CELLWIDTH);
@@ -767,8 +784,6 @@ namespace Brogue.Engine
                         vattacks.RemoveAt(i);
                     }
                 }
-
-                
 
                 if (!GameCommands())
                 {
@@ -1191,7 +1206,6 @@ namespace Brogue.Engine
                 uisb.Draw(healthcontainer.texture, healthBarPosition, Color.White);
                 uisb.Draw(healthcontainer.texture, xpBarPosition, Color.White);
                 //uisb.Draw(healthbar.texture, new Vector2(50, game.Height / 2 - healthcontainer.texture.Height / 2), Color.White);
-                Log("" + hero.health);
                 uisb.Draw(healthbar.texture, new Vector2(healthBarPosition.X + healthbar.texture.Width / 2,
                     healthBarPosition.Y + healthbar.texture.Height),
                     new Rectangle(0, 0, healthbar.texture.Width, healthbar.texture.Height),
@@ -1230,7 +1244,7 @@ namespace Brogue.Engine
                 }
 
                 Items.Item it = currentLevel.DroppedItems.FindEntity(MouseController.MouseGridPosition());
-                if (it != null && (it.ItemType == Enums.ITypes.Legendary || it.ItemType == Enums.ITypes.Armor || it.ItemType == Enums.ITypes.Weapon || it.ItemType == Enums.ITypes.Accessory))
+                if (it != null && (it.ItemType == Enums.ITypes.Legendary || it.ItemType == Enums.ITypes.Armor || it.ItemType == Enums.ITypes.Weapon || it.ItemType == Enums.ITypes.Accessory || it.ItemType == Enums.ITypes.Offhand))
                 {
                     ToolTip.Draw(uisb, (Items.Equipment.Gear)it, new Vector2(MouseController.MouseScreenPosition().X - 200, MouseController.MouseScreenPosition().Y - 250), hero);
                 }
