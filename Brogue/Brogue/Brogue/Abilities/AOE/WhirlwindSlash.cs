@@ -24,7 +24,7 @@ namespace Brogue.Abilities.AOE
 
         public override int calculateDamage(int heroLevel, int heroDamage)
         {
-            throw new NotImplementedException();
+            return baseDamage * (heroLevel + heroDamage / 2);
         }
     }
 }

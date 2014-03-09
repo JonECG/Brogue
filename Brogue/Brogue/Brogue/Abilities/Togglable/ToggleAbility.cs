@@ -14,6 +14,11 @@ namespace Brogue.Abilities.Togglable
             type = Enums.AbilityTypes.Toggle;
         }
 
+        public override int calculateDamage(int heroLevel, int heroDamage)
+        {
+            throw new NotImplementedException();
+        }
+
         public abstract void updateToggle(int heroLevel, HeroClasses.Hero hero);
     }
 }
