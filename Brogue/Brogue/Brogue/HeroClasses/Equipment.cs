@@ -378,7 +378,7 @@ namespace Brogue.HeroClasses
                 else if (newlyEquippedWeapon.EquipableIn.Contains(Slots.Hand_Auxillary))
                 {
                     removed = equippedWeapons[1];
-                    if (removed.ItemType == ITypes.Offhand)
+                    if (removed != null && removed.ItemType == ITypes.Offhand)
                     {
                         //remove element here
                     }

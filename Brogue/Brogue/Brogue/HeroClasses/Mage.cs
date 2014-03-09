@@ -1,4 +1,5 @@
-﻿using Brogue.Abilities.SingleTargets;
+﻿using Brogue.Abilities.AOE;
+using Brogue.Abilities.SingleTargets;
 using Brogue.Enums;
 using Brogue.Items.Consumables;
 using Brogue.Items.Equipment.Offhand;
@@ -28,7 +29,7 @@ namespace Brogue.HeroClasses
             resetLevel();
             resetHealth();
             abilities[0] = new Fireball();
-            abilities[1] = new Blink();
+            abilities[1] = new FlameStrike();
             Engine.Engine.Log(health.ToString());
         }
     }

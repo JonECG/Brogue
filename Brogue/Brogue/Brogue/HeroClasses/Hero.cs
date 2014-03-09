@@ -27,12 +27,13 @@ using Brogue.Abilities.SingleTargets;
 namespace Brogue.HeroClasses
 {
 
-    [Serializable] public abstract class Hero : GameCharacter, IRenderable
+    [Serializable]
+    public abstract class Hero : GameCharacter, IRenderable
     {
         const int jarBarIncrease = 25;
 
         public int level { get; set; }
-        
+
         public List<ElementAttributes> Element { get; set; }
 
         public int MaxJarBarAmount = 50;
@@ -144,7 +145,7 @@ namespace Brogue.HeroClasses
                 MaxJarBarAmount += jarBarIncrease;
                 Engine.Engine.Log(MaxJarBarAmount.ToString());
                 experience = 0 + addedExp;
-                expRequired = 50 + 25 * (level-1);
+                expRequired = 50 + 25 * (level - 1);
             }
         }
 
@@ -167,13 +168,11 @@ namespace Brogue.HeroClasses
         {
             turnOver = false;
             bool casting = false;
-            /*for (int i = 0; i < numAbilities && !casting; i++)
-            {
-                casting = abilities[i].isCasting;
-            }*/
+            int test = health;
             resetArmor();
             resetLevel();
             CheckElementDamage();
+
             if (!isFrozen)
             {
                 if (MouseController.LeftClicked())
@@ -281,6 +280,7 @@ namespace Brogue.HeroClasses
             {
                 turnOver = true;
             }
+
             return turnOver;
         }
 
@@ -328,11 +328,11 @@ namespace Brogue.HeroClasses
                 {
                     Engine.Engine.Log(damageBoost.ToString());
                     abilities[ability].finishCastandDealDamage(level, currentlyEquippedItems.getTotalDamageIncrease(), mapLevel, this);
-                    
+
                     Engine.Engine.Log(damageBoost.ToString());
                 }
             }
-                return turnOver;
+            return turnOver;
         }
 
         public void attack(Level mapLevel)
@@ -373,7 +373,7 @@ namespace Brogue.HeroClasses
         private void damageEnemyIfInRange(IntVec[] hitBox, Level mapLevel, GameCharacter enemy, int damage)
         {
             bool found = false;
-            for (int i = 0; i < hitBox.Length&&!found; i++)
+            for (int i = 0; i < hitBox.Length && !found; i++)
             {
                 IntVec test = mapLevel.CharacterEntities.FindPosition(enemy);
                 if (hitBox[i].Equals(mapLevel.CharacterEntities.FindPosition(enemy)))
@@ -394,7 +394,7 @@ namespace Brogue.HeroClasses
 
         public void cooldownAbilities()
         {
-            for(int i=0; i<abilities.Length; i++)
+            for (int i = 0; i < abilities.Length; i++)
             {
                 if (abilities[i] != null)
                 {
@@ -423,7 +423,7 @@ namespace Brogue.HeroClasses
             if (inventory.stored[itemToEquip].item != null && inventory.stored[itemToEquip].item.ItemType == ITypes.Accessory)
             {
                 Item newlyEquippedItem = inventory.stored[itemToEquip].item;
-                if(currentlyEquippedItems.isAccessoryEquipable((Accessory)newlyEquippedItem, heroRole, level))
+                if (currentlyEquippedItems.isAccessoryEquipable((Accessory)newlyEquippedItem, heroRole, level))
                 {
                     inventory.removeItem(itemToEquip);
                     inventory.addItem(currentlyEquippedItems.removeAccessory((Accessory)newlyEquippedItem));
@@ -451,7 +451,7 @@ namespace Brogue.HeroClasses
             if (inventory.stored[inventoryIndex].item != null && (inventory.stored[inventoryIndex].item.ItemType == ITypes.Weapon || inventory.stored[inventoryIndex].item.ItemType == ITypes.Offhand))
             {
                 Item newlyEquippedItem = inventory.stored[inventoryIndex].item;
-                if(currentlyEquippedItems.isWeaponEquipable((Gear)newlyEquippedItem, heroRole, level))
+                if (currentlyEquippedItems.isWeaponEquipable((Gear)newlyEquippedItem, heroRole, level))
                 {
                     inventory.removeItem(inventoryIndex);
                     Gear item = (Gear)newlyEquippedItem;
