@@ -315,6 +315,9 @@ namespace Brogue.Engine
                     mstext = "Damage : " + ((Items.Equipment.Weapon.Weapon)gear).Damage;
                     front = GetWeaponColor((Items.Equipment.Weapon.Weapon)gear, hero);
                     break;
+                case Enums.ITypes.Offhand:
+                    mstext = "";
+                    break;
             }
             DrawOutlined(sb, position + mainStatPosition, mstext, Color.Black, front);
 
@@ -1188,6 +1191,7 @@ namespace Brogue.Engine
                 uisb.Draw(healthcontainer.texture, healthBarPosition, Color.White);
                 uisb.Draw(healthcontainer.texture, xpBarPosition, Color.White);
                 //uisb.Draw(healthbar.texture, new Vector2(50, game.Height / 2 - healthcontainer.texture.Height / 2), Color.White);
+                Log("" + hero.health);
                 uisb.Draw(healthbar.texture, new Vector2(healthBarPosition.X + healthbar.texture.Width / 2,
                     healthBarPosition.Y + healthbar.texture.Height),
                     new Rectangle(0, 0, healthbar.texture.Width, healthbar.texture.Height),
