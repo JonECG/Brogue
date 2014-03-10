@@ -347,8 +347,8 @@ namespace Brogue.Mapping
         static int seedDebug, levelDebug;
         public static Level generate(int seed, int levels, int dungeonLevel = 1, int heroLevel = 1 )
         {
-            seed = 1599313429;
-            levels = 2150;
+            //seed = 1599313429;
+            //levels = 2150;
 
             seedDebug = seed;
             levelDebug = levels;
@@ -499,7 +499,7 @@ namespace Brogue.Mapping
                 case __FloorPlan.__Room.__RoomType.NOTHING_SPECIAL:
                     foreach (Tuple<IntVec,Direction> pos in room.GetWalls(true))
                     {
-                        if (rand.NextDouble() > 0.9)
+                        if (rand.NextDouble() > 0.95)
                             environ.Add(new Plant(), pos.Item1);
                     }
 
@@ -527,7 +527,7 @@ namespace Brogue.Mapping
                             room.setUnfree(room.dimensions.X + x, room.dimensions.Y + y);
                             environ.Add(new Decoration(new Sprite(Engine.Engine.GetTexture("Enviroment/Table"), new IntVec(1 - ((x == 2) ? 1 : 0) + ((x == room.dimensions.Width - 3) ? 1 : 0), 1 - ((y == 2) ? 1 : 0) + ((y == room.dimensions.Height - 3) ? 1 : 0))), true), new IntVec(room.dimensions.X + x, room.dimensions.Y + y));
                             //environ.Add(new ColorEnvironment( Color.Aqua, true ) , new IntVec( room.dimensions.X + x, room.dimensions.Y + y ) );
-                            if (rand.NextDouble() > 0.8)
+                            if (rand.NextDouble() > 0.85)
                             {
                                 //Something on the table
                                 environ.Add(ChooseOne(rand, tableItems), new IntVec(room.dimensions.X + x, room.dimensions.Y + y));
@@ -596,7 +596,7 @@ namespace Brogue.Mapping
                 case __FloorPlan.__Room.__RoomType.NOTHING_SPECIAL:
                     foreach (var wall in room.GetWalls(false))
                     {
-                        if (rand.NextDouble() > 0.99)
+                        if (rand.NextDouble() > 0.998)
                         {
                             if( previousPassage[0] == null )
                             {
