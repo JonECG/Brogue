@@ -398,7 +398,7 @@ namespace Brogue.Engine
             string classString = gear.UsedBy.Contains(HeroClasses.Hero.heroRole) ? "Your class can use this!" : "Your class can't use this.";
             DrawOutlined(sb, position + classesPosition, classString, Color.Black, classColor);
 
-            if (gear.ItemType == Enums.ITypes.Legendary)
+            if (gear.IsLegendary)
             {
                 DrawOutlined(sb, position + flavPosition, ((Items.Equipment.Weapon.Legendary.LegendaryWeapon)gear).FlavorText, Color.Black, Color.RosyBrown);
             }
@@ -1357,7 +1357,7 @@ namespace Brogue.Engine
                         new Rectangle(0, 0, va.tex.texture.Width, va.tex.texture.Height), 
                         Color.White, va.angle, 
                         new Vector2(va.tex.texture.Width / 2, va.tex.texture.Height / 2), 
-                        1, SpriteEffects.None, 0);
+                        va.scale, SpriteEffects.None, 0);
                 }
                 uisb.Draw(healthcontainer.texture, healthBarPosition, Color.White);
                 uisb.Draw(healthcontainer.texture, xpBarPosition, Color.White);
