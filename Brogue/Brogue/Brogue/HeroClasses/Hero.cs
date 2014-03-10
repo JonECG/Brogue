@@ -45,7 +45,7 @@ namespace Brogue.HeroClasses
         public static bool visible;
         public static int parryCount;
         public int invisibilityTurnCount;
-        public Direction directionFacing;
+        public static Direction directionFacing;
         protected int baseHealth;
         protected bool turnOver;
         protected int armorRating;
@@ -81,7 +81,7 @@ namespace Brogue.HeroClasses
             requiredBranchLevel = 10;
             damageBoost = 1;
             experience = 0;
-            expRequired = 50;
+            expRequired = 1000;
             jarBarAmount = 0;
             isFriendly = true;
             visible = true;
