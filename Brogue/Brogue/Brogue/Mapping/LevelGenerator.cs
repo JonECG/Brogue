@@ -516,9 +516,9 @@ namespace Brogue.Mapping
                 case __FloorPlan.__Room.__RoomType.FOYER:
                     Decoration[] tableItems = {  new Decoration(new Sprite(Engine.Engine.GetTexture("Enviroment/Plate"), new IntVec(0,0) )), 
                                                 new Decoration(new Sprite(Engine.Engine.GetTexture("Enviroment/Plate"), new IntVec(0,0) )), 
-                                                new Decoration(new Sprite(Engine.Engine.GetTexture("Enviroment/Plate"), new IntVec(0,0) )), 
                                                 new Decoration(new Sprite(Engine.Engine.GetTexture("Enviroment/Plate"), new IntVec(1,0) )), 
-                                                new Decoration(new Sprite(Engine.Engine.GetTexture("Enviroment/Plate"), new IntVec(2,0))) };
+                                                new Decoration(new Sprite(Engine.Engine.GetTexture("Enviroment/Plate"), new IntVec(2,0) )), 
+                                                new Decoration(new Sprite(Engine.Engine.GetTexture("Enviroment/Plate"), new IntVec(3,0))) };
                     //Table
                     for (int x = 2; x < room.dimensions.Width - 2; x++)
                     {
