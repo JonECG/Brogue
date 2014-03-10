@@ -7,6 +7,7 @@ using System.Text;
 
 namespace Brogue.Items.Equipment.Armor.Legendary.Helm
 {
+    [Serializable]
     public class MagistrateHelm : LegendaryHelm
     {
         public static DynamicTexture Texture { get; set; }

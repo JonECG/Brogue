@@ -7,6 +7,7 @@ using System.Text;
 
 namespace Brogue.Items.Equipment.Armor.Legendary.Legs
 {
+    [Serializable]
     public class GladiatorLegs : LegendaryLegs
     {
         public static DynamicTexture Texture { get; set; }

@@ -7,6 +7,7 @@ using System.Text;
 
 namespace Brogue.Items.Equipment.Weapon.Legendary.Melee
 {
+    [Serializable]
     public class Excecutioner : LegendaryMelee
     {
         public static DynamicTexture Texture { get; set; }

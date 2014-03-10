@@ -7,6 +7,7 @@ using System.Text;
 
 namespace Brogue.Items.Equipment.Accessory.Legendary
 {
+    [Serializable]
     public class BlackPendant : LegendaryAccessory
     {
         public static DynamicTexture Texture { get; set; }

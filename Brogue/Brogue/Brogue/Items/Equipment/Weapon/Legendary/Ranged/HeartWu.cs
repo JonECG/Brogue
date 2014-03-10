@@ -7,6 +7,7 @@ using System.Text;
 
 namespace Brogue.Items.Equipment.Weapon.Legendary.Ranged
 {
+    [Serializable]
     public class HeartWu : LegendaryRanged
     {
         public static DynamicTexture Texture { get; set; }

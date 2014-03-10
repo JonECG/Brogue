@@ -7,6 +7,7 @@ using System.Text;
 
 namespace Brogue.Items.Equipment.Offhand.Legendary
 {
+    [Serializable]
     public class Necronomicon : LegendaryOffhand
     {
         public static DynamicTexture Texture { get; set; }

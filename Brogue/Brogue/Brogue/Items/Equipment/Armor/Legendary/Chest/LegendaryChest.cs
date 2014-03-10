@@ -6,6 +6,7 @@ using System.Text;
 
 namespace Brogue.Items.Equipment.Armor.Legendary.Chest
 {
+    [Serializable]
     public abstract class LegendaryChest : LegendaryArmor
     {
         private static Random rand = new Random();

@@ -7,6 +7,7 @@ using System.Text;
 
 namespace Brogue.Items.Equipment.Armor.Legendary.Chest
 {
+    [Serializable]
     public class AbyssalChest : LegendaryChest
     {
         public static DynamicTexture Texture { get; set; }

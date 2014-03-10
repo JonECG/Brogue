@@ -95,6 +95,7 @@
     <Compile Include="Abilities\SingleTargets\SingleTarget.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Abilities\SingleTargets\Vault.cs" />
     <Compile Include="Abilities\Togglable\Rage.cs" />
     <Compile Include="Abilities\Togglable\ToggleAbility.cs" />
     <Compile Include="Audio.cs" />
