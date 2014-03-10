@@ -8,15 +8,15 @@ using System.Text;
 
 namespace Brogue.HeroClasses
 {
-    [Serializable] public class Rogue : Hero
+    [Serializable]
+    public class Duelist : Hero
     {
-        public Rogue()
+        public Duelist()
         {
-            heroRole = Classes.Rogue;
-            inventory.addItem(new Dagger(1, 1));
-            inventory.addItem(new Dagger(1, 1));
-            baseHealth = 225;
-            healthPerLevel = 40;
+            heroRole = Classes.Duelist;
+            baseHealth = 275;
+            healthPerLevel = 35;
+            level = 10;
             resetLevel();
             resetHealth();
             abilities[0] = new Volley();

@@ -54,9 +54,10 @@ namespace Brogue.HeroClasses
         protected Ability[] abilities;
         public int jarBarAmount;
         protected static Sprite sprite;
-        static Sprite radiusSprite;
-        static Sprite castingSprite;
         public static DynamicTexture abilitySprite;
+        public static DynamicTexture warriorSprite;
+        public static DynamicTexture mageSprite;
+        public static DynamicTexture rogueSprite;
         public static DynamicTexture castingSquareSprite;
         protected Equipment currentlyEquippedItems = new Equipment();
         protected Inventory inventory = new Inventory();
@@ -108,18 +109,32 @@ namespace Brogue.HeroClasses
         public override void TakeDamage(int damage, GameCharacter attacker)
         {
             armorBoostTurnCount -= (armorBoostTurnCount > 0) ? 1 : 0;
-            int damagePostReduction = damage - armorRating;
+            int percentHealth = 100 + armorRating*2;
+            int maxHealthPostArmorIncrease = (int)(((float)percentHealth / 100) * maxHealth);
+            int damagePostReduction = maxHealthPostArmorIncrease-damage;
+            int finalDamage = maxHealth - ((int)(((float)damagePostReduction/maxHealthPostArmorIncrease) * maxHealth));
             damagePostReduction = (damagePostReduction < 1) ? 1 : damagePostReduction;
-            health -= damagePostReduction;
+            health -= finalDamage;
             Engine.Engine.Log(health.ToString());
             Engine.Engine.Log(attacker.ToString());
         }
 
         public static void loadSprite()
         {
-            sprite = new Sprite(texture);
-            radiusSprite = new Sprite(abilitySprite);
-            castingSprite = new Sprite(castingSquareSprite);
+            DynamicTexture heroTexture = null;
+            switch (heroRole)
+            {
+                case Classes.Warrior:
+                    heroTexture = warriorSprite;
+                    break;
+                case Classes.Mage:
+                    heroTexture = mageSprite;
+                    break;
+                case Classes.Rogue:
+                    heroTexture = rogueSprite;
+                    break;
+            }
+            sprite = new Sprite(heroTexture);
         }
 
         public void AddExperience(int xp)
@@ -145,6 +160,18 @@ namespace Brogue.HeroClasses
             currentBoost = boost;
             armorBoost += boost;
             armorBoostTurnCount = turnCount;
+        }
+
+        public void setArmorBoost(int boost)
+        {
+            armorBoost -= currentBoost;
+            currentBoost = boost;
+            armorBoost += currentBoost;
+        }
+
+        public int getArmorBoost()
+        {
+            return armorBoost;
         }
 
         public int GetArmorRating()
@@ -377,10 +404,7 @@ namespace Brogue.HeroClasses
             {
                 if (MouseController.LeftClicked())
                 {
-                    Engine.Engine.Log(damageBoost.ToString());
                     abilities[ability].finishCastandDealDamage(level, currentlyEquippedItems.getTotalDamageIncrease(), mapLevel, this);
-
-                    Engine.Engine.Log(damageBoost.ToString());
                 }
             }
             return turnOver;

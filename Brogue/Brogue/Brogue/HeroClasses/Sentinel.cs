@@ -19,7 +19,7 @@ namespace Brogue.HeroClasses
     {
         public Sentinel()
         {
-            texture = Engine.Engine.GetTexture("Hero/WarriorSprite");
+            warriorSprite = Engine.Engine.GetTexture("Hero/MageSprite");
             Hero.sprite = new Sprite(texture);
             heroRole = Classes.Sentinel;
             baseHealth = 400;
