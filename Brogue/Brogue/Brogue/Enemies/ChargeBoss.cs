@@ -63,5 +63,17 @@ namespace Brogue.Enemies
             moveSpeed = 1;
             exp = 30 + 30 * i;
         }
+
+        public override DynamicTexture GetTexture()
+        {
+            if (IsAggro)
+            {
+                return Engine.Engine.GetTexture("Enemies/ChargeBossAggressive");
+            }
+            else
+            {
+                return Engine.Engine.GetTexture("Enemies/ChargeBossPassive");
+            }
+        }
     }
 }

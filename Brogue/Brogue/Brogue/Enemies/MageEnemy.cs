@@ -33,7 +33,7 @@ namespace Brogue.Enemies
                 Direction[] tPath = AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(target), ref tIsPossible);
                 if (tIsPossible)
                 {
-                    if (tPath.Length > aggroRange)
+                    if (tPath.Length > deAggroRange)
                     {
                         target = null;
                     }
@@ -69,7 +69,16 @@ namespace Brogue.Enemies
                 break;
             }
 
-
+            if (targetFound)
+            {
+                foreach (Enemy e in GetAllEnemies())
+                {
+                    if (AStar.calculateHeuristic(level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(e)) < 3)
+                    {
+                        e.ForceAggro(target);
+                    }
+                }
+            }
 
             return targetFound;
         }
@@ -78,6 +87,7 @@ namespace Brogue.Enemies
         {
             range = 6;
             aggroRange = 3;
+            deAggroRange = 4;
             defense = 2 + (2 * i);
             if (defense > 30)
                 defense = 30;

@@ -22,12 +22,34 @@ namespace Brogue.Enemies
         protected int moveSpeed = 1;
         protected int range;
         protected int aggroRange;
+        protected int deAggroRange;
         protected int exp;
         protected ElementAttributes element;
 
         public bool IsAggro
         {
             get { return (target != null); }
+        }
+
+        public void ForceAggro(GameCharacter aTarget)
+        {
+            target = aTarget;
+        }
+
+        public List<Enemy> GetAllEnemies()
+        {
+            Level level = Engine.Engine.currentLevel;
+            List<Enemy> enemies = new List<Enemy>();
+
+            foreach (GameCharacter g in level.GetCharactersIsFriendly(false))
+            {
+                if (g is Enemy)
+                {
+                    enemies.Add((Enemy)g);
+                }
+            }
+
+            return enemies;
         }
 
         /// <summary>
@@ -64,7 +86,7 @@ namespace Brogue.Enemies
             level.CharacterEntities.Remove(this);
 
             //CURRENTLY USING DUNGEON LEVEL OF 1 AND CHARACTER LEVEL OF 2. NEED ACCESS.
-            level.DroppedItems.Add(Items.Item.randomItem(1, 2), itemPos);
+            level.DroppedItems.Add(Items.Item.randomItem(Engine.Engine.currentLevel.DungeonLevel, 2), itemPos);
         }
         
         /// <summary>
@@ -96,15 +118,11 @@ namespace Brogue.Enemies
             if (target == null)
             {
                 target = attacker;
-            }
-
-            foreach (GameCharacter g in level.GetCharactersIsFriendly(false))
-            {
-                //if (AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(g)).Length <= 2)
+                foreach (Enemy e in GetAllEnemies())
                 {
-                    if (g is Enemy)
+                    if(AStar.calculateHeuristic(level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(e)) < 3)
                     {
-                        //(Enemy)g.Target = attacker;
+                        e.ForceAggro(attacker);
                     }
                 }
             }

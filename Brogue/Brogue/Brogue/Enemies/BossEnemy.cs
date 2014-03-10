@@ -40,10 +40,9 @@ namespace Brogue.Enemies
         {
             Level level = Engine.Engine.currentLevel;
             Engine.Engine.AddXP(exp, Engine.Engine.currentLevel.CharacterEntities.FindPosition(this));
+            level.DroppedItems.Add(Items.Item.randomLegendary(Engine.Engine.currentLevel.DungeonLevel, 2), level.CharacterEntities.FindPosition(this));
             Engine.Engine.currentLevel.CharacterEntities.Remove(this);
-
-            //CURRENTLY USING DUNGEON LEVEL OF 1 AND CHARACTER LEVEL OF 2. NEED ACCESS.
-            level.DroppedItems.Add(Items.Item.randomLegendary(1, 2), level.CharacterEntities.FindPosition(this));
+            
         }
 
         //Converts damage based on armour and then removes from health.

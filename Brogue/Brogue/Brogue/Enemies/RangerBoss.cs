@@ -56,5 +56,17 @@ namespace Brogue.Enemies
             attacks.Add(30 + i * 5);
             exp = 30 + 30 * i;
         }
+
+        public override DynamicTexture GetTexture()
+        {
+            if (IsAggro)
+            {
+                return Engine.Engine.GetTexture("Enemies/RangerBossAggressive");
+            }
+            else
+            {
+                return Engine.Engine.GetTexture("Enemies/RangerBossPassive");
+            }
+        }
     }
 }
