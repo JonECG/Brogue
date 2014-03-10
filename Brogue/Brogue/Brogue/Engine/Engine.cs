@@ -585,7 +585,7 @@ namespace Brogue.Engine
             vattacks.Add(new VisualAttack(originVector, destVector, 5, attackSprite));
         }
 
-        public static void AddVisualAttack(GameCharacter origin, GameCharacter target, DynamicTexture attackSprite, float startScale = 1, float endScale = 1)
+        public static void AddVisualAttack(GameCharacter origin, GameCharacter target, DynamicTexture attackSprite, float startScale = 1, float endScale = 1, float scaleAmount = 0.05f)
         {
             IntVec gamePositionOrigin = currentLevel.CharacterEntities.FindPosition(origin) * CELLWIDTH;
             Vector2 originVector = Vector2.Transform(new Vector2(gamePositionOrigin.X, gamePositionOrigin.Y), worldToView);
