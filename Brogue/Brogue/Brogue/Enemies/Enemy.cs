@@ -28,7 +28,7 @@ namespace Brogue.Enemies
 
         public bool IsAggro
         {
-            get { return (target != null); }
+            get { return (target != null && HeroClasses.Hero.visible); }
         }
 
         public void ForceAggro(GameCharacter aTarget)
@@ -59,7 +59,10 @@ namespace Brogue.Enemies
         /// <param name="level">The current level</param>
         public void Move(Direction d, Level level)
         {
-            level.Move(this, d);
+            if (IsAggro)
+            {
+                level.Move(this, d);
+            }
         }
 
         /// <summary>
@@ -94,10 +97,13 @@ namespace Brogue.Enemies
         /// </summary>
         protected void Attack()
         {
-            target.TakeDamage(attack, this);
-            if (element != null)
+            if (IsAggro)
             {
-                target.DealElementalDamage(element, (1 + Engine.Engine.currentLevel.DungeonLevel / 3));
+                target.TakeDamage(attack, this);
+                if (element != null)
+                {
+                    target.DealElementalDamage(element, (1 + Engine.Engine.currentLevel.DungeonLevel / 3));
+                }
             }
         }
 
