@@ -6,20 +6,20 @@ using System.Text;
 
 namespace Brogue.Abilities.SingleTargets
 {
-    [Serializable] public class DoubleSlash : SingleTarget
+    [Serializable]
+    public class SteadyShot : SingleTarget
     {
-
-        public DoubleSlash()
+        public SteadyShot()
         {
-            description = "The warrior strikes a single target to deal double damage.";
+            description = "The ranger lines up the perfect shot on the selected target.";
             castSquares = new IntVec[1];
             for (int i = 0; i < castSquares.Length; i++)
             {
                 castSquares[i] = new IntVec(0, 0);
             }
-            baseDamage = 0;
-            radius = 1;
-            abilityCooldown = 6;
+            baseDamage = 6;
+            radius = 4;
+            abilityCooldown = 5;
         }
 
         protected override void finishCast(int damage, Mapping.Level mapLevel, HeroClasses.Hero hero)
@@ -37,7 +37,7 @@ namespace Brogue.Abilities.SingleTargets
 
         public override int calculateDamage(int heroLevel, int heroDamage)
         {
-            return heroDamage * 2;
+            return (baseDamage * heroLevel) + heroDamage;
         }
     }
 }

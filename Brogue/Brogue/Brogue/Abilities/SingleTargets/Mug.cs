@@ -6,18 +6,18 @@ using System.Text;
 
 namespace Brogue.Abilities.SingleTargets
 {
-    [Serializable] public class DoubleSlash : SingleTarget
+    [Serializable]
+    public class Mug : SingleTarget
     {
-
-        public DoubleSlash()
+        public Mug()
         {
-            description = "The warrior strikes a single target to deal double damage.";
+            description = "The rogue strikes the enemy chosen, and obtains a random item.";
             castSquares = new IntVec[1];
             for (int i = 0; i < castSquares.Length; i++)
             {
                 castSquares[i] = new IntVec(0, 0);
             }
-            baseDamage = 0;
+            baseDamage = 6;
             radius = 1;
             abilityCooldown = 6;
         }
@@ -33,11 +33,17 @@ namespace Brogue.Abilities.SingleTargets
                 }
                 castSquares[i] = new IntVec(0, 0);
             }
+            Items.Item heroItem = null;
+            while(heroItem == null || heroItem.ItemType == Enums.ITypes.Consumable)
+            {
+                heroItem = Items.Item.randomItem(mapLevel.DungeonLevel, hero.level);
+            }
+            hero.GetInventory().addItem(heroItem);
         }
 
         public override int calculateDamage(int heroLevel, int heroDamage)
         {
-            return heroDamage * 2;
+            return (baseDamage * heroLevel) + heroDamage;
         }
     }
 }

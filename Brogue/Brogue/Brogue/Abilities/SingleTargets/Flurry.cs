@@ -6,10 +6,9 @@ using System.Text;
 
 namespace Brogue.Abilities.SingleTargets
 {
-    [Serializable] public class DoubleSlash : SingleTarget
+    [Serializable] public class Flurry : SingleTarget
     {
-
-        public DoubleSlash()
+        public Flurry()
         {
             description = "The warrior strikes a single target to deal double damage.";
             castSquares = new IntVec[1];
@@ -19,7 +18,7 @@ namespace Brogue.Abilities.SingleTargets
             }
             baseDamage = 0;
             radius = 1;
-            abilityCooldown = 6;
+            abilityCooldown = 3;
         }
 
         protected override void finishCast(int damage, Mapping.Level mapLevel, HeroClasses.Hero hero)
@@ -37,7 +36,7 @@ namespace Brogue.Abilities.SingleTargets
 
         public override int calculateDamage(int heroLevel, int heroDamage)
         {
-            return heroDamage * 2;
+            return (int)((heroDamage*.8) * 3);
         }
     }
 }
