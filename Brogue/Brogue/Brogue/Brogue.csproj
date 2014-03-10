@@ -80,12 +80,18 @@
     </Compile>
     <Compile Include="Abilities\AOE\FlameStrike.cs" />
     <Compile Include="Abilities\AOE\LightningStorm.cs" />
-    <Compile Include="Abilities\AOE\RangedAreoOfEffect.cs" />
+    <Compile Include="Abilities\AOE\RangedAreaOfEffect.cs" />
+    <Compile Include="Abilities\AOE\Volley.cs" />
     <Compile Include="Abilities\AOE\WhirlwindSlash.cs" />
+    <Compile Include="Abilities\SingleTargets\Blink.cs" />
     <Compile Include="Abilities\SingleTargets\Cleave.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Abilities\SingleTargets\DoubleSlash.cs" />
+    <Compile Include="Abilities\SingleTargets\Execute.cs" />
     <Compile Include="Abilities\SingleTargets\Fireball.cs" />
+    <Compile Include="Abilities\SingleTargets\ShieldBash.cs" />
+    <Compile Include="Abilities\SingleTargets\ShieldBlock.cs" />
     <Compile Include="Abilities\SingleTargets\SingleTarget.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -201,6 +207,7 @@
     <Compile Include="EnviromentObjects\Interactive\Door.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="EnviromentObjects\Interactive\Gate.cs" />
     <Compile Include="EnviromentObjects\Interactive\HiddenPassage.cs" />
     <Compile Include="EnviromentObjects\Interactive\Iinteractable.cs">
       <SubType>Code</SubType>
@@ -218,6 +225,7 @@
     <Compile Include="GameCharacter.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="HeroClasses\Brawler.cs" />
     <Compile Include="HeroClasses\Equipment.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -230,6 +238,7 @@
     <Compile Include="HeroClasses\Rogue.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="HeroClasses\Sentinel.cs" />
     <Compile Include="HeroClasses\Warrior.cs">
       <SubType>Code</SubType>
     </Compile>

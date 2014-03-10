@@ -19,7 +19,7 @@ namespace Brogue.Items.Equipment.Offhand
         public ElementAttributes findElement()
         {
             Random rand = new Random();
-            int size = Enum.GetNames(typeof(ElementAttributes)).Length;
+            int size = Enum.GetNames(typeof(ElementAttributes)).Length - 1;
 
             return (ElementAttributes)rand.Next(size);
         }

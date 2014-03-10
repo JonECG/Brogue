@@ -10,5 +10,6 @@ namespace Brogue.Enums
         Fire,
         Lighting,
         Ice,
+        Arcane
     }
 }

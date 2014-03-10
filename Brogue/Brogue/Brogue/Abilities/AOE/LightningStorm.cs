@@ -19,10 +19,5 @@ namespace Brogue.Abilities.AOE
                 castSquares[i] = new IntVec(0,0);
             }
         }
-
-        public override int calculateDamage(int heroLevel, int heroDamage)
-        {
-            return (baseDamage + heroDamage) * heroLevel;
-        }
     }
 }

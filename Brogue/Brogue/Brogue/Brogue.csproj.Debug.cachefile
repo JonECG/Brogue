@@ -116,6 +116,22 @@ Content\UI\ToolTipBack.xnb
 Content\Enemies\Attacks\Arrow.xnb
 Content\Enemies\Attacks\Blood.xnb
 Content\Enemies\Attacks\FireBall.xnb
+Content\UI\DeathNote.xnb
+Content\UI\Load.xnb
+Content\UI\MageCharCreationHigh.xnb
+Content\UI\MageCharCreation.xnb
+Content\UI\NewGame.xnb
+Content\UI\Obscure.xnb
+Content\UI\RestartButton.xnb
+Content\UI\RogueCharCreation.xnb
+Content\UI\RogueCharCreationHigh.xnb
+Content\UI\WarriorCharCreationHigh.xnb
+Content\UI\WarriorCharCreation.xnb
+Content\UI\SelectSave.xnb
+Content\Enviroment\FloorStuff.xnb
+Content\Enviroment\IronGate.xnb
+Content\Enviroment\Plate.xnb
+Content\Enviroment\StairsDesent.xnb
 Content\Audio\The Descent.wma
 Content\Music\The_Thing.wma
 Content\Music\SOMITEST.wma
