@@ -132,6 +132,12 @@ Content\Enviroment\FloorStuff.xnb
 Content\Enviroment\IronGate.xnb
 Content\Enviroment\Plate.xnb
 Content\Enviroment\StairsDesent.xnb
+Content\Enemies\ChargeBossAggressive.xnb
+Content\Enemies\ChargeBossPassive.xnb
+Content\Enemies\RangerBossAggressive.xnb
+Content\Enemies\RangerBossPassive.xnb
+Content\Enemies\VampireBossAggressive.xnb
+Content\Enemies\VampireBossPassive.xnb
 Content\Audio\The Descent.wma
 Content\Music\The_Thing.wma
 Content\Music\SOMITEST.wma

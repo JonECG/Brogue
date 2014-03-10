@@ -90,12 +90,20 @@
     <Compile Include="Abilities\SingleTargets\DoubleSlash.cs" />
     <Compile Include="Abilities\SingleTargets\Execute.cs" />
     <Compile Include="Abilities\SingleTargets\Fireball.cs" />
+    <Compile Include="Abilities\SingleTargets\Flurry.cs" />
+    <Compile Include="Abilities\SingleTargets\Mug.cs" />
     <Compile Include="Abilities\SingleTargets\ShieldBash.cs" />
     <Compile Include="Abilities\SingleTargets\ShieldBlock.cs" />
     <Compile Include="Abilities\SingleTargets\SingleTarget.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Abilities\SingleTargets\SoulSiphon.cs" />
+    <Compile Include="Abilities\SingleTargets\SteadyShot.cs" />
     <Compile Include="Abilities\SingleTargets\Vault.cs" />
+    <Compile Include="Abilities\Togglable\FlameWeapon.cs" />
+    <Compile Include="Abilities\Togglable\IceArmor.cs" />
+    <Compile Include="Abilities\Togglable\Invisibility.cs" />
+    <Compile Include="Abilities\Togglable\Parry.cs" />
     <Compile Include="Abilities\Togglable\Rage.cs" />
     <Compile Include="Abilities\Togglable\ToggleAbility.cs" />
     <Compile Include="Audio.cs" />
@@ -227,6 +235,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="HeroClasses\Brawler.cs" />
+    <Compile Include="HeroClasses\Duelist.cs" />
     <Compile Include="HeroClasses\Equipment.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -236,10 +245,13 @@
     <Compile Include="HeroClasses\Mage.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="HeroClasses\Magus.cs" />
+    <Compile Include="HeroClasses\Ranger.cs" />
     <Compile Include="HeroClasses\Rogue.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="HeroClasses\Sentinel.cs" />
+    <Compile Include="HeroClasses\Sorcerer.cs" />
     <Compile Include="HeroClasses\Warrior.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -18,7 +18,7 @@ namespace Brogue.Abilities.SingleTargets
                 castSquares[i] = new IntVec(0, 0);
             }
             baseDamage = 0;
-            radius = 4;
+            radius = 3;
             abilityCooldown = 5;
         }
 
@@ -27,13 +27,17 @@ namespace Brogue.Abilities.SingleTargets
             return 0;
         }
 
-        protected override int getCooldown(GameCharacter enemy)
+        protected override void finishCast(int damage, Mapping.Level mapLevel, HeroClasses.Hero hero)
         {
-            return abilityCooldown;
-        }
-
-        protected override void heroEffect(HeroClasses.Hero hero)
-        {
+            for (int i = 0; i < castSquares.Length; i++)
+            {
+                GameCharacter test = (GameCharacter)mapLevel.CharacterEntities.FindEntity(castSquares[i]);
+                if (test != null)
+                {
+                    test.TakeDamage(damage, hero);
+                }
+                castSquares[i] = new IntVec(0, 0);
+            }
         }
 
         public override void finishCastandDealDamage(int heroLevel, int heroDamage, Mapping.Level mapLevel, HeroClasses.Hero hero)
