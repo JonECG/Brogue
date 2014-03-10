@@ -2,6 +2,7 @@
 using Brogue.Abilities.SingleTargets;
 using Brogue.Abilities.Togglable;
 using Brogue.Enums;
+using Brogue.Items.Equipment.Weapon.Melee;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,7 @@ namespace Brogue.HeroClasses
             baseHealth = 250;
             healthPerLevel = 35;
             level = 10;
+            requiredBranchLevel = 700;
             resetLevel();
             resetHealth();
             abilities[0] = new Fireball();

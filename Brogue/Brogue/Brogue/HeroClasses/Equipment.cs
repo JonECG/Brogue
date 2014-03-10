@@ -390,9 +390,14 @@ namespace Brogue.HeroClasses
             return removed;
         }
 
-        public Accessory removeAccessory(Accessory type)
+        public Accessory removeAccessory(Accessory type, int removedRingIndex = -1)
         {
             Accessory removedAccessory = null;
+            if (removedRingIndex != -1)
+            {
+                removedAccessory = rings[removedRingIndex];
+                rings[removedRingIndex] = null;
+            }
             bool found = false;
             if (type != null)
             {
@@ -406,17 +411,11 @@ namespace Brogue.HeroClasses
                             found = true;
                             break;
                         case Slots.Finger_One:
-                            if (rings[0] != null && rings[0].Equals(type))
+                            if (rings[0] != null && rings[1] != null)
                             {
                                 removedAccessory = rings[0];
                                 found = true;
                                 rings[0] = null;
-                            }
-                            if (rings[1] != null && rings[1].Equals(type))
-                            {
-                                removedAccessory = rings[1];
-                                found = true;
-                                rings[1] = null;
                             }
                             break;
                     }

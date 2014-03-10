@@ -25,6 +25,7 @@ namespace Brogue.HeroClasses
             baseHealth = 400;
             healthPerLevel = 65;
             level = 10;
+            requiredBranchLevel = 700;
             resetLevel();
             resetHealth();
             abilities[0] = new Cleave();

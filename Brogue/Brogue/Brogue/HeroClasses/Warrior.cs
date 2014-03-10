@@ -24,6 +24,9 @@ namespace Brogue.HeroClasses
             inventory.addItem(new Sword(1, 1));
             inventory.addItem(new GreatAxe(1, 1));
             inventory.addItem(new Axe(1, 1));
+            inventory.addItem(new Ring(1, 1));
+            inventory.addItem(new Ring(1, 1));
+            inventory.addItem(new Ring(1, 1));
             baseHealth = 300;
             healthPerLevel = 50;
             resetLevel();

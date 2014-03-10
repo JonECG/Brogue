@@ -41,6 +41,9 @@ namespace Brogue.HeroClasses
         public int damageBoost;
 
         public static Classes heroRole;
+        public static bool visible;
+        public static int parryCount;
+        public int invisibilityTurnCount;
 
         protected int baseHealth;
         protected bool turnOver;
@@ -80,6 +83,7 @@ namespace Brogue.HeroClasses
             expRequired = 50;
             jarBarAmount = 0;
             isFriendly = true;
+            visible = true;
             abilities = new Ability[6];
         }
 
@@ -108,15 +112,28 @@ namespace Brogue.HeroClasses
 
         public override void TakeDamage(int damage, GameCharacter attacker)
         {
-            armorBoostTurnCount -= (armorBoostTurnCount > 0) ? 1 : 0;
-            int percentHealth = 100 + armorRating*2;
-            int maxHealthPostArmorIncrease = (int)(((float)percentHealth / 100) * maxHealth);
-            int damagePostReduction = maxHealthPostArmorIncrease-damage;
-            int finalDamage = maxHealth - ((int)(((float)damagePostReduction/maxHealthPostArmorIncrease) * maxHealth));
-            damagePostReduction = (damagePostReduction < 1) ? 1 : damagePostReduction;
-            health -= finalDamage;
-            Engine.Engine.Log(health.ToString());
-            Engine.Engine.Log(attacker.ToString());
+            if (parryCount == 0)
+            {
+                armorBoostTurnCount -= (armorBoostTurnCount > 0) ? 1 : 0;
+                int percentHealth = 100 + armorRating * 2;
+                int maxHealthPostArmorIncrease = (int)(((float)percentHealth / 100) * maxHealth);
+                int damagePostReduction = maxHealthPostArmorIncrease - damage;
+                int finalDamage = maxHealth - ((int)(((float)damagePostReduction / maxHealthPostArmorIncrease) * maxHealth));
+                damagePostReduction = (damagePostReduction < 1) ? 1 : damagePostReduction;
+                health -= finalDamage;
+                Engine.Engine.Log(health.ToString());
+                Engine.Engine.Log(attacker.ToString());
+            }
+            else
+            {
+                Engine.Engine.Log("Parried");
+                parryCount--;
+            }
+        }
+
+        public void setParryCount(int count)
+        {
+            parryCount = count;
         }
 
         public static void loadSprite()
@@ -179,10 +196,18 @@ namespace Brogue.HeroClasses
             return armorRating;
         }
 
+        public void setInvisibility(int turnCount)
+        {
+            invisibilityTurnCount = turnCount;
+        }
+
         public bool hasReachedBranchLevel()
         {
             bool reached = requiredBranchLevel <= level;
-            requiredBranchLevel = (reached) ? 700 : requiredBranchLevel;
+            if (reached)
+            {
+                requiredBranchLevel = (reached) ? 700 : requiredBranchLevel;
+            }
             return reached;
         }
 
@@ -204,6 +229,22 @@ namespace Brogue.HeroClasses
         protected void resetHealth()
         {
             health = maxHealth;
+        }
+
+        public void obtainStartingGear(Level mapLevel)
+        {
+            switch (heroRole)
+            {
+                case Classes.Ranger:
+                    inventory.addItem(new CrossBow(mapLevel.DungeonLevel, 7));
+                    break;
+                case Classes.Magus:
+                    inventory.addItem(new Sword(mapLevel.DungeonLevel, 7));
+                    break;
+                case Classes.Duelist:
+                    inventory.addItem(new Rapier(mapLevel.DungeonLevel, 7));
+                    break;
+            }
         }
 
         private void drinkFromJarBar()
@@ -350,6 +391,8 @@ namespace Brogue.HeroClasses
                 if (turnOver)
                 {
                     cooldownAbilities();
+                    invisibilityTurnCount -= (!visible)?1:0;
+                    visible = invisibilityTurnCount == 0;
                 }
             }
             else
@@ -388,6 +431,7 @@ namespace Brogue.HeroClasses
                             {
                                 turnOver = true;
                                 abilities[ability].finishCastandDealDamage(level, currentlyEquippedItems.getTotalDamageIncrease()+damageBoost, mapLevel, this);
+                                visible = true;
                                 Engine.Engine.ClearGridSelections();
                                 viewingCast = false;
                             }
@@ -402,7 +446,7 @@ namespace Brogue.HeroClasses
             }
             else
             {
-                if (MouseController.LeftClicked())
+                if (MouseController.LeftClicked() && abilities[ability].cooldown == 0)
                 {
                     abilities[ability].finishCastandDealDamage(level, currentlyEquippedItems.getTotalDamageIncrease(), mapLevel, this);
                 }
@@ -421,7 +465,9 @@ namespace Brogue.HeroClasses
                     int weaponRange2 = currentlyEquippedItems.getAuxilaryWeaponRange();
                     IntVec[] weaponHitbox1 = AStar.getPossiblePositionsFrom(mapLevel, mapLevel.CharacterEntities.FindPosition(this), weaponRange1, true);
                     IntVec[] weaponHitbox2 = AStar.getPossiblePositionsFrom(mapLevel, mapLevel.CharacterEntities.FindPosition(this), weaponRange2, true);
+                    bool wasVisible = visible;
                     damageEnemyIfInRange(weaponHitbox1, mapLevel, testEnemy, currentlyEquippedItems.getPrimaryWeaponDamage()+damageBoost);
+                    visible = wasVisible;
                     damageEnemyIfInRange(weaponHitbox2, mapLevel, testEnemy, currentlyEquippedItems.getAuxilaryWeaponDamage()+damageBoost);
                     if (Element != null)
                     {
@@ -454,7 +500,9 @@ namespace Brogue.HeroClasses
                 if (hitBox[i].Equals(mapLevel.CharacterEntities.FindPosition(enemy)))
                 {
                     found = true;
+                    damage = (!visible) ? 2 * damage : damage;
                     enemy.TakeDamage(damage, this);
+                    visible = true;
                     turnOver = true;
                 }
             }

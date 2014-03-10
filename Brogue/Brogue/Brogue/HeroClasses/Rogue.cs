@@ -1,4 +1,6 @@
 ﻿using Brogue.Abilities.AOE;
+using Brogue.Abilities.SingleTargets;
+using Brogue.Abilities.Togglable;
 using Brogue.Enums;
 using Brogue.Items.Equipment.Weapon.Melee;
 using System;
@@ -19,7 +21,8 @@ namespace Brogue.HeroClasses
             healthPerLevel = 40;
             resetLevel();
             resetHealth();
-            abilities[0] = new Volley();
+            abilities[0] = new Mug();
+            abilities[1] = new Invisibility();
             Engine.Engine.Log(health.ToString());
         }
     }

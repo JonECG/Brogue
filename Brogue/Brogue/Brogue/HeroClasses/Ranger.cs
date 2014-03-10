@@ -1,4 +1,6 @@
 ﻿using Brogue.Abilities.AOE;
+using Brogue.Abilities.SingleTargets;
+using Brogue.Abilities.Togglable;
 using Brogue.Enums;
 using Brogue.Items.Equipment.Weapon.Melee;
 using System;
@@ -17,9 +19,13 @@ namespace Brogue.HeroClasses
             baseHealth = 255;
             healthPerLevel = 35;
             level = 10;
+            requiredBranchLevel = 700;
             resetLevel();
             resetHealth();
-            abilities[0] = new Volley();
+            abilities[0] = new Mug();
+            abilities[1] = new Invisibility();
+            abilities[2] = new Volley();
+            abilities[3] = new SteadyShot();
             Engine.Engine.Log(health.ToString());
         }
     }

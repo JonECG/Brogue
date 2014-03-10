@@ -16,6 +16,7 @@ namespace Brogue.HeroClasses
             heroRole = Classes.Sorcerer;
             baseHealth = 200;
             healthPerLevel = 35;
+            requiredBranchLevel = 700;
             level = 10;
             resetLevel();
             resetHealth();
