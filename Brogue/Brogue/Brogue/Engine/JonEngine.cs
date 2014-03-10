@@ -130,9 +130,13 @@ namespace Brogue.Engine
 
         static ContentManager contentManager;
 
+        static Song mainMenuTheme;
+
         public static void LoadContent(ContentManager content)
         {
+            mainMenuTheme = content.Load<Song>("Audio/Stoneworld Battle");
             contentManager = content;
+            
 
             notFound = new DynamicTexture();
             notFound.texture = contentManager.Load<Texture2D>("error");
@@ -150,13 +154,18 @@ namespace Brogue.Engine
                     //Engine.Log(e.ToString());
                 }
             }
-
-
             ContentLoaded(content);
+        }
 
+        public static void StartMainMenuSong()
+        {
+            MediaPlayer.Play(mainMenuTheme);
+            MediaPlayer.IsRepeating = true;
+        }
 
-
-
+        public static void StopMainMenuSong()
+        {
+            MediaPlayer.Stop();
         }
     }
 }

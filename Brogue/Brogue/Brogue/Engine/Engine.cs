@@ -103,6 +103,20 @@ namespace Brogue.Engine
             angle = (float)Math.Atan2(direction.X, -direction.Y);
             this.direction.Normalize();
         }
+
+        public VisualAttack(Vector2 screenPosition, Vector2 destination, float speed, string weaponDynTex, float startScale, float endScale, float scaleAmount)
+        {
+            this.screenPosition = screenPosition;
+            this.speed = speed;
+            this.scale = startScale;
+            this.endScale = endScale;
+            this.scaleRate = scaleAmount;
+            tex = Engine.GetTexture(weaponDynTex);
+            this.direction = new Vector2(destination.X, destination.Y) - screenPosition;
+            distance = direction.Length();
+            angle = (float)Math.Atan2(direction.X, -direction.Y);
+            this.direction.Normalize();
+        }
         public bool update()
         {
             screenPosition += direction * speed;
@@ -557,6 +571,7 @@ namespace Brogue.Engine
 
         private static bool showSaveSlotSelection;
 
+
         private static DynamicTexture
             lightMask = GetTexture("lightmask")
         , sightMask = GetTexture("lightmask")
@@ -615,6 +630,22 @@ namespace Brogue.Engine
         }
 
         public static void AddVisualAttack(GameCharacter origin, GameCharacter target, DynamicTexture attackSprite, float startScale = 1, float endScale = 1, float scaleAmount = 0.05f)
+        {
+            IntVec gamePositionOrigin = currentLevel.CharacterEntities.FindPosition(origin) * CELLWIDTH;
+            Vector2 originVector = Vector2.Transform(new Vector2(gamePositionOrigin.X, gamePositionOrigin.Y), worldToView);
+            IntVec gamePositionDest = currentLevel.CharacterEntities.FindPosition(target) * CELLWIDTH;
+            Vector2 destVector = Vector2.Transform(new Vector2(gamePositionDest.X, gamePositionDest.Y), worldToView);
+            if (attackSprite != null)
+            {
+                vattacks.Add(new VisualAttack(originVector, destVector, 5, attackSprite, startScale, endScale, scaleAmount));
+            }
+            else
+            {
+                vattacks.Add(new VisualAttack(originVector, destVector, 5, "attackSprite"));
+            }
+        }
+
+        public static void AddVisualAttack(GameCharacter origin, GameCharacter target, string attackSprite, float startScale = 1, float endScale = 1, float scaleAmount = 0.05f)
         {
             IntVec gamePositionOrigin = currentLevel.CharacterEntities.FindPosition(origin) * CELLWIDTH;
             Vector2 originVector = Vector2.Transform(new Vector2(gamePositionOrigin.X, gamePositionOrigin.Y), worldToView);
@@ -755,6 +786,7 @@ namespace Brogue.Engine
         public static void LoadMainMenu()
         {
             LoadContent(game.Content);
+            StartMainMenuSong();
             if (DOSTARTMENU)
             {
                 warriorButton = new CharButton(new Vector2(game.Width / 3, 2 * game.Height / 3), true, "UI/WarriorCharCreation", "UI/WarriorCharCreationHigh");
@@ -822,6 +854,7 @@ namespace Brogue.Engine
 
         public static void StartGame()
         {
+            StopMainMenuSong();
             Log("Game started");
             gameStarted = true;
             mainMenuOpen = false;
