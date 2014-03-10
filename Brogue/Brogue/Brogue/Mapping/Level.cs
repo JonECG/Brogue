@@ -289,9 +289,11 @@ namespace Brogue.Mapping
 
         public void drawAStar()
         {
+            DynamicTexture trans = Engine.Engine.GetTexture("abilityOverlay");
+
             foreach (IntVec vec in moveset)
             {
-                Engine.Engine.Draw(new Sprite(Engine.Engine.placeHolder, Color.Salmon), vec); //Orange
+                Engine.Engine.Draw(new Sprite(trans, Color.Salmon), vec); //Orange
                 //sb.Draw(Tile.tileset, new Rectangle((int)(vec.X * tileWidth), (int)(vec.Y * tileWidth), (int)Math.Ceiling(tileWidth), (int)Math.Ceiling(tileWidth)), new Rectangle(0, 0, 48, 48), Color.Blue);
             }
 
@@ -305,8 +307,10 @@ namespace Brogue.Mapping
             //    Engine.Engine.Draw(new Sprite(Engine.Engine.placeHolder, Color.Orange, dir), new IntVec(current.X, current.Y)); //Orange
             //}
 
-            Engine.Engine.Draw(new Sprite(Engine.Engine.placeHolder, Color.Green), new IntVec(a.X, a.Y)); //Green
-            Engine.Engine.Draw(new Sprite(Engine.Engine.placeHolder, Color.Red), new IntVec(b.X, b.Y)); //Red
+            
+
+            Engine.Engine.Draw(new Sprite(trans, Color.Green), new IntVec(a.X, a.Y)); //Green
+            Engine.Engine.Draw(new Sprite(trans, Color.Red), new IntVec(b.X, b.Y)); //Red
 
 
             //var nodes = AStar.getPathDrawnBetween(this, a, b, actionsToTake);
@@ -371,8 +375,8 @@ namespace Brogue.Mapping
                 if (previousPathDistance != -1 && Math.Abs(previousPathDistance - path.Length) > movement)
                     Engine.Engine.Log(string.Format("<INCONSISTENT PATHFIND; MOVEMENTDELTA={0},PATHDELTA={1}>", movement, Math.Abs(previousPathDistance - path.Length)));
 
-                moveset = AStar.getTargetLine(this, startPoint, a, true);
-                //moveset = AStar.getPossiblePositionsFrom(this, a, 5, AStar.CharacterTargeting.TARGET_FIRST, true);
+                //moveset = AStar.getTargetLine(this, startPoint, a, true);
+                moveset = AStar.getPossiblePositionsFrom(this, a, 15, AStar.CharacterTargeting.TARGET_FIRST, true);
 
                 previousPathDistance = path.Length;
             }

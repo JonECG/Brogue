@@ -45,8 +45,8 @@ namespace Brogue.Mapping
             {
                 used[position.X, position.Y] = budget;
 
-                if( !start.Equals(position) )
-                positions.Add(position);
+                if( !start.Equals(position) && !positions.Contains( position ))
+                    positions.Add(position);
 
                 if (expand && budget > 0)
                 foreach (Direction dir in Direction.Values)

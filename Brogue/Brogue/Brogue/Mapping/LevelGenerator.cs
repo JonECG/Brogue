@@ -347,8 +347,8 @@ namespace Brogue.Mapping
         static int seedDebug, levelDebug;
         public static Level generate(int seed, int levels, int dungeonLevel = 1, int heroLevel = 1 )
         {
-            //seed = 1599313429;
-            //levels = 215;
+            seed = 1599313429;
+            levels = 2150;
 
             seedDebug = seed;
             levelDebug = levels;
