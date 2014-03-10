@@ -480,7 +480,7 @@ namespace Brogue.Engine
         public const bool DOLIGHTING = true;
         public const bool DOAUDIO = false;
         public const bool DOSTARTMENU = true;
-        public const bool DOLOG = true;
+        public static bool DOLOG = false;
         public const float sightDistance = 1;
         public static bool inventoryOpen = false;
         public static bool mainMenuOpen = true;
@@ -585,7 +585,7 @@ namespace Brogue.Engine
             vattacks.Add(new VisualAttack(originVector, destVector, 5, attackSprite));
         }
 
-        public static void AddVisualAttack(GameCharacter origin, GameCharacter target, DynamicTexture attackSprite)
+        public static void AddVisualAttack(GameCharacter origin, GameCharacter target, DynamicTexture attackSprite, float startScale = 1, float endScale = 1)
         {
             IntVec gamePositionOrigin = currentLevel.CharacterEntities.FindPosition(origin) * CELLWIDTH;
             Vector2 originVector = Vector2.Transform(new Vector2(gamePositionOrigin.X, gamePositionOrigin.Y), worldToView);
@@ -668,8 +668,9 @@ namespace Brogue.Engine
         public static void Start(Game1 injectedGame)
         {
             game = injectedGame;
-
-            //GenerateLevel();
+            hero = new HeroClasses.Warrior();
+            GenerateLevel();
+            
             LogPosition = new Vector2(12, 12);
             // = new Vector2(game.Width - 48, game.Height - 48);
             InventoryPosition = new Vector2(game.Width - 5 * (CELLWIDTH), game.Height - 4 * (CELLWIDTH));
@@ -1081,6 +1082,10 @@ namespace Brogue.Engine
         {
             bool didSomething = false;
 
+            if (KeyboardController.IsPressed(Keys.L))
+            {
+                DOLOG = !DOLOG;
+            }
             if (KeyboardController.IsPressed(Keys.O))
             {
                 //Go to next level hacked.
@@ -1598,6 +1603,7 @@ namespace Brogue.Engine
         {
             if (DOLIGHTING)
             {
+                
                 game.spriteBatch.Begin(SpriteSortMode.Deferred,
                         BlendState.Additive);
                 game.GraphicsDevice.SetRenderTarget(lightsTarget);
