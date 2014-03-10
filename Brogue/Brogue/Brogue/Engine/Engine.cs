@@ -400,7 +400,7 @@ namespace Brogue.Engine
 
             if (gear.IsLegendary)
             {
-                DrawOutlined(sb, position + flavPosition, ((Items.Equipment.Weapon.Legendary.LegendaryWeapon)gear).FlavorText, Color.Black, Color.RosyBrown);
+                //DrawOutlined(sb, position + flavPosition, ((Items.Equipment.Weapon.Legendary.LegendaryWeapon)gear).FlavorText, Color.Black, Color.RosyBrown);
             }
         }
 
@@ -683,6 +683,11 @@ namespace Brogue.Engine
             game = injectedGame;
             hero = new HeroClasses.Warrior();
             GenerateLevel();
+
+            windowSizeInTiles = new IntVec(game.Width / CELLWIDTH, game.Height / CELLWIDTH);
+            cameraPosition = currentLevel.CharacterEntities.FindPosition(hero);
+            modifiedCameraPosition.X = cameraPosition.X - (windowSizeInTiles.X / 2);
+            modifiedCameraPosition.Y = cameraPosition.Y - (windowSizeInTiles.Y / 2);
             
             LogPosition = new Vector2(12, 12);
             // = new Vector2(game.Width - 48, game.Height - 48);
@@ -691,7 +696,6 @@ namespace Brogue.Engine
             InventorySize = new Vector2(4 * CELLWIDTH, 4 * CELLWIDTH);
             weaponEquipPosition = new Vector2(game.Width / 2 - CELLWIDTH, game.Height - CELLWIDTH);
             armorEquipPosition = new Vector2(0, game.Height - CELLWIDTH);
-            windowSizeInTiles = new IntVec(game.Width / CELLWIDTH, game.Height / CELLWIDTH);
             game.IsMouseVisible = true;
 
             LoadMainMenu();
