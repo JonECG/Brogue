@@ -94,7 +94,7 @@ namespace Brogue.Enemies
             attack = 4 + (4 * i);
             health = 5 + (4 * i);
             moveSpeed = 0;
-            exp = 10 + 10 * i;
+            exp = 3 + 10 * i-1;
             element = Enums.ElementAttributes.Lighting;
         }
 

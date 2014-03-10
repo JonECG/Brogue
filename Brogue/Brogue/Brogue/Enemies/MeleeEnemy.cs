@@ -126,7 +126,7 @@ namespace Brogue.Enemies
                 defense = 60;
             attack = 2 + (4 * i);
             health = 10 + (5 * i);
-            exp = 5 + 10 * i;
+            exp = 2 + 10 * i-1;
             
         }
 
