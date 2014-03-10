@@ -400,7 +400,23 @@ namespace Brogue.Engine
 
             if (gear.IsLegendary)
             {
-                //DrawOutlined(sb, position + flavPosition, ((Items.Equipment.Weapon.Legendary.LegendaryWeapon)gear).FlavorText, Color.Black, Color.RosyBrown);
+                switch(gear.ItemType)
+                {
+                    case Enums.ITypes.Armor:
+                        DrawOutlined(sb, position + flavPosition, "\"" + ((Items.Equipment.Armor.Legendary.LegendaryArmor)gear).FlavorText + "\"", Color.Black, Color.RosyBrown);
+                        break;
+                    case Enums.ITypes.Accessory:
+                        DrawOutlined(sb, position + flavPosition, "\"" + ((Items.Equipment.Accessory.Legendary.LegendaryAccessory)gear).FlavorText + "\"", Color.Black, Color.RosyBrown);
+                        break;
+                    case Enums.ITypes.Weapon:
+                        DrawOutlined(sb, position + flavPosition, "\"" + ((Items.Equipment.Weapon.Legendary.LegendaryWeapon)gear).FlavorText + "\"", Color.Black, Color.RosyBrown);
+                        break;
+                    case Enums.ITypes.Offhand:
+                        DrawOutlined(sb, position + flavPosition, "\"" + ((Items.Equipment.Offhand.Legendary.LegendaryOffhand)gear).FlavorText + "\"", Color.Black, Color.RosyBrown);
+                        break;
+                
+                }
+                
             }
         }
 
