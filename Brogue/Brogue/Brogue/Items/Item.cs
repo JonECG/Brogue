@@ -31,6 +31,7 @@ namespace Brogue.Items
     {
         public string Name { get; protected set; }
         public ITypes ItemType { get; protected set; }
+        public bool IsLegendary { get; protected set; }
 
         private static Random rand = new Random();
 
@@ -467,12 +468,12 @@ namespace Brogue.Items
 
         public static Item getDesiredDitem(int dLevel, int cLevel)
         {
-            return new Sword(dLevel, cLevel);
+            return new Necronomicon(dLevel, cLevel);
         }
 
         public static Item getDesireditem(int dLevel, int cLevel)
         {
-            return new BastardSword(dLevel, cLevel);
+            return new TheOne(dLevel, cLevel);
         }
 
         public abstract Item PickUpEffect(Hero Player);

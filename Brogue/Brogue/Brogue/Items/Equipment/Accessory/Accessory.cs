@@ -13,7 +13,7 @@ namespace Brogue.Items.Equipment.Accessory
         public int StatIncrease { get; protected set; }
         public List<Modifiers> StatIncreased { get; protected set; }
 
-        Random rand = new Random();
+        private static Random rand = new Random();
 
         public Accessory()
         {

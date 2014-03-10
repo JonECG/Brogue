@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Brogue.Mapping;
 using System.Linq;
 using System.Text;
+using Brogue.Engine;
 
 namespace Brogue.Abilities.AOE
 {
@@ -10,7 +11,7 @@ namespace Brogue.Abilities.AOE
     {
         public FlameStrike()
         {
-            radius = 15;
+            radius = 25;
             isActuallyFilled = false;
             castSquares = new IntVec[1200];
             baseDamage = 15;
@@ -25,5 +26,11 @@ namespace Brogue.Abilities.AOE
         {
             return ((baseDamage * baseDamage) + heroLevel) * heroDamage;
         }
+
+        //public override IntVec[] viewCastRange(Level level, IntVec start)
+        //{
+        //    radiusSquares
+        //    return radiusSquares;
+        //}
     }
 }

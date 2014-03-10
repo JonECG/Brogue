@@ -22,7 +22,7 @@ namespace Brogue.HeroClasses
             resetLevel();
             resetHealth();
             abilities[0] = new Mug();
-            abilities[1] = new Vault();
+            abilities[1] = new Invisibility();
             Engine.Engine.Log(health.ToString());
         }
     }

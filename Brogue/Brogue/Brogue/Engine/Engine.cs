@@ -387,7 +387,7 @@ namespace Brogue.Engine
 
             if (gear.ItemType == Enums.ITypes.Legendary)
             {
-                DrawOutlined(sb, position + flavPosition, ((Items.Equipment.Weapon.Legendary.LegendaryWeapon)gear).FlavorText, Color.Black, Color.BlanchedAlmond);
+                DrawOutlined(sb, position + flavPosition, ((Items.Equipment.Weapon.Legendary.LegendaryWeapon)gear).FlavorText, Color.Black, Color.RosyBrown);
             }
         }
 

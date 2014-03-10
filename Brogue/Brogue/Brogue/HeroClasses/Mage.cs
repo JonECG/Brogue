@@ -28,7 +28,7 @@ namespace Brogue.HeroClasses
             healthPerLevel = 30;
             resetLevel();
             resetHealth();
-            abilities[0] = new Fireball();
+            abilities[0] = new FlameStrike();
             abilities[1] = new Blink();
             Engine.Engine.Log(health.ToString());
         }
