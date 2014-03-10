@@ -22,13 +22,17 @@ namespace Brogue.Abilities.SingleTargets
             abilityCooldown = 6;
         }
 
-        protected override int getCooldown(GameCharacter enemy)
+        protected override void finishCast(int damage, Mapping.Level mapLevel, HeroClasses.Hero hero)
         {
-            return abilityCooldown;
-        }
-
-        protected override void heroEffect(HeroClasses.Hero hero)
-        {
+            for (int i = 0; i < castSquares.Length; i++)
+            {
+                GameCharacter test = (GameCharacter)mapLevel.CharacterEntities.FindEntity(castSquares[i]);
+                if (test != null)
+                {
+                    test.TakeDamage(damage, hero);
+                }
+                castSquares[i] = new IntVec(0, 0);
+            }
         }
 
         public override int calculateDamage(int heroLevel, int heroDamage)

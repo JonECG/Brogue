@@ -70,21 +70,9 @@ namespace Brogue.Abilities.Damaging
             damage = calculateDamage(heroLevel, heroDamage);
             cooldown = abilityCooldown;
             wasJustCast = true;
-            for (int i = 0; i < castSquares.Length; i++)
-            {
-                GameCharacter test = (GameCharacter)mapLevel.CharacterEntities.FindEntity(castSquares[i]);
-                if (test != null)
-                {
-                    test.TakeDamage(damage, hero);
-                    cooldown = getCooldown(test);
-                }
-                castSquares[i] = new IntVec(0, 0);
-            }
-            heroEffect(hero);
+            finishCast(damage, mapLevel, hero);
         }
 
-        abstract protected int getCooldown(GameCharacter enemy);
-
-        abstract protected void heroEffect(HeroClasses.Hero hero);
+        abstract protected void finishCast(int damage, Level mapLevel, HeroClasses.Hero hero);
     }
 }

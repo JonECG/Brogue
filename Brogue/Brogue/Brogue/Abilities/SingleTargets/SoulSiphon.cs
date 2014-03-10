@@ -6,24 +6,24 @@ using System.Text;
 
 namespace Brogue.Abilities.SingleTargets
 {
-    [Serializable] public class Blink : SingleTarget
+    [Serializable] public class SoulSiphon : SingleTarget
     {
-        public Blink()
+        public SoulSiphon()
         {
-            description = "The mage teleports to the selected position.";
+            description = "The mage deals damage to the enemy and heals for 100% of the damage dealt.";
             castSquares = new IntVec[1];
             for (int i = 0; i < castSquares.Length; i++)
             {
                 castSquares[i] = new IntVec(0, 0);
             }
-            baseDamage = 0;
-            radius = 2;
-            abilityCooldown = 2;
+            baseDamage = 8;
+            radius = 3;
+            abilityCooldown = 10;
         }
 
         public override int calculateDamage(int heroLevel, int heroDamage)
         {
-            return 0;
+            return (baseDamage * heroDamage/3) + heroLevel;
         }
 
         protected override void finishCast(int damage, Mapping.Level mapLevel, HeroClasses.Hero hero)
@@ -34,20 +34,7 @@ namespace Brogue.Abilities.SingleTargets
                 if (test != null)
                 {
                     test.TakeDamage(damage, hero);
-                }
-                castSquares[i] = new IntVec(0, 0);
-            }
-        }
-
-        public override void finishCastandDealDamage(int heroLevel, int heroDamage, Mapping.Level mapLevel, HeroClasses.Hero hero)
-        {
-            
-            for (int i = 0; i < castSquares.Length; i++)
-            {
-                if (mapLevel.Move(hero, castSquares[0], true))
-                {
-                    cooldown = abilityCooldown;
-                    wasJustCast = true;
+                    hero.Heal(damage);
                 }
                 castSquares[i] = new IntVec(0, 0);
             }

@@ -1,4 +1,5 @@
 ﻿using Brogue.Abilities.Damaging;
+using Brogue.Mapping;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,15 +22,19 @@ namespace Brogue.Abilities.SingleTargets
             abilityCooldown = 5;
         }
 
-        protected override int getCooldown(GameCharacter enemy)
-        {
-            return abilityCooldown;
-        }
-
-        protected override void heroEffect(HeroClasses.Hero hero)
+        protected void heroEffect(HeroClasses.Hero hero)
         {
             int test = (hero.level / 3) * (hero.GetArmorRating() + 1);
             hero.ApplyArmorBoost((hero.level / 3) * (hero.GetArmorRating()+1), 1);
+        }
+
+        protected override void finishCast(int damage, Level mapLevel, HeroClasses.Hero hero)
+        {
+            for (int i = 0; i < castSquares.Length; i++)
+            {
+                castSquares[i] = new IntVec(0, 0);
+            }
+            heroEffect(hero);
         }
 
         public override int calculateDamage(int heroLevel, int heroDamage)

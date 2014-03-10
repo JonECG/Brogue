@@ -5,16 +5,15 @@ using System.Text;
 
 namespace Brogue.Abilities.Togglable
 {
-    [Serializable] public class Rage : ToggleAbility
+    [Serializable] public class IceArmor : ToggleAbility
     {
-        const int increase = 5;
+        const int armorBoost = 10;
 
-        public override void updateToggle(int heroLevel, HeroClasses.Hero hero)
+        public override void updateToggle(int heroLevel, HeroClasses.Hero hero) 
         {
             if (createdLevel < heroLevel && isActive)
             {
-                hero.damageBoost -= increase + createdLevel;
-                hero.damageBoost += increase + heroLevel;
+                hero.setArmorBoost(armorBoost + (int)(heroLevel * 1.5));
                 createdLevel = heroLevel;
             }
         }
@@ -23,16 +22,15 @@ namespace Brogue.Abilities.Togglable
         {
             if (!isActive)
             {
-
-                Engine.Engine.Log(hero.damageBoost.ToString());
-                hero.damageBoost += increase + heroLevel;
-                Engine.Engine.Log(hero.damageBoost.ToString());
                 createdLevel = heroLevel;
+                Engine.Engine.Log(hero.getArmorBoost().ToString());
+                hero.ApplyArmorBoost(armorBoost + (int)(heroLevel * 1.5), int.MaxValue);
+                Engine.Engine.Log(hero.getArmorBoost().ToString());
                 isActive = true;
             }
             else if (isActive)
             {
-                hero.damageBoost -= increase + heroLevel;
+                hero.ApplyArmorBoost(0, 0);
                 isActive = false;
             }
             cooldown = 0;
