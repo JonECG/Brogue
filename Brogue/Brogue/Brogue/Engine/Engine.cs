@@ -902,20 +902,45 @@ namespace Brogue.Engine
                         HeroClasses.Equipment tempEquip = hero.GetEquipment();
                         InventorySystem.Inventory tempInventory = hero.GetInventory();
                         currentLevel.CharacterEntities.Remove(hero);
-                        if (HeroClasses.Hero.heroRole == Enums.Classes.Warrior)
+                        int rand = enginerand.Next(2);
+                        if (rand == 1)
                         {
-                            if (enginerand.Next(2) == 1)
+                            if (HeroClasses.Hero.heroRole == Enums.Classes.Warrior)
                             {
                                 hero = new HeroClasses.Brawler();
                                 Log("You are now a brawler.");
                             }
-                            else
+                            else if (HeroClasses.Hero.heroRole == Enums.Classes.Mage)
+                            {
+                                hero = new HeroClasses.Magus();
+                                Log("You are now a Magus.");
+                            }
+                            else if (HeroClasses.Hero.heroRole == Enums.Classes.Rogue)
+                            {
+                                hero = new HeroClasses.Duelist();
+                                Log("You are now a Duelist.");
+                            }
+                        }
+                        else
+                        {
+                            if (HeroClasses.Hero.heroRole == Enums.Classes.Warrior)
                             {
                                 hero = new HeroClasses.Sentinel();
                                 Log("You are now a sentinel.");
                             }
+                            else if (HeroClasses.Hero.heroRole == Enums.Classes.Mage)
+                            {
+                                hero = new HeroClasses.Sorcerer();
+                                Log("You are now a Sorcerer.");
+                            }
+                            else if (HeroClasses.Hero.heroRole == Enums.Classes.Rogue)
+                            {
+                                hero = new HeroClasses.Ranger();
+                                Log("You are now a Ranger.");
+                            }
                         }
                         hero.ObtainItems(tempInventory, tempEquip);
+                        hero.obtainStartingGear(currentLevel);
                         currentLevel.CharacterEntities.Add(hero, position);
                     }
 
@@ -1149,7 +1174,7 @@ namespace Brogue.Engine
                 {
                     if (hero.GetEquipment().rings[0] != null)
                     {
-                        hero.GetInventory().addItem(hero.GetEquipment().removeAccessory(hero.GetEquipment().rings[0]));
+                        hero.GetInventory().addItem(hero.GetEquipment().removeAccessory(null, 0));
                         didSomething = true;
                     }
                 }
@@ -1157,7 +1182,7 @@ namespace Brogue.Engine
                 {
                     if (hero.GetEquipment().rings[1] != null)
                     {
-                        hero.GetInventory().addItem(hero.GetEquipment().removeAccessory(hero.GetEquipment().rings[1]));
+                        hero.GetInventory().addItem(hero.GetEquipment().removeAccessory(null, 1));
                         didSomething = true;
                     }
                 }
