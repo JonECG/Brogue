@@ -6,11 +6,11 @@ using System.Text;
 
 namespace Brogue.Abilities.SingleTargets
 {
-    [Serializable] public class Flurry : SingleTarget
+    [Serializable] public class Eviscerate : SingleTarget
     {
-        public Flurry()
+        public Eviscerate()
         {
-            description = "The warrior strikes a single target to deal double damage.";
+            description = "The duelist strikes a single target three times.";
             castSquares = new IntVec[1];
             for (int i = 0; i < castSquares.Length; i++)
             {
@@ -18,7 +18,7 @@ namespace Brogue.Abilities.SingleTargets
             }
             baseDamage = 0;
             radius = 1;
-            abilityCooldown = 3;
+            abilityCooldown = 4;
         }
 
         protected override void finishCast(int damage, Mapping.Level mapLevel, HeroClasses.Hero hero)

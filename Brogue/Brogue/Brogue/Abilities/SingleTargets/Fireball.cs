@@ -28,6 +28,8 @@ namespace Brogue.Abilities.SingleTargets
                 GameCharacter test = (GameCharacter)mapLevel.CharacterEntities.FindEntity(castSquares[i]);
                 if (test != null)
                 {
+                    Engine.Engine.AddVisualAttack(hero, test, "Hero/FireballSpell", .25f, 1.0f, .03f);
+                    Audio.playSound("Fireball", .25f);
                     test.TakeDamage(damage, hero);
                 }
                 castSquares[i] = new IntVec(0, 0);
