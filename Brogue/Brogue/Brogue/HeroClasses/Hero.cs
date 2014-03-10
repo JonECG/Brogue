@@ -23,6 +23,7 @@ using Brogue.Abilities.AOE;
 using Brogue.Items.Equipment.Accessory;
 using Brogue.Abilities.Togglable;
 using Brogue.Abilities.SingleTargets;
+using Microsoft.Xna.Framework;
 
 namespace Brogue.HeroClasses
 {
@@ -44,7 +45,7 @@ namespace Brogue.HeroClasses
         public static bool visible;
         public static int parryCount;
         public int invisibilityTurnCount;
-
+        public Direction directionFacing;
         protected int baseHealth;
         protected bool turnOver;
         protected int armorRating;
@@ -106,6 +107,7 @@ namespace Brogue.HeroClasses
             {
                 positionMovement = new IntVec(0, -1);
             }
+            directionFacing = dir;
             sprite.Direction = dir;
             return positionMovement;
         }
@@ -169,6 +171,11 @@ namespace Brogue.HeroClasses
         {
             armorRating = currentlyEquippedItems.getTotalArmorRating();
             armorRating += (armorBoostTurnCount > 0) ? armorBoost : 0;
+        }
+
+        public void resetSprite()
+        {
+            sprite.Blend = (visible)?new Color(255, 255, 255, 255):new Color(255,255,255,122);
         }
 
         public void ApplyArmorBoost(int boost, int turnCount)
@@ -262,6 +269,7 @@ namespace Brogue.HeroClasses
             turnOver = false;
             bool casting = false;
             int test = health;
+            resetSprite();
 
             if (!isFrozen)
             {
@@ -310,10 +318,6 @@ namespace Brogue.HeroClasses
                     else if (Mapping.KeyboardController.IsTyped(Keys.RightShift))
                     {
                         drinkFromJarBar();
-                    }
-                    else if (Mapping.KeyboardController.IsPressed(Keys.R))
-                    {
-                        inventory.sortInventory();
                     }
 
                     else if (Mapping.KeyboardController.IsPressed(Keys.D1))

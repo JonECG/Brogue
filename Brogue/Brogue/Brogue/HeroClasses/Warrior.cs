@@ -2,6 +2,7 @@
 using Brogue.Abilities.Damaging.SingleTargets;
 using Brogue.Enums;
 using Brogue.Items.Equipment.Accessory;
+using Brogue.Items.Equipment.Armor.Chest;
 using Brogue.Items.Equipment.Armor.Helm;
 using Brogue.Items.Equipment.Armor.Legs;
 using Brogue.Items.Equipment.Weapon.Melee;
@@ -24,6 +25,8 @@ namespace Brogue.HeroClasses
             inventory.addItem(new Sword(1, 1));
             inventory.addItem(new GreatAxe(1, 1));
             inventory.addItem(new Axe(1, 1));
+            inventory.addItem(new MailHelm(1, 1));
+            inventory.addItem(new MailChest(1, 1));
             inventory.addItem(new Ring(1, 1));
             inventory.addItem(new Ring(1, 1));
             inventory.addItem(new Ring(1, 1));

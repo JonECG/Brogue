@@ -88,7 +88,7 @@ namespace Brogue.InventorySystem
                 {
                     for (int j = 0; j < itemsWithCount.Count && !foundMatch; j++)
                     {
-                        if ((itemsWithCount[j].item.Name).Equals(stored[i].item.Name))
+                        if ((itemsWithCount[j].item.Name) == (stored[i].item.Name))
                         {
                             foundMatch = true;
                             itemsWithCount[j].count++;
