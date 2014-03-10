@@ -61,7 +61,7 @@ namespace Brogue.Enemies
             attacks.Add(10 + i * 2);
             attacks.Add(20 + i * 3);
             moveSpeed = 1;
-            exp = 30 + 30 * i;
+            exp = 200 + 100 * i-1;
         }
 
         public override DynamicTexture GetTexture()

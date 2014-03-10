@@ -98,9 +98,9 @@ namespace Brogue.Enemies
             if (defense > 30)
                 defense = 30;
             attack = 4 + (4 * i);
-            health = 15 + (5 * i);
+            health = 30 + (5 * i);
             moveSpeed = 0;
-            exp = 3 + 10 * i-1;
+            exp = 40 + 20 * i-1;
             element = Enums.ElementAttributes.Lighting;
         }
 

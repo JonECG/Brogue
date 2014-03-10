@@ -131,8 +131,8 @@ namespace Brogue.Enemies
             if (defense > 60)
                 defense = 60;
             attack = 2 + (4 * i);
-            health = 15 + (10 * i);
-            exp = 2 + 10 * i-1;
+            health = 30 + (10 * i);
+            exp = 30 + 15 * i-1;
             
         }
 

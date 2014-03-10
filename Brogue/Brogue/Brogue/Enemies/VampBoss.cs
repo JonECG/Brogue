@@ -69,7 +69,7 @@ namespace Brogue.Enemies
                 defense = 50;
             attacks.Add(10 + i * 2);
             attacks.Add(10 + i * 3);
-            exp = 30 + 30 * i;
+            exp = 200 + 100 * i-1;
         }
 
         public override DynamicTexture GetTexture()

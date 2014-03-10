@@ -71,7 +71,7 @@ namespace Brogue.Enemies
             defense = 15 + (5 * i);
             attack = 5 + (5 * i);
             health = 50 + (15 * i);
-            exp = 4 + 15 * i-1;
+            exp = 50 + 25 * i-1;
         }
 
         public override DynamicTexture GetTexture()
