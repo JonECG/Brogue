@@ -68,14 +68,20 @@ namespace Brogue.Engine
         public Vector2 screenPosition;
         float speed;
         public float scale = 0;
+        public float endScale;
+        public float scaleRate;
         public float angle;
         public DynamicTexture tex;
         Vector2 direction;
         float distance;
+
         public VisualAttack(Vector2 screenPosition, Vector2 destination, float speed, string weaponSprite = "attackDefault")
         {
             this.screenPosition = screenPosition;
-            this.speed = speed;
+            this.speed = speed; 
+            this.scaleRate = 0;
+            this.endScale = 1;
+
             tex = Engine.GetTexture(weaponSprite);
             this.direction = new Vector2(destination.X, destination.Y) - screenPosition;
             distance = direction.Length();
@@ -83,11 +89,14 @@ namespace Brogue.Engine
             this.direction.Normalize();
         }
 
-        public VisualAttack(Vector2 screenPosition, Vector2 destination, float speed, DynamicTexture weaponDynTex)
+        public VisualAttack(Vector2 screenPosition, Vector2 destination, float speed, DynamicTexture weaponDynTex, float startScale, float endScale, float scaleAmount)
         {
             
             this.screenPosition = screenPosition;
             this.speed = speed;
+            this.scale = startScale;
+            this.endScale = endScale;
+            this.scaleRate = scaleAmount;
             tex = weaponDynTex;
             this.direction = new Vector2(destination.X, destination.Y) - screenPosition;
             distance = direction.Length();
@@ -98,9 +107,13 @@ namespace Brogue.Engine
         {
             screenPosition += direction * speed;
             bool finished = false;
-            if (scale < .50f)
+            if (scale < endScale)
             {
-                scale += 0.02f;
+                scale += scaleRate;
+            }
+            else
+            {
+                scale = endScale;
             }
 
             distance -= speed;
@@ -593,7 +606,7 @@ namespace Brogue.Engine
             Vector2 destVector = Vector2.Transform(new Vector2(gamePositionDest.X, gamePositionDest.Y), worldToView);
             if (attackSprite != null)
             {
-                vattacks.Add(new VisualAttack(originVector, destVector, 5, attackSprite));
+                vattacks.Add(new VisualAttack(originVector, destVector, 5, attackSprite, startScale, endScale, scaleAmount));
             }
             else
             {
