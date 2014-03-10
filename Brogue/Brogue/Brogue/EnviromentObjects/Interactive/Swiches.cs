@@ -26,7 +26,7 @@ namespace Brogue.EnviromentObjects.Interactive
         public Switch(Direction directionToFace) 
         {
             active = false;
-            isSolid = true;
+            isSolid = false;
             isPassable = false;
             directionFacing = directionToFace;
         }
@@ -34,7 +34,7 @@ namespace Brogue.EnviromentObjects.Interactive
         public Switch(IInteractable actingOn, Direction directionToFace)
         {
             active = false;
-            isSolid = true;
+            isSolid = false;
             isPassable = false;
             target = actingOn;
             directionFacing = directionToFace;
@@ -68,11 +68,11 @@ namespace Brogue.EnviromentObjects.Interactive
             Sprite currentImage = new Sprite();
             if (active) 
             {
-                currentImage = new Sprite(texture1);
+                currentImage = new Sprite(texture1, directionFacing);
             }
             else if (!active)
             {
-                currentImage = new Sprite(texture2);
+                currentImage = new Sprite(texture2, directionFacing);
             }
             return currentImage;
         }
