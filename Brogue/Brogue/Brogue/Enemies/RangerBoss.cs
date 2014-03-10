@@ -29,10 +29,12 @@ namespace Brogue.Enemies
                     }
                     else if (turnCounter % 3 == 0)
                     {
+                        Engine.Engine.AddVisualAttack(this, targets[0], Engine.Engine.GetTexture("Enemies/Attacks/TwoArrow"));
                         targets[0].TakeDamage(attacks[0]*2, this);
                     }
                     else
                     {
+                        Engine.Engine.AddVisualAttack(this, targets[0], Engine.Engine.GetTexture("Enemies/Attacks/Arrow"));
                         targets[0].TakeDamage(attacks[0], this);
                     }
                 }

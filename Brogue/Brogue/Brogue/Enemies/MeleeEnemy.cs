@@ -86,18 +86,24 @@ namespace Brogue.Enemies
                 GameCharacter hero = g;
 
                 bool canSee = false;
-                Direction[] nextPath = AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(hero), ref canSee);
+                Direction[] nextPath;
 
-                if (canSee && target == null && nextPath.Length < aggroRange)
+                if (AStar.calculateHeuristic(level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(g)) < aggroRange)
                 {
-                    target = hero;
-                    targetFound = true;
+                    nextPath = AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(hero), ref canSee);
+                    if (canSee && target == null && nextPath.Length < aggroRange)
+                    {
+                        target = hero;
+                        targetFound = true;
+                    }
+                    else if (canSee && target != null && nextPath.Length < AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(target)).Length)
+                    {
+                        target = hero;
+                        targetFound = true;
+                    }
                 }
-                else if (canSee && target != null && nextPath.Length < AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(target)).Length)
-                {
-                    target = hero;
-                    targetFound = true;
-                }
+
+                
 
                 break;
             }
@@ -125,7 +131,7 @@ namespace Brogue.Enemies
             if (defense > 60)
                 defense = 60;
             attack = 2 + (4 * i);
-            health = 10 + (5 * i);
+            health = 15 + (10 * i);
             exp = 2 + 10 * i-1;
             
         }

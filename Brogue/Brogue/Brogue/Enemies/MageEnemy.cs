@@ -53,18 +53,24 @@ namespace Brogue.Enemies
                 GameCharacter hero = g;
 
                 bool canSee = false;
-                Direction[] nextPath = AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(hero), ref canSee);
+                Direction[] nextPath;
 
-                if (canSee && target == null && nextPath.Length < aggroRange)
+                if (AStar.calculateHeuristic(level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(g)) < aggroRange)
                 {
-                    target = hero;
-                    targetFound = true;
+                    nextPath = AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(hero), ref canSee);
+                    if (canSee && target == null && nextPath.Length < aggroRange)
+                    {
+                        target = hero;
+                        targetFound = true;
+                    }
+                    else if (canSee && target != null && nextPath.Length < AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(target)).Length)
+                    {
+                        target = hero;
+                        targetFound = true;
+                    }
                 }
-                else if (canSee && target != null && nextPath.Length < AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(target)).Length)
-                {
-                    target = hero;
-                    targetFound = true;
-                }
+
+
 
                 break;
             }
@@ -85,14 +91,14 @@ namespace Brogue.Enemies
 
         public override void BuildEnemy(int i)
         {
-            range = 6;
+            range = 13;
             aggroRange = 3;
-            deAggroRange = 4;
+            deAggroRange = 6;
             defense = 2 + (2 * i);
             if (defense > 30)
                 defense = 30;
             attack = 4 + (4 * i);
-            health = 5 + (4 * i);
+            health = 15 + (5 * i);
             moveSpeed = 0;
             exp = 3 + 10 * i-1;
             element = Enums.ElementAttributes.Lighting;

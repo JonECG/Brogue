@@ -19,7 +19,7 @@ namespace Brogue.Enemies
                 Direction[] path = AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(target));
                 int pathCost = AStar.getCost(path);
 
-                if (path != null)
+                if (path.Length > 0)
                 {
                     if (pathCost == 1)
                     {
@@ -70,7 +70,7 @@ namespace Brogue.Enemies
             range = 1;
             defense = 15 + (5 * i);
             attack = 5 + (5 * i);
-            health = 15 + (15 * i);
+            health = 50 + (15 * i);
             exp = 4 + 15 * i-1;
         }
 
