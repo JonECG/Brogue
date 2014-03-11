@@ -101,7 +101,7 @@ namespace Brogue.HeroClasses
             {
                 if (rings[i] != null)
                 {
-                    for (int j = 0; j < rings[0].StatIncreased.Count; j++)
+                    for (int j = 0; j < rings[i].StatIncreased.Count; j++)
                     {
                         if (rings[i].StatIncreased[j] == Modifiers.Damage)
                         {
@@ -438,6 +438,12 @@ namespace Brogue.HeroClasses
             return damage;
         }
 
+        public Weapon getPrimaryWeapon()
+        {
+            Weapon primary = (equippedWeapons[0] != null) ? (Weapon)equippedWeapons[0] : null;
+            return primary;
+        }
+
         public int getAuxilaryWeaponRange()
         {
             Weapon auxilary = (equippedWeapons[1] != null && equippedWeapons[1].ItemType == ITypes.Weapon) ? (Weapon)equippedWeapons[1] : null;
@@ -450,6 +456,12 @@ namespace Brogue.HeroClasses
             Weapon auxilary = (equippedWeapons[1] != null && equippedWeapons[1].ItemType == ITypes.Weapon) ? (Weapon)equippedWeapons[1] : null;
             int damage = (auxilary != null) ? auxilary.Damage : 0;
             return damage;
+        }
+
+        public Weapon getAuxilaryWeapon()
+        {
+            Weapon auxilary = (equippedWeapons[1] != null && equippedWeapons[1].ItemType == ITypes.Weapon) ? (Weapon)equippedWeapons[1] : null;
+            return auxilary;
         }
     }
 }

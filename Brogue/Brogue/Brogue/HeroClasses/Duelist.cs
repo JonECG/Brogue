@@ -25,7 +25,7 @@ namespace Brogue.HeroClasses
             abilities[0] = new Mug();
             abilities[1] = new Invisibility();
             abilities[2] = new Parry();
-            abilities[3] = new Flurry();
+            abilities[3] = new Eviscerate();
             Engine.Engine.Log(health.ToString());
         }
     }

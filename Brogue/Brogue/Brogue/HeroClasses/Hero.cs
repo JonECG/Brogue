@@ -81,7 +81,7 @@ namespace Brogue.HeroClasses
             requiredBranchLevel = 10;
             damageBoost = 1;
             experience = 0;
-            expRequired = 1000;
+            expRequired = 500;
             jarBarAmount = 0;
             isFriendly = true;
             visible = true;
@@ -229,7 +229,7 @@ namespace Brogue.HeroClasses
                 MaxJarBarAmount += jarBarIncrease;
                 Engine.Engine.Log(MaxJarBarAmount.ToString());
                 experience = 0 + addedExp;
-                expRequired = 50 + 25 * (level - 1);
+                expRequired = 500 + 250 * (level - 1);
             }
         }
 
@@ -396,7 +396,7 @@ namespace Brogue.HeroClasses
                 {
                     cooldownAbilities();
                     invisibilityTurnCount -= (!visible)?1:0;
-                    visible = invisibilityTurnCount == 0;
+                    visible = invisibilityTurnCount <= 0;
                 }
             }
             else
@@ -435,9 +435,9 @@ namespace Brogue.HeroClasses
                             {
                                 turnOver = true;
                                 abilities[ability].finishCastandDealDamage(level, currentlyEquippedItems.getTotalDamageIncrease()+damageBoost, mapLevel, this);
-                                visible = true;
                                 Engine.Engine.ClearGridSelections();
                                 viewingCast = false;
+                                invisibilityTurnCount = 0;
                             }
                         }
                     }
@@ -469,10 +469,8 @@ namespace Brogue.HeroClasses
                     int weaponRange2 = currentlyEquippedItems.getAuxilaryWeaponRange();
                     IntVec[] weaponHitbox1 = AStar.getPossiblePositionsFrom(mapLevel, mapLevel.CharacterEntities.FindPosition(this), weaponRange1, true);
                     IntVec[] weaponHitbox2 = AStar.getPossiblePositionsFrom(mapLevel, mapLevel.CharacterEntities.FindPosition(this), weaponRange2, true);
-                    bool wasVisible = visible;
-                    damageEnemyIfInRange(weaponHitbox1, mapLevel, testEnemy, currentlyEquippedItems.getPrimaryWeaponDamage()+damageBoost);
-                    visible = wasVisible;
-                    damageEnemyIfInRange(weaponHitbox2, mapLevel, testEnemy, currentlyEquippedItems.getAuxilaryWeaponDamage()+damageBoost);
+                    damageEnemyIfInRange(weaponHitbox1, mapLevel, testEnemy, currentlyEquippedItems.getPrimaryWeapon());
+                    damageEnemyIfInRange(weaponHitbox2, mapLevel, testEnemy, currentlyEquippedItems.getAuxilaryWeapon());
                     if (Element != null)
                     {
                         for (int i = 0; i < Element.Count; i++)
@@ -495,19 +493,41 @@ namespace Brogue.HeroClasses
             }
         }
 
-        private void damageEnemyIfInRange(IntVec[] hitBox, Level mapLevel, GameCharacter enemy, int damage)
+        private void damageEnemyIfInRange(IntVec[] hitBox, Level mapLevel, GameCharacter enemy, Weapon weapon)
         {
             bool found = false;
-            for (int i = 0; i < hitBox.Length && !found; i++)
+            if (weapon != null)
             {
-                IntVec test = mapLevel.CharacterEntities.FindPosition(enemy);
-                if (hitBox[i].Equals(mapLevel.CharacterEntities.FindPosition(enemy)))
+                string[] name = weapon.Name.Split();
+                for (int i = 0; i < hitBox.Length && !found; i++)
                 {
-                    found = true;
-                    damage = (!visible) ? 2 * damage : damage;
-                    enemy.TakeDamage(damage, this);
-                    visible = true;
-                    turnOver = true;
+                    IntVec test = mapLevel.CharacterEntities.FindPosition(enemy);
+                    if (hitBox[i].Equals(mapLevel.CharacterEntities.FindPosition(enemy)))
+                    {
+                        found = true;
+                        int damage = (!visible) ? 2 * (weapon.Damage + damageBoost) : weapon.Damage + damageBoost;
+                        if (name[1] == "Sword" || name[1] == "Axe" || name[1] == "Great" || name[1] == "Bastard" || name[1] == "Rapier" || name[1] == "Scythe")
+                        {
+                            Engine.Engine.AddVisualAttack(enemy, "Hero/sword-slash", .25f, 2.0f, .15f);
+                            Audio.playSound("swordAttack");
+                        }
+                        else if (name[1] == "Dagger")
+                        {
+                            Engine.Engine.AddVisualAttack(enemy, "Hero/DaggerSlash", .25f, 2.0f, .15f);
+                            Audio.playSound("DaggerStab");
+                        }
+                        else if (name[1] == "War")
+                        {
+                            Engine.Engine.AddVisualAttack(enemy, "Hero/hammerSmash", .25f, 2.0f, .15f);
+                        }
+                        else
+                        {
+                            Engine.Engine.AddVisualAttack(this, enemy, "Hero/MageAttack", .5f, 1.0f, .03f);
+                        }
+                        enemy.TakeDamage(damage, this);
+                        invisibilityTurnCount = 0;
+                        turnOver = true;
+                    }
                 }
             }
         }
