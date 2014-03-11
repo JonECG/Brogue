@@ -130,7 +130,7 @@ namespace Brogue.HeroClasses
             }
             else
             {
-                Engine.Engine.Log("Parried");
+                Engine.Engine.AddVisualAttack(this, "Items/MailChest", .25f, 1.5f, .15f);
                 parryCount--;
             }
         }
@@ -511,7 +511,7 @@ namespace Brogue.HeroClasses
                     {
                         int weaponDamage = weapon.Damage + damageBoost + currentlyEquippedItems.getAccessoryDamageIncrease();
                         found = true;
-                        int damage = (!visible) ? int(1.5 * (weaponDamage)) : weaponDamage;
+                        int damage = (!visible) ? (int)(1.5 * (weaponDamage)) : weaponDamage;
                         if (playAttack)
                         {
                             if (name[1] == "Sword" || name[1] == "Axe" || name[1] == "Great" || name[1] == "Bastard" || name[1] == "Rapier" || name[1] == "Scythe")
