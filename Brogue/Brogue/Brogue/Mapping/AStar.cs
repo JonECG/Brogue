@@ -12,6 +12,22 @@ namespace Brogue.Mapping
     /// </summary>
     static class AStar
     {
+
+        public static IntVec[] getPossiblePositionsInBox(Level level, IntVec start, int width = 1, int height = 1, CharacterTargeting targetCharacters = CharacterTargeting.TREAT_AS_SOLID, bool straight = false)
+        {
+            IntVec[] results = getPossiblePositionsFrom(level, start, width + height, targetCharacters, straight);
+
+            List<IntVec> actualResults = new List<IntVec>();
+
+            foreach (IntVec vec in results)
+            {
+                if( Math.Abs( vec.X - start.X ) <= width &&  Math.Abs( vec.Y - start.Y ) <= height )
+                    actualResults.Add(vec);
+            }
+
+            return actualResults.ToArray();
+        }
+
         public enum CharacterTargeting { TREAT_AS_SOLID, TARGET_FIRST, PASS_THROUGH };
 
         public static IntVec[] getPossiblePositionsFrom(Level level, IntVec start, int budget = -1, bool targetCharacters = false, bool straight = false)

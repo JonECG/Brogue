@@ -265,7 +265,7 @@ namespace Brogue.Mapping
             }
 
             Environment.Draw();
-            //drawAStar();
+            drawAStar();
             InteractableEnvironment.Draw();
             
             DroppedItems.Draw();
@@ -376,7 +376,8 @@ namespace Brogue.Mapping
                     Engine.Engine.Log(string.Format("<INCONSISTENT PATHFIND; MOVEMENTDELTA={0},PATHDELTA={1}>", movement, Math.Abs(previousPathDistance - path.Length)));
 
                 //moveset = AStar.getTargetLine(this, startPoint, a, true);
-                moveset = AStar.getPossiblePositionsFrom(this, a, 15, AStar.CharacterTargeting.TARGET_FIRST, true);
+                //moveset = AStar.getPossiblePositionsFrom(this, a, 15, AStar.CharacterTargeting.TARGET_FIRST, true);
+                moveset = AStar.getPossiblePositionsInBox(this, a, 2,2, AStar.CharacterTargeting.TARGET_FIRST, true);
 
                 previousPathDistance = path.Length;
             }
