@@ -219,6 +219,7 @@ namespace Brogue
             sound[12] = new audioFile(content.Load<SoundEffect>("Sound/DaggerStab"), "DaggerStab");
             sound[13] = new audioFile(content.Load<SoundEffect>("Sound/Punch"), "Mugging");
             sound[14] = new audioFile(content.Load<SoundEffect>("Sound/smokePoof"), "Smoke");
+            sound[15] = new audioFile(content.Load<SoundEffect>("Sound/HammerSmash"), "HammerSmash");
 
             //defualt
             delay = random.Next(DEALY_MIN_DEFALT_TIME, DEALY_MAX_DEFALT_TIME);
