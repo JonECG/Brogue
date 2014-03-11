@@ -14,6 +14,7 @@ namespace Brogue.Abilities.Togglable
         {
             name = "Parry";
             description = "The duelist blocks the next set of attacks completely.";
+            abilitiySprite = new Sprite(abilityLine, new IntVec(22, 0));
         }
 
         public override void updateToggle(int heroLevel, HeroClasses.Hero hero) {}

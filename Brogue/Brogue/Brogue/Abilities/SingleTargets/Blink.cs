@@ -20,6 +20,7 @@ namespace Brogue.Abilities.SingleTargets
             baseDamage = 0;
             radius = 2;
             abilityCooldown = 2;
+            abilitiySprite = new Sprite(abilityLine, new IntVec(11, 0));
         }
 
         public override int calculateDamage(int heroLevel, int heroDamage)

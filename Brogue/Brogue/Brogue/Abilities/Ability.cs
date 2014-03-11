@@ -30,6 +30,13 @@ namespace Brogue.Abilities
         abstract public bool filledSquares();
         abstract public void finishCastandDealDamage(int heroLevel, int heroDamage, Level mapLevel, Hero hero);
         abstract public int calculateDamage(int heroLevel, int heroDamage);
+        protected DynamicTexture abilityLine;
+        protected Sprite abilitiySprite;
+
+        public Ability()
+        {
+            abilityLine = Engine.Engine.GetTexture("UI/Abilities");
+        }
 
         public void resetSquares()
         {

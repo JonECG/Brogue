@@ -21,6 +21,7 @@ namespace Brogue.Abilities.SingleTargets
             baseDamage = 0;
             radius = 1;
             abilityCooldown = 5;
+            abilitiySprite = new Sprite(abilityLine, new IntVec(7, 0));
         }
 
         protected void heroEffect(HeroClasses.Hero hero)
