@@ -22,7 +22,7 @@ namespace Brogue.Abilities.AOE
             {
                 castSquares[i] = new IntVec(0, 0);
             }
-            abilitiySprite = new Sprite(abilityLine, new IntVec(15, 0));
+            abilitySprite = new Sprite(abilityLine, new IntVec(15, 0));
         }
 
         public override int calculateDamage(int heroLevel, int heroDamage)

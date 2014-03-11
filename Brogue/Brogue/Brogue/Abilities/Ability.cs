@@ -31,7 +31,7 @@ namespace Brogue.Abilities
         abstract public void finishCastandDealDamage(int heroLevel, int heroDamage, Level mapLevel, Hero hero);
         abstract public int calculateDamage(int heroLevel, int heroDamage);
         protected DynamicTexture abilityLine;
-        protected Sprite abilitiySprite;
+        protected Sprite abilitySprite;
 
         public Ability()
         {
@@ -44,6 +44,11 @@ namespace Brogue.Abilities
             {
                 castSquares[i] = new IntVec(0, 0);
             }
+        }
+
+        public Sprite getSprite()
+        {
+            return abilitySprite;
         }
 
         public int getCooldown()

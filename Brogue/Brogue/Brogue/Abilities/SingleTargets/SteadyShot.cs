@@ -21,7 +21,7 @@ namespace Brogue.Abilities.SingleTargets
             baseDamage = 6;
             radius = 4;
             abilityCooldown = 5;
-            abilitiySprite = new Sprite(abilityLine, new IntVec(26, 0));
+            abilitySprite = new Sprite(abilityLine, new IntVec(26, 0));
         }
 
         protected override void finishCast(int damage, Mapping.Level mapLevel, HeroClasses.Hero hero)

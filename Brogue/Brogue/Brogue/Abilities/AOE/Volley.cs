@@ -20,7 +20,7 @@ namespace Brogue.Abilities.AOE
             baseDamage = 3;
             radius = 3;
             abilityCooldown = 4;
-            abilitiySprite = new Sprite(abilityLine, new IntVec(27, 0));
+            abilitySprite = new Sprite(abilityLine, new IntVec(27, 0));
         }
 
         public override int calculateDamage(int heroLevel, int heroDamage)
