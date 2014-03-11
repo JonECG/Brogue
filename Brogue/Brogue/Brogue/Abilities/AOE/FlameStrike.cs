@@ -11,9 +11,9 @@ namespace Brogue.Abilities.AOE
     {
         public FlameStrike()
         {
-            radius = 25;
+            radius = 7;
             isActuallyFilled = false;
-            castSquares = new IntVec[1200];
+            castSquares = new IntVec[28];
             baseDamage = 15;
             abilityCooldown = 30;
             for (int i = 0; i < castSquares.Length; i++)
@@ -27,10 +27,20 @@ namespace Brogue.Abilities.AOE
             return ((baseDamage * baseDamage) + heroLevel) * heroDamage;
         }
 
-        //public override IntVec[] viewCastRange(Level level, IntVec start)
-        //{
-        //    radiusSquares
-        //    return radiusSquares;
-        //}
+        public override void drawVisualEffect(GameCharacter hero, GameCharacter enemy)
+        {
+            Engine.Engine.AddVisualAttack(hero, enemy, "Hero/FireballSpell", .5f, 1.0f, .03f);
+        }
+
+        public override IntVec[] viewCastRange(Level level, IntVec start)
+        {
+            List<IntVec> lines = new List<IntVec>();
+            lines.AddRange(AStar.getTargetLine(level, start, new IntVec(start.X-radius,start.Y), false));
+            lines.AddRange(AStar.getTargetLine(level, start, new IntVec(start.X+radius,start.Y), false));
+            lines.AddRange(AStar.getTargetLine(level, start, new IntVec(start.X,start.Y-radius), false));
+            lines.AddRange(AStar.getTargetLine(level, start, new IntVec(start.X,start.Y+radius), false));
+            radiusSquares = lines.ToArray();
+            return radiusSquares;
+        }
     }
 }
