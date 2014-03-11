@@ -117,6 +117,16 @@ namespace Brogue.Engine
             angle = (float)Math.Atan2(direction.X, -direction.Y);
             this.direction.Normalize();
         }
+
+        public VisualAttack(Vector2 screenPosition, string weaponDynTex, float startScale, float endScale, float scaleAmount)
+        {
+            this.screenPosition = screenPosition;
+            this.scale = startScale;
+            this.endScale = endScale;
+            this.scaleRate = scaleAmount;
+            tex = Engine.GetTexture(weaponDynTex);
+        }
+
         public bool update()
         {
             screenPosition += direction * speed;
@@ -128,6 +138,7 @@ namespace Brogue.Engine
             else
             {
                 scale = endScale;
+                finished = (speed != 5);
             }
 
             distance -= speed;
@@ -659,6 +670,19 @@ namespace Brogue.Engine
             else
             {
                 vattacks.Add(new VisualAttack(originVector, destVector, 5, "attackSprite"));
+            }
+        }
+
+        public static void AddVisualAttack(GameCharacter origin, string attackSprite, float startScale = 1, float endScale = 1, float scaleAmount = 0.05f)
+        {
+            IntVec gamePositionOrigin = currentLevel.CharacterEntities.FindPosition(origin) * CELLWIDTH;
+            Vector2 originVector = Vector2.Transform(new Vector2(gamePositionOrigin.X, gamePositionOrigin.Y), worldToView);
+            if (attackSprite != null)
+            {
+                vattacks.Add(new VisualAttack(originVector, attackSprite, startScale, endScale, scaleAmount));
+            }
+            else
+            {
             }
         }
 
