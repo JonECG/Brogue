@@ -188,6 +188,7 @@ namespace Brogue.Engine
             this.caption = caption;
             currentBackTex = standard.texture;
         }
+
         public bool isMouseOver()
         {
             bool isMouseOver = false;
@@ -240,7 +241,7 @@ namespace Brogue.Engine
         public bool doToolTip = false;
         string caption;
         Vector2 pos;
-        public AbilityButton(Vector2 position, int number, bool centered, Abilities.Ability ab, string caption)
+        public AbilityButton(Vector2 position, int number, bool centered, Abilities.Ability ab)
         {
             this.number = number;
             ability = ab;
@@ -250,8 +251,9 @@ namespace Brogue.Engine
                 pos.X -= Engine.CELLWIDTH / 2;//standard.texture.Width / 2;
                 pos.Y -= Engine.CELLWIDTH / 2;//standard.texture.Height / 2;
             }
-            this.caption = caption;
+            this.caption = ab != null? ab.name : "";
         }
+
         public bool isMouseOver()
         {
             bool isMouseOver = false;
@@ -266,9 +268,15 @@ namespace Brogue.Engine
             return isMouseOver;
         }
 
-        public bool isClicked()
+        public void update()
         {
-            return isMouseOver() && MouseController.LeftClicked();
+            if (currentBackTex != null)
+            {
+                IntVec mpos = MouseController.MouseScreenPosition();
+                bool isMouseOver = mpos.X > pos.X && mpos.X < pos.X + currentBackTex.texture.Width &&
+                    mpos.Y > pos.Y && mpos.Y < pos.Y + currentBackTex.texture.Height;
+                doToolTip = isMouseOver;
+            }
         }
 
         public void Draw(SpriteBatch sb)
@@ -276,13 +284,16 @@ namespace Brogue.Engine
             sb.Draw(currentBackTex.texture, pos, Color.White);
             if (ability != null)
             {
-                sb.Draw(ability.getSprite().Texture.texture, pos, Color.White);
-                sb.DrawString(Engine.font, caption,
-                    new Vector2(pos.X + currentBackTex.texture.Width / 2 - Engine.font.MeasureString(caption).X / 2, pos.Y - 20), Color.Red);
+                sb.Draw(ability.getSprite().Texture.texture, pos, new Rectangle(ability.getSprite().SourceTile.X * Engine.CELLWIDTH, 0, Engine.CELLWIDTH, Engine.CELLWIDTH), Color.White);
+                sb.DrawString(Engine.font, "" + number, new Vector2(pos.X + currentBackTex.texture.Width / 2 - Engine.font.MeasureString("" + number).X / 2, pos.Y - 20), Color.Red);
                 if (ability.getCooldown() > 0)
                 {
                     sb.Draw(grayFade.texture, pos, Color.White);
                     sb.DrawString(Engine.font, "" + ability.getCooldown(), pos + new Vector2(-40, +(currentBackTex.texture.Width / 2 - Engine.font.MeasureString("" + ability.getCooldown()).X / 2)), Color.White);
+                }
+                if (doToolTip)
+                {
+                    AbilityToolTip.Draw(sb, pos+ new Vector2(-200, -200), ability.name, ability.description);
                 }
             }
         }
@@ -588,6 +599,33 @@ namespace Brogue.Engine
         }
     }
 
+    class AbilityToolTip
+    {
+        static Vector2
+            namePosition = new Vector2(10, 10),
+            desPosition = new Vector2(10, 30)
+            
+            ;
+
+        static DynamicTexture background = Engine.GetTexture("UI/ToolTipBack");
+        public static void Draw(SpriteBatch sb, Vector2 position, string name, string description)
+        {
+            sb.Draw(background.texture, position, Color.White);
+            //sb.Draw(background.texture, position, new Rectangle(0, 0, background.texture.Width, background.texture.Height), Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 0);
+            DrawOutlined(sb, position + namePosition, name, Color.Black, Color.White);
+            DrawOutlined(sb, position + desPosition, description, Color.Black, Color.White);
+        }
+
+        public static void DrawOutlined(SpriteBatch sb, Vector2 pos, string text, Color back, Color front)
+        {
+            foreach (Direction dir in Direction.Values)
+            {
+                sb.DrawString(Engine.font, text, pos + new Vector2(dir.X, dir.Y), back);
+            }
+            sb.DrawString(Engine.font, text, pos, front);
+        }
+    }
+
     partial class Engine
     {
         public const bool DOLIGHTING = true;
@@ -872,7 +910,10 @@ namespace Brogue.Engine
             Abilities.Ability[] heroAbs = hero.getAbilities();
             for (int i = 0; i < abilityBar.Length; i++)
             {
-                abilityBar[i] = new AbilityButton(abilityPosition + new Vector2(CELLWIDTH * i, 0), i, false, heroAbs[i], heroAbs[i].name);
+                if (heroAbs[i] != null)
+                {
+                    abilityBar[i] = new AbilityButton(abilityPosition + new Vector2(CELLWIDTH * i, 0), i + 1, false, heroAbs[i]);
+                }
             }
         }
 
@@ -1063,6 +1104,8 @@ namespace Brogue.Engine
                          * */
                     }
                     charIndex += hero.TakeTurn(currentLevel) ? 1 : 0;
+                    
+                    
                     if (hero.hasReachedBranchLevel())
                     {
                         IntVec position = currentLevel.CharacterEntities.FindPosition(hero);
@@ -1075,16 +1118,19 @@ namespace Brogue.Engine
                             if (HeroClasses.Hero.heroRole == Enums.Classes.Warrior)
                             {
                                 hero = new HeroClasses.Brawler();
+                                UpdateAbilities();
                                 Log("You are now a brawler.");
                             }
                             else if (HeroClasses.Hero.heroRole == Enums.Classes.Mage)
                             {
                                 hero = new HeroClasses.Magus();
+                                UpdateAbilities();
                                 Log("You are now a Magus.");
                             }
                             else if (HeroClasses.Hero.heroRole == Enums.Classes.Rogue)
                             {
                                 hero = new HeroClasses.Duelist();
+                                UpdateAbilities();
                                 Log("You are now a Duelist.");
                             }
                         }
@@ -1093,16 +1139,19 @@ namespace Brogue.Engine
                             if (HeroClasses.Hero.heroRole == Enums.Classes.Warrior)
                             {
                                 hero = new HeroClasses.Sentinel();
+                                UpdateAbilities();
                                 Log("You are now a sentinel.");
                             }
                             else if (HeroClasses.Hero.heroRole == Enums.Classes.Mage)
                             {
                                 hero = new HeroClasses.Sorcerer();
+                                UpdateAbilities();
                                 Log("You are now a Sorcerer.");
                             }
                             else if (HeroClasses.Hero.heroRole == Enums.Classes.Rogue)
                             {
                                 hero = new HeroClasses.Ranger();
+                                UpdateAbilities();
                                 Log("You are now a Ranger.");
                             }
                         }
@@ -1124,18 +1173,21 @@ namespace Brogue.Engine
                     if (mageButton.isClicked())
                     {
                         hero = new HeroClasses.Mage();
+                        UpdateAbilities();
                         mainMenuOpen = false;
                         showSaveSlotSelection = true;
                     }
                     if (warriorButton.isClicked())
                     {
                         hero = new HeroClasses.Warrior();
+                        UpdateAbilities();
                         mainMenuOpen = false;
                         showSaveSlotSelection = true;
                     }
                     if (rogueButton.isClicked())
                     {
                         hero = new HeroClasses.Rogue();
+                        UpdateAbilities();
                         mainMenuOpen = false;
                         showSaveSlotSelection = true;
                     }
@@ -1381,6 +1433,13 @@ namespace Brogue.Engine
                         didSomething = true;
                     }
                 }
+                foreach (AbilityButton ab in abilityBar)
+                {
+                    if (ab != null)
+                    {
+                        ab.update();
+                    }
+                }
             }
             return didSomething;
         } 
@@ -1558,6 +1617,14 @@ namespace Brogue.Engine
                 if (mainMenuOpen)
                 {
                     DrawMainMenu(uisb);
+                }
+
+                foreach (AbilityButton ab in abilityBar)
+                {
+                    if (ab != null)
+                    {
+                        ab.Draw(uisb);
+                    }
                 }
 
                 Items.Item it = currentLevel.DroppedItems.FindEntity(MouseController.MouseGridPosition());
