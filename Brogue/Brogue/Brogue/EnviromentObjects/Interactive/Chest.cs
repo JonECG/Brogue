@@ -15,6 +15,7 @@ namespace Brogue.EnviromentObjects.Interactive
     [Serializable] class Chest : IInteractable, IEnvironmentObject, IRenderable
     {
         static DynamicTexture texture = Engine.Engine.GetTexture("Enviroment/Chest");
+        private static Random random = new Random();
 
         bool isVisable { get; set; }
         bool empty { get; set; }
@@ -72,6 +73,8 @@ namespace Brogue.EnviromentObjects.Interactive
         int size = 14;
         PositionCheck[] positonsToChecked;
 
+        IntVec[] postionsAroundChest;
+
         private PositionCheck CreatePosition(IntVec position)
         {
             PositionCheck temp = new PositionCheck();
@@ -90,8 +93,9 @@ namespace Brogue.EnviromentObjects.Interactive
 
         private void createLocations(IntVec position)
         {
+            int layer;
             positonsToChecked = new PositionCheck[size];
-            int layer = 1;
+            layer = 1;
             positonsToChecked[0]  = CreatePosition(new IntVec(position.X - layer, position.Y - layer));
             positonsToChecked[1]  = CreatePosition(new IntVec(position.X, position.Y - layer));
             positonsToChecked[2]  = CreatePosition(new IntVec(position.X - layer, position.Y));
@@ -144,49 +148,29 @@ namespace Brogue.EnviromentObjects.Interactive
         {
             IntVec chestPosition = Engine.Engine.currentLevel.InteractableEnvironment.FindPosition(this);
 
-            for (int currentSlot = 0; currentSlot < contents.Count; currentSlot++)
+            createLocations(chestPosition);
+
+            for (int currentSlot = 0; currentSlot <= contents.Count; currentSlot++)
             {
-                if (isPositionClear(chestPosition.X - 1, chestPosition.Y - 1))
+                bool iteamDroped = false;
+                while (!iteamDroped)
                 {
-                    IntVec dropPosition = new IntVec(chestPosition.X - 1, chestPosition.Y - 1);
-                    dropItem(dropPosition, currentSlot);
-                    currentSlot++;
-                }
-                if (isPositionClear(chestPosition.X, chestPosition.Y - 1))
-                {
-                    IntVec dropPosition = new IntVec(chestPosition.X, chestPosition.Y - 1);
-                    dropItem(dropPosition, currentSlot);
-                    currentSlot++;
-                }
-                if (isPositionClear(chestPosition.X - 1, chestPosition.Y))
-                {
-                    IntVec dropPosition = new IntVec(chestPosition.X - 1, chestPosition.Y);
-                    dropItem(dropPosition, currentSlot);
-                    currentSlot++;
-                }
-                if (isPositionClear(chestPosition.X, chestPosition.Y))
-                {
-                    IntVec dropPosition = new IntVec(chestPosition.X, chestPosition.Y);
-                    dropItem(dropPosition, currentSlot);
-                    currentSlot++;
-                }
-                if (isPositionClear(chestPosition.X + 1, chestPosition.Y + 1))
-                {
-                    IntVec dropPosition = new IntVec(chestPosition.X + 1, chestPosition.Y + 1);
-                    dropItem(dropPosition, currentSlot);
-                    currentSlot++;
-                }
-                if (isPositionClear(chestPosition.X + 1, chestPosition.Y))
-                {
-                    IntVec dropPosition = new IntVec(chestPosition.X + 1, chestPosition.Y);
-                    dropItem(dropPosition, currentSlot);
-                    currentSlot++;
-                }
-                if (isPositionClear(chestPosition.X, chestPosition.Y + 1))
-                {
-                    IntVec dropPosition = new IntVec(chestPosition.X, chestPosition.Y + 1);
-                    dropItem(dropPosition, currentSlot);
-                    currentSlot++;
+                    int selectedPosition = random.Next(0, size);
+                    while (positonsToChecked[selectedPosition].isChecked)
+                    {
+                        selectedPosition = random.Next(0, size);
+                    }
+                    if (!(positonsToChecked[selectedPosition].isChecked))
+                    {
+                        bool positionisClear = isPositionClear(positonsToChecked[selectedPosition].position.X, positonsToChecked[selectedPosition].position.Y);
+                        if (positionisClear)
+                        {
+                            //IntVec dropPosition = new IntVec(positonsToChecked[selectedPosition].position.X, positonsToChecked[selectedPosition].position.Y);
+                            dropItem(positonsToChecked[selectedPosition].position, currentSlot);
+                            iteamDroped = true;
+                        }
+                        positonsToChecked[selectedPosition].isChecked = true;
+                    }
                 }
             }
             
