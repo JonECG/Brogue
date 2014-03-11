@@ -74,6 +74,7 @@ namespace Brogue
         private static int DEALY_MAX_DEFALT_TIME = 300;
         private static int DEALY_MIN_DEFALT_TIME = 10;
         private static int delay;
+        private static int randomSoundSize = 3;
 
         private static musicFile[] musicLibary;
         private static audioFile[] sound;
@@ -143,10 +144,10 @@ namespace Brogue
 
         public static void playRandomSound(float volume = 0.05f)
         {
-            int selected = random.Next(1, MAX_LIABBARY_SIZE); ;
+            int selected = random.Next(1, randomSoundSize); ;
             while (sound[selected] == null)
             {
-                selected = random.Next(2, MAX_LIABBARY_SIZE);
+                selected = random.Next(2, randomSoundSize);
             }
             sound[selected].playFile(volume);
         }
@@ -197,10 +198,11 @@ namespace Brogue
             sound = new audioFile[MAX_LIABBARY_SIZE];
             musicLibary = new musicFile[MAX_LIABBARY_SIZE];
 
+            //mainMenuTheme = content.Load<Song>("Audio/Stoneworld Battle");
             //Load Music
             musicLibary[0] = new musicFile(content.Load<Song>("Music/BrogueII"), "Brogue II", true);
-            musicLibary[1] = new musicFile(content.Load<Song>("Music/The_Thing"), "The_Thing", true);
-            musicLibary[2] = new musicFile(content.Load<Song>("Music/E1M1"), "Doom", true);
+            musicLibary[1] = new musicFile(content.Load<Song>("Music/Stoneworld Battle"), "Stoneworld Battle", true);
+            musicLibary[2] = new musicFile(content.Load<Song>("Music/The Descent"), "The Descent", true);
 
             //Load Sound
             defualtSound = new audioFile(content.Load<SoundEffect>("Sound/Whammy"), "Whammy");
@@ -209,17 +211,16 @@ namespace Brogue
             sound[2] = new audioFile(content.Load<SoundEffect>("Sound/Water_Drop"), "waterDrop");
             sound[3] = new audioFile(content.Load<SoundEffect>("Sound/door"), "door");
             sound[4] = new audioFile(content.Load<SoundEffect>("Sound/switch"), "switch");
-            sound[5] = new audioFile(content.Load<SoundEffect>("Sound/stairs"), "stairs");
-            sound[6] = new audioFile(content.Load<SoundEffect>("Sound/ironGate"), "IronGate");
-            sound[7] = new audioFile(content.Load<SoundEffect>("Sound/Fireball"), "Fireball");
-            sound[8] = new audioFile(content.Load<SoundEffect>("Sound/whoosh"), "whoosh");
-            sound[9] = new audioFile(content.Load<SoundEffect>("Sound/swordSlash"), "Slash");
-            sound[10] = new audioFile(content.Load<SoundEffect>("Sound/slashAttack"), "swordAttack");
-            sound[11] = new audioFile(content.Load<SoundEffect>("Sound/lightningStorm"), "lightning");
-            sound[12] = new audioFile(content.Load<SoundEffect>("Sound/DaggerStab"), "DaggerStab");
-            sound[13] = new audioFile(content.Load<SoundEffect>("Sound/Punch"), "Mugging");
-            sound[14] = new audioFile(content.Load<SoundEffect>("Sound/smokePoof"), "Smoke");
-            sound[15] = new audioFile(content.Load<SoundEffect>("Sound/HammerSmash"), "HammerSmash");
+            sound[5] = new audioFile(content.Load<SoundEffect>("Sound/ironGate"), "IronGate");
+            sound[6] = new audioFile(content.Load<SoundEffect>("Sound/Fireball"), "Fireball");
+            sound[7] = new audioFile(content.Load<SoundEffect>("Sound/whoosh"), "whoosh");
+            sound[8] = new audioFile(content.Load<SoundEffect>("Sound/swordSlash"), "Slash");
+            sound[9] = new audioFile(content.Load<SoundEffect>("Sound/slashAttack"), "swordAttack");
+            sound[10] = new audioFile(content.Load<SoundEffect>("Sound/lightningStorm"), "lightning");
+            sound[11] = new audioFile(content.Load<SoundEffect>("Sound/DaggerStab"), "DaggerStab");
+            sound[12] = new audioFile(content.Load<SoundEffect>("Sound/Punch"), "Mugging");
+            sound[13] = new audioFile(content.Load<SoundEffect>("Sound/smokePoof"), "Smoke");
+            sound[14] = new audioFile(content.Load<SoundEffect>("Sound/HammerSmash"), "HammerSmash");
 
             //defualt
             delay = random.Next(DEALY_MIN_DEFALT_TIME, DEALY_MAX_DEFALT_TIME);
