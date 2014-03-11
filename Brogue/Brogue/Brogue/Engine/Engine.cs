@@ -229,6 +229,65 @@ namespace Brogue.Engine
         }
     }
 
+    class AbilityButton
+    {
+        static DynamicTexture currentBackTex = Engine.GetTexture("UI/InvSlot");
+        Abilities.Ability ability;
+        public DynamicTexture drawOver;
+        static DynamicTexture grayFade = Engine.GetTexture("UI/AbilityGray");
+        int number;
+        public bool doDrawOver;
+        public bool doToolTip = false;
+        string caption;
+        Vector2 pos;
+        public AbilityButton(Vector2 position, int number, bool centered, Abilities.Ability ab, string caption)
+        {
+            this.number = number;
+            ability = ab;
+            pos = position;
+            if (centered)
+            {
+                pos.X -= Engine.CELLWIDTH / 2;//standard.texture.Width / 2;
+                pos.Y -= Engine.CELLWIDTH / 2;//standard.texture.Height / 2;
+            }
+            this.caption = caption;
+        }
+        public bool isMouseOver()
+        {
+            bool isMouseOver = false;
+            if (currentBackTex != null)
+            {
+                IntVec mpos = MouseController.MouseScreenPosition();
+                isMouseOver = mpos.X > pos.X && mpos.X < pos.X + currentBackTex.texture.Width &&
+                    mpos.Y > pos.Y && mpos.Y < pos.Y + currentBackTex.texture.Height;
+                doToolTip = isMouseOver;
+            }
+
+            return isMouseOver;
+        }
+
+        public bool isClicked()
+        {
+            return isMouseOver() && MouseController.LeftClicked();
+        }
+
+        public void Draw(SpriteBatch sb)
+        {
+            sb.Draw(currentBackTex.texture, pos, Color.White);
+            if (ability != null)
+            {
+                sb.Draw(ability.getSprite().Texture.texture, pos, Color.White);
+                sb.DrawString(Engine.font, caption,
+                    new Vector2(pos.X + currentBackTex.texture.Width / 2 - Engine.font.MeasureString(caption).X / 2, pos.Y - 20), Color.Red);
+                if (ability.getCooldown() > 0)
+                {
+                    sb.Draw(grayFade.texture, pos, Color.White);
+                    sb.DrawString(Engine.font, "" + ability.getCooldown(), pos + new Vector2(-40, +(currentBackTex.texture.Width / 2 - Engine.font.MeasureString("" + ability.getCooldown()).X / 2)), Color.White);
+                }
+            }
+        }
+    }
+
     class CharButton
     {
         public DynamicTexture standard;
@@ -548,7 +607,10 @@ namespace Brogue.Engine
         private static Queue<String> log = new Queue<string>(10);
         private static Vector2 LogPosition, InvButtonPosition, InventoryPosition, InventorySize;
         private static HeroClasses.Hero hero;
-        
+
+        private static AbilityButton[] abilityBar = new AbilityButton[6];
+        private static Vector2 abilityPosition;
+
         private static RenderTarget2D lightsTarget;
         private static RenderTarget2D mainTarget;
         private const int AIDist = 15;
@@ -575,6 +637,8 @@ namespace Brogue.Engine
         private static int currentSaveSlot = -1;
         private static int levelComplexity;
         private static int currentDungeonLevel = 1;
+
+
         
         ///////////////////////////////////////////
         //public static AuxerTestingZone auxerTests;
@@ -764,6 +828,7 @@ namespace Brogue.Engine
             // = new Vector2(game.Width - 48, game.Height - 48);
             InventoryPosition = new Vector2(game.Width - 5 * (CELLWIDTH), game.Height - 4 * (CELLWIDTH));
             InvButtonPosition = new Vector2(game.Width - CELLWIDTH, game.Height - CELLWIDTH);
+            abilityPosition = new Vector2(game.Width / 2 - (3 * CELLWIDTH), game.Height - CELLWIDTH);
             InventorySize = new Vector2(4 * CELLWIDTH, 4 * CELLWIDTH);
             weaponEquipPosition = new Vector2(0, game.Height - 2 * CELLWIDTH - 20);
             armorEquipPosition = new Vector2(0, game.Height - CELLWIDTH);
@@ -790,12 +855,25 @@ namespace Brogue.Engine
                 false, "UI/InvSlot", "Left");
             weaponSlot2 = new UIButton(new Vector2(weaponEquipPosition.X + CELLWIDTH, weaponEquipPosition.Y),
                 false, "UI/InvSlot", "Right");
+
+            
+
+
             //StartGame();
         }
 
         public static void End()
         {
 
+        }
+
+        public static void UpdateAbilities()
+        {
+            Abilities.Ability[] heroAbs = hero.getAbilities();
+            for (int i = 0; i < abilityBar.Length; i++)
+            {
+                abilityBar[i] = new AbilityButton(abilityPosition + new Vector2(CELLWIDTH * i, 0), i, false, heroAbs[i], heroAbs[i].name);
+            }
         }
 
         public static void Log(string input)
