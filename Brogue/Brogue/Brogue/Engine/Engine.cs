@@ -41,7 +41,7 @@ namespace Brogue.Engine
         {
             this.screenPosition = screenPosition;
             this.speed = speed;
-            this.direction = new Vector2(Engine.xpBarPosition.X, Engine.xpBarPosition.Y + Engine.enginerand.Next(175)) - screenPosition;
+            this.direction = new Vector2(Engine.xpBarPosition.X + Engine.enginerand.Next(275), Engine.xpBarPosition.Y + 20) - screenPosition;
             distance = direction.Length();
             this.direction.Normalize();
         }
@@ -55,7 +55,7 @@ namespace Brogue.Engine
             }
 
             distance -= speed;
-            if (distance < 5)
+            if (distance < 15)
             {
                 finished = true;
             }
@@ -741,7 +741,7 @@ namespace Brogue.Engine
             InventoryPosition = new Vector2(game.Width - 5 * (CELLWIDTH), game.Height - 4 * (CELLWIDTH));
             InvButtonPosition = new Vector2(game.Width - CELLWIDTH, game.Height - CELLWIDTH);
             InventorySize = new Vector2(4 * CELLWIDTH, 4 * CELLWIDTH);
-            weaponEquipPosition = new Vector2(game.Width / 2 - CELLWIDTH, game.Height - CELLWIDTH);
+            weaponEquipPosition = new Vector2(0, game.Height - 2 * CELLWIDTH - 20);
             armorEquipPosition = new Vector2(0, game.Height - CELLWIDTH);
             game.IsMouseVisible = true;
 
@@ -760,7 +760,7 @@ namespace Brogue.Engine
             ringSlot2 = new UIButton(new Vector2(armorEquipPosition.X + 4 * (CELLWIDTH), armorEquipPosition.Y),
                 false, "UI/RingOverlay", "Ring");
             neckSlot = new UIButton(new Vector2(armorEquipPosition.X + 5 * (CELLWIDTH), armorEquipPosition.Y),
-                false, "UI/NeckOverlay", "Necklace");
+                false, "UI/NeckOverlay", "Neck");
 
             weaponSlot1 = new UIButton(new Vector2(weaponEquipPosition.X, weaponEquipPosition.Y),
                 false, "UI/InvSlot", "Left");
@@ -868,8 +868,8 @@ namespace Brogue.Engine
             lightsTarget = new RenderTarget2D(game.GraphicsDevice, game.Width, game.Height);
             mainTarget = new RenderTarget2D(game.GraphicsDevice, game.Width, game.Height);
             lightMaskWidthInTilesDividedByTwo = lightMask.texture.Width / (2 * CELLWIDTH);
-            xpBarPosition = new Vector2(80, game.Height / 2 - healthbar.texture.Height / 2);
-            healthBarPosition = new Vector2(40, game.Height / 2 - healthbar.texture.Height / 2);
+            xpBarPosition = new Vector2(4, 29);
+            healthBarPosition = new Vector2(4, 4);
             font = content.Load<SpriteFont>("UI/Font");
 
             Audio.LoadContent(content);
@@ -1415,18 +1415,20 @@ namespace Brogue.Engine
                 uisb.Draw(healthcontainer.texture, healthBarPosition, Color.White);
                 uisb.Draw(healthcontainer.texture, xpBarPosition, Color.White);
                 //uisb.Draw(healthbar.texture, new Vector2(50, game.Height / 2 - healthcontainer.texture.Height / 2), Color.White);
-                uisb.Draw(healthbar.texture, new Vector2(healthBarPosition.X + healthbar.texture.Width / 2,
-                    healthBarPosition.Y + healthbar.texture.Height),
+                uisb.Draw(healthbar.texture, new Vector2(healthBarPosition.X + 12,
+                    healthBarPosition.Y + 2),
                     new Rectangle(0, 0, healthbar.texture.Width, healthbar.texture.Height),
                     Color.White, 0,
-                    new Vector2(healthbar.texture.Width / 2, healthbar.texture.Height),
-                    new Vector2(1, (float)hero.health / (float)hero.maxHealth), SpriteEffects.None, 0);
-                uisb.Draw(xpbar.texture, new Vector2(xpBarPosition.X + xpbar.texture.Width / 2,
-                    xpBarPosition.Y + xpbar.texture.Height),
-                    new Rectangle(0, 0, xpbar.texture.Width, xpbar.texture.Height),
+                    new Vector2(0, 0),
+                    new Vector2((float)hero.health / (float)hero.maxHealth, 1),
+                    SpriteEffects.None, 0);
+                uisb.Draw(xpbar.texture, new Vector2(xpBarPosition.X + 12,
+                    xpBarPosition.Y + 2),
+                    new Rectangle(0, 0, healthbar.texture.Width, healthbar.texture.Height),
                     Color.White, 0,
-                    new Vector2(xpbar.texture.Width / 2, xpbar.texture.Height),
-                    new Vector2(1, hero.GetXpPercent()), SpriteEffects.None, 0);
+                    new Vector2(0, 0),
+                    new Vector2(hero.GetXpPercent(), 1),
+                    SpriteEffects.None, 0);
                 //uisb.Draw(xpbar, xpBarPosition, Color.White);
                 //uisb.Draw(inventory.texture, new Vector2(game.Width / 2 - inventory.texture.Width / 2, game.Height - 100), Color.White);
 
@@ -1629,12 +1631,13 @@ namespace Brogue.Engine
             weaponSlot1.Draw(sb);
             if (weaponSlot1.doToolTip && hero.GetEquipment().equippedWeapons[0] != null)
             {
-                ToolTip.Draw(sb, hero.GetEquipment().equippedWeapons[0], weaponEquipPosition + new Vector2(-200, -250), hero);
+                ToolTip.Draw(sb, hero.GetEquipment().equippedWeapons[0], weaponEquipPosition + new Vector2(50, -250), hero);
             }
+
             weaponSlot2.Draw(sb);
             if (weaponSlot2.doToolTip && hero.GetEquipment().equippedWeapons[1] != null)
             {
-                ToolTip.Draw(sb, hero.GetEquipment().equippedWeapons[1], armorEquipPosition + new Vector2(-200, -250), hero);
+                ToolTip.Draw(sb, hero.GetEquipment().equippedWeapons[1], weaponEquipPosition + new Vector2(50, -250), hero);
             }
 
         }
