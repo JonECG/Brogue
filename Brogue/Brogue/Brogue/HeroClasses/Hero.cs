@@ -130,7 +130,7 @@ namespace Brogue.HeroClasses
             }
             else
             {
-                Engine.Engine.AddVisualAttack(this, "Items/MailChest", .25f, 1.5f, .15f);
+                Engine.Engine.AddVisualAttack(this, "Items/MailChest", .25f, 1.5f, .1f);
                 parryCount--;
             }
         }

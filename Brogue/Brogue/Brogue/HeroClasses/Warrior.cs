@@ -1,5 +1,6 @@
 ﻿using Brogue.Abilities.AOE;
 using Brogue.Abilities.Damaging.SingleTargets;
+using Brogue.Abilities.Togglable;
 using Brogue.Enums;
 using Brogue.Items.Equipment.Accessory;
 using Brogue.Items.Equipment.Armor.Chest;
@@ -31,7 +32,7 @@ namespace Brogue.HeroClasses
             resetLevel();
             resetHealth();
             abilities[0] = new Cleave();
-            abilities[1] = new WhirlwindSlash();
+            abilities[1] = new Parry();
             Engine.Engine.Log(health.ToString());
         }
     }
