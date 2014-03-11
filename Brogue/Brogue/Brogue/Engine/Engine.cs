@@ -583,7 +583,8 @@ namespace Brogue.Engine
             jar = GetTexture("UI/Jar"),
             bar = GetTexture("UI/Bar"), 
             healthcontainer = GetTexture("UI/HealthJar"),
-            healthbar = GetTexture("UI/HealthBar"), 
+            healthbar = GetTexture("UI/HealthBar"),
+            healthBack = GetTexture("UI/HealthJarBack"),
             xpbar = GetTexture("UI/XPBar"),
             invSlot = GetTexture("UI/InvSlot"),
             invHighlightSlot = GetTexture("UI/InvSlotHighlighted"),
@@ -675,8 +676,6 @@ namespace Brogue.Engine
             sg.saveSlot = currentSaveSlot;
             sg.dungeonLevel = currentDungeonLevel + 1;
             
-            //IntermediateSerializer  is = new IntermediateSerializer();
-
             //Write to binary file...
             IFormatter formatter = new BinaryFormatter();
             Stream stream = new FileStream(filename, FileMode.Create, FileAccess.Write, FileShare.None);
@@ -693,7 +692,8 @@ namespace Brogue.Engine
             File.Delete(filename);
             currentSaveSlot = gd.saveSlot;
             hero = gd.character;
-            currentLevel = LevelGenerator.generate(gd.seed, gd.levelComplexity, gd.dungeonLevel);
+            GeneratedLevel nlevel = new GeneratedLevel(gd.seed, gd.levelComplexity, gd.dungeonLevel);
+            currentLevel = nlevel.RetrieveLevel();
             currentLevel.CharacterEntities.Add(hero, currentLevel.GetStartPoint());
             showSaveSlotSelection = false;
             mainMenuOpen = false;
@@ -868,7 +868,7 @@ namespace Brogue.Engine
             lightsTarget = new RenderTarget2D(game.GraphicsDevice, game.Width, game.Height);
             mainTarget = new RenderTarget2D(game.GraphicsDevice, game.Width, game.Height);
             lightMaskWidthInTilesDividedByTwo = lightMask.texture.Width / (2 * CELLWIDTH);
-            xpBarPosition = new Vector2(4, 29);
+            xpBarPosition = new Vector2(4, 35);
             healthBarPosition = new Vector2(4, 4);
             font = content.Load<SpriteFont>("UI/Font");
 
@@ -1412,9 +1412,11 @@ namespace Brogue.Engine
                         new Vector2(va.tex.texture.Width / 2, va.tex.texture.Height / 2), 
                         va.scale, SpriteEffects.None, 0);
                 }
-                uisb.Draw(healthcontainer.texture, healthBarPosition, Color.White);
-                uisb.Draw(healthcontainer.texture, xpBarPosition, Color.White);
+                
+                
                 //uisb.Draw(healthbar.texture, new Vector2(50, game.Height / 2 - healthcontainer.texture.Height / 2), Color.White);
+
+                uisb.Draw(healthBack.texture, healthBarPosition, Color.White);
                 uisb.Draw(healthbar.texture, new Vector2(healthBarPosition.X + 12,
                     healthBarPosition.Y + 2),
                     new Rectangle(0, 0, healthbar.texture.Width, healthbar.texture.Height),
@@ -1422,6 +1424,9 @@ namespace Brogue.Engine
                     new Vector2(0, 0),
                     new Vector2((float)hero.health / (float)hero.maxHealth, 1),
                     SpriteEffects.None, 0);
+                uisb.Draw(healthcontainer.texture, healthBarPosition, Color.White);
+
+                uisb.Draw(healthBack.texture, xpBarPosition, Color.White);
                 uisb.Draw(xpbar.texture, new Vector2(xpBarPosition.X + 12,
                     xpBarPosition.Y + 2),
                     new Rectangle(0, 0, healthbar.texture.Width, healthbar.texture.Height),
@@ -1429,6 +1434,7 @@ namespace Brogue.Engine
                     new Vector2(0, 0),
                     new Vector2(hero.GetXpPercent(), 1),
                     SpriteEffects.None, 0);
+                uisb.Draw(healthcontainer.texture, xpBarPosition, Color.White);
                 //uisb.Draw(xpbar, xpBarPosition, Color.White);
                 //uisb.Draw(inventory.texture, new Vector2(game.Width / 2 - inventory.texture.Width / 2, game.Height - 100), Color.White);
 
