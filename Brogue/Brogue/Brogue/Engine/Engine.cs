@@ -810,7 +810,6 @@ namespace Brogue.Engine
         public static void LoadMainMenu()
         {
             LoadContent(game.Content);
-            StartMainMenuSong();
             if (DOSTARTMENU)
             {
                 warriorButton = new CharButton(new Vector2(game.Width / 3, 2 * game.Height / 3), true, "UI/WarriorCharCreation", "UI/WarriorCharCreationHigh");
@@ -822,7 +821,7 @@ namespace Brogue.Engine
                 quitDeathButton = new UIButton(new Vector2(game.Width / 2 + 40, game.Height / 2), true, "UI/QuitButton", "");
                 mainMenuOpen = true;
 
-                
+                Audio.playMusic("Stoneworld Battle", 1.0f);
 
                 LoadSaveSlots();
 
@@ -878,7 +877,6 @@ namespace Brogue.Engine
 
         public static void StartGame()
         {
-            StopMainMenuSong();
             Log("Game started");
             gameStarted = true;
             mainMenuOpen = false;

@@ -134,7 +134,7 @@ namespace Brogue.Engine
 
         public static void LoadContent(ContentManager content)
         {
-            mainMenuTheme = content.Load<Song>("Audio/Stoneworld Battle");
+            //mainMenuTheme = content.Load<Song>("Audio/Stoneworld Battle");
             contentManager = content;
             
 
@@ -155,17 +155,6 @@ namespace Brogue.Engine
                 }
             }
             ContentLoaded(content);
-        }
-
-        public static void StartMainMenuSong()
-        {
-            MediaPlayer.Play(mainMenuTheme);
-            MediaPlayer.IsRepeating = true;
-        }
-
-        public static void StopMainMenuSong()
-        {
-            MediaPlayer.Stop();
         }
     }
 }
