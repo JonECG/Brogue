@@ -19,7 +19,7 @@ namespace Brogue.Items.Equipment.Weapon.Legendary.Ranged
         public KunaiWithChain(int dLevel, int cLevel)
         {
             Name = "Kunai With Chain";
-            FlavorText = "KWhat is this!";
+            FlavorText = "What is this!";
             UsedBy = new List<Classes> { Classes.Rogue, Classes.Assassin };
             EquipableIn = new List<Slots> { Slots.Hand_Auxillary };
             LevelReq = findLevelReq(dLevel, cLevel);

@@ -486,6 +486,9 @@ namespace Brogue.HeroClasses
                                 case ElementAttributes.Lighting:
                                     testEnemy.DealElementalDamage(Element[i], 1);
                                     break;
+                                case ElementAttributes.Arcane:
+                                    testEnemy.DealElementalDamage(Element[i], 7);
+                                    break;
                             }
                         }
                     }

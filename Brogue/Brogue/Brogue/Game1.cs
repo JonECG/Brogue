@@ -22,7 +22,7 @@ namespace Brogue
 
         public SpriteBatch spriteBatch;
         private SpriteBatch uiSpriteBatch;
-        private int WIDTH = 1344;
+        private int WIDTH = 1366;
         private int HEIGHT = 768;
 
         public int Width

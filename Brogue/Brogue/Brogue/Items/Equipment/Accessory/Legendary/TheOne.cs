@@ -20,7 +20,7 @@ namespace Brogue.Items.Equipment.Accessory.Legendary
         public TheOne(int dLevel, int cLevel)
         {
             Name = "The One";
-            FlavorText = "Does this really rule them all.";
+            FlavorText = "Does this really rule them all?";
             LevelReq = findLevelReq(dLevel, cLevel);
             UsedBy = new List<Classes>
             {

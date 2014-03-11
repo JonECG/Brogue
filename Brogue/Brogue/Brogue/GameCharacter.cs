@@ -54,6 +54,10 @@ namespace Brogue
             {
                 elementDamage = 2 * power;
             }
+            else if (e == ElementAttributes.Arcane)
+            {
+                elementDamage = (int)(3 * (double)power);
+            }
         }
 
         protected void CheckElementDamage()

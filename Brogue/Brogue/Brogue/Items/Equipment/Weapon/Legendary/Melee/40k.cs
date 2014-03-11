@@ -19,7 +19,7 @@ namespace Brogue.Items.Equipment.Weapon.Legendary.Melee
         public _40k(int dLevel, int cLevel)
         {
             Name = "40k";
-            FlavorText = "They are my Space Marines...and they shall know no fear.";
+            FlavorText = "They are my Space Marines...";
             UsedBy = new List<Classes> { Classes.Warrior, Classes.Brawler, Classes.Berserker };
             EquipableIn = new List<Slots> { Slots.Hand_Both };
             LevelReq = findLevelReq(dLevel, cLevel);
