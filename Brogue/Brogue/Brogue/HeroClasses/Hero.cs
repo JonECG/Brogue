@@ -518,6 +518,7 @@ namespace Brogue.HeroClasses
                         }
                         else if (name[1] == "War")
                         {
+                            Audio.playSound("HammerSmash");
                             Engine.Engine.AddVisualAttack(enemy, "Hero/hammerSmash", .25f, 2.0f, .15f);
                         }
                         else
