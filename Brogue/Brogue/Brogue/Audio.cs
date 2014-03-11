@@ -68,7 +68,7 @@ namespace Brogue
 
     public static class Audio
     {
-        private static int MAX_LIABBARY_SIZE = 10;
+        private static int MAX_LIABBARY_SIZE = 20;
         private static Random random = new Random();
 
         private static int DEALY_MAX_DEFALT_TIME = 300;
@@ -211,6 +211,14 @@ namespace Brogue
             sound[4] = new audioFile(content.Load<SoundEffect>("Sound/switch"), "switch");
             sound[5] = new audioFile(content.Load<SoundEffect>("Sound/stairs"), "stairs");
             sound[6] = new audioFile(content.Load<SoundEffect>("Sound/ironGate"), "IronGate");
+            sound[7] = new audioFile(content.Load<SoundEffect>("Sound/Fireball"), "Fireball");
+            sound[8] = new audioFile(content.Load<SoundEffect>("Sound/whoosh"), "whoosh");
+            sound[9] = new audioFile(content.Load<SoundEffect>("Sound/swordSlash"), "Slash");
+            sound[10] = new audioFile(content.Load<SoundEffect>("Sound/slashAttack"), "swordAttack");
+            sound[11] = new audioFile(content.Load<SoundEffect>("Sound/lightningStorm"), "lightning");
+            sound[12] = new audioFile(content.Load<SoundEffect>("Sound/DaggerStab"), "DaggerStab");
+            sound[13] = new audioFile(content.Load<SoundEffect>("Sound/Punch"), "Mugging");
+            sound[14] = new audioFile(content.Load<SoundEffect>("Sound/smokePoof"), "Smoke");
 
             //defualt
             delay = random.Next(DEALY_MIN_DEFALT_TIME, DEALY_MAX_DEFALT_TIME);
