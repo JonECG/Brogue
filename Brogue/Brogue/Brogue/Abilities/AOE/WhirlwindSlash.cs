@@ -26,5 +26,10 @@ namespace Brogue.Abilities.AOE
         {
             return baseDamage * (heroLevel + heroDamage / 2);
         }
+
+        public override void drawVisualEffect(GameCharacter hero, GameCharacter enemy)
+        {
+            Engine.Engine.AddVisualAttack(hero, enemy, "Hero/Whirlwind", .5f, 1.0f, .03f);
+        }
     }
 }

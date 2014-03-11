@@ -47,12 +47,16 @@ namespace Brogue.Abilities.AOE
                         castSquares[0] = mouse;
                         for (int j = 0; j < additions.Length; j++)
                         {
+
+                            //drawVisualEffect();
                             castSquares[j + 1] = additions[j];
                         }
                     }
                 }
             }
         }
+
+        //public abstract void drawVisualEffect();
 
         public override bool filledSquares()
         {

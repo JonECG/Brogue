@@ -15,8 +15,9 @@ namespace Brogue.Abilities.Togglable
 
         public override void finishCastandDealDamage(int heroLevel, int heroDamage, Mapping.Level mapLevel, HeroClasses.Hero hero)
         {
+            Audio.playSound("Smoke", 1.0f);
             hero.setInvisibility(10 + heroLevel / 5);
-            cooldown = 15 + heroLevel/5;
+            cooldown = 20 + heroLevel/5;
         }
     }
 }

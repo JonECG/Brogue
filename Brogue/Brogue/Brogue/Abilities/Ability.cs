@@ -37,5 +37,10 @@ namespace Brogue.Abilities
                 castSquares[i] = new IntVec(0, 0);
             }
         }
+
+        public int getCooldown()
+        {
+            return cooldown;
+        }
     }
 }

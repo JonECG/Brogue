@@ -46,6 +46,7 @@ namespace Brogue.Abilities.SingleTargets
             {
                 if (mapLevel.Move(hero, castSquares[0], true))
                 {
+                    Audio.playSound("whoosh", 1.0f);
                     cooldown = abilityCooldown;
                     wasJustCast = true;
                 }

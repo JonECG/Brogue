@@ -22,7 +22,13 @@ namespace Brogue.Abilities.AOE
 
         public override int calculateDamage(int heroLevel, int heroDamage)
         {
-            return 0;
+            return baseDamage+heroLevel+heroDamage*2;
+        }
+
+        public override void drawVisualEffect(GameCharacter hero, GameCharacter enemy)
+        {
+            Engine.Engine.AddVisualAttack(enemy, "Hero/Bolt", .5f, 1.5f, .05f);
+            Audio.playSound("lightning", .5f);
         }
     }
 }

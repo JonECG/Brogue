@@ -34,6 +34,7 @@ namespace Brogue.Abilities.Damaging.SingleTargets
                 GameCharacter test = (GameCharacter)mapLevel.CharacterEntities.FindEntity(castSquares[i]);
                 if (test != null)
                 {
+                    Audio.playSound("Slash", .25f);
                     test.TakeDamage(damage, hero);
                 }
                 castSquares[i] = new IntVec(0, 0);

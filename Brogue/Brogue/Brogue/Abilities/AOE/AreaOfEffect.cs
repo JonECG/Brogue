@@ -68,11 +68,14 @@ namespace Brogue.Abilities.AOE
                 GameCharacter enemy = (GameCharacter)mapLevel.CharacterEntities.FindEntity(castSquares[i]);
                 if (enemy != null)
                 {
+                    drawVisualEffect(hero, enemy);
                     enemy.TakeDamage(damage, hero);
                 }
                 castSquares[i] = new IntVec(0, 0);
             }
             isActuallyFilled = false;
         }
+
+        public abstract void drawVisualEffect(GameCharacter hero, GameCharacter enemy);
     }
 }
