@@ -9,6 +9,8 @@ namespace Brogue.Abilities.AOE
     {
         public Volley()
         {
+            name = "Volley";
+            description = "The ranger fires a hail of arrows \nat the selected location.";
             castSquares = new IntVec[5];
             damageRadius = 1;
             for (int i = 0; i < castSquares.Length; i++)

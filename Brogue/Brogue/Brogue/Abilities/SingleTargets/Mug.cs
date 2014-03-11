@@ -11,6 +11,7 @@ namespace Brogue.Abilities.SingleTargets
     {
         public Mug()
         {
+            name = "Mug";
             description = "The rogue strikes the enemy chosen, and obtains a random item.";
             castSquares = new IntVec[1];
             for (int i = 0; i < castSquares.Length; i++)

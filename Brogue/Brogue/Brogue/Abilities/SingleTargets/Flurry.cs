@@ -10,6 +10,7 @@ namespace Brogue.Abilities.SingleTargets
     {
         public Eviscerate()
         {
+            name = "Eviscerate";
             description = "The duelist strikes a single target three times.";
             castSquares = new IntVec[1];
             for (int i = 0; i < castSquares.Length; i++)

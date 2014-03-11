@@ -11,6 +11,7 @@ namespace Brogue.Abilities.SingleTargets
 
         public DoubleSlash()
         {
+            name = "Double Slash";
             description = "The warrior strikes a single target to deal double damage.";
             castSquares = new IntVec[1];
             for (int i = 0; i < castSquares.Length; i++)

@@ -9,6 +9,12 @@ namespace Brogue.Abilities.Togglable
     {
         const int armorBoost = 10;
 
+        public IceArmor()
+        {
+            name = "Ice Armor";
+            description = "The mage summons armor to protect him \nduring battle.";
+        }
+
         public override void updateToggle(int heroLevel, HeroClasses.Hero hero) 
         {
             if (createdLevel < heroLevel && isActive)

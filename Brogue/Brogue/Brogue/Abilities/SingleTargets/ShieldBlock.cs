@@ -11,6 +11,7 @@ namespace Brogue.Abilities.SingleTargets
     {
         public ShieldBlock()
         {
+            name = "Shield Block";
             description = "The sentinel braces himself for the next attack, gaining armor for a single hit.";
             castSquares = new IntVec[0];
             for (int i = 0; i < castSquares.Length; i++)

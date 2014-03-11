@@ -9,6 +9,12 @@ namespace Brogue.Abilities.Togglable
     {
         const int increase = 5;
 
+        public Rage()
+        {
+            name = "Rage";
+            description = "The berserker becomes enraged. Dealing \nincreased damage while losing health \nwith every attack.";
+        }
+
         public override void updateToggle(int heroLevel, HeroClasses.Hero hero)
         {
             if (createdLevel < heroLevel && isActive)

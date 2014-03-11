@@ -10,6 +10,12 @@ namespace Brogue.Abilities.Togglable
     {
         private bool added = false;
 
+        public Parry()
+        {
+            name = "Parry";
+            description = "The duelist blocks the next set of attacks completely.";
+        }
+
         public override void updateToggle(int heroLevel, HeroClasses.Hero hero) {}
 
         public override void finishCastandDealDamage(int heroLevel, int heroDamage, Mapping.Level mapLevel, HeroClasses.Hero hero)

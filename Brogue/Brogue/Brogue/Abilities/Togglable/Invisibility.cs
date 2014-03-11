@@ -11,6 +11,12 @@ namespace Brogue.Abilities.Togglable
         const int baseInvis = 10;
         private bool added = false;
 
+        public Invisibility()
+        {
+            name = "Invisibility";
+            description = "The rogue shrouds himself to become invisible \nfor a certain number of turns. (Being invisble \nmeans that your next basic attack will deal \n1.5*damage.)";
+        }
+
         public override void updateToggle(int heroLevel, HeroClasses.Hero hero) {}
 
         public override void finishCastandDealDamage(int heroLevel, int heroDamage, Mapping.Level mapLevel, HeroClasses.Hero hero)

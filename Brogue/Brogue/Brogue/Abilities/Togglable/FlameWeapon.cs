@@ -5,9 +5,15 @@ using System.Text;
 
 namespace Brogue.Abilities.Togglable
 {
-    [Serializable] public class FlameWeapon : ToggleAbility
+    [Serializable] public class ArcaneWeapon : ToggleAbility
     {
         private bool added = false;
+
+        public ArcaneWeapon()
+        {
+            name = "Arcane Weapon";
+            description = "The mage conjurs arcane energy /nto amplify his weapon damage.";
+        }
 
         public override void updateToggle(int heroLevel, HeroClasses.Hero hero){}
 
@@ -17,13 +23,13 @@ namespace Brogue.Abilities.Togglable
             {
                 if (hero.Element != null && !hero.Element.Contains(Enums.ElementAttributes.Fire))
                 {
-                    hero.Element.Add(Enums.ElementAttributes.Fire);
+                    hero.Element.Add(Enums.ElementAttributes.Arcane);
                     added = true;
                 }
             }
             else if (isActive && added)
             {
-                hero.Element.Remove(Enums.ElementAttributes.Fire);
+                hero.Element.Remove(Enums.ElementAttributes.Arcane);
                 added = false;
             }
             cooldown = 0;

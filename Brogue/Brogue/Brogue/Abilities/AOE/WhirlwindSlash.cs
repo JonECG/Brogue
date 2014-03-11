@@ -11,6 +11,8 @@ namespace Brogue.Abilities.AOE
 
         public WhirlwindSlash()
         {
+            name = "Whirlwind Slash";
+            description = "The warrior swings his blade in a circle \ndamaging all enemies.";
             radius = 2;
             isActuallyFilled = false;
             castSquares = new IntVec[12];

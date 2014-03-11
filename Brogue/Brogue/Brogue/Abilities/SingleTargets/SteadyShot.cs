@@ -11,7 +11,8 @@ namespace Brogue.Abilities.SingleTargets
     {
         public SteadyShot()
         {
-            description = "The ranger lines up the perfect shot on the selected target.";
+            name = "Steady Shot";
+            description = "The ranger lines up the perfect shot \non the selected target.";
             castSquares = new IntVec[1];
             for (int i = 0; i < castSquares.Length; i++)
             {

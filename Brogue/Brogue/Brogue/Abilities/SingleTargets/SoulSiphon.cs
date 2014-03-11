@@ -10,13 +10,14 @@ namespace Brogue.Abilities.SingleTargets
     {
         public SoulSiphon()
         {
-            description = "The mage deals damage to the enemy and heals for 100% of the damage dealt.";
+            name = "Soul Siphon";
+            description = "The mage deals damage to the enemy and heals \nfor 100% of the damage dealt.";
             castSquares = new IntVec[1];
             for (int i = 0; i < castSquares.Length; i++)
             {
                 castSquares[i] = new IntVec(0, 0);
             }
-            baseDamage = 8;
+            baseDamage = 6;
             radius = 3;
             abilityCooldown = 10;
         }

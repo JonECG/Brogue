@@ -10,6 +10,7 @@ namespace Brogue.Abilities.SingleTargets
     {
         public ShieldBash()
         {
+            name = "Shield Bash";
             description = "The sentinel strikes enemies with his shield.";
             castSquares = new IntVec[1];
             for (int i = 0; i < castSquares.Length; i++)
