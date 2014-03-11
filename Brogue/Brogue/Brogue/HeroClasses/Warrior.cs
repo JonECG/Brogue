@@ -27,6 +27,7 @@ namespace Brogue.HeroClasses
             inventory.addItem(new WarHammer(1, 1));
             baseHealth = 300;
             healthPerLevel = 50;
+            
             resetLevel();
             resetHealth();
             abilities[0] = new Cleave();

@@ -86,6 +86,14 @@ namespace Brogue.HeroClasses
                 }
             }
 
+            totalDamage += getAccessoryDamageIncrease();
+
+            return totalDamage;
+        }
+
+        public int getAccessoryDamageIncrease()
+        {
+            int totalDamage = 0;
             if (necklace != null)
             {
                 for (int i = 0; i < necklace.StatIncreased.Count; i++)
@@ -227,96 +235,64 @@ namespace Brogue.HeroClasses
             }
         }
 
-        public void equipWeapon(Gear weapon, Hero hero)
+        public void equipWeapon(Gear weapon, Hero hero, bool duelEquip)
         {
             int handsTaken = (weapon.EquipableIn.Contains(Enums.Slots.Hand_Both)) ? 2 : 1;
             bool equipped = false;
-            for (int i = 0; i < weapon.EquipableIn.Count && !equipped; i++)
+            if (!duelEquip)
             {
-                switch (weapon.EquipableIn[i])
+                if (equippedWeapons[0] == null)
                 {
-                    case Slots.Hand_Both:
-                        if (equippedWeapons[0] == null && equippedWeapons[1] == null && slotsOpen == 2)
-                        {
-                            equippedWeapons[0] = weapon;
-                            equipped = true;
-                        }
-                        break;
-                    case Slots.Hand_Primary:
-                        if (equippedWeapons[0] == null && slotsOpen >= 1)
-                        {
-                            equippedWeapons[0] = weapon;
-                            equipped = true;
-                        }
-                        break;
-                    case Slots.Hand_Auxillary:
-                        if (equippedWeapons[1] == null && slotsOpen >= 1)
-                        {
-                            equippedWeapons[1] = weapon;
-                            if (weapon.ItemType == ITypes.Offhand)
-                            {
-                                Offhand spellbook = (Offhand)weapon;
-                                hero.Element = spellbook.Element;
-                            }
-                            equipped = true;
-                        }
-                        break;
+                    equippedWeapons[0] = weapon;
+                    equipped = true;
                 }
             }
-            slotsOpen -= (equipped) ? handsTaken : 0;
-            //if (handsTaken == 2 && equippedWeapons[0] == null && equippedWeapons[1] == null)
-            //{
-            //    equippedWeapons[0] = (Weapon)weapon;
-            //    slotsOpen -= handsTaken;
-            //}
-            //else if (handsTaken == 1 && weapon.EquipableIn[0] == Slots.Hand_Auxillary && equippedWeapons[1] == null)
-            //{
-            //    if (weapon.ItemType == ITypes.Offhand)
-            //    {
-            //        equippedWeapons[1] = (Offhand)weapon;
-            //    }
-            //    else
-            //    {
-            //        equippedWeapons[1] = (Weapon)weapon;
-            //    }
-            //    slotsOpen -= handsTaken;
-            //}
-            //else if (handsTaken == 1 && equippedWeapons[0] == null)
-            //{
-            //    equippedWeapons[0] = (Weapon)weapon;
-            //    slotsOpen -= handsTaken;
-            //}
-            //else if (handsTaken == 1 && equippedWeapons[1] == null)
-            //{
-            //    equippedWeapons[1] = (Weapon)weapon;
-            //    slotsOpen -= handsTaken;
-            //}
-
-            //if (slotsOpen >= handsTaken)
-            //{
-            //    if (equippedWeapons[removedWeapon] == null)
-            //    {
-            //        if (weapon.ItemType == ITypes.Offhand)
-            //        {
-            //            equippedWeapons[1] = weapon;
-            //            SpellBook elements = (SpellBook)weapon;
-            //            hero.Element = elements.Element;
-            //        }
-            //        else if (weapon.EquipableIn[0] == Slots.Hand_Auxillary)
-            //        {
-            //            equippedWeapons[1] = weapon;
-            //        }
-            //        else if (handsTaken == 2)
-            //        {
-            //            equippedWeapons[0] = weapon;
-            //        }
-            //        else
-            //        {
-            //            equippedWeapons[removedWeapon] = weapon;
-            //        }
-            //        slotsOpen -= handsTaken;
-            //    }
-            //}
+            else
+            {
+                for (int i = 0; i < weapon.EquipableIn.Count && !equipped; i++)
+                {
+                    switch (weapon.EquipableIn[i])
+                    {
+                        case Slots.Hand_Both:
+                            if (equippedWeapons[0] == null && equippedWeapons[1] == null && slotsOpen == 2)
+                            {
+                                equippedWeapons[0] = weapon;
+                                equipped = true;
+                            }
+                            break;
+                        case Slots.Hand_Primary:
+                            if (equippedWeapons[0] == null && slotsOpen >= 1)
+                            {
+                                equippedWeapons[0] = weapon;
+                                equipped = true;
+                            }
+                            break;
+                        case Slots.Hand_Auxillary:
+                            if (equippedWeapons[1] == null && slotsOpen >= 1)
+                            {
+                                equippedWeapons[1] = weapon;
+                                if (weapon.ItemType == ITypes.Offhand)
+                                {
+                                    Offhand spellbook = (Offhand)weapon;
+                                    hero.Element = spellbook.Element;
+                                }
+                                equipped = true;
+                            }
+                            break;
+                    }
+                }
+            }
+            if (equipped)
+            {
+                if (!duelEquip)
+                {
+                    slotsOpen -= 2;
+                }
+                else
+                {
+                    slotsOpen -= (equipped) ? handsTaken : 0;
+                }
+            }
         }
 
         public Armor removeArmor(Armor type)
@@ -343,17 +319,18 @@ namespace Brogue.HeroClasses
             return removedArmor;
         }
 
-        public Gear removeWeapon(Gear newlyEquippedWeapon, int removedWeaponIndex = -1)
+        public Gear removeWeapon(Gear newlyEquippedWeapon, bool canDuelEquip = true, int removedWeaponIndex = -1)
         {
             Gear removed = null;
             if (removedWeaponIndex != -1)
             {
                 removed = equippedWeapons[removedWeaponIndex];
                 equippedWeapons[removedWeaponIndex] = null;
-                if (removed != null)
-                {
-                    slotsOpen += (removed.EquipableIn.Contains(Slots.Hand_Both)) ? 2 : 1;
-                }
+            }
+            else if (!canDuelEquip)
+            {
+                removed = equippedWeapons[0];
+                equippedWeapons[0] = null;
             }
             else
             {
@@ -361,19 +338,16 @@ namespace Brogue.HeroClasses
                 {
                     removed = equippedWeapons[0];
                     equippedWeapons[0] = null;
-                    slotsOpen += (removed != null) ? 2 : 0;
                 }
                 else if (newlyEquippedWeapon.EquipableIn.Contains(Slots.Hand_Primary) && newlyEquippedWeapon.EquipableIn.Contains(Slots.Hand_Auxillary))
                 {
                     removed = equippedWeapons[1];
                     equippedWeapons[1] = null;
-                    slotsOpen += (removed != null)?1:0;
                 }
                 else if (newlyEquippedWeapon.EquipableIn.Contains(Slots.Hand_Primary))
                 {
                     removed = equippedWeapons[0];
                     equippedWeapons[0] = null;
-                    slotsOpen += (removed != null) ? 1 : 0;
                 }
                 else if (newlyEquippedWeapon.EquipableIn.Contains(Slots.Hand_Auxillary))
                 {
@@ -383,9 +357,20 @@ namespace Brogue.HeroClasses
                         //remove element here
                     }
                     equippedWeapons[1] = null;
-                    slotsOpen += (removed != null) ? 1 : 0;
                 }
-                
+
+            }
+
+            if (removed != null)
+            {
+                if (!canDuelEquip)
+                {
+                    slotsOpen += 2;
+                }
+                else
+                {
+                    slotsOpen += (removed.EquipableIn.Contains(Slots.Hand_Both)) ? 2 : 1;
+                }
             }
             return removed;
         }

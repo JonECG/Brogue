@@ -16,11 +16,12 @@ namespace Brogue.HeroClasses
         {
             heroRole = Classes.Rogue;
             inventory.addItem(new Dagger(1, 1));
-            inventory.addItem(new Dagger(1, 1));
+            inventory.addItem(new Claws(1, 1));
             baseHealth = 225;
-            healthPerLevel = 40;
+            healthPerLevel = 35;
             resetLevel();
             resetHealth();
+            canDuelWield = true;
             abilities[0] = new Mug();
             abilities[1] = new Invisibility();
             Engine.Engine.Log(health.ToString());

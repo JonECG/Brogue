@@ -25,7 +25,7 @@ namespace Brogue.HeroClasses
             resetHealth();
             abilities[0] = new Fireball();
             abilities[1] = new Blink();
-            abilities[2] = new FlameWeapon();
+            abilities[2] = new ArcaneWeapon();
             abilities[3] = new SoulSiphon();
             Engine.Engine.Log(health.ToString());
         }

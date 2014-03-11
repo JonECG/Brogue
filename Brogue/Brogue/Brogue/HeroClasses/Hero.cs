@@ -40,6 +40,7 @@ namespace Brogue.HeroClasses
         public int MaxJarBarAmount = 50;
         protected int numAbilities;
         public int damageBoost;
+        protected bool canDuelWield;
 
         public static Classes heroRole;
         public static bool visible;
@@ -85,6 +86,7 @@ namespace Brogue.HeroClasses
             jarBarAmount = 0;
             isFriendly = true;
             visible = true;
+            canDuelWield = false;
             abilities = new Ability[6];
         }
 
@@ -469,8 +471,8 @@ namespace Brogue.HeroClasses
                     int weaponRange2 = currentlyEquippedItems.getAuxilaryWeaponRange();
                     IntVec[] weaponHitbox1 = AStar.getPossiblePositionsFrom(mapLevel, mapLevel.CharacterEntities.FindPosition(this), weaponRange1, true);
                     IntVec[] weaponHitbox2 = AStar.getPossiblePositionsFrom(mapLevel, mapLevel.CharacterEntities.FindPosition(this), weaponRange2, true);
-                    damageEnemyIfInRange(weaponHitbox1, mapLevel, testEnemy, currentlyEquippedItems.getPrimaryWeapon());
-                    damageEnemyIfInRange(weaponHitbox2, mapLevel, testEnemy, currentlyEquippedItems.getAuxilaryWeapon());
+                    damageEnemyIfInRange(weaponHitbox1, mapLevel, testEnemy, currentlyEquippedItems.getPrimaryWeapon(), true);
+                    damageEnemyIfInRange(weaponHitbox2, mapLevel, testEnemy, currentlyEquippedItems.getAuxilaryWeapon(), false);
                     if (Element != null)
                     {
                         for (int i = 0; i < Element.Count; i++)
@@ -496,7 +498,7 @@ namespace Brogue.HeroClasses
             }
         }
 
-        private void damageEnemyIfInRange(IntVec[] hitBox, Level mapLevel, GameCharacter enemy, Weapon weapon)
+        private void damageEnemyIfInRange(IntVec[] hitBox, Level mapLevel, GameCharacter enemy, Weapon weapon, bool playAttack)
         {
             bool found = false;
             if (weapon != null)
@@ -507,26 +509,34 @@ namespace Brogue.HeroClasses
                     IntVec test = mapLevel.CharacterEntities.FindPosition(enemy);
                     if (hitBox[i].Equals(mapLevel.CharacterEntities.FindPosition(enemy)))
                     {
+                        int weaponDamage = weapon.Damage + damageBoost + currentlyEquippedItems.getAccessoryDamageIncrease();
                         found = true;
-                        int damage = (!visible) ? 2 * (weapon.Damage + damageBoost) : weapon.Damage + damageBoost;
-                        if (name[1] == "Sword" || name[1] == "Axe" || name[1] == "Great" || name[1] == "Bastard" || name[1] == "Rapier" || name[1] == "Scythe")
+                        int damage = (!visible) ? int(1.5 * (weaponDamage)) : weaponDamage;
+                        if (playAttack)
                         {
-                            Engine.Engine.AddVisualAttack(enemy, "Hero/sword-slash", .25f, 2.0f, .15f);
-                            Audio.playSound("swordAttack");
-                        }
-                        else if (name[1] == "Dagger")
-                        {
-                            Engine.Engine.AddVisualAttack(enemy, "Hero/DaggerSlash", .25f, 2.0f, .15f);
-                            Audio.playSound("DaggerStab");
-                        }
-                        else if (name[1] == "War")
-                        {
-                            Audio.playSound("HammerSmash");
-                            Engine.Engine.AddVisualAttack(enemy, "Hero/hammerSmash", .25f, 2.0f, .15f);
-                        }
-                        else
-                        {
-                            Engine.Engine.AddVisualAttack(this, enemy, "Hero/MageAttack", .5f, 1.0f, .03f);
+                            if (name[1] == "Sword" || name[1] == "Axe" || name[1] == "Great" || name[1] == "Bastard" || name[1] == "Rapier" || name[1] == "Scythe")
+                            {
+                                Engine.Engine.AddVisualAttack(enemy, "Hero/sword-slash", .25f, 2.0f, .15f);
+                                Audio.playSound("swordAttack");
+                            }
+                            else if (name[1] == "Dagger")
+                            {
+                                Engine.Engine.AddVisualAttack(enemy, "Hero/DaggerSlash", .25f, 2.0f, .15f);
+                                Audio.playSound("DaggerStab");
+                            }
+                            else if (name[1] == "Claw")
+                            {
+                                Engine.Engine.AddVisualAttack(enemy, "Hero/ClawSlash", .25f, 2.0f, .15f);
+                            }
+                            else if (name[1] == "War")
+                            {
+                                Audio.playSound("HammerSmash");
+                                Engine.Engine.AddVisualAttack(enemy, "Hero/hammerSmash", .25f, 2.0f, .15f);
+                            }
+                            else
+                            {
+                                Engine.Engine.AddVisualAttack(this, enemy, "Hero/MageAttack", .5f, 1.0f, .03f);
+                            }
                         }
                         enemy.TakeDamage(damage, this);
                         invisibilityTurnCount = 0;
@@ -608,14 +618,14 @@ namespace Brogue.HeroClasses
                     Gear item = (Gear)newlyEquippedItem;
                     if (item.EquipableIn.Contains(Slots.Hand_Both))
                     {
-                        inventory.addItem(currentlyEquippedItems.removeWeapon(null, 0));
-                        inventory.addItem(currentlyEquippedItems.removeWeapon(null, 1));
+                        inventory.addItem(currentlyEquippedItems.removeWeapon(null, true,  0));
+                        inventory.addItem(currentlyEquippedItems.removeWeapon(null, true,  1));
                     }
                     else
                     {
-                        inventory.addItem(currentlyEquippedItems.removeWeapon((Gear)newlyEquippedItem));
+                        inventory.addItem(currentlyEquippedItems.removeWeapon((Gear)newlyEquippedItem, canDuelWield));
                     }
-                    currentlyEquippedItems.equipWeapon((Gear)newlyEquippedItem, this);
+                    currentlyEquippedItems.equipWeapon((Gear)newlyEquippedItem, this, canDuelWield);
                 }
             }
         }
@@ -663,9 +673,19 @@ namespace Brogue.HeroClasses
             }
         }
 
+        public Ability[] getAbilities()
+        {
+            return abilities;
+        }
+
         public bool isAlive()
         {
             return health > 0;
+        }
+
+        public bool canDuelWieldWeapons()
+        {
+            return canDuelWield;
         }
 
         Sprite IRenderable.GetSprite()
