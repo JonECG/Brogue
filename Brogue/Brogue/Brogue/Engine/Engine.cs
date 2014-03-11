@@ -1291,7 +1291,7 @@ namespace Brogue.Engine
                 {
                     if (hero.GetEquipment().equippedWeapons[0] != null)
                     {
-                        hero.GetInventory().addItem(hero.GetEquipment().removeWeapon(null, 0));
+                        hero.GetInventory().addItem(hero.GetEquipment().removeWeapon(null, hero.canDuelWieldWeapons(), 0));
                         didSomething = true;
                     }
                 }
@@ -1299,7 +1299,7 @@ namespace Brogue.Engine
                 {
                     if (hero.GetEquipment().equippedWeapons[1] != null)
                     {
-                        hero.GetInventory().addItem(hero.GetEquipment().removeWeapon(null, 1));
+                        hero.GetInventory().addItem(hero.GetEquipment().removeWeapon(null, hero.canDuelWieldWeapons(), 1));
                         didSomething = true;
                     }
                 }
