@@ -13,11 +13,11 @@ namespace Brogue.Abilities
 {
     [Serializable] public abstract class Ability
     {
-        protected int damage {get; protected set;}
-        protected int cooldown {get; set;}
-        protected int radius {get; protected set;}
-        protected bool isCasting { get; protected set; }
-        protected bool wasJustCast { get; set; }
+        public int damage {get; protected set;}
+        public int cooldown {get; set;}
+        public int radius {get; protected set;}
+        public bool isCasting { get; protected set; }
+        public bool wasJustCast { get; set; }
         protected IntVec[] castSquares;
         public string description { get; protected set; }
         public AbilityTypes type;
