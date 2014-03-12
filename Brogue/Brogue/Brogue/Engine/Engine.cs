@@ -474,8 +474,9 @@ namespace Brogue.Engine
                     front = GetArmorColor((Items.Equipment.Armor.Armor)gear, hero);
                     break;
                 case Enums.ITypes.Accessory:
-                    int iv = ((Items.Equipment.Accessory.Accessory)gear).BaseIncrease;
-                    string statI = ((Items.Equipment.Accessory.Accessory)gear).StatIncreased[0].ToString();
+                    int iv = ((Items.Equipment.Accessory.Accessory)gear).StatIncrease;
+                    string statI = ((Items.Equipment.Accessory.Accessory)gear).StatIncreased[0].ToString() +
+                        ((((Items.Equipment.Accessory.Accessory)gear).StatIncreased.Count > 1) ? ", " +((Items.Equipment.Accessory.Accessory)gear).StatIncreased[1].ToString() : "");
                     mstext = statI + " + " + iv;
                     front = GetAccessoryColor(((Items.Equipment.Accessory.Accessory)gear), hero);
                     break;
@@ -680,7 +681,7 @@ namespace Brogue.Engine
         private static UIButton weaponSlot1, weaponSlot2;
         private static UIButton escMainMenu, escContinue, escQuit;
 
-        private static int levelSeed;
+        private static int levelSeed = 101;
         private static int currentSaveSlot = -1;
         private static int levelComplexity;
         private static int currentDungeonLevel = 0;
@@ -997,17 +998,16 @@ namespace Brogue.Engine
 
         public static void GenerateLevel()
         {
-            levelSeed = enginerand.Next();
-            levelComplexity = enginerand.Next(250) + 50;
-            currentDungeonLevel = 1;
+            //levelSeed = enginerand.Next();
+           
+            levelComplexity = enginerand.Next(currentDungeonLevel*50 + 20) + currentDungeonLevel* 30 + 50;
             if (nextLevel == null)
             {
-                nextLevel = new GeneratedLevel(levelSeed, levelComplexity, currentDungeonLevel);
+                nextLevel = new GeneratedLevel(levelSeed++, levelComplexity, currentDungeonLevel);
             }
             currentLevel = nextLevel.RetrieveLevel();
-            currentDungeonLevel++;
             charIndex = 0;
-            nextLevel = new GeneratedLevel(levelSeed, levelComplexity, currentDungeonLevel++);
+            nextLevel = new GeneratedLevel(levelSeed++, levelComplexity, currentDungeonLevel++);
             Log("Level generated.");
             currentLevel.CharacterEntities.Add(hero, currentLevel.GetStartPoint());
         }
