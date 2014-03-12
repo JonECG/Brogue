@@ -62,22 +62,23 @@ namespace Brogue.Enemies
             Random gen = new Random();
             int rand = gen.Next(0, 3);
 
-            switch (rand)
-            {
-                case(0):
-                    enemy = new VampBoss();
-                    enemy.BuildBoss(powerLevel);
-                    break;
-                case (1):
-                    enemy = new ChargeBoss();
-                    enemy.BuildBoss(powerLevel);
-                    break;
-                case (2):
-                    enemy = new RangerBoss();
-                    enemy.BuildBoss(powerLevel);
-                    break;
-            }
-
+            //switch (rand)
+            //{
+            //    case(0):
+            //        enemy = new VampBoss();
+            //        enemy.BuildBoss(powerLevel);
+            //        break;
+            //    case (1):
+            //        enemy = new ChargeBoss();
+            //        enemy.BuildBoss(powerLevel);
+            //        break;
+            //    case (2):
+            //        enemy = new RangerBoss();
+            //        enemy.BuildBoss(powerLevel);
+            //        break;
+            //}
+            enemy = new ChargeBoss();
+            enemy.BuildBoss(powerLevel);
             return enemy;
         }
     }
