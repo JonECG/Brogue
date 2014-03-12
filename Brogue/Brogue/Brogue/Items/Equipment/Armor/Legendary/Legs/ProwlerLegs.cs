@@ -20,7 +20,7 @@ namespace Brogue.Items.Equipment.Armor.Legendary.Legs
         public ProwlerLegs(int dLevel, int cLevel)
         {
             Name = "Prowler Legs";
-            FlavorText = "Legendary Legs";
+            FlavorText = "Greaves from a living shadow.";
             LevelReq = findLevelReq(dLevel, cLevel);
             UsedBy = new List<Classes> { Classes.Rogue, Classes.Duelist, Classes.Assassin, Classes.Ranger, Classes.Marksman };
             ArmorValue = findArmorValue(BaseArmor, dLevel, TypeBonus);

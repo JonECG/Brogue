@@ -20,7 +20,7 @@ namespace Brogue.Items.Equipment.Armor.Legendary.Chest
         public MagistrateChest(int dLevel, int cLevel)
         {
             Name = "Magistrate Chest";
-            FlavorText = "Legendary Chest";
+            FlavorText = "Chest piece of a grand wizard.";
             LevelReq = findLevelReq(dLevel, cLevel);
             UsedBy = new List<Classes> { Classes.Mage, Classes.Sorcerer, Classes.SpellWeaver, Classes.Magus, Classes.SpellBlade };
             ArmorValue = findArmorValue(BaseArmor, dLevel, TypeBonus);

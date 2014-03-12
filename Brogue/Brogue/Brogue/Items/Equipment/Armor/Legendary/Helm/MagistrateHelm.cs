@@ -20,7 +20,7 @@ namespace Brogue.Items.Equipment.Armor.Legendary.Helm
         public MagistrateHelm(int dLevel, int cLevel)
         {
             Name = "Magistrate Helm";
-            FlavorText = "Legendary Helm";
+            FlavorText = "Helm of a grand wizard.";
             LevelReq = findLevelReq(dLevel, cLevel);
             UsedBy = new List<Classes> { Classes.Mage, Classes.Sorcerer, Classes.SpellWeaver, Classes.Magus, Classes.SpellBlade };
             ArmorValue = findArmorValue(BaseArmor, dLevel, TypeBonus);

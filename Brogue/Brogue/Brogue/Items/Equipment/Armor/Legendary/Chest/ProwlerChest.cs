@@ -20,7 +20,7 @@ namespace Brogue.Items.Equipment.Armor.Legendary.Chest
         public ProwlerChest(int dLevel, int cLevel)
         {
             Name = "Prowler Chest";
-            FlavorText = "Legendary Chest";
+            FlavorText = "Chest piece of a living shadow.";
             LevelReq = findLevelReq(dLevel, cLevel);
             UsedBy = new List<Classes> { Classes.Rogue, Classes.Duelist, Classes.Assassin, Classes.Ranger, Classes.Marksman };
             ArmorValue = findArmorValue(BaseArmor, dLevel, TypeBonus);

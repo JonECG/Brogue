@@ -20,7 +20,7 @@ namespace Brogue.Items.Equipment.Armor.Legendary.Chest
         public GladiatorChest(int dLevel, int cLevel)
         {
             Name = "Gladiator Chest";
-            FlavorText = "Legendary Chest";
+            FlavorText = "Chest piece of a mighty champion.";
             LevelReq = findLevelReq(dLevel, cLevel);
             UsedBy = new List<Classes> { Classes.Warrior, Classes.Brawler, Classes.Berserker };
             ArmorValue = findArmorValue(BaseArmor, dLevel, TypeBonus);

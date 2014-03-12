@@ -526,7 +526,7 @@ namespace Brogue.Items
 
         public static Item getDesireditem(int dLevel, int cLevel)
         {
-            return new TheOne(dLevel, cLevel);
+            return new BlackPendant(dLevel, cLevel);
         }
 
         public abstract Item PickUpEffect(Hero Player);

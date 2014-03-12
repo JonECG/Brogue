@@ -20,7 +20,7 @@ namespace Brogue.Items.Equipment.Armor.Legendary.Helm
         public GladiatorHelm(int dLevel, int cLevel)
         {
             Name = "Gladiator Helm";
-            FlavorText = "Legendary Helm";
+            FlavorText = "Helm of a mighty champion.";
             LevelReq = findLevelReq(dLevel, cLevel);
             UsedBy = new List<Classes> { Classes.Warrior, Classes.Brawler, Classes.Berserker };
             ArmorValue = findArmorValue(BaseArmor, dLevel, TypeBonus);

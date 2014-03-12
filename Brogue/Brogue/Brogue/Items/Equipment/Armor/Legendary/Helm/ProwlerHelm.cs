@@ -20,7 +20,7 @@ namespace Brogue.Items.Equipment.Armor.Legendary.Helm
         public ProwlerHelm(int dLevel, int cLevel)
         {
             Name = "Prowler Helm";
-            FlavorText = "Legendary Helm";
+            FlavorText = "Helm of a living shadow.";
             LevelReq = findLevelReq(dLevel, cLevel);
             UsedBy = new List<Classes> { Classes.Rogue, Classes.Duelist, Classes.Assassin, Classes.Ranger, Classes.Marksman };
             ArmorValue = findArmorValue(BaseArmor, dLevel, TypeBonus);

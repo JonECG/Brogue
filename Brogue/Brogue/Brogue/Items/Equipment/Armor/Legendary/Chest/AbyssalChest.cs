@@ -20,7 +20,7 @@ namespace Brogue.Items.Equipment.Armor.Legendary.Chest
         public AbyssalChest(int dLevel, int cLevel)
         {
             Name = "Abyssal Chest";
-            FlavorText = "Legendary Chest";
+            FlavorText = "Chest piece from the deep.";
             LevelReq = findLevelReq(dLevel, cLevel);
             UsedBy = new List<Classes> { Classes.Sentinel, Classes.Juggernaut };
             ArmorValue = findArmorValue(BaseArmor, dLevel, TypeBonus);

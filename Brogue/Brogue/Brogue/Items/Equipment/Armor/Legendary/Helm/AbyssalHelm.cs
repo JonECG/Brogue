@@ -20,7 +20,7 @@ namespace Brogue.Items.Equipment.Armor.Legendary.Helm
         public AbyssalHelm(int dLevel, int cLevel)
         {
             Name = "Abyssal Helm";
-            FlavorText = "Legendary Helm";
+            FlavorText = "Helm from the deep.";
             LevelReq = findLevelReq(dLevel, cLevel);
             UsedBy = new List<Classes> { Classes.Sentinel, Classes.Juggernaut };
             ArmorValue = findArmorValue(BaseArmor, dLevel, TypeBonus);

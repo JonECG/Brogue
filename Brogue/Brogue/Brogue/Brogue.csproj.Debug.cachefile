@@ -99,10 +99,6 @@ Content\Enemies\MeleeEnemy_passive.xnb
 Content\Enemies\RangedEnemy_aggressive.xnb
 Content\Enemies\RangedEnemy_passive.xnb
 Content\Sound\ironGate.xnb
-Content\Music\The_Thing.xnb
-Content\Music\SOMITEST.xnb
-Content\Music\Megadeth.xnb
-Content\Music\E1M1.xnb
 Content\Music\BrogueII.xnb
 Content\attackDefault.xnb
 Content\UI\HelmOverlay.xnb
@@ -165,10 +161,21 @@ Content\UI\HealthJarBack.xnb
 Content\UI\AbilityGray.xnb
 Content\UI\Abilities.xnb
 Content\UI\StatSheet.xnb
-Content\Music\The_Thing.wma
-Content\Music\SOMITEST.wma
-Content\Music\Megadeth.wma
-Content\Music\E1M1.wma
+Content\Enemies\Attacks\TwoArrow.xnb
+Content\Hero\Brawler.xnb
+Content\Hero\DoubleSlash.xnb
+Content\Hero\Duelist.xnb
+Content\Hero\Magus.xnb
+Content\Hero\Marksman.xnb
+Content\Hero\Sentinel.xnb
+Content\Hero\Sorcerer.xnb
+Content\Hero\SoulSiphon.xnb
+Content\Sound\ArrowShot.xnb
+Content\Sound\bloodSpit.xnb
+Content\Sound\enimeFireball.xnb
+Content\Sound\SwordClash.xnb
+Content\Music\Light in the dark.xnb
 Content\Music\BrogueII.wma
 Content\Music\Stoneworld Battle.wma
 Content\Music\The Descent.wma
+Content\Music\Light in the dark.wma

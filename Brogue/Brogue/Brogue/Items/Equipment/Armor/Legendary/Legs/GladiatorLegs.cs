@@ -20,7 +20,7 @@ namespace Brogue.Items.Equipment.Armor.Legendary.Legs
         public GladiatorLegs(int dLevel, int cLevel)
         {
             Name = "Gladiator Legs";
-            FlavorText = "Legendary Legs";
+            FlavorText = "Greaves of a mighty champion.";
             LevelReq = findLevelReq(dLevel, cLevel);
             UsedBy = new List<Classes> { Classes.Warrior, Classes.Brawler, Classes.Berserker };
             ArmorValue = findArmorValue(BaseArmor, dLevel, TypeBonus);
