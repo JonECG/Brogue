@@ -33,7 +33,7 @@ namespace Brogue.HeroClasses
     {
         const int jarBarIncrease = 25;
 
-        public int level { get; set; }
+        public static int level { get; set; }
 
         public List<ElementAttributes> Element { get; set; }
 
@@ -421,7 +421,15 @@ namespace Brogue.HeroClasses
                 Engine.Engine.AddGridSelections(castSquares, abilitySprite);
                 if (abilities[ability].getCastingSquares() != null)
                 {
-                    Engine.Engine.AddGridSelections(abilities[ability].getCastingSquares(), castingSquareSprite);
+                    List<IntVec> gridSquares = new List<IntVec>();
+                    for (int i = 0; i < abilities[ability].getCastingSquares().Length; i++)
+                    {
+                        if(abilities[ability].getCastingSquares()[i] != new IntVec(0,0))
+                        {
+                            gridSquares.Add(abilities[ability].getCastingSquares()[i]);
+                        }
+                    }
+                    Engine.Engine.AddGridSelections(gridSquares.ToArray(), castingSquareSprite);
                 }
 
                 if (MouseController.LeftClicked())
