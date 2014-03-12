@@ -27,6 +27,17 @@ namespace Brogue.Enemies
             targets[0] = aTarget;
         }
 
+        public static void DeAggroAllBosses()
+        {
+            foreach (BossEnemy b in GetAllBosses())
+            {
+                if (b.IsAggro)
+                {
+                    b.targets[0] = null;
+                }
+            }
+        }
+
         public static void UpdateBossTargets(GameCharacter newTarget)
         {
             foreach (BossEnemy b in GetAllBosses())

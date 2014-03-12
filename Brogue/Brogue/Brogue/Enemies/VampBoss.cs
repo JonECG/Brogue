@@ -43,6 +43,7 @@ namespace Brogue.Enemies
                         {
                             Engine.Engine.AddVisualAttack(this, targets[0], Engine.Engine.GetTexture("Enemies/Attacks/Blood"));
                             Engine.Engine.AddVisualAttack(targets[0], this, Engine.Engine.GetTexture("Enemies/Attacks/Blood"));
+                            Audio.playSound("bloodSpit");
                             targets[0].TakeDamage(attacks[0], this);
                             Heal(attacks[0] / 10);
                         }

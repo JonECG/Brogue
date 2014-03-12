@@ -15,6 +15,7 @@ namespace Brogue.Enemies
             CheckElementDamage();
             if (Aggro(level) && !isFrozen)
             {
+                Audio.playSound("enimeFireball");
                 Engine.Engine.AddVisualAttack(this, target, Engine.Engine.GetTexture("Enemies/Attacks/FireBall"));
                 Attack();
             }
