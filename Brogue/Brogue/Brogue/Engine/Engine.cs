@@ -687,7 +687,7 @@ namespace Brogue.Engine
         private static int levelSeed = 101;
         private static int currentSaveSlot = -1;
         private static int levelComplexity;
-        private static int currentDungeonLevel = 0;
+        private static int currentDungeonLevel = 1;
 
 
         
