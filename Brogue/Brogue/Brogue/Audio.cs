@@ -223,12 +223,12 @@ namespace Brogue
             sound[14]    = new audioFile(content.Load<SoundEffect>("Sound/HammerSmash"), "HammerSmash");
             sound[15]    = new audioFile(content.Load<SoundEffect>("Sound/bloodSpit"), "bloodSpit");
             sound[16]    = new audioFile(content.Load<SoundEffect>("Sound/enimeFireball"), "enimeFireball");
-            sound[16]    = new audioFile(content.Load<SoundEffect>("Sound/SwordClash"), "SwordClash");
-            sound[16]    = new audioFile(content.Load<SoundEffect>("Sound/ArrowShot"), "ArrowShot");
-            sound[17]    = new audioFile(content.Load<SoundEffect>("Sound/Parry"), "Parry");
-            sound[18]    = new audioFile(content.Load<SoundEffect>("Sound/Gunshot"), "Gunshot");
-            sound[19]    = new audioFile(content.Load<SoundEffect>("Sound/eviscerate"), "eviscerate");
-            sound[20]    = new audioFile(content.Load<SoundEffect>("Sound/Wind"), "WhirlwindSlash");
+            sound[17]    = new audioFile(content.Load<SoundEffect>("Sound/SwordClash"), "SwordClash");
+            sound[18]    = new audioFile(content.Load<SoundEffect>("Sound/ArrowShot"), "ArrowShot");
+            sound[19]    = new audioFile(content.Load<SoundEffect>("Sound/Parry"), "Parry");
+            sound[20]    = new audioFile(content.Load<SoundEffect>("Sound/Gunshot"), "Gunshot");
+            sound[21]    = new audioFile(content.Load<SoundEffect>("Sound/eviscerate"), "eviscerate");
+            sound[22]    = new audioFile(content.Load<SoundEffect>("Sound/Wind"), "WhirlwindSlash");
 
             //defualt
             delay = random.Next(DEALY_MIN_DEFALT_TIME, DEALY_MAX_DEFALT_TIME);
