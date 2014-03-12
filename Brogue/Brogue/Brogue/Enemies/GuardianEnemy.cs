@@ -23,7 +23,7 @@ namespace Brogue.Enemies
                 {
                     if (pathCost == 1)
                     {
-                        Audio.playSound("Punch");
+                        Audio.playSound("Mugging");
                         Attack();
                     }
                     else

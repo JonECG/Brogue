@@ -11,6 +11,7 @@ namespace Brogue.Enemies
     class ChargeBoss : BossEnemy
     {
         int turnCounter = 0;
+        bool hasSpawned = false;
 
         public override bool TakeTurn(Level level)
         {
@@ -19,6 +20,22 @@ namespace Brogue.Enemies
 
             if (IsAggro && !isFrozen)
             {
+                //if (!hasSpawned)
+                //{
+                //    hasSpawned = true;
+
+                //    GuardianEnemy g1 = new GuardianEnemy();
+                //    GuardianEnemy g2 = new GuardianEnemy();
+
+                //    g1.BuildEnemy(level.DungeonLevel);
+                //    g2.BuildEnemy(level.DungeonLevel);
+
+                //    IntVec position = level.CharacterEntities.FindPosition(this);
+
+                //    level.CharacterEntities.Add(g1, new IntVec(position.X - 1, position.Y));
+                //    level.CharacterEntities.Add(g2, new IntVec(position.X + 1, position.Y));
+                //}
+
                 Direction[] path = AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(targets[0]));
                 if (path.Length > 1)
                 {
