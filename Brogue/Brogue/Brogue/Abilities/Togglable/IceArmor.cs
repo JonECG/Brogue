@@ -35,6 +35,7 @@ namespace Brogue.Abilities.Togglable
                 Engine.Engine.Log(hero.getArmorBoost().ToString());
                 hero.ApplyArmorBoost(armorBoost + (int)(heroLevel * 1.5), int.MaxValue);
                 Engine.Engine.Log(hero.getArmorBoost().ToString());
+                Engine.Engine.AddVisualAttack(hero, "Hero/IceAttack", .25f, 1.5f, .1f);
                 isActive = true;
             }
             else if (isActive)

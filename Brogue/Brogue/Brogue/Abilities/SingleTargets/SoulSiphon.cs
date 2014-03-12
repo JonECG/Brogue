@@ -35,6 +35,7 @@ namespace Brogue.Abilities.SingleTargets
                 GameCharacter test = (GameCharacter)mapLevel.CharacterEntities.FindEntity(castSquares[i]);
                 if (test != null)
                 {
+                    Engine.Engine.AddVisualAttack(test, hero, "Hero/SoulSiphon", .25f, 1.5f, .1f);
                     test.TakeDamage(damage, hero);
                     hero.Heal(damage);
                 }

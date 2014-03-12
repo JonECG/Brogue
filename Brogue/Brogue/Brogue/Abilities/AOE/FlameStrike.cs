@@ -12,7 +12,7 @@ namespace Brogue.Abilities.AOE
         public FlameStrike()
         {
             name = "Flame Strike";
-            description = "The sorcerer burns all enemies within \na four line radius.";
+            description = "The sorcerer burns all enemies \nwithin a four line radius.";
             radius = 7;
             isActuallyFilled = false;
             castSquares = new IntVec[28];

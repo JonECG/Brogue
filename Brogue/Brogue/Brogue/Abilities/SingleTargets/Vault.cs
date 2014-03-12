@@ -12,7 +12,7 @@ namespace Brogue.Abilities.SingleTargets
         public Vault()
         {
             name = "Valut";
-            description = "The marksman leaps to the selected position.";
+            description = "The marksman leaps to the \nselected position.";
             castSquares = new IntVec[1];
             for (int i = 0; i < castSquares.Length; i++)
             {

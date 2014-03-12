@@ -9,7 +9,6 @@ namespace Brogue.Abilities.Togglable
     public class Invisibility : ToggleAbility
     {
         const int baseInvis = 10;
-        private bool added = false;
 
         public Invisibility()
         {
@@ -21,6 +20,8 @@ namespace Brogue.Abilities.Togglable
         public override void updateToggle(int heroLevel, HeroClasses.Hero hero) {}
 
         public override void toggledAttackEffects(HeroClasses.Hero hero) { }
+
+
 
         public override void finishCastandDealDamage(int heroLevel, int heroDamage, Mapping.Level mapLevel, HeroClasses.Hero hero)
         {

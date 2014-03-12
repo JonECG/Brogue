@@ -35,7 +35,6 @@ namespace Brogue.Abilities.Togglable
         {
             if (!isActive)
             {
-
                 Engine.Engine.Log(hero.damageBoost.ToString());
                 hero.damageBoost += increase + heroLevel*2;
                 Engine.Engine.Log(hero.damageBoost.ToString());

@@ -21,7 +21,7 @@ namespace Brogue.Abilities.Damaging.SingleTargets
             castSquares = new IntVec[2];
             for (int i = 0; i < castSquares.Length; i++)
             {
-                castSquares[i] = new IntVec(0, 0);
+                castSquares[i] = new IntVec(-25, -25);
             }
             baseDamage = 5;
             radius = 1;
@@ -36,6 +36,7 @@ namespace Brogue.Abilities.Damaging.SingleTargets
                 GameCharacter test = (GameCharacter)mapLevel.CharacterEntities.FindEntity(castSquares[i]);
                 if (test != null)
                 {
+                    Engine.Engine.AddVisualAttack(test, "Hero/sword-slash", .25f, 2.0f, .15f);
                     Audio.playSound("Slash", .25f);
                     test.TakeDamage(damage, hero);
                 }

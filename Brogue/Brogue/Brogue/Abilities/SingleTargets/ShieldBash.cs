@@ -11,7 +11,7 @@ namespace Brogue.Abilities.SingleTargets
         public ShieldBash()
         {
             name = "Shield Bash";
-            description = "The sentinel strikes enemies with his shield.";
+            description = "The sentinel strikes enemies with \nhis shield.";
             castSquares = new IntVec[1];
             for (int i = 0; i < castSquares.Length; i++)
             {
@@ -30,6 +30,8 @@ namespace Brogue.Abilities.SingleTargets
                 GameCharacter test = (GameCharacter)mapLevel.CharacterEntities.FindEntity(castSquares[i]);
                 if (test != null)
                 {
+                    Audio.playSound("HammerSmash");
+                    Engine.Engine.AddVisualAttack(test, "Hero/ShieldBash", .25f, 1.0f, .03f);
                     test.TakeDamage(damage, hero);
                 }
                 castSquares[i] = new IntVec(0, 0);

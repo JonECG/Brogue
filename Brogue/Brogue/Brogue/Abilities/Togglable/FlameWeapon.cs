@@ -29,11 +29,13 @@ namespace Brogue.Abilities.Togglable
                     hero.Element.Add(Enums.ElementAttributes.Arcane);
                     added = true;
                 }
+                isActive = true;
             }
             else if (isActive && added)
             {
                 hero.Element.Remove(Enums.ElementAttributes.Arcane);
                 added = false;
+                isActive = false;
             }
             cooldown = 0;
         }

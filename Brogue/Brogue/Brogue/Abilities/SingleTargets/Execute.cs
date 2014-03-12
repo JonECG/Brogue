@@ -11,7 +11,7 @@ namespace Brogue.Abilities.SingleTargets
         public Execute()
         {
             name = "Execute";
-            description = "The warrior strikes the enemy chosen. If the enemy \nis killed, this ability's cooldown is reset.";
+            description = "The warrior strikes the enemy \nchosen. If the enemy is killed, \nthis ability's cooldown is reset.";
             castSquares = new IntVec[1];
             for (int i = 0; i < castSquares.Length; i++)
             {
