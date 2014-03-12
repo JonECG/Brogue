@@ -962,15 +962,15 @@ namespace Brogue.Engine
             warriorButton = new CharButton(new Vector2(game.Width / 3, 2 * game.Height / 3), true, "UI/WarriorCharCreation", "UI/WarriorCharCreationHigh");
             mageButton = new CharButton(new Vector2(game.Width / 3 - 220, game.Height / 4), true, "UI/MageCharCreation", "UI/MageCharCreationHigh");
             rogueButton = new CharButton(new Vector2(game.Width / 3 + 220,game.Height / 4), true, "UI/RogueCharCreation", "UI/RogueCharCreationHigh");
-            
-            rangerButton = new CharButton(new Vector2(game.Width / 3, game.Height / 2), true, "UI/RangerCharCreation", "UI/RangerCharCreationHigh");
-            duelistButton = new CharButton(new Vector2(game.Width / 3 * 2, game.Height / 2), true, "UI/DuelistCharCreation", "UI/DuelistCharCreationHigh");
 
-            sentinelButton = new CharButton(new Vector2(game.Width / 3, game.Height / 2), true, "UI/SentinelCharCreation", "UI/SentinelCharCreationHigh");
-            bralwerButton = new CharButton(new Vector2(game.Width / 3 * 2, game.Height / 2), true, "UI/BrawlerCharCreation", "UI/BrawlerCharCreationHigh");
+            rangerButton = new CharButton(new Vector2(game.Width / 3, game.Height / 3 * 2), true, "UI/RangerCharCreation", "UI/RangerCharCreationHigh");
+            duelistButton = new CharButton(new Vector2(game.Width / 3 * 2, game.Height / 3 * 2), true, "UI/DuelistCharCreation", "UI/DuelistCharCreationHigh");
 
-            sorcererButton = new CharButton(new Vector2(game.Width / 3, game.Height / 2), true, "UI/SorcererCharCreation", "UI/SorcererCharCreationHigh");
-            magusButton = new CharButton(new Vector2(game.Width / 3 * 2, game.Height / 2), true, "UI/MagusCharCreation", "UI/MagusCharCreationHigh");
+            sentinelButton = new CharButton(new Vector2(game.Width / 3, game.Height / 3 * 2), true, "UI/SentinelCharCreation", "UI/SentinelCharCreationHigh");
+            bralwerButton = new CharButton(new Vector2(game.Width / 3 * 2, game.Height / 3 * 2), true, "UI/BrawlerCharCreation", "UI/BrawlerCharCreationHigh");
+
+            sorcererButton = new CharButton(new Vector2(game.Width / 3, game.Height / 3 * 2), true, "UI/SorcererCharCreation", "UI/SorcererCharCreationHigh");
+            magusButton = new CharButton(new Vector2(game.Width / 3 * 2, game.Height / 3 * 2), true, "UI/MagusCharCreation", "UI/MagusCharCreationHigh");
 
 
             quitButton = new UIButton(new Vector2(game.Width - CELLWIDTH, 0), false, "UI/QuitButton", "");
@@ -1017,8 +1017,9 @@ namespace Brogue.Engine
         public static void GenerateLevel()
         {
             //levelSeed = enginerand.Next();
-           
-            levelComplexity = enginerand.Next(currentDungeonLevel*50 + 20) + currentDungeonLevel* 30 + 50;
+
+            levelComplexity = currentDungeonLevel * 30 + 50;
+                //enginerand.Next(currentDungeonLevel*50 + 20) + currentDungeonLevel* 30 + 50;
             if (nextLevel == null)
             {
                 nextLevel = new GeneratedLevel(levelSeed++, levelComplexity, currentDungeonLevel);
