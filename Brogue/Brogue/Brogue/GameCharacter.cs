@@ -23,9 +23,6 @@ namespace Brogue
 
         public GameCharacter()
         {
-            HeroClasses.Hero.warriorSprite = Engine.Engine.GetTexture("Hero/WarriorSprite");
-            HeroClasses.Hero.mageSprite = Engine.Engine.GetTexture("Hero/MageSprite");
-            HeroClasses.Hero.rogueSprite = Engine.Engine.GetTexture("Hero/RogueSprite");
             HeroClasses.Hero.abilitySprite = Engine.Engine.GetTexture("abilityOverlay");
             HeroClasses.Hero.castingSquareSprite = Engine.Engine.GetTexture("CastingSquareOverlay");
             HeroClasses.Hero.loadSprite();
