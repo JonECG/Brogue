@@ -93,7 +93,6 @@
     <Compile Include="Abilities\SingleTargets\Flurry.cs" />
     <Compile Include="Abilities\SingleTargets\Mug.cs" />
     <Compile Include="Abilities\SingleTargets\ShieldBash.cs" />
-    <Compile Include="Abilities\SingleTargets\ShieldBlock.cs" />
     <Compile Include="Abilities\SingleTargets\SingleTarget.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -105,6 +104,7 @@
     <Compile Include="Abilities\Togglable\Invisibility.cs" />
     <Compile Include="Abilities\Togglable\Parry.cs" />
     <Compile Include="Abilities\Togglable\Rage.cs" />
+    <Compile Include="Abilities\Togglable\ShieldBlock.cs" />
     <Compile Include="Abilities\Togglable\ToggleAbility.cs" />
     <Compile Include="Audio.cs" />
     <Compile Include="Enemies\BossEnemy.cs">

@@ -386,7 +386,7 @@ namespace Brogue.Mapping
             {
                 for (int i = 0; i < 100; i++)
                 {
-                    Item item = Item.getDesiredDitem(1, 1);
+                    Item item = Item.getDesiredDitem(30, 30);
 
                     Engine.Engine.Log(string.Format("Item Generated: {0}", item.Name));
 

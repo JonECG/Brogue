@@ -468,7 +468,7 @@ namespace Brogue.Items
 
         public static Item getDesiredDitem(int dLevel, int cLevel)
         {
-            return new Necronomicon(dLevel, cLevel);
+            return new Ring(dLevel, cLevel);
         }
 
         public static Item getDesireditem(int dLevel, int cLevel)

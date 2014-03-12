@@ -1,5 +1,3 @@
-Content\Audio\fire.xnb
-Content\Audio\The Descent.xnb
 Content\Enemies\BossEnemy.xnb
 Content\Enemies\Enemy.xnb
 Content\Enemies\GuardianAggressive.xnb
@@ -138,9 +136,39 @@ Content\Enemies\RangerBossAggressive.xnb
 Content\Enemies\RangerBossPassive.xnb
 Content\Enemies\VampireBossAggressive.xnb
 Content\Enemies\VampireBossPassive.xnb
-Content\Audio\The Descent.wma
+Content\Hero\Bolt.xnb
+Content\Hero\ClawSlash.xnb
+Content\Hero\DaggerSlash.xnb
+Content\Hero\FireballSpell.xnb
+Content\Hero\HammerSmash.xnb
+Content\Hero\IceAttack.xnb
+Content\Hero\MageAttack.xnb
+Content\Hero\sword-slash.xnb
+Content\Hero\Whirlwind.xnb
+Content\Sound\DaggerStab.xnb
+Content\Sound\eviscerate.xnb
+Content\Sound\fire.xnb
+Content\Sound\Fireball.xnb
+Content\Sound\Gunshot.xnb
+Content\Sound\HammerSmash.xnb
+Content\Sound\lightningStorm.xnb
+Content\Sound\Parry.xnb
+Content\Sound\Punch.xnb
+Content\Sound\slashAttack.xnb
+Content\Sound\smokePoof.xnb
+Content\Sound\swordSlash.xnb
+Content\Sound\whoosh.xnb
+Content\Sound\Wind.xnb
+Content\Music\Stoneworld Battle.xnb
+Content\Music\The Descent.xnb
+Content\UI\HealthJarBack.xnb
+Content\UI\AbilityGray.xnb
+Content\UI\Abilities.xnb
+Content\UI\StatSheet.xnb
 Content\Music\The_Thing.wma
 Content\Music\SOMITEST.wma
 Content\Music\Megadeth.wma
 Content\Music\E1M1.wma
 Content\Music\BrogueII.wma
+Content\Music\Stoneworld Battle.wma
+Content\Music\The Descent.wma

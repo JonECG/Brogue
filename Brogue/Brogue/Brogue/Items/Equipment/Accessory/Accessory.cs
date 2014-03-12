@@ -23,7 +23,7 @@ namespace Brogue.Items.Equipment.Accessory
 
         public int findStatIncrease(int bSI, int dLevel, int lReq)
         {
-            return bSI * dLevel + lReq;
+            return (bSI * dLevel) + lReq;
         }
 
         public Modifiers findStatIncreased()
