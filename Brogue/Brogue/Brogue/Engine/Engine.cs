@@ -233,7 +233,10 @@ namespace Brogue.Engine
     class AbilityButton
     {
         static DynamicTexture currentBackTex = Engine.GetTexture("UI/InvSlot");
+        static DynamicTexture standard = Engine.GetTexture("UI/InvSlot");
+        static DynamicTexture highlighted = Engine.GetTexture("UI/InvSlotHighlighted");
         Abilities.Ability ability;
+
         public DynamicTexture drawOver;
         static DynamicTexture grayFade = Engine.GetTexture("UI/AbilityGray");
         int number;
@@ -276,6 +279,10 @@ namespace Brogue.Engine
                 bool isMouseOver = mpos.X > pos.X && mpos.X < pos.X + currentBackTex.texture.Width &&
                     mpos.Y > pos.Y && mpos.Y < pos.Y + currentBackTex.texture.Height;
                 doToolTip = isMouseOver;
+                if (ability.type == Enums.AbilityTypes.Toggle)
+                {
+                    currentBackTex = ((Abilities.Togglable.ToggleAbility)ability).isCasting ? highlighted : standard;
+                }
             }
         }
 
@@ -289,7 +296,7 @@ namespace Brogue.Engine
                 if (ability.getCooldown() > 0)
                 {
                     sb.Draw(grayFade.texture, pos, Color.White);
-                    sb.DrawString(Engine.font, "" + ability.getCooldown(), pos + new Vector2(-40, +(currentBackTex.texture.Width / 2 - Engine.font.MeasureString("" + ability.getCooldown()).X / 2)), Color.White);
+                    sb.DrawString(Engine.font, "" + ability.getCooldown(), pos + new Vector2(0, -20), Color.White);
                 }
                 if (doToolTip)
                 {
