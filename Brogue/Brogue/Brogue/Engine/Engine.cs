@@ -1033,6 +1033,7 @@ namespace Brogue.Engine
             nextLevel = new GeneratedLevel(levelSeed++, levelComplexity, currentDungeonLevel++);
             Log("Level generated.");
             currentLevel.CharacterEntities.Add(hero, currentLevel.GetStartPoint());
+            drawXP = hero.getExperience();
         }
 
         public static void StartGame()
@@ -1281,6 +1282,7 @@ namespace Brogue.Engine
                         Log("You are now a brawler.");
                         showCharSelection = false;
                         gameStarted = true;
+                        drawXP = hero.getExperience();
                         hero.ObtainItems(tempInventory, tempEquip);
                         hero.obtainStartingGear(currentLevel);
                         currentLevel.CharacterEntities.Add(hero, tempPosition);
@@ -1291,6 +1293,7 @@ namespace Brogue.Engine
                         UpdateAbilities();
                         Log("You are now a duelist.");
                         showCharSelection = false;
+                        drawXP = hero.getExperience();
                         gameStarted = true;
                         hero.ObtainItems(tempInventory, tempEquip);
                         hero.obtainStartingGear(currentLevel);
@@ -1302,6 +1305,7 @@ namespace Brogue.Engine
                         UpdateAbilities();
                         Log("You are now a Sorcerer.");
                         showCharSelection = false;
+                        drawXP = hero.getExperience();
                         gameStarted = true;
                         hero.ObtainItems(tempInventory, tempEquip);
                         hero.obtainStartingGear(currentLevel);
@@ -1314,6 +1318,7 @@ namespace Brogue.Engine
                         Log("You are now a Magus.");
                         showCharSelection = false;
                         gameStarted = true;
+                        drawXP = hero.getExperience();
                         hero.ObtainItems(tempInventory, tempEquip);
                         hero.obtainStartingGear(currentLevel);
                         currentLevel.CharacterEntities.Add(hero, tempPosition);
@@ -1325,6 +1330,7 @@ namespace Brogue.Engine
                         Log("You are now a Sentinel.");
                         showCharSelection = false;
                         gameStarted = true;
+                        drawXP = hero.getExperience();
                         hero.ObtainItems(tempInventory, tempEquip);
                         hero.obtainStartingGear(currentLevel);
                         currentLevel.CharacterEntities.Add(hero, tempPosition);
@@ -1335,6 +1341,7 @@ namespace Brogue.Engine
                         UpdateAbilities();
                         Log("You are now a Ranger.");
                         showCharSelection = false;
+                        drawXP = hero.getExperience();
                         gameStarted = true;
                         hero.ObtainItems(tempInventory, tempEquip);
                         hero.obtainStartingGear(currentLevel);
