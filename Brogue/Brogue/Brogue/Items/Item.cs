@@ -395,6 +395,43 @@ namespace Brogue.Items
                 {
                     return new PaleRider(dLevel, cLevel);
                 }
+                else if ((LegendaryWeapon)findItem == LegendaryWeapon.Anarchy)
+                {
+                    return new Anarchy(dLevel, cLevel);
+                }
+                else if ((LegendaryWeapon)findItem == LegendaryWeapon.Executioner)
+                {
+                    return new Excecutioner(dLevel, cLevel);
+                }
+                else if ((LegendaryWeapon)findItem == LegendaryWeapon.Judgement)
+                {
+                    return new Judgement(dLevel, cLevel);
+                }
+                else if ((LegendaryWeapon)findItem == LegendaryWeapon.Kris)
+                {
+                    return new Kris(dLevel, cLevel);
+                }
+                else if ((LegendaryWeapon)findItem == LegendaryWeapon.Condemned)
+                {
+                    return new Condemned(dLevel, cLevel);
+                }
+                else if ((LegendaryWeapon)findItem == LegendaryWeapon.Ebony)
+                {
+                    return new Ebony(dLevel, cLevel);
+                }
+                else if ((LegendaryWeapon)findItem == LegendaryWeapon.HeartWu)
+                {
+                    return new HeartWu(dLevel, cLevel);
+                }
+                else if ((LegendaryWeapon)findItem == LegendaryWeapon.Ivory)
+                {
+                    return new Ivory(dLevel, cLevel);
+                }
+                else if ((LegendaryWeapon)findItem == LegendaryWeapon.Retribution)
+                {
+                    return new Retribution(dLevel, cLevel);
+                }
+
             }
             #endregion
             #region Legendary Armors
@@ -441,6 +478,18 @@ namespace Brogue.Items
                 {
                     return new GladiatorHelm(dLevel, cLevel);
                 }
+                else if ((LegendaryArmor)findItem == LegendaryArmor.MagistrateChest)
+                {
+                    return new MagistrateChest(dLevel, cLevel);
+                }
+                else if ((LegendaryArmor)findItem == LegendaryArmor.MagistrateLegs)
+                {
+                    return new MagistrateLegs(dLevel, cLevel);
+                }
+                else if ((LegendaryArmor)findItem == LegendaryArmor.MagistrateHelm)
+                {
+                    return new MagistrateHelm(dLevel, cLevel);
+                }
             }
             #endregion
             #region Legendary Accessories
@@ -450,6 +499,10 @@ namespace Brogue.Items
                 if ((LegendaryAccessories)findItem == LegendaryAccessories.TheOne)
                 {
                     return new TheOne(dLevel, cLevel);
+                }
+                else if ((LegendaryAccessories)findItem == LegendaryAccessories.BlackPendant)
+                {
+                    return new BlackPendant(dLevel, cLevel);
                 }
             }
             #endregion

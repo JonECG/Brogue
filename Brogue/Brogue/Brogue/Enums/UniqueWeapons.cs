@@ -16,5 +16,14 @@ namespace Brogue.Enums
         Bloodthirster,
         BladeWaltz,
         PaleRider,
+        Anarchy,
+        Executioner,
+        Judgement,
+        Kris,
+        Condemned,
+        Ebony,
+        HeartWu,
+        Ivory,
+        Retribution,
     }
 }

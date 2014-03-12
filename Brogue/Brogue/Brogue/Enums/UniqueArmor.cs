@@ -16,6 +16,9 @@ namespace Brogue.Enums
         ProwlerLegs,
         GladiatorChest,
         GladiatorHelm,
-        GladiatorLegs,      
+        GladiatorLegs,   
+        MagistrateChest,
+        MagistrateHelm,
+        MagistrateLegs,
     }
 }

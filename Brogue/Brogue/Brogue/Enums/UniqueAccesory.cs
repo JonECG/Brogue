@@ -8,5 +8,6 @@ namespace Brogue.Enums
     public enum LegendaryAccessories
     {
         TheOne,
+        BlackPendant,
     }
 }
