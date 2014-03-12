@@ -28,7 +28,7 @@ namespace Brogue.Abilities.Togglable
 
         public override void toggledAttackEffects(HeroClasses.Hero hero)
         {
-            hero.health -= hero.level;
+            hero.health -= HeroClasses.Hero.level;
         }
 
         public override void finishCastandDealDamage(int heroLevel, int heroDamage, Mapping.Level mapLevel, HeroClasses.Hero hero)

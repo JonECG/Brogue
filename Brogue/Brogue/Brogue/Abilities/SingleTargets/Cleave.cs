@@ -21,7 +21,7 @@ namespace Brogue.Abilities.Damaging.SingleTargets
             castSquares = new IntVec[2];
             for (int i = 0; i < castSquares.Length; i++)
             {
-                castSquares[i] = new IntVec(-25, -25);
+                castSquares[i] = new IntVec(0, 0);
             }
             baseDamage = 5;
             radius = 1;

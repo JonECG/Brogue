@@ -36,7 +36,7 @@ namespace Brogue.Abilities.SingleTargets
                     Items.Item heroItem = null;
                     while (heroItem == null || heroItem.ItemType == Enums.ITypes.Consumable)
                     {
-                        heroItem = Items.Item.randomItem(mapLevel.DungeonLevel, hero.level-3);
+                        heroItem = Items.Item.randomItem(mapLevel.DungeonLevel, HeroClasses.Hero.level-3);
                     }
                     hero.GetInventory().addItem(heroItem);
                 }

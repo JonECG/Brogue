@@ -23,7 +23,7 @@ namespace Brogue.Abilities.Togglable
 
         protected void heroEffect(HeroClasses.Hero hero)
         {
-            int boost = (hero.level / 3) * (hero.GetArmorRating()-hero.getArmorBoost()+1);
+            int boost = (HeroClasses.Hero.level / 3) * (hero.GetArmorRating()-hero.getArmorBoost()+1);
             hero.ApplyArmorBoost(boost,1);
         }
 
