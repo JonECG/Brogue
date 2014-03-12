@@ -281,7 +281,7 @@ namespace Brogue.Engine
                 doToolTip = isMouseOver;
                 if (ability.type == Enums.AbilityTypes.Toggle)
                 {
-                    currentBackTex = ((Abilities.Togglable.ToggleAbility)ability).isCasting ? highlighted : standard;
+                    currentBackTex = ((Abilities.Togglable.ToggleAbility)ability).isActive ? highlighted : standard;
                 }
             }
         }
