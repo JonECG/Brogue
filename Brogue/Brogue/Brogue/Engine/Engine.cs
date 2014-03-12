@@ -866,7 +866,7 @@ namespace Brogue.Engine
             // = new Vector2(game.Width - 48, game.Height - 48);
             InventoryPosition = new Vector2(game.Width - 5 * (CELLWIDTH), game.Height - 4 * (CELLWIDTH));
             InvButtonPosition = new Vector2(game.Width - CELLWIDTH, game.Height - CELLWIDTH);
-            abilityPosition = new Vector2(game.Width / 2 - (3 * CELLWIDTH), game.Height - CELLWIDTH);
+            abilityPosition = new Vector2(game.Width / 2, game.Height - CELLWIDTH);
             InventorySize = new Vector2(4 * CELLWIDTH, 4 * CELLWIDTH);
             weaponEquipPosition = new Vector2(0, game.Height - 2 * CELLWIDTH - 20);
             armorEquipPosition = new Vector2(0, game.Height - CELLWIDTH);
@@ -908,11 +908,21 @@ namespace Brogue.Engine
         public static void UpdateAbilities()
         {
             Abilities.Ability[] heroAbs = hero.getAbilities();
-            for (int i = 0; i < abilityBar.Length; i++)
+            int acount = 0;
+            foreach (Abilities.Ability a in heroAbs)
+            {
+                if (a != null)
+                {
+                    acount++;
+                }
+            }
+            
+            for (int i = 0; i < acount; i++)
             {
                 if (heroAbs[i] != null)
                 {
-                    abilityBar[i] = new AbilityButton(abilityPosition + new Vector2(CELLWIDTH * i, 0), i + 1, false, heroAbs[i]);
+                    Vector2 pos = new Vector2(abilityPosition.X - (acount / 2 * CELLWIDTH), abilityPosition.Y);
+                    abilityBar[i] = new AbilityButton(pos + new Vector2(CELLWIDTH * i, 0), i + 1, false, heroAbs[i]);
                 }
             }
         }
