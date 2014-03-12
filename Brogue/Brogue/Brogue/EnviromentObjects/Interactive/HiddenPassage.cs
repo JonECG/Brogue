@@ -66,7 +66,7 @@ namespace Brogue.EnviromentObjects.Interactive
 
         public Sprite GetSprite()
         {
-            return new Sprite(texture, directionFacing);
+            return new Sprite(texture, directionFacing, isVisiable);
         }
 
         public void actOn(GameCharacter actingCharacter)
