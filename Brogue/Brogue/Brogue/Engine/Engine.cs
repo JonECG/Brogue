@@ -1118,6 +1118,10 @@ namespace Brogue.Engine
                     }
                     while (currentLevel.CharacterEntities.Entities().ElementAt<GameCharacter>(charIndex) != hero)
                     {
+                        if (hero != null)
+                        {
+                            heroPos = currentLevel.CharacterEntities.FindPosition(hero);
+                        }
                         if (charIndex < currentLevel.CharacterEntities.Entities().Count<GameCharacter>())
                         {
                             IntVec enemyPosition = currentLevel.CharacterEntities.FindPosition(currentLevel.CharacterEntities.Entities().ElementAt<GameCharacter>(charIndex));
@@ -1130,7 +1134,7 @@ namespace Brogue.Engine
                                 {
                                     currentLevel.InvalidateCache();
                                     charIndex++;
-                                    heroPos = currentLevel.CharacterEntities.FindPosition(hero);
+                                    
                                 }
                             }
                             else
@@ -1145,6 +1149,7 @@ namespace Brogue.Engine
                         }
                          * */
                     }
+
                     charIndex += hero.TakeTurn(currentLevel) ? 1 : 0;
                     
                     
