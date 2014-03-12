@@ -644,6 +644,7 @@ namespace Brogue.Engine
         public static bool mainMenuOpen = true;
         public static bool savePromptOpen = false;
         public static bool showDeathScreen = false;
+        public static bool showEscMenu = false;
         public static int CELLWIDTH = 48;
         private static int logSize = 20;
         private static Game1 game;
@@ -677,6 +678,7 @@ namespace Brogue.Engine
         private static InventoryButton[] inventoryButtons = new InventoryButton[16];
         private static UIButton headSlot, chestSlot, ringSlot1, ringSlot2, legSlot, neckSlot;
         private static UIButton weaponSlot1, weaponSlot2;
+        private static UIButton escMainMenu, escContinue, escQuit;
 
         private static int levelSeed;
         private static int currentSaveSlot = -1;
@@ -949,34 +951,29 @@ namespace Brogue.Engine
         public static void LoadMainMenu()
         {
             LoadContent(game.Content);
-            if (DOSTARTMENU)
+            warriorButton = new CharButton(new Vector2(game.Width / 3, 2 * game.Height / 3), true, "UI/WarriorCharCreation", "UI/WarriorCharCreationHigh");
+            mageButton = new CharButton(new Vector2(game.Width / 3 - 220, game.Height / 4), true, "UI/MageCharCreation", "UI/MageCharCreationHigh");
+            rogueButton = new CharButton(new Vector2(game.Width / 3 + 220,game.Height / 4), true, "UI/RogueCharCreation", "UI/RogueCharCreationHigh");
+            quitButton = new UIButton(new Vector2(game.Width - CELLWIDTH, 0), false, "UI/QuitButton", "");
+
+            restartButton = new UIButton(new Vector2(game.Width / 2 - 40, game.Height / 2), true, "UI/RestartButton", "");
+            quitDeathButton = new UIButton(new Vector2(game.Width / 2 + 40, game.Height / 2), true, "UI/QuitButton", "");
+            mainMenuOpen = true;
+
+            escMainMenu = new UIButton(new Vector2(game.Width / 4, game.Height / 2), true, "UI/RestartButton", "Main Menu");
+            escContinue = new UIButton(new Vector2(game.Width / 4 * 2, game.Height / 2), true, "UI/Continue", "Continue");
+            escQuit = new UIButton(new Vector2(game.Width / 4 * 3, game.Height / 2), true, "UI/QuitButton", "Quit (NO SAVE)");
+
+            Audio.playMusic("Stoneworld Battle", 1.0f);
+
+            LoadSaveSlots();
+
+            for (int i = 0; i < 4; i ++)
             {
-                warriorButton = new CharButton(new Vector2(game.Width / 3, 2 * game.Height / 3), true, "UI/WarriorCharCreation", "UI/WarriorCharCreationHigh");
-                mageButton = new CharButton(new Vector2(game.Width / 3 - 220, game.Height / 4), true, "UI/MageCharCreation", "UI/MageCharCreationHigh");
-                rogueButton = new CharButton(new Vector2(game.Width / 3 + 220,game.Height / 4), true, "UI/RogueCharCreation", "UI/RogueCharCreationHigh");
-                quitButton = new UIButton(new Vector2(game.Width - CELLWIDTH, 0), false, "UI/QuitButton", "");
-
-                restartButton = new UIButton(new Vector2(game.Width / 2 - 40, game.Height / 2), true, "UI/RestartButton", "");
-                quitDeathButton = new UIButton(new Vector2(game.Width / 2 + 40, game.Height / 2), true, "UI/QuitButton", "");
-                mainMenuOpen = true;
-
-                Audio.playMusic("Stoneworld Battle", 1.0f);
-
-                LoadSaveSlots();
-
-                for (int i = 0; i < 4; i ++)
+                for (int j = 0; j < 4; j ++)
                 {
-                    for (int j = 0; j < 4; j ++)
-                    {
-                        inventoryButtons[i + j  * 4] = new InventoryButton(InventoryPosition + new Vector2(CELLWIDTH * i, CELLWIDTH * j), false, InventoryPosition + new Vector2(-300, -200));
-                    }
+                    inventoryButtons[i + j  * 4] = new InventoryButton(InventoryPosition + new Vector2(CELLWIDTH * i, CELLWIDTH * j), false, InventoryPosition + new Vector2(-300, -200));
                 }
-            }
-            else
-            {
-                hero = new HeroClasses.Warrior();
-                currentSaveSlot = 1;
-                StartGame();
             }
         }
 
@@ -1246,6 +1243,27 @@ namespace Brogue.Engine
                     }
 
                 }
+                else if (showEscMenu)
+                {
+                    if (escQuit.isClicked())
+                    {
+                        Environment.Exit(0);
+                    }
+                    if (escContinue.isClicked())
+                    {
+                        showEscMenu = false;
+                        gameStarted = true;
+                    }
+                    if (escMainMenu.isClicked())
+                    {
+                        showEscMenu = false;
+                        xpList.Clear();
+                        LoadSaveSlots();
+                        vattacks.Clear();
+                        mainMenuOpen = true;
+                    }
+                }
+
                 else if (showDeathScreen)
                 {
                     if (quitDeathButton.isClicked())
@@ -1349,17 +1367,8 @@ namespace Brogue.Engine
             }
             if (KeyboardController.IsPressed(Keys.Escape))
             {
-                //Replace with menu eventually...
-
-                if (inventoryOpen)
-                {
-                    inventoryOpen = false;
-                    Log("Inventory closed.");
-                }
-                else
-                {
-                    System.Environment.Exit(0);
-                }
+                gameStarted = false;
+                showEscMenu = true;
             }
             IntVec screenpos = MouseController.MouseScreenPosition();
             IntVec worldPos = MouseController.MouseGridPosition();
@@ -1639,6 +1648,7 @@ namespace Brogue.Engine
                     DrawMainMenu(uisb);
                 }
 
+
                 foreach (AbilityButton ab in abilityBar)
                 {
                     if (ab != null)
@@ -1663,6 +1673,11 @@ namespace Brogue.Engine
                 if (mainMenuOpen)
                 {
                     DrawMainMenu(uisb);
+                }
+
+                if (showEscMenu)
+                {
+                    DrawEscMenu(uisb);
                 }
                 else if (savePromptOpen)
                 {
@@ -1731,6 +1746,13 @@ namespace Brogue.Engine
             {
                 saveSlots[i].Draw(sb);
             }
+        }
+
+        private static void DrawEscMenu(SpriteBatch sb)
+        {
+            escContinue.Draw(sb);
+            escQuit.Draw(sb);
+            escMainMenu.Draw(sb);
         }
 
         private static void DrawSaveSelection(SpriteBatch sb)
