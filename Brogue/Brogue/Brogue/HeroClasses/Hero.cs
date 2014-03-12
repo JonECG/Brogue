@@ -90,6 +90,15 @@ namespace Brogue.HeroClasses
             abilities = new Ability[6];
         }
 
+        public int getExperience()
+        {
+            return experience;
+        }
+        public int getExpReq()
+        {
+            return expRequired;
+        }
+
         public IntVec move(Direction dir)
         {
             IntVec positionMovement = new IntVec(0, 0);

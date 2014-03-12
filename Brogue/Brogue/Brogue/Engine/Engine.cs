@@ -659,7 +659,7 @@ namespace Brogue.Engine
         public static Vector2 xpBarPosition;
         public static Vector2 healthBarPosition;
         public static Vector2 weaponEquipPosition;
-        public static Vector2 armorEquipPosition;
+        public static Vector2 armorEquipPosition, charSheetPosition;
         public static IntVec windowSizeInTiles;
         public static int lightMaskWidthInTilesDividedByTwo;
         private static IntVec modifiedCameraPosition = new IntVec(0, 0);
@@ -706,7 +706,9 @@ namespace Brogue.Engine
             obscure = GetTexture("UI/Obscure"),
             newGame = GetTexture("UI/NewGame"),
             loadGame = GetTexture("UI/Load"),
-            selectSave = GetTexture("UI/SelectSave");
+            selectSave = GetTexture("UI/SelectSave"),
+            charSheetTex = GetTexture("UI/StatSheet")
+            ;
 
         const int SAVE_SLOTS = 8;
         static CharButton mageButton, warriorButton, rogueButton;
@@ -867,6 +869,7 @@ namespace Brogue.Engine
             InventoryPosition = new Vector2(game.Width - 5 * (CELLWIDTH), game.Height - 4 * (CELLWIDTH));
             InvButtonPosition = new Vector2(game.Width - CELLWIDTH, game.Height - CELLWIDTH);
             abilityPosition = new Vector2(game.Width / 2, game.Height - CELLWIDTH);
+            charSheetPosition = new Vector2(0, 60);
             InventorySize = new Vector2(4 * CELLWIDTH, 4 * CELLWIDTH);
             weaponEquipPosition = new Vector2(0, game.Height - 2 * CELLWIDTH - 20);
             armorEquipPosition = new Vector2(0, game.Height - CELLWIDTH);
@@ -1636,6 +1639,7 @@ namespace Brogue.Engine
                         ab.Draw(uisb);
                     }
                 }
+                DrawCharSheet(uisb);
 
                 Items.Item it = currentLevel.DroppedItems.FindEntity(MouseController.MouseGridPosition());
                 if (it != null && (it.ItemType == Enums.ITypes.Legendary || it.ItemType == Enums.ITypes.Armor || it.ItemType == Enums.ITypes.Weapon || it.ItemType == Enums.ITypes.Accessory || it.ItemType == Enums.ITypes.Offhand))
@@ -1645,7 +1649,7 @@ namespace Brogue.Engine
 
                 DrawEquip(uisb);
             }
-
+                
             else
             {
                 //game.GraphicsDevice.Clear(Color);
@@ -1669,6 +1673,33 @@ namespace Brogue.Engine
             DrawLog(uisb);
 
             
+        }
+
+        private static void DrawCharSheet(SpriteBatch sb)
+        {
+            sb.Draw(charSheetTex.texture, charSheetPosition, Color.White);
+            DrawOutlined(sb, charSheetPosition + new Vector2(20, 20), "Class : ", Color.Black, Color.White);
+            DrawOutlined(sb, charSheetPosition + new Vector2(20 + font.MeasureString("Class : ").X, 20), HeroClasses.Hero.heroRole.ToString(), Color.Black, Color.White);
+            DrawOutlined(sb, charSheetPosition + new Vector2(20, 40), "Level : ", Color.Black, Color.White);
+            DrawOutlined(sb, charSheetPosition + new Vector2(20 + font.MeasureString("Level : ").X, 40), hero.level.ToString(), Color.Black, Color.White);
+            DrawOutlined(sb, charSheetPosition + new Vector2(20, 60), "XP : ", Color.Black, Color.White);
+            DrawOutlined(sb, charSheetPosition + new Vector2(20 + font.MeasureString("XP : ").X, 60), hero.getExperience() + " / " + hero.getExpReq(), Color.Black, Color.White);
+            DrawOutlined(sb, charSheetPosition + new Vector2(20, 80), "HP : ", Color.Black, Color.White);
+            DrawOutlined(sb, charSheetPosition + new Vector2(20 + font.MeasureString("HP : ").X, 80), hero.health + " / " + hero.maxHealth, Color.Black, hero.health > hero.maxHealth / 2 ? Color.Green : hero.health > hero.maxHealth / 4? Color.Yellow : Color.Red);
+            DrawOutlined(sb, charSheetPosition + new Vector2(20, 100), "Damage : ", Color.Black, Color.White);
+            DrawOutlined(sb, charSheetPosition + new Vector2(20 + font.MeasureString("Damage : ").X, 100), "" + hero.GetEquipment().getTotalDamageIncrease(), Color.Black, Color.White);
+            DrawOutlined(sb, charSheetPosition + new Vector2(20, 120), "Armor : ", Color.Black, Color.White);
+            DrawOutlined(sb, charSheetPosition + new Vector2(20 + font.MeasureString("Armor : ").X, 120), "" + hero.GetArmorRating(), Color.Black, Color.White);
+            
+        }
+
+        private static void DrawOutlined(SpriteBatch sb, Vector2 pos, string text, Color back, Color front)
+        {
+            foreach (Direction dir in Direction.Values)
+            {
+                sb.DrawString(Engine.font, text, pos + new Vector2(dir.X, dir.Y), back);
+            }
+            sb.DrawString(Engine.font, text, pos, front);
         }
 
         private static void DrawDeathScreen(SpriteBatch sb)
