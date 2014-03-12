@@ -127,7 +127,7 @@ namespace Brogue.Enemies
         public override void BuildEnemy(int i)
         {
             range = 1;
-            aggroRange = 7;
+            aggroRange = 5;
             deAggroRange = 10;
             defense = 1 + (5 * i);
             if (defense > 60)

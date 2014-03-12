@@ -70,7 +70,7 @@ namespace Brogue.Enemies
 
             range = 1;
             defense = 15 + (5 * i);
-            attack = 5 + (5 * i);
+            attack = 5 + (5 * i-3);
             health = 30 + (15 * i);
             exp = 50 + 25 * i-1;
         }
