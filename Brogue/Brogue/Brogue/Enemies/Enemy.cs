@@ -36,7 +36,18 @@ namespace Brogue.Enemies
             target = aTarget;
         }
 
-        public List<Enemy> GetAllEnemies()
+        public static void UpdateTargets(GameCharacter newTarget)
+        {
+            foreach (Enemy e in GetAllEnemies())
+            {
+                if (e.IsAggro)
+                {
+                    e.ForceAggro(newTarget);
+                }
+            }
+        }
+
+        public static List<Enemy> GetAllEnemies()
         {
             Level level = Engine.Engine.currentLevel;
             List<Enemy> enemies = new List<Enemy>();

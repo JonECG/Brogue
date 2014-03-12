@@ -22,6 +22,38 @@ namespace Brogue.Enemies
             get { return (targets.Count > 0); }
         }
 
+        public void ForceAggro(GameCharacter aTarget)
+        {
+            targets[0] = aTarget;
+        }
+
+        public static void UpdateBossTargets(GameCharacter newTarget)
+        {
+            foreach (BossEnemy b in GetAllBosses())
+            {
+                if (b.IsAggro)
+                {
+                    b.ForceAggro(newTarget);
+                }
+            }
+        }
+
+        public static List<BossEnemy> GetAllBosses()
+        {
+            Level level = Engine.Engine.currentLevel;
+            List<BossEnemy> bosses = new List<BossEnemy>();
+
+            foreach (GameCharacter g in level.GetCharactersIsFriendly(false))
+            {
+                if (g is BossEnemy)
+                {
+                    bosses.Add((BossEnemy)g);
+                }
+            }
+
+            return bosses;
+        }
+
         //Movement method, moves a single square
         public void Move(Direction d, Level level)
         {
