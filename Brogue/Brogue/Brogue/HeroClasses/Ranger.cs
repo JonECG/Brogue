@@ -15,6 +15,8 @@ namespace Brogue.HeroClasses
     {
         public Ranger()
         {
+            heroTexture = Engine.Engine.GetTexture("Hero/Marksman");
+            Hero.loadSprite();
             heroRole = Classes.Ranger;
             baseHealth = 255;
             healthPerLevel = 35;

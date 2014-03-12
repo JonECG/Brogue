@@ -15,7 +15,7 @@ namespace Brogue.HeroClasses
     {
         public Magus()
         {
-            Hero.sprite = new Sprite(texture);
+            heroTexture = Engine.Engine.GetTexture("Hero/Magus");
             heroRole = Classes.Magus;
             baseHealth = 250;
             healthPerLevel = 35;
@@ -23,6 +23,7 @@ namespace Brogue.HeroClasses
             requiredBranchLevel = 700;
             resetLevel();
             resetHealth();
+            Hero.loadSprite();
             abilities[0] = new Fireball();
             abilities[1] = new Blink();
             abilities[2] = new ArcaneWeapon();

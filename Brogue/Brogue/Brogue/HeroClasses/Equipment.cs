@@ -411,7 +411,7 @@ namespace Brogue.HeroClasses
 
         public int getPrimaryWeaponRange()
         {
-            Weapon primary = (equippedWeapons[0] != null) ? (Weapon)equippedWeapons[0] : null;
+            Weapon primary = (equippedWeapons[0] != null && equippedWeapons[0].ItemType != ITypes.Offhand) ? (Weapon)equippedWeapons[0] : null;
             int range = (primary != null) ? primary.Range : 0;
             return range;
         }

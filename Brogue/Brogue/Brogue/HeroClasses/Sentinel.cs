@@ -19,8 +19,8 @@ namespace Brogue.HeroClasses
     {
         public Sentinel()
         {
-            warriorSprite = Engine.Engine.GetTexture("Hero/MageSprite");
-            Hero.sprite = new Sprite(texture);
+            heroTexture = Engine.Engine.GetTexture("Hero/Sentinel");
+            Hero.loadSprite();
             heroRole = Classes.Sentinel;
             baseHealth = 400;
             healthPerLevel = 65;

@@ -60,9 +60,7 @@ namespace Brogue.HeroClasses
         public int jarBarAmount;
         protected static Sprite sprite;
         public static DynamicTexture abilitySprite;
-        public static DynamicTexture warriorSprite;
-        public static DynamicTexture mageSprite;
-        public static DynamicTexture rogueSprite;
+        public static DynamicTexture heroTexture;
         public static DynamicTexture castingSquareSprite;
         protected Equipment currentlyEquippedItems = new Equipment();
         protected Inventory inventory = new Inventory();
@@ -151,19 +149,6 @@ namespace Brogue.HeroClasses
 
         public static void loadSprite()
         {
-            DynamicTexture heroTexture = null;
-            switch (heroRole)
-            {
-                case Classes.Warrior:
-                    heroTexture = warriorSprite;
-                    break;
-                case Classes.Mage:
-                    heroTexture = mageSprite;
-                    break;
-                case Classes.Rogue:
-                    heroTexture = rogueSprite;
-                    break;
-            }
             sprite = new Sprite(heroTexture);
         }
 

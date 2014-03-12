@@ -14,6 +14,8 @@ namespace Brogue.HeroClasses
     {
         public Rogue()
         {
+            heroTexture = Engine.Engine.GetTexture("Hero/RogueSprite");
+            Hero.loadSprite();
             heroRole = Classes.Rogue;
             inventory.addItem(new Dagger(1, 1));
             inventory.addItem(new Claws(1, 1));

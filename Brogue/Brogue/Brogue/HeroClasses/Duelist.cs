@@ -15,6 +15,8 @@ namespace Brogue.HeroClasses
     {
         public Duelist()
         {
+            heroTexture = Engine.Engine.GetTexture("Hero/Duelist");
+            Hero.loadSprite();
             heroRole = Classes.Duelist;
             baseHealth = 275;
             healthPerLevel = 35;

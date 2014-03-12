@@ -20,8 +20,8 @@ namespace Brogue.HeroClasses
     {
         public Brawler()
         {
-            texture = Engine.Engine.GetTexture("Hero/WarriorSprite");
-            Hero.sprite = new Sprite(texture);
+            heroTexture = Engine.Engine.GetTexture("Hero/Brawler");
+            Hero.loadSprite();
             heroRole = Classes.Brawler;
             baseHealth = 300;
             healthPerLevel = 40;

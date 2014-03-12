@@ -18,9 +18,10 @@ namespace Brogue.HeroClasses
     {
         public Mage()
         {
-            texture = Engine.Engine.GetTexture("Hero/MageSprite");
-            Hero.sprite = new Sprite(texture);
+            heroTexture = Engine.Engine.GetTexture("Hero/MageSprite");
+            Hero.loadSprite();
             heroRole = Classes.Mage;
+            canDuelWield = true;
             inventory.addItem(new Staff(1, 1));
             inventory.addItem(new Staff(1, 1));
             inventory.addItem(new SpellBook(1, 1));

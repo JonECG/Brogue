@@ -13,6 +13,8 @@ namespace Brogue.HeroClasses
     {
         public Sorcerer()
         {
+            heroTexture = Engine.Engine.GetTexture("Hero/Sorcerer");
+            Hero.loadSprite();
             heroRole = Classes.Sorcerer;
             baseHealth = 200;
             healthPerLevel = 35;
