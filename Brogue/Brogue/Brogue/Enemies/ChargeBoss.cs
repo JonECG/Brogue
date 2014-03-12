@@ -49,6 +49,8 @@ namespace Brogue.Enemies
 
                 if (path.Length < 4)
                 {
+                    Audio.playSound("Slash");
+                    Engine.Engine.AddVisualAttack(targets[0], "Hero/HammerSmash", .25f, 2.0f, .15f);
                     targets[0].TakeDamage(attacks[0], this);
                 }
             }

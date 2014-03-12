@@ -24,6 +24,7 @@ namespace Brogue.Enemies
                     if (pathCost == 1)
                     {
                         Audio.playSound("Mugging");
+                        Engine.Engine.AddVisualAttack(target, "Hero/HammerSmash", .25f, 2.0f, .15f);
                         Attack();
                     }
                     else
