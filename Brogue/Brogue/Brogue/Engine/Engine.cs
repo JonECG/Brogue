@@ -683,7 +683,7 @@ namespace Brogue.Engine
         private static int levelSeed;
         private static int currentSaveSlot = -1;
         private static int levelComplexity;
-        private static int currentDungeonLevel = 1;
+        private static int currentDungeonLevel = 0;
 
 
         
@@ -1006,6 +1006,7 @@ namespace Brogue.Engine
             }
             currentLevel = nextLevel.RetrieveLevel();
             currentDungeonLevel++;
+            charIndex = 0;
             nextLevel = new GeneratedLevel(levelSeed, levelComplexity, currentDungeonLevel++);
             Log("Level generated.");
             currentLevel.CharacterEntities.Add(hero, currentLevel.GetStartPoint());
@@ -1346,6 +1347,12 @@ namespace Brogue.Engine
             {
                 //Go to next level hacked.
                 GoToNextLevel();
+            }
+
+            if (KeyboardController.IsPressed(Keys.OemTilde))
+            {
+                //Insert breakpoint here.
+                Console.WriteLine("Break point");
             }
 
             if (KeyboardController.IsPressed(Keys.OemPlus))
