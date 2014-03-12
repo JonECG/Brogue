@@ -674,6 +674,9 @@ namespace Brogue.Engine
         private static IntVec modifiedCameraPosition = new IntVec(0, 0);
         private static GeneratedLevel nextLevel;
 
+        private static CharButton[] selection;
+        private static bool showCharSelection = false;
+
         private static DynamicTexture visualAttackTex = GetTexture("attackDefault");
 
         private static InventoryButton[] inventoryButtons = new InventoryButton[16];
@@ -694,12 +697,16 @@ namespace Brogue.Engine
 
         private static bool showSaveSlotSelection;
 
+        private static IntVec tempPosition = new IntVec(0, 0);
+        private static HeroClasses.Equipment tempEquip = new HeroClasses.Equipment();
+        private static InventorySystem.Inventory tempInventory = new InventorySystem.Inventory();
 
         private static DynamicTexture
             lightMask = GetTexture("lightmask")
         , sightMask = GetTexture("lightmask")
         , particleTex = GetTexture("UI/exp")
-        , gridSelectionOverlay
+        , gridSelectionOverlay = GetTexture("abilityOverlay"),
+        choiceMessage = GetTexture("UI/Choice")
         ;
 
         static DynamicTexture
@@ -721,7 +728,7 @@ namespace Brogue.Engine
             ;
 
         const int SAVE_SLOTS = 8;
-        static CharButton mageButton, warriorButton, rogueButton;
+        static CharButton mageButton, warriorButton, rogueButton, rangerButton, duelistButton, magusButton, sorcererButton, bralwerButton, sentinelButton;
         static UIButton saveButton, continueButton, quitButton;
         static UIButton restartButton, quitDeathButton;
         static UIButton[] saveSlots = new UIButton[SAVE_SLOTS];
@@ -955,6 +962,17 @@ namespace Brogue.Engine
             warriorButton = new CharButton(new Vector2(game.Width / 3, 2 * game.Height / 3), true, "UI/WarriorCharCreation", "UI/WarriorCharCreationHigh");
             mageButton = new CharButton(new Vector2(game.Width / 3 - 220, game.Height / 4), true, "UI/MageCharCreation", "UI/MageCharCreationHigh");
             rogueButton = new CharButton(new Vector2(game.Width / 3 + 220,game.Height / 4), true, "UI/RogueCharCreation", "UI/RogueCharCreationHigh");
+            
+            rangerButton = new CharButton(new Vector2(game.Width / 3, game.Height / 2), true, "UI/RangerCharCreation", "UI/RangerCharCreationHigh");
+            duelistButton = new CharButton(new Vector2(game.Width / 3 * 2, game.Height / 2), true, "UI/DuelistCharCreation", "UI/DuelistCharCreationHigh");
+
+            sentinelButton = new CharButton(new Vector2(game.Width / 3, game.Height / 2), true, "UI/SentinelCharCreation", "UI/SentinelCharCreationHigh");
+            bralwerButton = new CharButton(new Vector2(game.Width / 3 * 2, game.Height / 2), true, "UI/BrawlerCharCreation", "UI/BrawlerCharCreationHigh");
+
+            sorcererButton = new CharButton(new Vector2(game.Width / 3, game.Height / 2), true, "UI/SorcererCharCreation", "UI/SorcererCharCreationHigh");
+            magusButton = new CharButton(new Vector2(game.Width / 3 * 2, game.Height / 2), true, "UI/MagusCharCreation", "UI/MagusCharCreationHigh");
+
+
             quitButton = new UIButton(new Vector2(game.Width - CELLWIDTH, 0), false, "UI/QuitButton", "");
 
             restartButton = new UIButton(new Vector2(game.Width / 2 - 40, game.Height / 2), true, "UI/RestartButton", "");
@@ -1058,6 +1076,9 @@ namespace Brogue.Engine
 
         public static void Update(GameTime gameTime)
         {
+
+
+
             MouseController.Update();
             if (gameStarted)
             {
@@ -1126,62 +1147,40 @@ namespace Brogue.Engine
                     
                     if (hero.hasReachedBranchLevel())
                     {
-                        IntVec position = currentLevel.CharacterEntities.FindPosition(hero);
-                        HeroClasses.Equipment tempEquip = hero.GetEquipment();
-                        InventorySystem.Inventory tempInventory = hero.GetInventory();
+                        tempPosition = currentLevel.CharacterEntities.FindPosition(hero);
+                        tempEquip = hero.GetEquipment();
+                        tempInventory = hero.GetInventory();
                         currentLevel.CharacterEntities.Remove(hero);
-                        int rand = enginerand.Next(2);
-                        if (rand == 1)
+
+
+                        gameStarted = false;
+                        showCharSelection = true;
+
+
+                        if (HeroClasses.Hero.heroRole == Enums.Classes.Warrior)
                         {
-                            if (HeroClasses.Hero.heroRole == Enums.Classes.Warrior)
-                            {
-                                hero = new HeroClasses.Brawler();
-                                UpdateAbilities();
-                                Log("You are now a brawler.");
-                            }
-                            else if (HeroClasses.Hero.heroRole == Enums.Classes.Mage)
-                            {
-                                hero = new HeroClasses.Magus();
-                                UpdateAbilities();
-                                Log("You are now a Magus.");
-                            }
-                            else if (HeroClasses.Hero.heroRole == Enums.Classes.Rogue)
-                            {
-                                hero = new HeroClasses.Duelist();
-                                UpdateAbilities();
-                                Log("You are now a Duelist.");
-                            }
+                            selection = new CharButton[] { bralwerButton, sentinelButton };
                         }
-                        else
+                        else if (HeroClasses.Hero.heroRole == Enums.Classes.Mage)
                         {
-                            if (HeroClasses.Hero.heroRole == Enums.Classes.Warrior)
-                            {
-                                hero = new HeroClasses.Sentinel();
-                                UpdateAbilities();
-                                Log("You are now a sentinel.");
-                            }
-                            else if (HeroClasses.Hero.heroRole == Enums.Classes.Mage)
-                            {
-                                hero = new HeroClasses.Sorcerer();
-                                UpdateAbilities();
-                                Log("You are now a Sorcerer.");
-                            }
-                            else if (HeroClasses.Hero.heroRole == Enums.Classes.Rogue)
-                            {
-                                hero = new HeroClasses.Ranger();
-                                UpdateAbilities();
-                                Log("You are now a Ranger.");
-                            }
+                            selection = new CharButton[] { sorcererButton, magusButton };
                         }
-                        hero.ObtainItems(tempInventory, tempEquip);
-                        hero.obtainStartingGear(currentLevel);
-                        currentLevel.CharacterEntities.Add(hero, position);
+                        else if (HeroClasses.Hero.heroRole == Enums.Classes.Rogue)
+                        {
+                            selection = new CharButton[] { duelistButton, rangerButton };
+                        }
+                        
+                        
                     }
 
-                    cameraPosition = currentLevel.CharacterEntities.FindPosition(hero);
-                    modifiedCameraPosition.X = cameraPosition.X - (windowSizeInTiles.X / 2);
-                    modifiedCameraPosition.Y = cameraPosition.Y - (windowSizeInTiles.Y / 2);
-                    currentLevel.InvalidateCache();
+                    if (currentLevel.CharacterEntities.FindPosition(hero) != null)
+                    {
+                        cameraPosition = currentLevel.CharacterEntities.FindPosition(hero);
+
+                        modifiedCameraPosition.X = cameraPosition.X - (windowSizeInTiles.X / 2);
+                        modifiedCameraPosition.Y = cameraPosition.Y - (windowSizeInTiles.Y / 2);
+                        currentLevel.InvalidateCache();
+                    }
                 }
             }
             else
@@ -1262,6 +1261,76 @@ namespace Brogue.Engine
                         LoadSaveSlots();
                         vattacks.Clear();
                         mainMenuOpen = true;
+                    }
+                }
+
+                else if (showCharSelection)
+                {
+                    if (selection.Contains(bralwerButton) && bralwerButton.isClicked())
+                    {
+                        hero = new HeroClasses.Brawler();
+                        UpdateAbilities();
+                        Log("You are now a brawler.");
+                        showCharSelection = false;
+                        gameStarted = true;
+                        hero.ObtainItems(tempInventory, tempEquip);
+                        hero.obtainStartingGear(currentLevel);
+                        currentLevel.CharacterEntities.Add(hero, tempPosition);
+                    }
+                    if (selection.Contains(duelistButton) && duelistButton.isClicked())
+                    {
+                        hero = new HeroClasses.Duelist();
+                        UpdateAbilities();
+                        Log("You are now a duelist.");
+                        showCharSelection = false;
+                        gameStarted = true;
+                        hero.ObtainItems(tempInventory, tempEquip);
+                        hero.obtainStartingGear(currentLevel);
+                        currentLevel.CharacterEntities.Add(hero, tempPosition);
+                    }
+                    if (selection.Contains(sorcererButton) && sorcererButton.isClicked())
+                    {
+                        hero = new HeroClasses.Sorcerer();
+                        UpdateAbilities();
+                        Log("You are now a Sorcerer.");
+                        showCharSelection = false;
+                        gameStarted = true;
+                        hero.ObtainItems(tempInventory, tempEquip);
+                        hero.obtainStartingGear(currentLevel);
+                        currentLevel.CharacterEntities.Add(hero, tempPosition);
+                    }
+                    if (selection.Contains(magusButton) && magusButton.isClicked())
+                    {
+                        hero = new HeroClasses.Magus();
+                        UpdateAbilities();
+                        Log("You are now a Magus.");
+                        showCharSelection = false;
+                        gameStarted = true;
+                        hero.ObtainItems(tempInventory, tempEquip);
+                        hero.obtainStartingGear(currentLevel);
+                        currentLevel.CharacterEntities.Add(hero, tempPosition);
+                    }
+                    if (selection.Contains(sentinelButton) && sentinelButton.isClicked())
+                    {
+                        hero = new HeroClasses.Sentinel();
+                        UpdateAbilities();
+                        Log("You are now a Sentinel.");
+                        showCharSelection = false;
+                        gameStarted = true;
+                        hero.ObtainItems(tempInventory, tempEquip);
+                        hero.obtainStartingGear(currentLevel);
+                        currentLevel.CharacterEntities.Add(hero, tempPosition);
+                    }
+                    if (selection.Contains(rangerButton) && rangerButton.isClicked())
+                    {
+                        hero = new HeroClasses.Ranger();
+                        UpdateAbilities();
+                        Log("You are now a Ranger.");
+                        showCharSelection = false;
+                        gameStarted = true;
+                        hero.ObtainItems(tempInventory, tempEquip);
+                        hero.obtainStartingGear(currentLevel);
+                        currentLevel.CharacterEntities.Add(hero, tempPosition);
                     }
                 }
 
@@ -1697,6 +1766,14 @@ namespace Brogue.Engine
                 else if (showDeathScreen)
                 {
                     DrawDeathScreen(uisb);
+                }
+                else if (showCharSelection)
+                {
+                    uisb.Draw(choiceMessage.texture, new Vector2(game.Width / 2 - choiceMessage.texture.Width / 2, 10), Color.White);
+                    foreach (CharButton cb in selection)
+                    {
+                        cb.Draw(uisb);
+                    }
                 }
             }
             DrawLog(uisb);
