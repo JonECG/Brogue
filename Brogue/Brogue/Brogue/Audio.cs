@@ -68,7 +68,7 @@ namespace Brogue
 
     public static class Audio
     {
-        private static int MAX_LIABBARY_SIZE = 20;
+        private static int MAX_LIABBARY_SIZE = 25;
         private static Random random = new Random();
 
         private static int DEALY_MAX_DEFALT_TIME = 300;
@@ -206,25 +206,29 @@ namespace Brogue
 
             //Load Sound
             defualtSound = new audioFile(content.Load<SoundEffect>("Sound/Whammy"), "Whammy");
-            sound[0] = new audioFile(content.Load<SoundEffect>("Sound/stairs"), "stairs");
-            sound[1] = new audioFile(content.Load<SoundEffect>("Sound/Chest"), "chest");
-            sound[2] = new audioFile(content.Load<SoundEffect>("Sound/Water_Drop"), "waterDrop");
-            sound[3] = new audioFile(content.Load<SoundEffect>("Sound/door"), "door");
-            sound[4] = new audioFile(content.Load<SoundEffect>("Sound/switch"), "switch");
-            sound[5] = new audioFile(content.Load<SoundEffect>("Sound/ironGate"), "IronGate");
-            sound[6] = new audioFile(content.Load<SoundEffect>("Sound/Fireball"), "Fireball");
-            sound[7] = new audioFile(content.Load<SoundEffect>("Sound/whoosh"), "whoosh");
-            sound[8] = new audioFile(content.Load<SoundEffect>("Sound/swordSlash"), "Slash");
-            sound[9] = new audioFile(content.Load<SoundEffect>("Sound/slashAttack"), "swordAttack");
-            sound[10] = new audioFile(content.Load<SoundEffect>("Sound/lightningStorm"), "lightning");
-            sound[11] = new audioFile(content.Load<SoundEffect>("Sound/DaggerStab"), "DaggerStab");
-            sound[12] = new audioFile(content.Load<SoundEffect>("Sound/Punch"), "Mugging");
-            sound[13] = new audioFile(content.Load<SoundEffect>("Sound/smokePoof"), "Smoke");
-            sound[14] = new audioFile(content.Load<SoundEffect>("Sound/HammerSmash"), "HammerSmash");
-            sound[15] = new audioFile(content.Load<SoundEffect>("Sound/Wind"), "WhirlwindSlash");
-            sound[16] = new audioFile(content.Load<SoundEffect>("Sound/Parry"), "Parry");
-            sound[17] = new audioFile(content.Load<SoundEffect>("Sound/Gunshot"), "Gunshot");
-            sound[18] = new audioFile(content.Load<SoundEffect>("Sound/eviscerate"), "eviscerate");
+            sound[0]     = new audioFile(content.Load<SoundEffect>("Sound/stairs"), "stairs");
+            sound[1]     = new audioFile(content.Load<SoundEffect>("Sound/Chest"), "chest");
+            sound[2]     = new audioFile(content.Load<SoundEffect>("Sound/Water_Drop"), "waterDrop");
+            sound[3]     = new audioFile(content.Load<SoundEffect>("Sound/door"), "door");
+            sound[4]     = new audioFile(content.Load<SoundEffect>("Sound/switch"), "switch");
+            sound[5]     = new audioFile(content.Load<SoundEffect>("Sound/ironGate"), "IronGate");
+            sound[6]     = new audioFile(content.Load<SoundEffect>("Sound/Fireball"), "Fireball");
+            sound[7]     = new audioFile(content.Load<SoundEffect>("Sound/whoosh"), "whoosh");
+            sound[8]     = new audioFile(content.Load<SoundEffect>("Sound/swordSlash"), "Slash");
+            sound[9]     = new audioFile(content.Load<SoundEffect>("Sound/slashAttack"), "swordAttack");
+            sound[10]    = new audioFile(content.Load<SoundEffect>("Sound/lightningStorm"), "lightning");
+            sound[11]    = new audioFile(content.Load<SoundEffect>("Sound/DaggerStab"), "DaggerStab");
+            sound[12]    = new audioFile(content.Load<SoundEffect>("Sound/Punch"), "Mugging");
+            sound[13]    = new audioFile(content.Load<SoundEffect>("Sound/smokePoof"), "Smoke");
+            sound[14]    = new audioFile(content.Load<SoundEffect>("Sound/HammerSmash"), "HammerSmash");
+            sound[15]    = new audioFile(content.Load<SoundEffect>("Sound/bloodSpit"), "bloodSpit");
+            sound[16]    = new audioFile(content.Load<SoundEffect>("Sound/enimeFireball"), "enimeFireball");
+            sound[16]    = new audioFile(content.Load<SoundEffect>("Sound/SwordClash"), "SwordClash");
+            sound[16]    = new audioFile(content.Load<SoundEffect>("Sound/ArrowShot"), "ArrowShot");
+            sound[17]    = new audioFile(content.Load<SoundEffect>("Sound/Parry"), "Parry");
+            sound[18]    = new audioFile(content.Load<SoundEffect>("Sound/Gunshot"), "Gunshot");
+            sound[19]    = new audioFile(content.Load<SoundEffect>("Sound/eviscerate"), "eviscerate");
+            sound[20]    = new audioFile(content.Load<SoundEffect>("Sound/Wind"), "WhirlwindSlash");
 
             //defualt
             delay = random.Next(DEALY_MIN_DEFALT_TIME, DEALY_MAX_DEFALT_TIME);
