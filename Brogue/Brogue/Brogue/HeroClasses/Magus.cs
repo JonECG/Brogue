@@ -23,6 +23,8 @@ namespace Brogue.HeroClasses
             requiredBranchLevel = 700;
             resetLevel();
             resetHealth();
+            Enemies.Enemy.UpdateTargets(this);
+            Enemies.BossEnemy.UpdateBossTargets(this);
             Hero.loadSprite();
             abilities[0] = new Fireball();
             abilities[1] = new Blink();

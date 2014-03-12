@@ -24,6 +24,8 @@ namespace Brogue.HeroClasses
             requiredBranchLevel = 700;
             resetLevel();
             resetHealth();
+            Enemies.Enemy.UpdateTargets(this);
+            Enemies.BossEnemy.UpdateBossTargets(this);
             abilities[0] = new Mug();
             abilities[1] = new Invisibility();
             abilities[2] = new Volley();

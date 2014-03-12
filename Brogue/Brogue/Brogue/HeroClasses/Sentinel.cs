@@ -34,6 +34,8 @@ namespace Brogue.HeroClasses
             abilities[2] = new ShieldBlock();
             abilities[3] = new ShieldBash();
             Engine.Engine.Log(health.ToString());
+            Enemies.Enemy.UpdateTargets(this);
+            Enemies.BossEnemy.UpdateBossTargets(this);
         }
     }
 }

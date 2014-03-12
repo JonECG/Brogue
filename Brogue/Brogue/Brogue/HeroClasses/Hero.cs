@@ -268,6 +268,11 @@ namespace Brogue.HeroClasses
             int test = health;
             resetSprite();
 
+            if (!visible)
+            {
+                Enemies.Enemy.DeAggroAll();
+            }
+
             if (!isFrozen)
             {
                 if (MouseController.LeftClicked())
@@ -304,7 +309,7 @@ namespace Brogue.HeroClasses
                         attack(mapLevel);
                     }
                     // THESE ARE JUST FOR TESTING
-                    else if (Mapping.KeyboardController.IsTyped(Keys.L))
+                    else if (Mapping.KeyboardController.IsTyped(Keys.M))
                     {
                         level += 1;
                     }
@@ -447,7 +452,7 @@ namespace Brogue.HeroClasses
             }
             else
             {
-                if (MouseController.LeftClicked() && abilities[ability].cooldown == 0)
+                if (abilities[ability].cooldown == 0)
                 {
                     abilities[ability].finishCastandDealDamage(level, currentlyEquippedItems.getTotalDamageIncrease(), mapLevel, this);
                 }
@@ -528,6 +533,10 @@ namespace Brogue.HeroClasses
                             {
                                 Audio.playSound("HammerSmash");
                                 Engine.Engine.AddVisualAttack(enemy, "Hero/hammerSmash", .25f, 2.0f, .15f);
+                            }
+                            else if (name[1] == "Crossbow" || name[1] == "Bow")
+                            {
+                                Engine.Engine.AddVisualAttack(this, enemy, "Enemies/Attacks/Arrow", .25f, 1.0f, .15f);
                             }
                             else
                             {

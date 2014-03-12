@@ -29,6 +29,8 @@ namespace Brogue.HeroClasses
             requiredBranchLevel = 700;
             resetLevel();
             resetHealth();
+            Enemies.Enemy.UpdateTargets(this);
+            Enemies.BossEnemy.UpdateBossTargets(this);
             abilities[0] = new Cleave();
             abilities[1] = new WhirlwindSlash();
             abilities[2] = new Rage();

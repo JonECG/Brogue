@@ -33,7 +33,7 @@ namespace Brogue.HeroClasses
             resetLevel();
             resetHealth();
             abilities[0] = new Cleave();
-            abilities[1] = new IceArmor();
+            abilities[1] = new WhirlwindSlash();
             Engine.Engine.Log(health.ToString());
         }
     }

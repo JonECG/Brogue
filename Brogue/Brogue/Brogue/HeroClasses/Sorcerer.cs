@@ -22,6 +22,8 @@ namespace Brogue.HeroClasses
             level = 10;
             resetLevel();
             resetHealth();
+            Enemies.Enemy.UpdateTargets(this);
+            Enemies.BossEnemy.UpdateBossTargets(this);
             abilities[0] = new Fireball();
             abilities[1] = new Blink();
             abilities[2] = new LightningStorm();
