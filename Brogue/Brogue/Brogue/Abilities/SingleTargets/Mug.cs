@@ -12,7 +12,7 @@ namespace Brogue.Abilities.SingleTargets
         public Mug()
         {
             name = "Mug";
-            description = "The rogue strikes the enemy chosen, and obtains a random item.";
+            description = "The rogue strikes the enemy chosen, \nand obtains a random item.";
             castSquares = new IntVec[1];
             for (int i = 0; i < castSquares.Length; i++)
             {
@@ -33,15 +33,16 @@ namespace Brogue.Abilities.SingleTargets
                 {
                     Audio.playSound("Mugging");
                     test.TakeDamage(damage, hero);
+                    Items.Item heroItem = null;
+                    while (heroItem == null || heroItem.ItemType == Enums.ITypes.Consumable)
+                    {
+                        heroItem = Items.Item.randomItem(mapLevel.DungeonLevel, hero.level-3);
+                    }
+                    hero.GetInventory().addItem(heroItem);
                 }
                 castSquares[i] = new IntVec(0, 0);
             }
-            Items.Item heroItem = null;
-            while(heroItem == null || heroItem.ItemType == Enums.ITypes.Consumable)
-            {
-                heroItem = Items.Item.randomItem(mapLevel.DungeonLevel, hero.level);
-            }
-            hero.GetInventory().addItem(heroItem);
+           
         }
 
         public override int calculateDamage(int heroLevel, int heroDamage)

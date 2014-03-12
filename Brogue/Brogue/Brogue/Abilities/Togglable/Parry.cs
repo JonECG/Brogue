@@ -13,8 +13,12 @@ namespace Brogue.Abilities.Togglable
         public Parry()
         {
             name = "Parry";
-            description = "The duelist blocks the next set of attacks completely.";
+            description = "The duelist blocks the next set of \nattacks completely.";
             abilitySprite = new Sprite(abilityLine, new IntVec(22, 0));
+        }
+
+        public override void toggledAttackEffects(HeroClasses.Hero hero)
+        {
         }
 
         public override void updateToggle(int heroLevel, HeroClasses.Hero hero) {}

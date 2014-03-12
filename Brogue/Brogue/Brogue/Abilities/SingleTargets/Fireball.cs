@@ -11,7 +11,7 @@ namespace Brogue.Abilities.SingleTargets
         public Fireball()
         {
             name = "Fireball";
-            description = "The mage strikes an enemy from a distance with fire.";
+            description = "The mage strikes an enemy from a \ndistance with fire.";
             castSquares = new IntVec[1];
             for (int i = 0; i < castSquares.Length; i++)
             {

@@ -11,7 +11,7 @@ namespace Brogue.Abilities.SingleTargets
         public Blink()
         {
             name = "Blink";
-            description = "The mage teleports to the selected position.";
+            description = "The mage teleports to the selected \nposition.";
             castSquares = new IntVec[1];
             for (int i = 0; i < castSquares.Length; i++)
             {

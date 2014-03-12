@@ -12,7 +12,7 @@ namespace Brogue.Abilities.Togglable
         public IceArmor()
         {
             name = "Ice Armor";
-            description = "The mage summons armor to protect him \nduring battle.";
+            description = "The mage summons armor to protect \nhim during battle.";
             abilitySprite = new Sprite(abilityLine, new IntVec(13, 0));
         }
 
@@ -24,6 +24,8 @@ namespace Brogue.Abilities.Togglable
                 createdLevel = heroLevel;
             }
         }
+
+        public override void toggledAttackEffects(HeroClasses.Hero hero) { }
 
         public override void finishCastandDealDamage(int heroLevel, int heroDamage, Mapping.Level mapLevel, HeroClasses.Hero hero)
         {

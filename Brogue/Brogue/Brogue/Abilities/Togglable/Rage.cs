@@ -12,7 +12,7 @@ namespace Brogue.Abilities.Togglable
         public Rage()
         {
             name = "Rage";
-            description = "The berserker becomes enraged. Dealing \nincreased damage while losing health \nwith every attack.";
+            description = "The berserker becomes enraged. \nDealing increased damage while \nlosing health with every attack.";
             abilitySprite = new Sprite(abilityLine, new IntVec(5, 0));
         }
 
@@ -26,13 +26,18 @@ namespace Brogue.Abilities.Togglable
             }
         }
 
+        public override void toggledAttackEffects(HeroClasses.Hero hero)
+        {
+            hero.health -= hero.level;
+        }
+
         public override void finishCastandDealDamage(int heroLevel, int heroDamage, Mapping.Level mapLevel, HeroClasses.Hero hero)
         {
             if (!isActive)
             {
 
                 Engine.Engine.Log(hero.damageBoost.ToString());
-                hero.damageBoost += increase + heroLevel;
+                hero.damageBoost += increase + heroLevel*2;
                 Engine.Engine.Log(hero.damageBoost.ToString());
                 createdLevel = heroLevel;
                 isActive = true;

@@ -17,7 +17,7 @@ namespace Brogue.Abilities.Damaging.SingleTargets
         public Cleave()
         {
             name = "Cleave";
-            description = "The warrior strikes two immideately adjacent squares.";
+            description = "The warrior strikes two immideately \nadjacent squares.";
             castSquares = new IntVec[2];
             for (int i = 0; i < castSquares.Length; i++)
             {

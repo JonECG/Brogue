@@ -11,7 +11,7 @@ namespace Brogue.Abilities.SingleTargets
         public SoulSiphon()
         {
             name = "Soul Siphon";
-            description = "The mage deals damage to the enemy and heals \nfor 100% of the damage dealt.";
+            description = "The mage deals damage to the enemy \nand heals for 100% of the damage \ndealt.";
             castSquares = new IntVec[1];
             for (int i = 0; i < castSquares.Length; i++)
             {

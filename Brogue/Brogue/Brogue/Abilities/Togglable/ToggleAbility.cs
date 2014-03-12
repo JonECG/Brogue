@@ -44,6 +44,8 @@ namespace Brogue.Abilities.Togglable
             throw new NotImplementedException();
         }
 
+        public abstract void toggledAttackEffects(HeroClasses.Hero hero);
+
         public abstract void updateToggle(int heroLevel, HeroClasses.Hero hero);
     }
 }
