@@ -232,7 +232,7 @@ namespace Brogue.Engine
 
     class AbilityButton
     {
-        static DynamicTexture currentBackTex = Engine.GetTexture("UI/InvSlot");
+        DynamicTexture currentBackTex = Engine.GetTexture("UI/InvSlot");
         static DynamicTexture standard = Engine.GetTexture("UI/InvSlot");
         static DynamicTexture highlighted = Engine.GetTexture("UI/InvSlotHighlighted");
         Abilities.Ability ability;
@@ -281,7 +281,7 @@ namespace Brogue.Engine
                 doToolTip = isMouseOver;
                 if (ability.type == Enums.AbilityTypes.Toggle)
                 {
-                    currentBackTex = ((Abilities.Togglable.ToggleAbility)ability).isActive ? highlighted : standard;
+                    currentBackTex = ((Abilities.Togglable.ToggleAbility)ability).isActive || ability.getCooldown() > 0? highlighted : standard;
                 }
             }
         }

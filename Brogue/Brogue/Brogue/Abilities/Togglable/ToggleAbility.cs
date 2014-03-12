@@ -7,7 +7,7 @@ namespace Brogue.Abilities.Togglable
 {
     [Serializable] public abstract class ToggleAbility : Ability
     {
-        protected bool isActive;
+        public bool isActive;
         protected int createdLevel;
         public ToggleAbility()
         {
