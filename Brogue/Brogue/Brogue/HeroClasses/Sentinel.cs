@@ -1,6 +1,7 @@
 ﻿using Brogue.Abilities.AOE;
 using Brogue.Abilities.Damaging.SingleTargets;
 using Brogue.Abilities.SingleTargets;
+using Brogue.Abilities.Togglable;
 using Brogue.Enums;
 using Brogue.Items.Equipment.Accessory;
 using Brogue.Items.Equipment.Armor.Helm;

@@ -40,10 +40,10 @@ namespace Brogue.HeroClasses
         public int MaxJarBarAmount = 50;
         protected int numAbilities;
         public int damageBoost;
-        protected bool canDuelWield;
+        protected static bool canDuelWield = false;
 
         public static Classes heroRole;
-        public static bool visible;
+        public static bool visible = false;
         public static int parryCount;
         public int invisibilityTurnCount;
         public static Direction directionFacing;
@@ -83,8 +83,6 @@ namespace Brogue.HeroClasses
             expRequired = 500;
             jarBarAmount = 0;
             isFriendly = true;
-            visible = true;
-            canDuelWield = false;
             abilities = new Ability[6];
         }
 
@@ -126,20 +124,23 @@ namespace Brogue.HeroClasses
             if (parryCount == 0)
             {
                 armorBoostTurnCount -= (armorBoostTurnCount > 0) ? 1 : 0;
-                int percentHealth = 100 + armorRating * 2;
-                int maxHealthPostArmorIncrease = (int)(((float)percentHealth / 100) * maxHealth);
-                int damagePostReduction = maxHealthPostArmorIncrease - damage;
-                int finalDamage = maxHealth - ((int)(((float)damagePostReduction / maxHealthPostArmorIncrease) * maxHealth));
-                damagePostReduction = (damagePostReduction < 1) ? 1 : damagePostReduction;
+                int damageReduction = (int)(armorRating / 12.5);
+                int finalDamage = (damage - damageReduction < 1)? 1: damage-damageReduction;
                 health -= finalDamage;
                 Engine.Engine.Log(health.ToString());
                 Engine.Engine.Log(attacker.ToString());
             }
             else
             {
+                Audio.playSound("Parry");
                 Engine.Engine.AddVisualAttack(this, "Items/MailChest", .25f, 1.5f, .1f);
                 parryCount--;
             }
+        }
+
+        public int getTotalDamage()
+        {
+            return damageBoost + currentlyEquippedItems.getTotalDamageIncrease();
         }
 
         public void setParryCount(int count)
@@ -521,6 +522,7 @@ namespace Brogue.HeroClasses
                             else if (name[1] == "Claw")
                             {
                                 Engine.Engine.AddVisualAttack(enemy, "Hero/ClawSlash", .25f, 2.0f, .15f);
+                                Audio.playSound("DaggerStab");
                             }
                             else if (name[1] == "War")
                             {
@@ -530,6 +532,14 @@ namespace Brogue.HeroClasses
                             else
                             {
                                 Engine.Engine.AddVisualAttack(this, enemy, "Hero/MageAttack", .5f, 1.0f, .03f);
+                            }
+                        }
+                        for (int j = 0; j < abilities.Length; j++)
+                        {
+                            if (abilities[j] != null && abilities[j].type == AbilityTypes.Toggle)
+                            {
+                                ToggleAbility toggle = (ToggleAbility)abilities[j];
+                                toggle.toggledAttackEffects(this);
                             }
                         }
                         enemy.TakeDamage(damage, this);
