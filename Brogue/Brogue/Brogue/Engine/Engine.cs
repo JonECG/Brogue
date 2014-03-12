@@ -494,7 +494,7 @@ namespace Brogue.Engine
             }
             DrawOutlined(sb, position + mainStatPosition, mstext, Color.Black, front);
 
-            Color levelColor = hero.level >= gear.LevelReq ? Color.Green : Color.Red;
+            Color levelColor = HeroClasses.Hero.level >= gear.LevelReq ? Color.Green : Color.Red;
             DrawOutlined(sb, position + requiredLevelPosition, "Level required : " + gear.LevelReq, Color.Black, levelColor);
 
             Color classColor = gear.UsedBy.Contains(HeroClasses.Hero.heroRole) ? Color.Green : Color.Red;
@@ -674,6 +674,9 @@ namespace Brogue.Engine
         private static IntVec modifiedCameraPosition = new IntVec(0, 0);
         private static GeneratedLevel nextLevel;
 
+        public static float drawXP;
+        
+
         private static CharButton[] selection;
         private static bool showCharSelection = false;
 
@@ -741,6 +744,7 @@ namespace Brogue.Engine
 
         public static void AddXP(int xp, IntVec gameGrid)
         {
+            hero.AddExperience(xp);
             IntVec worldPosition = gameGrid * CELLWIDTH;
             Vector2 worldVector = Vector2.Transform(new Vector2(worldPosition.X, worldPosition.Y), worldToView);
 
@@ -1078,8 +1082,6 @@ namespace Brogue.Engine
         public static void Update(GameTime gameTime)
         {
 
-
-
             MouseController.Update();
             if (gameStarted)
             {
@@ -1093,7 +1095,7 @@ namespace Brogue.Engine
                     if (xpList[i].update())
                     {
                         xpList.RemoveAt(i);
-                        hero.AddExperience(1);
+                        drawXP++;
                     }
                 }
                 for (int i = 0; i < vattacks.Count; i++)
@@ -1358,7 +1360,7 @@ namespace Brogue.Engine
                 Audio.update();
             }
 
-            if (hero != null && !hero.isAlive())
+            if (hero != null && !hero.isAlive() && gameStarted)
             {
                 gameStarted = false;
                 showDeathScreen = true;
@@ -1697,7 +1699,7 @@ namespace Brogue.Engine
                     new Rectangle(0, 0, healthbar.texture.Width, healthbar.texture.Height),
                     Color.White, 0,
                     new Vector2(0, 0),
-                    new Vector2(hero.GetXpPercent(), 1),
+                    new Vector2((float)drawXP / (float)hero.getExpReq(), 1),
                     SpriteEffects.None, 0);
                 uisb.Draw(healthcontainer.texture, xpBarPosition, Color.White);
                 //uisb.Draw(xpbar, xpBarPosition, Color.White);
@@ -1752,7 +1754,7 @@ namespace Brogue.Engine
                     DrawMainMenu(uisb);
                 }
 
-                if (showEscMenu)
+                else if (showEscMenu)
                 {
                     DrawEscMenu(uisb);
                 }
@@ -1788,7 +1790,7 @@ namespace Brogue.Engine
             DrawOutlined(sb, charSheetPosition + new Vector2(20, 20), "Class : ", Color.Black, Color.White);
             DrawOutlined(sb, charSheetPosition + new Vector2(20 + font.MeasureString("Class : ").X, 20), HeroClasses.Hero.heroRole.ToString(), Color.Black, Color.White);
             DrawOutlined(sb, charSheetPosition + new Vector2(20, 40), "Level : ", Color.Black, Color.White);
-            DrawOutlined(sb, charSheetPosition + new Vector2(20 + font.MeasureString("Level : ").X, 40), hero.level.ToString(), Color.Black, Color.White);
+            DrawOutlined(sb, charSheetPosition + new Vector2(20 + font.MeasureString("Level : ").X, 40), HeroClasses.Hero.level.ToString(), Color.Black, Color.White);
             DrawOutlined(sb, charSheetPosition + new Vector2(20, 60), "XP : ", Color.Black, Color.White);
             DrawOutlined(sb, charSheetPosition + new Vector2(20 + font.MeasureString("XP : ").X, 60), hero.getExperience() + " / " + hero.getExpReq(), Color.Black, Color.White);
             DrawOutlined(sb, charSheetPosition + new Vector2(20, 80), "HP : ", Color.Black, Color.White);

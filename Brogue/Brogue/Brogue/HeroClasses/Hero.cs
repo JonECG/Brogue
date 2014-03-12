@@ -226,6 +226,7 @@ namespace Brogue.HeroClasses
                 MaxJarBarAmount += jarBarIncrease;
                 Engine.Engine.Log(MaxJarBarAmount.ToString());
                 experience = 0 + addedExp;
+                Engine.Engine.drawXP = experience;
                 expRequired = 500 + 250 * (level - 1);
             }
         }
