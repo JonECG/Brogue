@@ -35,7 +35,7 @@ namespace Brogue.HeroClasses
 
         public static int level { get; set; }
 
-        public List<ElementAttributes> Element { get; set; }
+        public static List<ElementAttributes> Element { get; set; }
 
         public int MaxJarBarAmount = 50;
         protected int numAbilities;
@@ -71,6 +71,7 @@ namespace Brogue.HeroClasses
 
         public Hero()
         {
+            Element = new List<ElementAttributes>();
             level = 5;
             currentBoost = 0;
             baseHealth = 200;
@@ -218,6 +219,7 @@ namespace Brogue.HeroClasses
         protected void resetLevel()
         {
             maxHealth = baseHealth + currentlyEquippedItems.getAccessoryHealthModifier() + healthPerLevel * level;
+            health = (health > maxHealth) ? maxHealth : health;
             if (experience >= expRequired)
             {
                 int addedExp = experience - expRequired;
@@ -268,6 +270,13 @@ namespace Brogue.HeroClasses
             bool casting = false;
             int test = health;
             resetSprite();
+            if (Element != null)
+            {
+                foreach (ElementAttributes e in Element)
+                {
+                    Engine.Engine.Log(e.ToString());
+                }
+            }
 
             if (!visible)
             {
@@ -392,6 +401,10 @@ namespace Brogue.HeroClasses
                             Engine.Engine.ClearGridSelections();
                             abilities[viewedAbility].resetSquares();
                         }
+                        else if(abilities[viewedAbility].cooldown == 0)
+                        {
+                            abilities[viewedAbility].wasJustCast = false;
+                        }
                         viewingCast = !viewingCast;
                     }
                 }
@@ -461,7 +474,7 @@ namespace Brogue.HeroClasses
             }
             else
             {
-                if (abilities[ability].cooldown == 0)
+                if (abilities[ability].cooldown == 0 && !abilities[ability].wasJustCast)
                 {
                     abilities[ability].finishCastandDealDamage(level, currentlyEquippedItems.getTotalDamageIncrease(), mapLevel, this);
                 }
@@ -523,33 +536,75 @@ namespace Brogue.HeroClasses
                         int damage = (!visible) ? (int)(1.5 * (weaponDamage)) : weaponDamage;
                         if (playAttack)
                         {
-                            if (name[1] == "Sword" || name[1] == "Axe" || name[1] == "Great" || name[1] == "Bastard" || name[1] == "Rapier" || name[1] == "Scythe")
+                            if (weapon.IsLegendary)
                             {
-                                Engine.Engine.AddVisualAttack(enemy, "Hero/sword-slash", .25f, 2.0f, .15f);
-                                Audio.playSound("swordAttack");
-                            }
-                            else if (name[1] == "Dagger")
-                            {
-                                Engine.Engine.AddVisualAttack(enemy, "Hero/DaggerSlash", .25f, 2.0f, .15f);
-                                Audio.playSound("DaggerStab");
-                            }
-                            else if (name[1] == "Claw")
-                            {
-                                Engine.Engine.AddVisualAttack(enemy, "Hero/ClawSlash", .25f, 2.0f, .15f);
-                                Audio.playSound("DaggerStab");
-                            }
-                            else if (name[1] == "War")
-                            {
-                                Audio.playSound("HammerSmash");
-                                Engine.Engine.AddVisualAttack(enemy, "Hero/hammerSmash", .25f, 2.0f, .15f);
-                            }
-                            else if (name[1] == "Crossbow" || name[1] == "Bow")
-                            {
-                                Engine.Engine.AddVisualAttack(this, enemy, "Enemies/Attacks/Arrow", .25f, 1.0f, .15f);
+                                if (name[0] == "Blade" || name[0] == "Executioner" || name[0] == "Bloodthirster" || name[0] == "Pale" || name[0] == "Anarchy" || name[0] == "Judgement")
+                                {
+                                    Engine.Engine.AddVisualAttack(enemy, "Hero/sword-slash", .25f, 2.0f, .15f);
+                                    Audio.playSound("swordAttack");
+                                }
+                                else if (name[0] == "Kris")
+                                {
+                                    Engine.Engine.AddVisualAttack(enemy, "Hero/DaggerSlash", .25f, 2.0f, .15f);
+                                    Audio.playSound("DaggerStab");
+                                }
+                                else if (name[0] == "The")
+                                {
+                                    Engine.Engine.AddVisualAttack(enemy, "Hero/ClawSlash", .25f, 2.0f, .15f);
+                                    Audio.playSound("DaggerStab");
+                                }
+                                else if (name[0] == "40k")
+                                {
+                                    Audio.playSound("HammerSmash");
+                                    Engine.Engine.AddVisualAttack(enemy, "Hero/hammerSmash", .25f, 2.0f, .15f);
+                                }
+                                else if (name[0] == "Condemned" || name[0] == "Retribution")
+                                {
+                                    Engine.Engine.AddVisualAttack(this, enemy, "Enemies/Attacks/Arrow", .25f, 1.0f, .15f);
+                                }
+                                else if (name[0] == "Kunai" || name[0] == "Heart")
+                                {
+                                    Engine.Engine.AddVisualAttack(this, enemy, weapon.GetTexture());
+                                }
+                                else
+                                {
+                                    Engine.Engine.AddVisualAttack(this, enemy, "Hero/MageAttack", .5f, 1.0f, .03f);
+                                }
                             }
                             else
                             {
-                                Engine.Engine.AddVisualAttack(this, enemy, "Hero/MageAttack", .5f, 1.0f, .03f);
+                                if (name[1] == "Sword" || name[1] == "Axe" || name[1] == "Great" || name[1] == "Bastard" || name[1] == "Rapier" || name[1] == "Scythe")
+                                {
+                                    Engine.Engine.AddVisualAttack(enemy, "Hero/sword-slash", .25f, 2.0f, .15f);
+                                    Audio.playSound("swordAttack");
+                                }
+                                else if (name[1] == "Dagger")
+                                {
+                                    Engine.Engine.AddVisualAttack(enemy, "Hero/DaggerSlash", .25f, 2.0f, .15f);
+                                    Audio.playSound("DaggerStab");
+                                }
+                                else if (name[1] == "Claw")
+                                {
+                                    Engine.Engine.AddVisualAttack(enemy, "Hero/ClawSlash", .25f, 2.0f, .15f);
+                                    Audio.playSound("DaggerStab");
+                                }
+                                else if (name[1] == "War")
+                                {
+                                    Audio.playSound("HammerSmash");
+                                    Engine.Engine.AddVisualAttack(enemy, "Hero/hammerSmash", .25f, 2.0f, .15f);
+                                }
+                                else if (name[1] == "Crossbow" || name[1] == "Bow")
+                                {
+                                    Engine.Engine.AddVisualAttack(this, enemy, "Enemies/Attacks/Arrow", .25f, 1.0f, .15f);
+                                }
+                                else if (name[1] == "Kunai" || name[1] == "Chakram")
+                                {
+                                    Engine.Engine.AddVisualAttack(this, enemy, weapon.GetTexture());
+                                }
+                                else
+                                {
+                                    Engine.Engine.AddVisualAttack(this, enemy, "Hero/MageAttack", .5f, 1.0f, .03f);
+                                }
                             }
                         }
                         for (int j = 0; j < abilities.Length; j++)
@@ -557,7 +612,10 @@ namespace Brogue.HeroClasses
                             if (abilities[j] != null && abilities[j].type == AbilityTypes.Toggle)
                             {
                                 ToggleAbility toggle = (ToggleAbility)abilities[j];
-                                toggle.toggledAttackEffects(this);
+                                if (toggle.isActive)
+                                {
+                                    toggle.toggledAttackEffects(this);
+                                }
                             }
                         }
                         enemy.TakeDamage(damage, this);
@@ -617,37 +675,45 @@ namespace Brogue.HeroClasses
 
         public void equipArmor(int itemToEquip)
         {
-            if (inventory.stored[itemToEquip].item != null && inventory.stored[itemToEquip].item.ItemType == ITypes.Armor)
+            if (inventory.stored[itemToEquip].item != null)
             {
-                Item newlyEquippedItem = inventory.stored[itemToEquip].item;
-                if (currentlyEquippedItems.isArmorEquipable((Armor)newlyEquippedItem, heroRole, level))
+                string[] name = inventory.stored[itemToEquip].item.Name.ToString().Split();
+                if (inventory.stored[itemToEquip].item.ItemType == ITypes.Armor && (name.Length == 3 && name[2] != "Shield"))
                 {
-                    inventory.removeItem(itemToEquip);
-                    inventory.addItem(currentlyEquippedItems.removeArmor((Armor)newlyEquippedItem));
-                    currentlyEquippedItems.equipArmor((Armor)newlyEquippedItem);
+                    Item newlyEquippedItem = inventory.stored[itemToEquip].item;
+                    if (currentlyEquippedItems.isArmorEquipable((Armor)newlyEquippedItem, heroRole, level))
+                    {
+                        inventory.removeItem(itemToEquip);
+                        inventory.addItem(currentlyEquippedItems.removeArmor((Armor)newlyEquippedItem));
+                        currentlyEquippedItems.equipArmor((Armor)newlyEquippedItem);
+                    }
                 }
             }
         }
 
         public void equipWeapon(int inventoryIndex)
         {
-            if (inventory.stored[inventoryIndex].item != null && (inventory.stored[inventoryIndex].item.ItemType == ITypes.Weapon || inventory.stored[inventoryIndex].item.ItemType == ITypes.Offhand))
+            if (inventory.stored[inventoryIndex].item != null)
             {
-                Item newlyEquippedItem = inventory.stored[inventoryIndex].item;
-                if (currentlyEquippedItems.isWeaponEquipable((Gear)newlyEquippedItem, heroRole, level))
+                string[] name = inventory.stored[inventoryIndex].item.Name.ToString().Split();
+                if ((inventory.stored[inventoryIndex].item.ItemType == ITypes.Weapon || inventory.stored[inventoryIndex].item.ItemType == ITypes.Offhand) || (name.Length == 3 && name[2] == "Shield"))
                 {
-                    inventory.removeItem(inventoryIndex);
-                    Gear item = (Gear)newlyEquippedItem;
-                    if (item.EquipableIn.Contains(Slots.Hand_Both))
+                    Item newlyEquippedItem = inventory.stored[inventoryIndex].item;
+                    if (currentlyEquippedItems.isWeaponEquipable((Gear)newlyEquippedItem, heroRole, level))
                     {
-                        inventory.addItem(currentlyEquippedItems.removeWeapon(null, true,  0));
-                        inventory.addItem(currentlyEquippedItems.removeWeapon(null, true,  1));
+                        inventory.removeItem(inventoryIndex);
+                        Gear item = (Gear)newlyEquippedItem;
+                        if (item.EquipableIn.Contains(Slots.Hand_Both))
+                        {
+                            inventory.addItem(currentlyEquippedItems.removeWeapon(null, true, 0));
+                            inventory.addItem(currentlyEquippedItems.removeWeapon(null, true, 1));
+                        }
+                        else
+                        {
+                            inventory.addItem(currentlyEquippedItems.removeWeapon((Gear)newlyEquippedItem, canDuelWield));
+                        }
+                        currentlyEquippedItems.equipWeapon((Gear)newlyEquippedItem, this, canDuelWield);
                     }
-                    else
-                    {
-                        inventory.addItem(currentlyEquippedItems.removeWeapon((Gear)newlyEquippedItem, canDuelWield));
-                    }
-                    currentlyEquippedItems.equipWeapon((Gear)newlyEquippedItem, this, canDuelWield);
                 }
             }
         }

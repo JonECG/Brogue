@@ -11,6 +11,7 @@ using Brogue.Items.Equipment.Accessory;
 using Brogue.Enums;
 using Brogue.Items.Equipment;
 using Brogue.Items.Equipment.Offhand;
+using Brogue.Items.Equipment.Armor.Shields;
 
 namespace Brogue.HeroClasses
 {
@@ -41,6 +42,11 @@ namespace Brogue.HeroClasses
             totalArmor += (helmet != null) ? helmet.ArmorValue : 0;
             totalArmor += (chestPlate != null) ? chestPlate.ArmorValue : 0;
             totalArmor += (grieves != null) ? grieves.ArmorValue : 0;
+            if ((Hero.heroRole == Classes.Sentinel || Hero.heroRole == Classes.Juggernaut) && equippedWeapons[1] != null)
+            {
+                Shields heroShield = (Shields)equippedWeapons[1];
+                totalArmor += heroShield.ArmorValue;
+            }
             return totalArmor;
         }
 
@@ -128,7 +134,7 @@ namespace Brogue.HeroClasses
             if (weapon != null)
             {
                 logInfo = "Your class cannot equip this item.";
-                if (weapon.ItemType == ITypes.Weapon || weapon.ItemType == ITypes.Offhand)
+                if (weapon.ItemType == ITypes.Weapon || weapon.ItemType == ITypes.Offhand || (heroRole == Classes.Sentinel || heroRole == Classes.Juggernaut))
                 {
                     bool equipable = false;
                     for (int i = 0; i < weapon.UsedBy.Count && !equipable; i++)
@@ -239,9 +245,22 @@ namespace Brogue.HeroClasses
         {
             int handsTaken = (weapon.EquipableIn.Contains(Enums.Slots.Hand_Both)) ? 2 : 1;
             bool equipped = false;
-            if (!duelEquip)
+            if (!duelEquip && Hero.heroRole != Classes.Sentinel && Hero.heroRole != Classes.Juggernaut)
             {
                 if (equippedWeapons[0] == null)
+                {
+                    equippedWeapons[0] = weapon;
+                    equipped = true;
+                }
+            }
+            else if (Hero.heroRole == Classes.Sentinel || Hero.heroRole == Classes.Juggernaut)
+            {
+                if (weapon.ItemType == ITypes.Armor && equippedWeapons[1] == null)
+                {
+                    equippedWeapons[1] = weapon;
+                    equipped = true;
+                }
+                else
                 {
                     equippedWeapons[0] = weapon;
                     equipped = true;
@@ -274,7 +293,17 @@ namespace Brogue.HeroClasses
                                 if (weapon.ItemType == ITypes.Offhand)
                                 {
                                     Offhand spellbook = (Offhand)weapon;
-                                    hero.Element = spellbook.Element;
+                                    foreach (ElementAttributes e in spellbook.Element)
+                                    {
+                                        if (Hero.Element != null && !Hero.Element.Contains(e))
+                                        {
+                                            Hero.Element.Add(e);
+                                        }
+                                        else if (Hero.Element == null)
+                                        {
+                                            Hero.Element.Add(e);
+                                        }
+                                    }
                                 }
                                 equipped = true;
                             }
@@ -325,7 +354,28 @@ namespace Brogue.HeroClasses
             if (removedWeaponIndex != -1)
             {
                 removed = equippedWeapons[removedWeaponIndex];
+                if (removed != null && removed.ItemType == ITypes.Offhand)
+                {
+                    Offhand spellbook = (Offhand)equippedWeapons[1];
+                    foreach (ElementAttributes e in spellbook.Element)
+                    {
+                        Hero.Element.Remove(e);
+                    }
+                }
                 equippedWeapons[removedWeaponIndex] = null;
+            }
+            else if (Hero.heroRole == Classes.Sentinel || Hero.heroRole == Classes.Juggernaut)
+            {
+                if (newlyEquippedWeapon.ItemType == ITypes.Armor)
+                {
+                    removed = equippedWeapons[1];
+                    equippedWeapons[1] = null;
+                }
+                else
+                {
+                    removed = equippedWeapons[0];
+                    equippedWeapons[0] = null;
+                }
             }
             else if (!canDuelEquip)
             {
@@ -354,7 +404,11 @@ namespace Brogue.HeroClasses
                     removed = equippedWeapons[1];
                     if (removed != null && removed.ItemType == ITypes.Offhand)
                     {
-                        //remove element here
+                        Offhand spellbook = (Offhand)equippedWeapons[1];
+                        foreach (ElementAttributes e in spellbook.Element)
+                        {
+                            Hero.Element.Remove(e);
+                        }
                     }
                     equippedWeapons[1] = null;
                 }
@@ -363,7 +417,11 @@ namespace Brogue.HeroClasses
 
             if (removed != null)
             {
-                if (!canDuelEquip)
+                if (Hero.heroRole == Classes.Sentinel || Hero.heroRole == Classes.Juggernaut)
+                {
+                    slotsOpen = 2;
+                }
+                else if (!canDuelEquip)
                 {
                     slotsOpen += 2;
                 }

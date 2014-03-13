@@ -7,6 +7,7 @@ using Brogue.Items.Equipment.Accessory;
 using Brogue.Items.Equipment.Armor.Chest;
 using Brogue.Items.Equipment.Armor.Helm;
 using Brogue.Items.Equipment.Armor.Legs;
+using Brogue.Items.Equipment.Armor.Shields;
 using Brogue.Items.Equipment.Weapon.Melee;
 using System;
 using System.Collections.Generic;
@@ -25,8 +26,10 @@ namespace Brogue.HeroClasses
             heroRole = Classes.Warrior;
             inventory.addItem(new Sword(1, 1));
             inventory.addItem(new Sword(1, 1));
-            inventory.addItem(new GreatAxe(1, 1));
             inventory.addItem(new WarHammer(1, 1));
+            inventory.addItem(new MailChest(1, 1));
+            inventory.addItem(new PlateShield(1, 1));
+            inventory.addItem(new PlateShield(1, 1));
             baseHealth = 300;
             healthPerLevel = 50;
             
