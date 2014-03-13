@@ -18,6 +18,11 @@ namespace Brogue.Enemies
             turnCounter++;
             CheckElementDamage();
 
+            if (!IsAggro)
+            {
+                Aggro(level);
+            }
+
             if (IsAggro && !isFrozen)
             {
                 if (AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(targets[0])) != null)
@@ -44,7 +49,18 @@ namespace Brogue.Enemies
 
         public override void Aggro(Level level)
         {
-            throw new NotImplementedException();
+            GameCharacter hero = null;
+
+            foreach(GameCharacter g in level.GetCharactersIsFriendly(true))
+            {
+                hero = g;
+                break;
+            }
+
+            if(AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(hero)).Length < 4)
+            {
+                targets.Add(hero);
+            }
         }
 
         public override void BuildBoss(int i)
@@ -57,38 +73,6 @@ namespace Brogue.Enemies
                 defense = 30;
             attacks.Add(30 + i * 5);
             exp = 200 + 100 * i-1;
-        }
-
-        public override void TakeDamage(int damage, GameCharacter attacker)
-        {
-            if (!IsAggro)
-            {
-                Level level = Engine.Engine.currentLevel;
-                targets.Add(attacker);
-                IntVec[] possible = AStar.getPossiblePositionsFrom(level, level.CharacterEntities.FindPosition(this), 5, false);
-                IntVec targetPos = new IntVec(-1, -1);
-
-                foreach (IntVec i in possible)
-                {
-                    if (targetPos.X == -1)
-                    {
-                        targetPos = i;
-                    }
-                    else
-                    {
-                        if (AStar.calculateHeuristic(i, level.CharacterEntities.FindPosition(attacker)) > AStar.calculateHeuristic(targetPos, level.CharacterEntities.FindPosition(attacker)))
-                        {
-                            targetPos = i;
-                        }
-                    }
-                }
-
-                level.Move(this, targetPos, true);
-            }
-            else
-            {
-                base.TakeDamage(damage, attacker);
-            }
         }
 
         public override DynamicTexture GetTexture()
