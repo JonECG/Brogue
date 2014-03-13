@@ -22,7 +22,7 @@ namespace Brogue.Abilities.Togglable
             {
                 hero.setArmorBoost(armorBoost + (int)(heroLevel * 2));
                 hero.damageBoost += (int)(createdLevel * 1.5);
-                hero.damageBoost -= (int)(heroLevel * 1.5);
+                hero.damageBoost -= (int)(heroLevel);
                 createdLevel = heroLevel;
             }
         }
@@ -38,7 +38,7 @@ namespace Brogue.Abilities.Togglable
                 createdLevel = heroLevel;
                 Engine.Engine.Log(hero.getArmorBoost().ToString());
                 hero.ApplyArmorBoost(armorBoost + (int)(heroLevel * 2), int.MaxValue);
-                hero.damageBoost -= (int)(heroLevel * 1.5);
+                hero.damageBoost -= (heroLevel);
                 Engine.Engine.Log(hero.getArmorBoost().ToString());
                 Engine.Engine.AddVisualAttack(hero, "Hero/IceAttack", .25f, 1.5f, .1f);
                 isActive = true;
@@ -47,6 +47,7 @@ namespace Brogue.Abilities.Togglable
             else if (isActive)
             {
                 hero.ApplyArmorBoost(0, 0);
+                hero.damageBoost += (heroLevel);
                 isActive = false;
                 wasJustCast = true;
             }

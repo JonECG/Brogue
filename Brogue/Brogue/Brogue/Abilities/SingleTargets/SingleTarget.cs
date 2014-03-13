@@ -13,6 +13,7 @@ namespace Brogue.Abilities.Damaging
     [Serializable] public abstract class SingleTarget : Ability
     {
         protected int abilityCooldown, baseDamage;
+        protected bool isFinished;
 
         public SingleTarget()
         {
@@ -28,10 +29,16 @@ namespace Brogue.Abilities.Damaging
         public override void addCastingSquares(IntVec cursorPosition)
         {
             IntVec mouse = new IntVec(cursorPosition.X, cursorPosition.Y);
-            for (int i = 0; i < castSquares.Length; i++)
+            bool filled = false;
+            for (int i = 0; i < castSquares.Length && !filled; i++)
             {
-                if ((castSquares[i].X == 0 && castSquares[i].Y == 0) && !castSquares.Contains(mouse))
+                if ((castSquares[i].X == 0 && castSquares[i].Y == 0))
                 {
+                    if (castSquares.Contains(mouse))
+                    {
+                        isFinished = true;
+                    }
+                    filled = true;
                     castSquares[i] = mouse;
                 }
             }
@@ -45,7 +52,7 @@ namespace Brogue.Abilities.Damaging
             {
                 filled = !(castSquares[i].Equals(test));
             }
-            return filled;
+            return filled || isFinished;
         }
 
         public override void removeCastingSquares(IntVec cursorPosition)
@@ -71,6 +78,7 @@ namespace Brogue.Abilities.Damaging
             cooldown = abilityCooldown;
             wasJustCast = true;
             finishCast(damage, mapLevel, hero);
+            isFinished = false;
         }
 
         abstract protected void finishCast(int damage, Level mapLevel, HeroClasses.Hero hero);
