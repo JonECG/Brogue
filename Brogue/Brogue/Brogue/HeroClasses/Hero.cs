@@ -37,7 +37,7 @@ namespace Brogue.HeroClasses
 
         public static List<ElementAttributes> Element { get; set; }
 
-        public int MaxJarBarAmount = 50;
+        public static int MaxJarBarAmount = 500;
         protected int numAbilities;
         public int damageBoost;
         protected static bool canDuelWield = false;
@@ -57,7 +57,7 @@ namespace Brogue.HeroClasses
         protected int expRequired = 100;
         protected int healthPerLevel { get; set; }
         protected Ability[] abilities;
-        public int jarBarAmount;
+        public static int jarBarAmount;
         protected static Sprite sprite;
         public static DynamicTexture abilitySprite;
         public static DynamicTexture heroTexture;
@@ -78,19 +78,24 @@ namespace Brogue.HeroClasses
             health = baseHealth;
             maxHealth = health;
             healthPerLevel = 50;
-            requiredBranchLevel = 10;
+            requiredBranchLevel = 15;
             damageBoost = 1;
             experience = 0;
             expRequired = 500;
             jarBarAmount = 0;
             isFriendly = true;
             abilities = new Ability[6];
+            for (int i = 0; i < abilities.Length; i++)
+            {
+                abilities[i] = null;
+            }
         }
 
         public int getExperience()
         {
             return experience;
         }
+
         public int getExpReq()
         {
             return expRequired;
@@ -220,12 +225,12 @@ namespace Brogue.HeroClasses
         {
             maxHealth = baseHealth + currentlyEquippedItems.getAccessoryHealthModifier() + healthPerLevel * level;
             health = (health > maxHealth) ? maxHealth : health;
+            MaxJarBarAmount = 500 + jarBarIncrease * level;
             if (experience >= expRequired)
             {
                 int addedExp = experience - expRequired;
                 level += 1;
                 health += healthPerLevel;
-                MaxJarBarAmount += jarBarIncrease;
                 Engine.Engine.Log(MaxJarBarAmount.ToString());
                 experience = 0 + addedExp;
                 Engine.Engine.drawXP = experience;
@@ -678,7 +683,7 @@ namespace Brogue.HeroClasses
             if (inventory.stored[itemToEquip].item != null)
             {
                 string[] name = inventory.stored[itemToEquip].item.Name.ToString().Split();
-                if (inventory.stored[itemToEquip].item.ItemType == ITypes.Armor && (name.Length == 3 && name[2] != "Shield"))
+                if (inventory.stored[itemToEquip].item.ItemType == ITypes.Armor && !(name.Length == 3 && name[2] == "Shield"))
                 {
                     Item newlyEquippedItem = inventory.stored[itemToEquip].item;
                     if (currentlyEquippedItems.isArmorEquipable((Armor)newlyEquippedItem, heroRole, level))
@@ -696,7 +701,7 @@ namespace Brogue.HeroClasses
             if (inventory.stored[inventoryIndex].item != null)
             {
                 string[] name = inventory.stored[inventoryIndex].item.Name.ToString().Split();
-                if ((inventory.stored[inventoryIndex].item.ItemType == ITypes.Weapon || inventory.stored[inventoryIndex].item.ItemType == ITypes.Offhand) || (name.Length == 3 && name[2] == "Shield"))
+                if ((inventory.stored[inventoryIndex].item.ItemType == ITypes.Weapon || inventory.stored[inventoryIndex].item.ItemType == ITypes.Offhand) || (name.Length == 3 && (name[2] == "Shield" || name[2] == "Avenger")))
                 {
                     Item newlyEquippedItem = inventory.stored[inventoryIndex].item;
                     if (currentlyEquippedItems.isWeaponEquipable((Gear)newlyEquippedItem, heroRole, level))

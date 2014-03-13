@@ -2,6 +2,11 @@
 using Brogue.Abilities.SingleTargets;
 using Brogue.Abilities.Togglable;
 using Brogue.Enums;
+using Brogue.Items.Equipment.Accessory.Legendary;
+using Brogue.Items.Equipment.Armor.Legendary.Chest;
+using Brogue.Items.Equipment.Armor.Legendary.Helm;
+using Brogue.Items.Equipment.Armor.Legendary.Legs;
+using Brogue.Items.Equipment.Weapon.Legendary.Melee;
 using Brogue.Items.Equipment.Weapon.Melee;
 using System;
 using System.Collections.Generic;
@@ -17,8 +22,14 @@ namespace Brogue.HeroClasses
             heroTexture = Engine.Engine.GetTexture("Hero/RogueSprite");
             Hero.loadSprite();
             heroRole = Classes.Rogue;
-            inventory.addItem(new Dagger(1, 1));
-            inventory.addItem(new Claws(1, 1));
+            inventory.addItem(new Kris(1, 1));
+            inventory.addItem(new TheWolverine(1, 1));
+            inventory.addItem(new ProwlerHelm(1, 1));
+            inventory.addItem(new ProwlerChest(1, 1));
+            inventory.addItem(new ProwlerLegs(1, 1));
+            inventory.addItem(new TheOne(1, 1));
+            inventory.addItem(new TheOne(1, 1));
+            inventory.addItem(new BlackPendant(1, 1));
             baseHealth = 225;
             healthPerLevel = 35;
             resetLevel();
