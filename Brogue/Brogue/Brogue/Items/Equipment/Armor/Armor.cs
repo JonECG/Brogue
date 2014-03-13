@@ -19,7 +19,7 @@ namespace Brogue.Items.Equipment.Armor
 
         public int findArmorValue(int bAmr, int dLevel, int tb)
         {
-            return bAmr + dLevel + tb;
+            return (bAmr * dLevel) + tb;
         }
     }
 }

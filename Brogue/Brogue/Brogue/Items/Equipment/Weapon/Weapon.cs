@@ -19,7 +19,7 @@ namespace Brogue.Items.Equipment.Weapon
 
         public static int findDamage(int bDmg, int dLevel, int lReq)
         {
-            return bDmg + dLevel + lReq;
+            return (bDmg * dLevel) + lReq;
         }
     }
 }
