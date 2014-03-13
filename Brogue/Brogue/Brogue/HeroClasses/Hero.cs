@@ -33,7 +33,7 @@ namespace Brogue.HeroClasses
     {
         const int jarBarIncrease = 25;
 
-        public static int level { get; set; }
+        public static int level = 5;
 
         public static List<ElementAttributes> Element { get; set; }
 
@@ -72,7 +72,6 @@ namespace Brogue.HeroClasses
         public Hero()
         {
             Element = new List<ElementAttributes>();
-            level = 5;
             currentBoost = 0;
             baseHealth = 200;
             health = baseHealth;
@@ -82,7 +81,7 @@ namespace Brogue.HeroClasses
             damageBoost = 1;
             experience = 0;
             expRequired = 500;
-            jarBarAmount = 0;
+            jarBarAmount = (int)(MaxJarBarAmount/5);
             isFriendly = true;
             abilities = new Ability[6];
             for (int i = 0; i < abilities.Length; i++)
@@ -275,13 +274,6 @@ namespace Brogue.HeroClasses
             bool casting = false;
             int test = health;
             resetSprite();
-            if (Element != null)
-            {
-                foreach (ElementAttributes e in Element)
-                {
-                    Engine.Engine.Log(e.ToString());
-                }
-            }
 
             if (!visible)
             {
@@ -507,16 +499,16 @@ namespace Brogue.HeroClasses
                             switch (Element[i])
                             {
                                 case ElementAttributes.Fire:
-                                    testEnemy.DealElementalDamage(Element[i], 5);
+                                    testEnemy.DealElementalDamage(Element[i], 5, level);
                                     break;
                                 case ElementAttributes.Ice:
                                     testEnemy.DealElementalDamage(Element[i], 3);
                                     break;
                                 case ElementAttributes.Lighting:
-                                    testEnemy.DealElementalDamage(Element[i], 1);
+                                    testEnemy.DealElementalDamage(Element[i], 1, (level));
                                     break;
                                 case ElementAttributes.Arcane:
-                                    testEnemy.DealElementalDamage(Element[i], 7);
+                                    testEnemy.DealElementalDamage(Element[i], 7, level);
                                     break;
                             }
                         }
@@ -742,6 +734,11 @@ namespace Brogue.HeroClasses
         {
             inventory = oldInventory;
             currentlyEquippedItems = oldEquipment;
+        }
+
+        public int getHeroDamage()
+        {
+            return currentlyEquippedItems.getTotalDamageIncrease() + damageBoost;
         }
 
         public void pickupItem(Item item, Level mapLevel)

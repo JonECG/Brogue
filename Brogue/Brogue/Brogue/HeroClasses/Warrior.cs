@@ -27,13 +27,14 @@ namespace Brogue.HeroClasses
             heroRole = Classes.Warrior;
             inventory.addItem(new Sword(1, 1));
             inventory.addItem(new WarHammer(1, 1));
+            inventory.addItem(new PlateShield(1, 1));
+            inventory.addItem(new PlateShield(1, 1));
             baseHealth = 300;
             healthPerLevel = 50;
-            
             resetLevel();
             resetHealth();
             abilities[0] = new Cleave();
-            abilities[1] = new WhirlwindSlash();
+            abilities[1] = new Assassinate();
             Engine.Engine.Log(health.ToString());
         }
     }

@@ -20,7 +20,6 @@ namespace Brogue.HeroClasses
             heroRole = Classes.Duelist;
             baseHealth = 275;
             healthPerLevel = 35;
-            level = 10;
             requiredBranchLevel = 700;
             resetLevel();
             resetHealth();

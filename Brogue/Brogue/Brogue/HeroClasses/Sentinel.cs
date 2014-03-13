@@ -25,7 +25,6 @@ namespace Brogue.HeroClasses
             heroRole = Classes.Sentinel;
             baseHealth = 400;
             healthPerLevel = 65;
-            level = 10;
             requiredBranchLevel = 700;
             resetLevel();
             resetHealth();

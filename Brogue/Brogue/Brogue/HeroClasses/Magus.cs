@@ -19,7 +19,6 @@ namespace Brogue.HeroClasses
             heroRole = Classes.Magus;
             baseHealth = 250;
             healthPerLevel = 35;
-            level = 10;
             requiredBranchLevel = 700;
             resetLevel();
             resetHealth();

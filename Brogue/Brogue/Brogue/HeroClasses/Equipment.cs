@@ -59,7 +59,7 @@ namespace Brogue.HeroClasses
                 {
                     if (necklace.StatIncreased[i] == Modifiers.Health)
                     {
-                        increasedHealth += necklace.StatIncrease;
+                        increasedHealth += necklace.StatIncrease*5;
                     }
                 }
             }
@@ -72,7 +72,7 @@ namespace Brogue.HeroClasses
                     {
                         if (rings[i].StatIncreased[j] == Modifiers.Health)
                         {
-                            increasedHealth += rings[i].StatIncrease;
+                            increasedHealth += rings[i].StatIncrease*5;
                         }
                     }
                 }
@@ -106,7 +106,7 @@ namespace Brogue.HeroClasses
                 {
                     if (necklace.StatIncreased[i] == Modifiers.Damage)
                     {
-                        totalDamage += necklace.StatIncrease;
+                        totalDamage += necklace.StatIncrease/2;
                     }
                 }
             }
@@ -119,7 +119,7 @@ namespace Brogue.HeroClasses
                     {
                         if (rings[i].StatIncreased[j] == Modifiers.Damage)
                         {
-                            totalDamage += rings[i].StatIncrease;
+                            totalDamage += rings[i].StatIncrease/2;
                         }
                     }
                 }
