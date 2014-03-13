@@ -111,7 +111,7 @@ namespace Brogue.Enemies
             level.CharacterEntities.Remove(this);
 
             //CURRENTLY USING DUNGEON LEVEL OF 1 AND CHARACTER LEVEL OF 2. NEED ACCESS.
-            level.DroppedItems.Add(Items.Item.randomItem(Engine.Engine.currentLevel.DungeonLevel, 2), itemPos);
+            level.DroppedItems.Add(Items.Item.randomItem(Engine.Engine.currentLevel.DungeonLevel, Hero.level), itemPos);
         }
         
         /// <summary>

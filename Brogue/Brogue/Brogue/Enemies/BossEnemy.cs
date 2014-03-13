@@ -1,4 +1,5 @@
 ﻿using Brogue.Engine;
+using Brogue.HeroClasses;
 using Brogue.Mapping;
 using System;
 using System.Collections.Generic;
@@ -83,7 +84,7 @@ namespace Brogue.Enemies
         {
             Level level = Engine.Engine.currentLevel;
             Engine.Engine.AddXP(exp, Engine.Engine.currentLevel.CharacterEntities.FindPosition(this));
-            level.DroppedItems.Add(Items.Item.randomLegendary(Engine.Engine.currentLevel.DungeonLevel, 2), level.CharacterEntities.FindPosition(this));
+            level.DroppedItems.Add(Items.Item.randomLegendary(Engine.Engine.currentLevel.DungeonLevel, Hero.level), level.CharacterEntities.FindPosition(this));
             Engine.Engine.currentLevel.CharacterEntities.Remove(this);
             
         }

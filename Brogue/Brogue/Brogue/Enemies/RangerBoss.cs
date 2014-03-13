@@ -59,6 +59,38 @@ namespace Brogue.Enemies
             exp = 200 + 100 * i-1;
         }
 
+        public override void TakeDamage(int damage, GameCharacter attacker)
+        {
+            if (!IsAggro)
+            {
+                Level level = Engine.Engine.currentLevel;
+                targets.Add(attacker);
+                IntVec[] possible = AStar.getPossiblePositionsFrom(level, level.CharacterEntities.FindPosition(this), 5, false);
+                IntVec targetPos = new IntVec(-1, -1);
+
+                foreach (IntVec i in possible)
+                {
+                    if (targetPos.X == -1)
+                    {
+                        targetPos = i;
+                    }
+                    else
+                    {
+                        if (AStar.calculateHeuristic(i, level.CharacterEntities.FindPosition(attacker)) > AStar.calculateHeuristic(targetPos, level.CharacterEntities.FindPosition(attacker)))
+                        {
+                            targetPos = i;
+                        }
+                    }
+                }
+
+                level.Move(this, targetPos, true);
+            }
+            else
+            {
+                base.TakeDamage(damage, attacker);
+            }
+        }
+
         public override DynamicTexture GetTexture()
         {
             if (IsAggro)
