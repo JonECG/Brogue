@@ -360,7 +360,7 @@ namespace Brogue.Mapping
                 if (KeyboardController.IsDown('8'))
                 {
                     Item[] items = new Item[statRand.Next(2,8)];
-                    for (int i = 0; i < 5; i++)
+                    for (int i = 0; i < items.Length; i++)
                     {
                         items[i] = Item.randomItem(DungeonLevel, 1);
                     }
