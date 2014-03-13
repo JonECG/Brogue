@@ -12,7 +12,7 @@ namespace Brogue.Abilities.Togglable
         public IceArmor()
         {
             name = "Ice Armor";
-            description = "The mage summons armor to protect \nhim during battle.";
+            description = "The mage summons armor to protect \nhimself during battle.";
             abilitySprite = new Sprite(abilityLine, new IntVec(13, 0));
         }
 
@@ -20,10 +20,14 @@ namespace Brogue.Abilities.Togglable
         {
             if (createdLevel < heroLevel && isActive)
             {
-                hero.setArmorBoost(armorBoost + (int)(heroLevel * 1.5));
+                hero.setArmorBoost(armorBoost + (int)(heroLevel * 2));
+                hero.damageBoost += (int)(createdLevel * 1.5);
+                hero.damageBoost -= (int)(heroLevel * 1.5);
                 createdLevel = heroLevel;
             }
         }
+
+
 
         public override void toggledAttackEffects(HeroClasses.Hero hero) { }
 
@@ -33,7 +37,8 @@ namespace Brogue.Abilities.Togglable
             {
                 createdLevel = heroLevel;
                 Engine.Engine.Log(hero.getArmorBoost().ToString());
-                hero.ApplyArmorBoost(armorBoost + (int)(heroLevel * 1.5), int.MaxValue);
+                hero.ApplyArmorBoost(armorBoost + (int)(heroLevel * 2), int.MaxValue);
+                hero.damageBoost -= (int)(heroLevel * 1.5);
                 Engine.Engine.Log(hero.getArmorBoost().ToString());
                 Engine.Engine.AddVisualAttack(hero, "Hero/IceAttack", .25f, 1.5f, .1f);
                 isActive = true;
