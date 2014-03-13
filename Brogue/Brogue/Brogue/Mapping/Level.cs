@@ -353,6 +353,32 @@ namespace Brogue.Mapping
 
         internal void testUpdate()
         {
+#if DEBUG
+            if (MouseController.RightClicked())
+            {
+                IntVec pos = MouseController.MouseGridPosition();
+                if (KeyboardController.IsDown('8'))
+                {
+                    Item[] items = new Item[statRand.Next(2,8)];
+                    for (int i = 0; i < 5; i++)
+                    {
+                        items[i] = Item.randomItem(DungeonLevel, 1);
+                    }
+                    InteractableEnvironment.Add(new Chest(items), pos);
+                }
+
+                if (KeyboardController.IsDown('9'))
+                {
+                    CharacterEntities.Add( Enemies.EnemyCreator.GetRandomEnemy(1,DungeonLevel)[0], pos);
+                }
+
+                if (KeyboardController.IsDown('0'))
+                {
+                    CharacterEntities.Add(Enemies.EnemyCreator.GetRandomBoss(DungeonLevel), pos);
+                }
+
+            }
+
             IntVec aMove = new IntVec((KeyboardController.IsTyped('H',0) ? 1 : 0) - (KeyboardController.IsTyped('F',0) ? 1 : 0), (KeyboardController.IsTyped('G',0) ? 1 : 0) - (KeyboardController.IsTyped('T',0) ? 1 : 0));
             IntVec bMove = new IntVec((KeyboardController.IsPressed('M') ? 1 : 0) - (KeyboardController.IsPressed('B') ? 1 : 0), (KeyboardController.IsPressed('N') ? 1 : 0) - (KeyboardController.IsPressed('J') ? 1 : 0));
             actionsToTake += (KeyboardController.IsDown('2') ? 1 : 0) - (KeyboardController.IsDown('1') ? 1 : 0);
@@ -404,7 +430,8 @@ namespace Brogue.Mapping
 
                     DroppedItems.Add(item, findRandomOpenPosition());
                 }
-            }           
+            }    
+#endif
         }
 
         internal void InvalidateCache()
