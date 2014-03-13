@@ -20,21 +20,32 @@ namespace Brogue.Enemies
 
             if (IsAggro && !isFrozen)
             {
-                //if (!hasSpawned)
-                //{
-                //    hasSpawned = true;
+                if (!hasSpawned)
+                {
+                    hasSpawned = true;
 
-                //    GuardianEnemy g1 = new GuardianEnemy();
-                //    GuardianEnemy g2 = new GuardianEnemy();
+                    GuardianEnemy g1 = new GuardianEnemy();
+                    GuardianEnemy g2 = new GuardianEnemy();
 
-                //    g1.BuildEnemy(level.DungeonLevel);
-                //    g2.BuildEnemy(level.DungeonLevel);
+                    g1.BuildEnemy(level.DungeonLevel);
+                    g2.BuildEnemy(level.DungeonLevel);
 
-                //    IntVec position = level.CharacterEntities.FindPosition(this);
+                    IntVec position = level.CharacterEntities.FindPosition(this);
 
-                //    level.CharacterEntities.Add(g1, new IntVec(position.X - 1, position.Y));
-                //    level.CharacterEntities.Add(g2, new IntVec(position.X + 1, position.Y));
-                //}
+                    if (level.CharacterEntities.FindPosition(this).X == level.CharacterEntities.FindPosition(targets[0]).X)
+                    {
+                        level.CharacterEntities.Add(g1, new IntVec(position.X - 1, position.Y));
+                        level.CharacterEntities.Add(g2, new IntVec(position.X + 1, position.Y));
+                    }
+                    else
+                    {
+                        level.CharacterEntities.Add(g1, new IntVec(position.X, position.Y - 1));
+                        level.CharacterEntities.Add(g2, new IntVec(position.X, position.Y + 1));
+                    }
+
+                    g1.ForceAggro(targets[0]);
+                    g2.ForceAggro(targets[0]);
+                }
 
                 Direction[] path = AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(targets[0]));
                 if (path.Length > 1)
