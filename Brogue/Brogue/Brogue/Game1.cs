@@ -19,6 +19,7 @@ namespace Brogue
         GraphicsDeviceManager graphics;
         
         public Effect effect;
+        public Effect leffect;
 
         public SpriteBatch spriteBatch;
         private SpriteBatch uiSpriteBatch;
@@ -74,6 +75,7 @@ namespace Brogue
             uiSpriteBatch = new SpriteBatch(GraphicsDevice);
             Engine.Engine.LoadContent(Content);
             effect = Content.Load<Effect>("Shader");
+            leffect = Content.Load<Effect>("LightShader");
             // TODO: use this.Content to load your game content here
         }
 

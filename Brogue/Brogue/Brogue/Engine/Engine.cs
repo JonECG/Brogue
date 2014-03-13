@@ -674,6 +674,8 @@ namespace Brogue.Engine
         private static IntVec modifiedCameraPosition = new IntVec(0, 0);
         private static GeneratedLevel nextLevel;
 
+        public static SamplerState texState = new SamplerState();
+
         public static float drawXP;
         
 
@@ -918,8 +920,12 @@ namespace Brogue.Engine
             weaponSlot2 = new UIButton(new Vector2(weaponEquipPosition.X + CELLWIDTH, weaponEquipPosition.Y),
                 false, "UI/InvSlot", "Right");
 
-            
 
+            texState.AddressU = TextureAddressMode.Clamp;
+            texState.AddressV = TextureAddressMode.Clamp;
+            texState.AddressW = TextureAddressMode.Clamp;
+            texState.Filter = TextureFilter.Linear;
+            
 
             //StartGame();
         }
@@ -1143,12 +1149,10 @@ namespace Brogue.Engine
                                 charIndex++;
                             }
                         }
-                        /*
                         if (charIndex >= currentLevel.CharacterEntities.Entities().Count<GameCharacter>())
                         {
                             charIndex = 0;
                         }
-                         * */
                     }
 
                     charIndex += hero.TakeTurn(currentLevel) ? 1 : 0;
@@ -1625,7 +1629,9 @@ namespace Brogue.Engine
                 }
             }
         }
-        
+
+
+
         public static void DrawGame(GameTime gameTime)
         {
             if (gameStarted || currentLevel != null)
@@ -1636,16 +1642,18 @@ namespace Brogue.Engine
                 //Draw lighting.
                 DrawLighting(worldToView);
 
+
                 //Draw level.
                 game.GraphicsDevice.SetRenderTarget(mainTarget);
                 //game.GraphicsDevice.Clear(Color.Black);
-                game.spriteBatch.Begin(SpriteSortMode.Deferred,
-                            BlendState.AlphaBlend,
-                            null,
-                            null,
-                            null,
-                            null,
-                            worldToView);
+                game.spriteBatch.Begin(
+                    SpriteSortMode.Deferred,
+                        BlendState.AlphaBlend,
+                        texState,
+                        null,
+                        null,
+                        null,
+                        worldToView);
                 currentLevel.render();
                 foreach (GridSelection gs in gridSelection)
                 {
@@ -2010,22 +2018,33 @@ namespace Brogue.Engine
             return drawThisLight;
         }
 
+        
+       
+
         private static void DrawLighting(Matrix transform)
         {
-            if (DOLIGHTING)
+            if (DOLIGHTING && game.IsActive)
             {
                 
-                game.spriteBatch.Begin(SpriteSortMode.Deferred,
-                        BlendState.Additive);
+                //game.spriteBatch.Begin(SpriteSortMode.Deferred,
+                //        BlendState.Additive);
+
                 game.GraphicsDevice.SetRenderTarget(lightsTarget);
                 game.GraphicsDevice.Clear(Color.Black);
+                game.spriteBatch.Begin(
+                    SpriteSortMode.Deferred,
+                        BlendState.Additive,
+                        SamplerState.PointClamp,
+                        null,
+                        null,
+                        null,
+                        Matrix.Identity);
 
 
                 IntVec charpos = currentLevel.CharacterEntities.FindPosition(hero);
                 if (charpos != null)
                 {
                     Vector3 test = Vector3.Transform(new Vector3(charpos.X * CELLWIDTH, charpos.Y * CELLWIDTH, 0), transform);
-
 
                     game.spriteBatch.Draw(sightMask.texture, new Vector2((test.X), (test.Y)), new Rectangle(0, 0, sightMask.texture.Width, sightMask.texture.Height), Color.White, 0, new Vector2(sightMask.texture.Width / 2, sightMask.texture.Height / 2), sightDistance, SpriteEffects.None, 0);
                 }
