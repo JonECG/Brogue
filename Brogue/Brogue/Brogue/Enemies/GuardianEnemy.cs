@@ -13,41 +13,47 @@ namespace Brogue.Enemies
         public override bool TakeTurn(Level level)
         {
             CheckElementDamage();
-
-            if (IsAggro && !isFrozen)
+            if (health <= 0)
             {
-                Direction[] path = AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(target));
-                int pathCost = AStar.getCost(path);
-
-                if (path.Length > 0)
+                Die();
+            }
+            else
+            {
+                if (IsAggro && !isFrozen)
                 {
-                    if (pathCost == 1)
+                    Direction[] path = AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(target));
+                    int pathCost = AStar.getCost(path);
+
+                    if (path.Length > 0)
                     {
-                        Audio.playSound("Mugging");
-                        Engine.Engine.AddVisualAttack(target, "Hero/HammerSmash", .25f, 2.0f, .15f);
-                        Attack();
+                        if (pathCost == 1)
+                        {
+                            Audio.playSound("Mugging");
+                            Engine.Engine.AddVisualAttack(target, "Hero/HammerSmash", .25f, 2.0f, .15f);
+                            Attack();
+                        }
+                        else
+                        {
+                            Move(path[0], level);
+                        }
                     }
                     else
                     {
-                        Move(path[0], level);
+                        //IntVec[] possible = AStar.getPossiblePositionsFrom(level, level.CharacterEntities.FindPosition(this), moveSpeed);
+                        //IntVec targetPos = null;
+                        //foreach (IntVec pos in possible)
+                        //{
+                        //    if (targetPos == null)
+                        //    {
+                        //        targetPos = pos;
+                        //    }
+                        //    else if (AStar.getCost(AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), targetPos)) > AStar.getCost(AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), pos)))
+                        //    {
+                        //        targetPos = pos;
+                        //    }
+                        //}
+                        //level.Move(this, targetPos, true);
                     }
-                }
-                else
-                {
-                    //IntVec[] possible = AStar.getPossiblePositionsFrom(level, level.CharacterEntities.FindPosition(this), moveSpeed);
-                    //IntVec targetPos = null;
-                    //foreach (IntVec pos in possible)
-                    //{
-                    //    if (targetPos == null)
-                    //    {
-                    //        targetPos = pos;
-                    //    }
-                    //    else if (AStar.getCost(AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), targetPos)) > AStar.getCost(AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), pos)))
-                    //    {
-                    //        targetPos = pos;
-                    //    }
-                    //}
-                    //level.Move(this, targetPos, true);
                 }
             }
             return true;

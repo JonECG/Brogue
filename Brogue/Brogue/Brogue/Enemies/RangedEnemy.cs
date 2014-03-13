@@ -13,46 +13,49 @@ namespace Brogue.Enemies
         public override bool TakeTurn(Level level)
         {
             CheckElementDamage();
-            if (Aggro(level)  && !isFrozen)
+            if (health <= 0)
             {
-                Direction[] path = AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(target));
-                int pathCost = AStar.getCost(path);
-
-                if (path != null)
-                {
-                    if (pathCost <= range)
-                    {
-                        Audio.playSound("ArrowShot");
-                        Engine.Engine.AddVisualAttack(this, target, Engine.Engine.GetTexture("Enemies/Attacks/Arrow"));
-                        Attack();
-                        //Engine.Engine.Log("Was in range: " + level.CharacterEntities.FindPosition(this) + " to " + level.CharacterEntities.FindPosition(target) + " " + pathCost + " " + String.Join<Direction>(", ", path));
-                    }
-                    else
-                    {
-                        Move(path[0], level);
-                    }
-                }
-                else
-                {
-                    //IntVec[] possible = AStar.getPossiblePositionsFrom(level, level.CharacterEntities.FindPosition(this), moveSpeed);
-                    //IntVec targetPos = null;
-                    //foreach (IntVec pos in possible)
-                    //{
-                    //    if (targetPos == null)
-                    //    {
-                    //        targetPos = pos;
-                    //    }
-                    //    else if (AStar.getCost(AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), targetPos)) > AStar.getCost(AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), pos)))
-                    //    {
-                    //        targetPos = pos;
-                    //    }
-                    //}
-                    //level.Move(this, targetPos, true);
-                }
+                Die();
             }
             else
             {
-                //unimplemented
+                if (Aggro(level) && !isFrozen)
+                {
+                    Direction[] path = AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(target));
+                    int pathCost = AStar.getCost(path);
+
+                    if (path != null)
+                    {
+                        if (pathCost <= range)
+                        {
+                            Audio.playSound("ArrowShot");
+                            Engine.Engine.AddVisualAttack(this, target, Engine.Engine.GetTexture("Enemies/Attacks/Arrow"));
+                            Attack();
+                            //Engine.Engine.Log("Was in range: " + level.CharacterEntities.FindPosition(this) + " to " + level.CharacterEntities.FindPosition(target) + " " + pathCost + " " + String.Join<Direction>(", ", path));
+                        }
+                        else
+                        {
+                            Move(path[0], level);
+                        }
+                    }
+                    else
+                    {
+                        //IntVec[] possible = AStar.getPossiblePositionsFrom(level, level.CharacterEntities.FindPosition(this), moveSpeed);
+                        //IntVec targetPos = null;
+                        //foreach (IntVec pos in possible)
+                        //{
+                        //    if (targetPos == null)
+                        //    {
+                        //        targetPos = pos;
+                        //    }
+                        //    else if (AStar.getCost(AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), targetPos)) > AStar.getCost(AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), pos)))
+                        //    {
+                        //        targetPos = pos;
+                        //    }
+                        //}
+                        //level.Move(this, targetPos, true);
+                    }
+                }
             }
             return true;
         }

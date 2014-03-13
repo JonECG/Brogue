@@ -13,11 +13,18 @@ namespace Brogue.Enemies
         public override bool TakeTurn(Level level)
         {
             CheckElementDamage();
-            if (Aggro(level) && !isFrozen)
+            if (health <= 0)
             {
-                Audio.playSound("enimeFireball");
-                Engine.Engine.AddVisualAttack(this, target, Engine.Engine.GetTexture("Enemies/Attacks/FireBall"));
-                Attack();
+                Die();
+            }
+            else
+            {
+                if (Aggro(level) && !isFrozen)
+                {
+                    Audio.playSound("enimeFireball");
+                    Engine.Engine.AddVisualAttack(this, target, Engine.Engine.GetTexture("Enemies/Attacks/FireBall"));
+                    Attack();
+                }
             }
             return true;
         }
