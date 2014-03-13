@@ -529,6 +529,6 @@ namespace Brogue.Items
             return new BlackPendant(dLevel, cLevel);
         }
 
-        public abstract Item PickUpEffect(Hero Player);
+        public abstract Item PickUpEffect();
     }
 }

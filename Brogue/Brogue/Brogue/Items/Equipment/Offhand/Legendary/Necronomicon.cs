@@ -20,7 +20,7 @@ namespace Brogue.Items.Equipment.Offhand.Legendary
         public Necronomicon(int dLevel, int cLevel)
         {
             Name = "Necronomicon";
-            LevelReq = findLevelReq(dLevel, cLevel);
+            LevelReq = 0;
             UsedBy = new List<Classes> { Classes.Mage, Classes.Sorcerer, Classes.SpellWeaver };
             Element = new List<ElementAttributes> { ElementAttributes.Fire, ElementAttributes.Ice, ElementAttributes.Lighting };
             FlavorText = "This didn't summon the dead.";

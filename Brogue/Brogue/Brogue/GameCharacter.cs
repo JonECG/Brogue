@@ -53,7 +53,14 @@ namespace Brogue
             }
             else if (e == ElementAttributes.Arcane)
             {
-                elementDamage = (int)(3 * (double)power);
+                if (elementDamageTime > 1)
+                {
+                    elementDamage = (int)((double)power);
+                }
+                else if (elementDamageTime == 1)
+                {
+                    elementDamage = (int)(6 * (double)power);
+                }
             }
         }
 

@@ -748,7 +748,7 @@ namespace Brogue.HeroClasses
         {
             if (item != null && !inventory.inventoryMaxed())
             {
-                inventory.addItem(item.PickUpEffect(this));
+                inventory.addItem(item.PickUpEffect());
                 Engine.Engine.Log("" + jarBarAmount);
                 mapLevel.DroppedItems.RemoveEntity(item);
                 Engine.Engine.Log("item picked up");

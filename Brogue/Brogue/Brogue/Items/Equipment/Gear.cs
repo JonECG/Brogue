@@ -36,7 +36,7 @@ namespace Brogue.Items.Equipment
            }
        }
 
-       public override Item PickUpEffect(Hero player)
+       public override Item PickUpEffect()
        {
            return this;
        }

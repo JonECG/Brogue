@@ -22,7 +22,7 @@ namespace Brogue.Items.Consumables
             return bAmt * dLevel;
         }
 
-        public override Item PickUpEffect(Hero player)
+        public override Item PickUpEffect()
         {
             if (Hero.jarBarAmount < Hero.MaxJarBarAmount)
             {
