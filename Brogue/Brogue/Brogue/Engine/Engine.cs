@@ -2018,8 +2018,6 @@ namespace Brogue.Engine
             return drawThisLight;
         }
 
-        
-       
 
         private static void DrawLighting(Matrix transform)
         {
