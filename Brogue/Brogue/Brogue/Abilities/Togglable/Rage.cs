@@ -40,10 +40,12 @@ namespace Brogue.Abilities.Togglable
                 Engine.Engine.Log(hero.damageBoost.ToString());
                 createdLevel = heroLevel;
                 isActive = true;
+                wasJustCast = true;
             }
             else if (isActive)
             {
                 hero.damageBoost -= increase + heroLevel;
+                wasJustCast = true;
                 isActive = false;
             }
             cooldown = 0;

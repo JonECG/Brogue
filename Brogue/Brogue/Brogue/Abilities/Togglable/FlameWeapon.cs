@@ -24,17 +24,22 @@ namespace Brogue.Abilities.Togglable
         {
             if (!isActive)
             {
-                if (hero.Element != null && !hero.Element.Contains(Enums.ElementAttributes.Fire))
+                if (HeroClasses.Hero.Element != null && !HeroClasses.Hero.Element.Contains(Enums.ElementAttributes.Fire))
                 {
-                    hero.Element.Add(Enums.ElementAttributes.Arcane);
+                    HeroClasses.Hero.Element.Add(Enums.ElementAttributes.Arcane);
                     added = true;
                 }
                 isActive = true;
+                wasJustCast = true;
             }
-            else if (isActive && added)
+            else if (isActive)
             {
-                hero.Element.Remove(Enums.ElementAttributes.Arcane);
-                added = false;
+                if (added)
+                {
+                    HeroClasses.Hero.Element.Remove(Enums.ElementAttributes.Arcane);
+                    added = false;
+                }
+                wasJustCast = true;
                 isActive = false;
             }
             cooldown = 0;
