@@ -1725,7 +1725,7 @@ namespace Brogue.Engine
                     new Rectangle(0, 0, jar.texture.Width, jar.texture.Height), Color.White,
                     0,
                     new Vector2(jar.texture.Width / 2, jar.texture.Height),
-                    new Vector2(1, (float)hero.jarBarAmount / (float)hero.MaxJarBarAmount),
+                    new Vector2(1, (float)HeroClasses.Hero.jarBarAmount / (float)HeroClasses.Hero.MaxJarBarAmount),
                     SpriteEffects.None, 0);
                 //uisb.Draw(bar.texture, new Vector2(game.Width - 50 - jar.texture.Width, game.Height / 2 - bar.texture.Height / 2), Color.White);
                 uisb.Draw(invButton.texture, InvButtonPosition, Color.White);
