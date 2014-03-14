@@ -28,6 +28,7 @@ namespace Brogue.Engine
         public int saveSlot;
         public int levelComplexity;
         public int dungeonLevel;
+        public Enums.Classes heroRole;
     }
 
     class XPParticle
@@ -835,8 +836,9 @@ namespace Brogue.Engine
         {
             SaveGameData sg = new SaveGameData();
             sg.character = hero;
-            sg.seed = enginerand.Next();
-            sg.levelComplexity = enginerand.Next(500) + 50;
+            sg.heroRole = HeroClasses.Hero.heroRole;
+            sg.seed = levelSeed;
+            sg.levelComplexity = levelComplexity;
             sg.saveSlot = currentSaveSlot;
             sg.dungeonLevel = currentDungeonLevel + 1;
             
@@ -854,8 +856,42 @@ namespace Brogue.Engine
             SaveGameData gd = (SaveGameData)formatter.Deserialize(stream);
             stream.Close();
             File.Delete(filename);
+            //Create a new class of the hero just to set the static texture.
+
+            GameCharacter temp;
+            switch (gd.heroRole)
+            {
+                case Enums.Classes.Mage:
+                    temp = new HeroClasses.Mage();
+                    break;
+                case Enums.Classes.Warrior:
+                    temp = new HeroClasses.Warrior();
+                    break;
+                case Enums.Classes.Rogue:
+                    temp = new HeroClasses.Rogue();
+                    break;
+                case Enums.Classes.Brawler:
+                    temp = new HeroClasses.Brawler();
+                    break;
+                case Enums.Classes.Magus:
+                    temp = new HeroClasses.Magus();
+                    break;
+                case Enums.Classes.Duelist:
+                    temp = new HeroClasses.Duelist();
+                    break;
+                case Enums.Classes.Sentinel:
+                    temp = new HeroClasses.Sentinel();
+                    break;
+                case Enums.Classes.Sorcerer:
+                    temp = new HeroClasses.Sorcerer();
+                    break;
+                case Enums.Classes.Ranger:
+                    temp = new HeroClasses.Ranger();
+                    break;
+            }
             currentSaveSlot = gd.saveSlot;
             hero = gd.character;
+            HeroClasses.Hero.heroRole = gd.heroRole;
             GeneratedLevel nlevel = new GeneratedLevel(gd.seed, gd.levelComplexity, gd.dungeonLevel);
             currentLevel = nlevel.RetrieveLevel();
             currentLevel.CharacterEntities.Add(hero, currentLevel.GetStartPoint());

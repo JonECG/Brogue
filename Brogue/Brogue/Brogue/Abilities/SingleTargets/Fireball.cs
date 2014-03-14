@@ -6,6 +6,7 @@ using System.Text;
 
 namespace Brogue.Abilities.SingleTargets
 {
+    [Serializable]
     public class Fireball : SingleTarget
     {
         public Fireball()
