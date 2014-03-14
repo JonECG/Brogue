@@ -5,9 +5,10 @@ using System.Text;
 
 namespace Brogue.Abilities.AOE
 {
-    [Serializable] public class ArcaneOverload : DOTAreaOfEffect
+    [Serializable]
+    public class Poison : DOTAreaOfEffect
     {
-         public ArcaneOverload()
+        public Poison()
         {
             name = "Arcane Overload";
             description = "Arcane something rather.";
@@ -20,9 +21,9 @@ namespace Brogue.Abilities.AOE
             numTicks = 4;
             for (int i = 0; i < castSquares.Length; i++)
             {
-                castSquares[i] = new IntVec(0,0);
+                castSquares[i] = new IntVec(0, 0);
             }
-            abilityIndex = 12;
+            abilitySprite = new Sprite(abilityLine, new IntVec(12, 0));
         }
 
         public override int calculateDamage(int heroLevel, int heroDamage)
