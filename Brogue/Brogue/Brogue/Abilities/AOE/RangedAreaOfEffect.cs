@@ -47,8 +47,6 @@ namespace Brogue.Abilities.AOE
                         castSquares[0] = mouse;
                         for (int j = 0; j < additions.Length; j++)
                         {
-
-                            //drawVisualEffect();
                             castSquares[j + 1] = additions[j];
                         }
                     }
@@ -94,6 +92,8 @@ namespace Brogue.Abilities.AOE
                 GameCharacter test = (GameCharacter)mapLevel.CharacterEntities.FindEntity(castSquares[i]);
                 if (test != null)
                 {
+                    Audio.playSound("ArrowShot");
+                    Engine.Engine.AddVisualAttack(hero, test, "Enemies/Attacks/Arrow", 1.0f, 1.0f, 0);
                     test.TakeDamage(damage, hero);
                 }
                 castSquares[i] = new IntVec(0, 0);

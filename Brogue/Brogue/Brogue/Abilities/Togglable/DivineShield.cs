@@ -25,6 +25,7 @@ namespace Brogue.Abilities.Togglable
 
         public override void finishCastandDealDamage(int heroLevel, int heroDamage, Mapping.Level mapLevel, HeroClasses.Hero hero)
         {
+            Engine.Engine.AddVisualAttack(hero, "Hero/DivineShield", .5f, 1.5f, .05f);
             hero.setParryCount(heroLevel/5);
             cooldown = heroLevel/3;
         }

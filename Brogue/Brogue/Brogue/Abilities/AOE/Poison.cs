@@ -10,12 +10,12 @@ namespace Brogue.Abilities.AOE
     {
         public Poison()
         {
-            name = "Arcane Overload";
-            description = "Arcane something rather.";
-            radius = 4;
+            name = "Poison";
+            description = "The assassin covers the area \nwith a strong poison that \nemanates for four rounds.";
+            radius = 3;
             isActuallyFilled = false;
-            castSquares = new IntVec[60];
-            baseDamage = 10;
+            castSquares = new IntVec[24];
+            baseDamage = 4;
             dotUsed = false;
             abilityCooldown = 10;
             numTicks = 4;
@@ -23,17 +23,17 @@ namespace Brogue.Abilities.AOE
             {
                 castSquares[i] = new IntVec(0, 0);
             }
-            abilityIndex = 28;
+            abilityIndex = 25;
         }
 
         public override int calculateDamage(int heroLevel, int heroDamage)
         {
-            return 10;
+            return heroDamage/2;
         }
 
         public override void drawVisualEffect(IntVec origin)
         {
-            Engine.Engine.AddVisualAttack(origin, "Hero/Bolt", .5f, 1.5f, .05f);
+            Engine.Engine.AddVisualAttack(origin, "Hero/Poison", .5f, 1.5f, .05f);
         }
     }
 }

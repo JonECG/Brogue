@@ -27,7 +27,7 @@ namespace Brogue.Abilities.AOE
 
         public override int calculateDamage(int heroLevel, int heroDamage)
         {
-            return baseDamage * (heroLevel + heroDamage / 2);
+            return (heroDamage/4) * baseDamage;
         }
 
         public override void finishCastandDealDamage(int heroLevel, int heroDamage, Level mapLevel, HeroClasses.Hero hero)

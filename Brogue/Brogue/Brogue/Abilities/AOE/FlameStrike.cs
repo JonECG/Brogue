@@ -16,7 +16,7 @@ namespace Brogue.Abilities.AOE
             radius = 7;
             isActuallyFilled = false;
             castSquares = new IntVec[28];
-            baseDamage = 15;
+            baseDamage = 7;
             abilityCooldown = 10;
             for (int i = 0; i < castSquares.Length; i++)
             {
@@ -27,11 +27,12 @@ namespace Brogue.Abilities.AOE
 
         public override int calculateDamage(int heroLevel, int heroDamage)
         {
-            return ((baseDamage * baseDamage) + heroLevel) * heroDamage;
+            return ((baseDamage) + heroLevel) + heroDamage;
         }
 
         public override void drawVisualEffect(GameCharacter hero, GameCharacter enemy)
         {
+            Audio.playSound("Fireball");
             Engine.Engine.AddVisualAttack(hero, enemy, "Hero/FireballSpell", .5f, 1.0f, .03f);
         }
 

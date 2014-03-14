@@ -34,6 +34,7 @@ namespace Brogue.Abilities.SingleTargets
                     Engine.Engine.AddVisualAttack(test, "Hero/DoubleSlash", .25f, 2.0f, .15f);
                     Audio.playSound("Slash", .25f);
                     test.TakeDamage(damage, hero);
+                    test.TakeDamage(damage, hero);
                 }
                 castSquares[i] = new IntVec(0, 0);
             }
@@ -41,7 +42,7 @@ namespace Brogue.Abilities.SingleTargets
 
         public override int calculateDamage(int heroLevel, int heroDamage)
         {
-            return heroDamage * 2;
+            return heroDamage;
         }
     }
 }

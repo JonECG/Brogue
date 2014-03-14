@@ -17,7 +17,7 @@ namespace Brogue.Abilities.SingleTargets
             {
                 castSquares[i] = new IntVec(0, 0);
             }
-            baseDamage = 8;
+            baseDamage = 6;
             radius = 1;
             abilityCooldown = 8;
             abilityIndex = 4;
@@ -44,7 +44,7 @@ namespace Brogue.Abilities.SingleTargets
 
         public override int calculateDamage(int heroLevel, int heroDamage)
         {
-            return (baseDamage * heroLevel) + heroDamage;
+            return (baseDamage * heroLevel/5) + heroDamage;
         }
     }
 }

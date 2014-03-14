@@ -30,6 +30,8 @@ namespace Brogue.Abilities.SingleTargets
                 GameCharacter test = (GameCharacter)mapLevel.CharacterEntities.FindEntity(castSquares[i]);
                 if (test != null)
                 {
+                    Audio.playSound("DaggerStab");
+                    Engine.Engine.AddVisualAttack(test, "Hero/DaggerSlash", .5f, 1.5f, .05f);
                     test.TakeDamage(damage, hero);
                 }
                 castSquares[i] = new IntVec(0, 0);
@@ -38,7 +40,7 @@ namespace Brogue.Abilities.SingleTargets
 
         public override int calculateDamage(int heroLevel, int heroDamage)
         {
-            return (baseDamage + heroDamage/3) * heroLevel/3;
+            return (baseDamage + heroDamage/10) * heroLevel/3;
         }
     }
 }

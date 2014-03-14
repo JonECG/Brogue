@@ -31,6 +31,7 @@ namespace Brogue.Abilities.AOE
 
         public override void drawVisualEffect(GameCharacter hero, GameCharacter enemy)
         {
+            Audio.playSound("HammerSmash");
             Engine.Engine.AddVisualAttack(enemy, "Hero/hammerSmash", .5f, 1.0f, .03f);
         }
 
