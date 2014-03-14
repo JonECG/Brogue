@@ -257,13 +257,17 @@ namespace Brogue.HeroClasses
             switch (heroRole)
             {
                 case Classes.Ranger:
-                    inventory.addItem(new CrossBow(mapLevel.DungeonLevel, 7));
+                    inventory.addItem(new CrossBow(mapLevel.DungeonLevel, level-3));
                     break;
                 case Classes.Magus:
-                    inventory.addItem(new Sword(mapLevel.DungeonLevel, 7));
+                    inventory.addItem(new Sword(mapLevel.DungeonLevel, level-3));
                     break;
                 case Classes.Duelist:
-                    inventory.addItem(new Rapier(mapLevel.DungeonLevel, 7));
+                    inventory.addItem(new Rapier(mapLevel.DungeonLevel, level-3));
+                    break;
+                case Classes.Marksman:
+                    inventory.addItem(new Pistol(mapLevel.DungeonLevel, level - 3));
+                    inventory.addItem(new Pistol(mapLevel.DungeonLevel, level - 3));
                     break;
             }
         }
@@ -549,31 +553,37 @@ namespace Brogue.HeroClasses
                             {
                                 if (name[0] == "Blade" || name[0] == "Executioner" || name[0] == "Bloodthirster" || name[0] == "Pale" || name[0] == "Anarchy" || name[0] == "Judgement")
                                 {
-                                    Engine.Engine.AddVisualAttack(enemy, "Hero/sword-slash", .25f, 2.0f, .15f);
+                                    Engine.Engine.AddVisualAttack(enemy, "Hero/LegendarySwordSlash", .25f, 2.0f, .15f);
                                     Audio.playSound("swordAttack");
                                 }
                                 else if (name[0] == "Kris")
                                 {
-                                    Engine.Engine.AddVisualAttack(enemy, "Hero/DaggerSlash", .25f, 2.0f, .15f);
+                                    Engine.Engine.AddVisualAttack(enemy, "Hero/LegendaryDaggerSlash", .25f, 2.0f, .15f);
                                     Audio.playSound("DaggerStab");
                                 }
                                 else if (name[0] == "The")
                                 {
-                                    Engine.Engine.AddVisualAttack(enemy, "Hero/ClawSlash", .25f, 2.0f, .15f);
+                                    Engine.Engine.AddVisualAttack(enemy, "Hero/LegendaryClawSlash", .25f, 2.0f, .15f);
                                     Audio.playSound("DaggerStab");
                                 }
                                 else if (name[0] == "40k")
                                 {
                                     Audio.playSound("HammerSmash");
-                                    Engine.Engine.AddVisualAttack(enemy, "Hero/hammerSmash", .25f, 2.0f, .15f);
+                                    Engine.Engine.AddVisualAttack(enemy, "Hero/LegendaryHammerSmash", .25f, 2.0f, .15f);
                                 }
                                 else if (name[0] == "Condemned" || name[0] == "Retribution")
                                 {
+                                    Audio.playSound("ArrowShot");
                                     Engine.Engine.AddVisualAttack(this, enemy, "Enemies/Attacks/Arrow", .25f, 1.0f, .15f);
                                 }
                                 else if (name[0] == "Kunai" || name[0] == "Heart")
                                 {
                                     Engine.Engine.AddVisualAttack(this, enemy, weapon.GetTexture());
+                                }
+                                else if (name[0] == "Ebony" || name[0] == "Ivory" || name[0] == "Bloodwing")
+                                {
+                                    Audio.playSound("Gunshot");
+                                    Engine.Engine.AddVisualAttack(this, enemy, "Hero/Bullet", .5f, .5f, 0);
                                 }
                                 else
                                 {
@@ -605,6 +615,11 @@ namespace Brogue.HeroClasses
                                 else if (name[1] == "Crossbow" || name[1] == "Bow")
                                 {
                                     Engine.Engine.AddVisualAttack(this, enemy, "Enemies/Attacks/Arrow", .25f, 1.0f, .15f);
+                                }
+                                else if (name[1] == "Pistol" || name[1] == "Sniper")
+                                {
+                                    Audio.playSound("Gunshot");
+                                    Engine.Engine.AddVisualAttack(this, enemy, "Hero/Bullet", .5f, .5f, 0);
                                 }
                                 else if (name[1] == "Kunai" || name[1] == "Chakram")
                                 {

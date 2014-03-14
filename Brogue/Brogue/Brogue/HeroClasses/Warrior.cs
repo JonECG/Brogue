@@ -34,7 +34,7 @@ namespace Brogue.HeroClasses
             resetLevel();
             resetHealth();
             abilities[0] = new Cleave();
-            abilities[1] = new WhirlwindSlash();
+            abilities[1] = new DivineShield();
             Engine.Engine.Log(health.ToString());
         }
     }

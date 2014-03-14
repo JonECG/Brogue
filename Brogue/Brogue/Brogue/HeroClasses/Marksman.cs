@@ -19,6 +19,7 @@ namespace Brogue.HeroClasses
             heroRole = Classes.Marksman;
             baseHealth = 400;
             healthPerLevel = 55;
+            canDuelWield = true;
             requiredBranchLevel = int.MaxValue;
             resetLevel();
             resetHealth();

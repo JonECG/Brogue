@@ -32,7 +32,7 @@ namespace Brogue.HeroClasses
             Enemies.BossEnemy.UpdateBossTargets(this);
             abilities[0] = new Cleave();
             abilities[1] = new WhirlwindSlash();
-            abilities[2] = new Rage();
+            abilities[2] = new Slam();
             abilities[3] = new DoubleSlash();
             Engine.Engine.Log(health.ToString());
         }
