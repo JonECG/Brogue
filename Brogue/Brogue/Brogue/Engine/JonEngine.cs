@@ -1,5 +1,6 @@
 ﻿using Brogue.Mapping;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
@@ -130,16 +131,13 @@ namespace Brogue.Engine
 
         static ContentManager contentManager;
 
-        static Song mainMenuTheme;
-
         public static void LoadContent(ContentManager content)
         {
             //mainMenuTheme = content.Load<Song>("Audio/Stoneworld Battle");
             contentManager = content;
-            
 
-            notFound = new DynamicTexture();
-            notFound.texture = contentManager.Load<Texture2D>("error");
+
+            notFound = new DynamicTexture(contentManager.Load<Texture2D>("error"), false);
 
             foreach (string path in subscribed)
             {
@@ -155,6 +153,12 @@ namespace Brogue.Engine
                 }
             }
             ContentLoaded(content);
+        }
+
+        public static void playSound(string path, float volume = 0.75f)
+        {
+            audioFile au = new audioFile(contentManager.Load<SoundEffect>(path), path);
+            au.playFile(volume);
         }
     }
 }
