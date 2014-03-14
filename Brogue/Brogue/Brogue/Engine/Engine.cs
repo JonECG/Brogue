@@ -510,16 +510,16 @@ namespace Brogue.Engine
                 switch(gear.ItemType)
                 {
                     case Enums.ITypes.Armor:
-                        DrawOutlined(sb, position + flavPosition, "\"" + ((Items.Equipment.Armor.Legendary.LegendaryArmor)gear).FlavorText + "\"", Color.Black, Color.RosyBrown);
+                        DrawOutlined(sb, position + flavPosition, "\"" + ((Items.Equipment.Armor.Legendary.LegendaryArmor)gear).FlavorText + "\"", Color.Black, Color.Gold);
                         break;
                     case Enums.ITypes.Accessory:
-                        DrawOutlined(sb, position + flavPosition, "\"" + ((Items.Equipment.Accessory.Legendary.LegendaryAccessory)gear).FlavorText + "\"", Color.Black, Color.RosyBrown);
+                        DrawOutlined(sb, position + flavPosition, "\"" + ((Items.Equipment.Accessory.Legendary.LegendaryAccessory)gear).FlavorText + "\"", Color.Black, Color.Gold);
                         break;
                     case Enums.ITypes.Weapon:
-                        DrawOutlined(sb, position + flavPosition, "\"" + ((Items.Equipment.Weapon.Legendary.LegendaryWeapon)gear).FlavorText + "\"", Color.Black, Color.RosyBrown);
+                        DrawOutlined(sb, position + flavPosition, "\"" + ((Items.Equipment.Weapon.Legendary.LegendaryWeapon)gear).FlavorText + "\"", Color.Black, Color.Gold);
                         break;
                     case Enums.ITypes.Offhand:
-                        DrawOutlined(sb, position + flavPosition, "\"" + ((Items.Equipment.Offhand.Legendary.LegendaryOffhand)gear).FlavorText + "\"", Color.Black, Color.RosyBrown);
+                        DrawOutlined(sb, position + flavPosition, "\"" + ((Items.Equipment.Offhand.Legendary.LegendaryOffhand)gear).FlavorText + "\"", Color.Black, Color.Gold);
                         break;
                 
                 }
@@ -894,6 +894,24 @@ namespace Brogue.Engine
                 case Enums.Classes.Ranger:
                     temp = new HeroClasses.Ranger();
                     break;
+                case Enums.Classes.Marksman:
+                    temp = new HeroClasses.Marksman();
+                    break;
+                case Enums.Classes.Berserker:
+                    temp = new HeroClasses.Berserker();
+                    break;
+                case Enums.Classes.Juggernaut:
+                    temp = new HeroClasses.Juggernaut();
+                    break;
+                case Enums.Classes.SpellBlade:
+                    temp = new HeroClasses.SpellBlade();
+                    break;
+                case Enums.Classes.SpellWeaver:
+                    temp = new HeroClasses.Spellweaver();
+                    break;
+                case Enums.Classes.Assassin:
+                    temp = new HeroClasses.Assassin();
+                    break;
             }
             currentSaveSlot = gd.saveSlot;
             hero = gd.character;
@@ -1225,26 +1243,90 @@ namespace Brogue.Engine
                         tempInventory = hero.GetInventory();
                         currentLevel.CharacterEntities.Remove(hero);
 
-
-                        gameStarted = false;
-                        showCharSelection = true;
-
-
-                        if (HeroClasses.Hero.heroRole == Enums.Classes.Warrior)
+                        if (HeroClasses.Hero.level < 20)
                         {
-                            selection = new CharButton[] { bralwerButton, sentinelButton };
+                            
+
+                            gameStarted = false;
+                            showCharSelection = true;
+
+
+                            if (HeroClasses.Hero.heroRole == Enums.Classes.Warrior)
+                            {
+                                selection = new CharButton[] { bralwerButton, sentinelButton };
+                            }
+                            else if (HeroClasses.Hero.heroRole == Enums.Classes.Mage)
+                            {
+                                selection = new CharButton[] { sorcererButton, magusButton };
+                            }
+                            else if (HeroClasses.Hero.heroRole == Enums.Classes.Rogue)
+                            {
+                                selection = new CharButton[] { duelistButton, rangerButton };
+                            }
                         }
-                        else if (HeroClasses.Hero.heroRole == Enums.Classes.Mage)
+                        else
                         {
-                            selection = new CharButton[] { sorcererButton, magusButton };
+                            //new class, not branching...
+                            if (HeroClasses.Hero.heroRole == Enums.Classes.Duelist)
+                            {
+                                hero = new HeroClasses.Assassin();
+                                UpdateAbilities();
+                                Log("You are now an Assasin.");
+                                drawXP = hero.getExperience();
+                                gameStarted = true;
+                                hero.ObtainItems(tempInventory, tempEquip);
+                                hero.obtainStartingGear(currentLevel);
+                                currentLevel.CharacterEntities.Add(hero, tempPosition);
+                            }
+                            if (HeroClasses.Hero.heroRole == Enums.Classes.Brawler)
+                            {
+                                hero = new HeroClasses.Berserker();
+                                UpdateAbilities();
+                                Log("You are now a Berserker.");
+                                drawXP = hero.getExperience();
+                                gameStarted = true;
+                                hero.ObtainItems(tempInventory, tempEquip);
+                                hero.obtainStartingGear(currentLevel);
+                                currentLevel.CharacterEntities.Add(hero, tempPosition);
+                            }
+                            if (HeroClasses.Hero.heroRole == Enums.Classes.Sorcerer)
+                            {
+                                hero = new HeroClasses.Spellweaver();
+                                UpdateAbilities();
+                                Log("You are now a SpellWeaver.");
+                                drawXP = hero.getExperience();
+                                gameStarted = true;
+                                hero.ObtainItems(tempInventory, tempEquip);
+                                hero.obtainStartingGear(currentLevel);
+                                currentLevel.CharacterEntities.Add(hero, tempPosition);
+                            }
+                            if (HeroClasses.Hero.heroRole == Enums.Classes.Magus)
+                            {
+                                hero = new HeroClasses.SpellBlade();
+                                UpdateAbilities();
+                                Log("You are now a SpellBlade.");
+                                drawXP = hero.getExperience();
+                                gameStarted = true;
+                                hero.ObtainItems(tempInventory, tempEquip);
+                                hero.obtainStartingGear(currentLevel);
+                                currentLevel.CharacterEntities.Add(hero, tempPosition);
+                            }
+                            if (HeroClasses.Hero.heroRole == Enums.Classes.Ranger)
+                            {
+                                hero = new HeroClasses.Marksman();
+                                UpdateAbilities();
+                                Log("You are now a Marksman.");
+                                drawXP = hero.getExperience();
+                                gameStarted = true;
+                                hero.ObtainItems(tempInventory, tempEquip);
+                                hero.obtainStartingGear(currentLevel);
+                                currentLevel.CharacterEntities.Add(hero, tempPosition);
+                            }
                         }
-                        else if (HeroClasses.Hero.heroRole == Enums.Classes.Rogue)
-                        {
-                            selection = new CharButton[] { duelistButton, rangerButton };
-                        }
-                        
                         
                     }
+
+                    
 
                     if (currentLevel.CharacterEntities.FindPosition(hero) != null)
                     {
