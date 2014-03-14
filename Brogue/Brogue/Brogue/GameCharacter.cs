@@ -61,7 +61,7 @@ namespace Brogue
                 {
                     elementDamage = (int)(6 * (double)power);
                 }
-            }
+           } 
         }
 
         protected void CheckElementDamage()
