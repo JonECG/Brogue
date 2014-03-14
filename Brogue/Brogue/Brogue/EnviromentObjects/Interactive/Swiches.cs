@@ -16,12 +16,14 @@ namespace Brogue.EnviromentObjects.Interactive
         static DynamicTexture texture1 = Engine.Engine.GetTexture("Enviroment/SwichUP");
         static DynamicTexture texture2 = Engine.Engine.GetTexture("Enviroment/SwichDown");
 
+        static int numberofTargets = 10;
+
         Direction directionFacing { get; set; }
         
         public bool active { get; set; }
         public bool isSolid { get; set; }
         public bool isPassable { get; set; }
-        public IInteractable target { get; set; }
+        public List<IInteractable> targets;
 
         public Switch(Direction directionToFace) 
         {
@@ -29,6 +31,7 @@ namespace Brogue.EnviromentObjects.Interactive
             isSolid = false;
             isPassable = false;
             directionFacing = directionToFace;
+            targets = new List<IInteractable>();
         }
 
         public Switch(IInteractable actingOn, Direction directionToFace)
@@ -36,11 +39,34 @@ namespace Brogue.EnviromentObjects.Interactive
             active = false;
             isSolid = false;
             isPassable = false;
-            target = actingOn;
             directionFacing = directionToFace;
+            targets = new List<IInteractable>();
+            targets.Add(actingOn);
         }
 
-        public void changeState()
+        public Switch(IInteractable actingOn, Direction directionToFace)
+        {
+            active = false;
+            isSolid = false;
+            isPassable = false;
+            directionFacing = directionToFace;
+            targets = new List<IInteractable>();
+        }
+
+        public void addTarget(IInteractable actingOn)
+        {
+            targets.Add(actingOn);
+        }
+
+        public void addSeveralTargets(List<IInteractable> targetsToAdd)
+        {
+            foreach(IInteractable target in targetsToAdd)
+            {
+                targets.Add(target);
+            }
+        }
+
+        private void changeState()
         {
             if (active)
             {
@@ -50,12 +76,6 @@ namespace Brogue.EnviromentObjects.Interactive
             {
                 active = true;
             }
-        }
-
-        public void click() 
-        {
-            changeState();
-           
         }
 
         public bool IsSolid()
@@ -77,12 +97,26 @@ namespace Brogue.EnviromentObjects.Interactive
             return currentImage;
         }
 
+        private void actOnTargets(GameCharacter actingCharacter)
+        {
+            for (int currentTarget = 0; currentTarget < numberofTargets; currentTarget++)
+            {
+                if (targets[currentTarget] != null)
+                {
+                    targets[currentTarget].actOn(null);
+                }
+            }
+        }
+
         public void actOn(GameCharacter actingCharacter)
         {
             changeState();
-            target.actOn(null);
             Audio.playSound("switch");
-            //actingCharacter.position = new IntVec()
+
+            if(targets[0] != null)
+            {
+                actOnTargets(actingCharacter);
+            }
         }
     }
 
