@@ -39,7 +39,10 @@ namespace Brogue.Abilities.Damaging
                         isFinished = true;
                     }
                     filled = true;
-                    castSquares[i] = mouse;
+                    if (!isFinished)
+                    {
+                        castSquares[i] = mouse;
+                    }
                 }
             }
         }

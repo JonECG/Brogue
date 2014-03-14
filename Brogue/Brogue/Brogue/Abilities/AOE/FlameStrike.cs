@@ -7,7 +7,7 @@ using Brogue.Engine;
 
 namespace Brogue.Abilities.AOE
 {
-    class FlameStrike : AreaOfEffect
+    [Serializable] class FlameStrike : AreaOfEffect
     {
         public FlameStrike()
         {
