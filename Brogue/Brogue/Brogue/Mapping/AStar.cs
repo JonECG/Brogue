@@ -85,7 +85,7 @@ namespace Brogue.Mapping
             {
                 if (stillAdding)
                 {
-                    if (!vec.Equals(end) && level.isSolid(vec) && (solidCharacters || level.CharacterEntities.FindEntity(vec) == null))
+                    if (level.isSolid(vec) && (solidCharacters || level.CharacterEntities.FindEntity(vec) == null))
                         stillAdding = false;
                     else
                         positions.Add(vec);
