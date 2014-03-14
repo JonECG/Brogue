@@ -29,6 +29,9 @@ namespace Brogue.Engine
         public int levelComplexity;
         public int dungeonLevel;
         public Enums.Classes heroRole;
+        public int jarBarAmount;
+        public int jarBarMax;
+        public int level;
     }
 
     class XPParticle
@@ -840,6 +843,9 @@ namespace Brogue.Engine
             sg.seed = levelSeed;
             sg.levelComplexity = levelComplexity;
             sg.saveSlot = currentSaveSlot;
+            sg.jarBarAmount = HeroClasses.Hero.jarBarAmount;
+            sg.jarBarMax = HeroClasses.Hero.MaxJarBarAmount;
+            sg.level = HeroClasses.Hero.level;
             sg.dungeonLevel = currentDungeonLevel + 1;
             
             //Write to binary file...
@@ -891,6 +897,9 @@ namespace Brogue.Engine
             }
             currentSaveSlot = gd.saveSlot;
             hero = gd.character;
+            HeroClasses.Hero.level = gd.level;
+            HeroClasses.Hero.jarBarAmount = gd.jarBarAmount;
+            HeroClasses.Hero.MaxJarBarAmount = gd.jarBarMax;
             HeroClasses.Hero.heroRole = gd.heroRole;
             GeneratedLevel nlevel = new GeneratedLevel(gd.seed, gd.levelComplexity, gd.dungeonLevel);
             currentLevel = nlevel.RetrieveLevel();
@@ -1082,13 +1091,15 @@ namespace Brogue.Engine
             if (nextLevel == null)
             {
                 nextLevel = new GeneratedLevel(levelSeed++, levelComplexity, currentDungeonLevel);
+                currentDungeonLevel = 1;
             }
             currentLevel = nextLevel.RetrieveLevel();
             charIndex = 0;
-            nextLevel = new GeneratedLevel(levelSeed++, levelComplexity, currentDungeonLevel++);
+            nextLevel = new GeneratedLevel(levelSeed++, levelComplexity, currentDungeonLevel);
             Log("Level generated.");
             currentLevel.CharacterEntities.Add(hero, currentLevel.GetStartPoint());
             drawXP = hero.getExperience();
+            currentDungeonLevel++;
         }
 
         public static void StartGame()
@@ -1320,6 +1331,7 @@ namespace Brogue.Engine
                     {
                         showEscMenu = false;
                         xpList.Clear();
+                        currentDungeonLevel = 0;
                         LoadSaveSlots();
                         vattacks.Clear();
                         mainMenuOpen = true;
@@ -1412,6 +1424,7 @@ namespace Brogue.Engine
                     {
                         showDeathScreen = false;
                         xpList.Clear();
+                        currentDungeonLevel = 0;
                         LoadSaveSlots();
                         vattacks.Clear();
                         mainMenuOpen = true;
@@ -1866,7 +1879,13 @@ namespace Brogue.Engine
             DrawOutlined(sb, charSheetPosition + new Vector2(20 + font.MeasureString("Damage : ").X, 100), "" + hero.GetEquipment().getTotalDamageIncrease(), Color.Black, Color.White);
             DrawOutlined(sb, charSheetPosition + new Vector2(20, 120), "Armor : ", Color.Black, Color.White);
             DrawOutlined(sb, charSheetPosition + new Vector2(20 + font.MeasureString("Armor : ").X, 120), "" + hero.GetArmorRating(), Color.Black, Color.White);
-            
+
+            DrawOutlined(sb, charSheetPosition + new Vector2(20, 160), "JarBar : ", Color.Black, Color.White);
+            DrawOutlined(sb, charSheetPosition + new Vector2(20 + font.MeasureString("JarBar : ").X, 160), "" + HeroClasses.Hero.jarBarAmount + " / " + HeroClasses.Hero.MaxJarBarAmount, Color.Black, Color.White);
+            DrawOutlined(sb, charSheetPosition + new Vector2(20, 180), "Dungeon Level : ", Color.Black, Color.White);
+            DrawOutlined(sb, charSheetPosition + new Vector2(20 + font.MeasureString("Dungeon Level : ").X, 180), "" + currentLevel.DungeonLevel, Color.Black, Color.White);
+
+
         }
 
         private static void DrawOutlined(SpriteBatch sb, Vector2 pos, string text, Color back, Color front)
@@ -2064,7 +2083,6 @@ namespace Brogue.Engine
             }
             return drawThisLight;
         }
-
 
         private static void DrawLighting(Matrix transform)
         {
