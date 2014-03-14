@@ -1087,7 +1087,7 @@ namespace Brogue.Engine
             //levelSeed = enginerand.Next();
 
             levelComplexity = currentDungeonLevel * 30 + 50;
-                //enginerand.Next(currentDungeonLevel*50 + 20) + currentDungeonLevel* 30 + 50;
+            //enginerand.Next(currentDungeonLevel*50 + 20) + currentDungeonLevel* 30 + 50;
             if (nextLevel == null)
             {
                 nextLevel = new GeneratedLevel(levelSeed++, levelComplexity, currentDungeonLevel);
@@ -1750,7 +1750,10 @@ namespace Brogue.Engine
                         SpriteEffects.None, 0);
                     //uisb.Draw(particleTex.texture, xp.screenPosition, Color.White);
                 }
-
+                if (drawXP > hero.getExperience())
+                {
+                    drawXP = hero.getExperience();
+                }
                 foreach (VisualAttack va in vattacks)
                 {
                     uisb.Draw(va.tex.texture, va.screenPosition, 
@@ -1774,6 +1777,7 @@ namespace Brogue.Engine
                 uisb.Draw(healthcontainer.texture, healthBarPosition, Color.White);
 
                 uisb.Draw(healthBack.texture, xpBarPosition, Color.White);
+                
                 uisb.Draw(xpbar.texture, new Vector2(xpBarPosition.X + 12,
                     xpBarPosition.Y + 2),
                     new Rectangle(0, 0, healthbar.texture.Width, healthbar.texture.Height),
@@ -1781,6 +1785,7 @@ namespace Brogue.Engine
                     new Vector2(0, 0),
                     new Vector2((float)drawXP / (float)hero.getExpReq(), 1),
                     SpriteEffects.None, 0);
+
                 uisb.Draw(healthcontainer.texture, xpBarPosition, Color.White);
                 //uisb.Draw(xpbar, xpBarPosition, Color.White);
                 //uisb.Draw(inventory.texture, new Vector2(game.Width / 2 - inventory.texture.Width / 2, game.Height - 100), Color.White);
