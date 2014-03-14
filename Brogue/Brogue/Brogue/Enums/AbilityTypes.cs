@@ -9,6 +9,7 @@ namespace Brogue.Enums
     {
         AOE,
         Single,
-        Toggle
+        Toggle,
+        DOTAOE
     }
 }
