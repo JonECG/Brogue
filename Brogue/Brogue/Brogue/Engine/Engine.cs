@@ -1643,8 +1643,6 @@ namespace Brogue.Engine
             }
         }
 
-
-
         public static void DrawGame(GameTime gameTime)
         {
             if (gameStarted || currentLevel != null)

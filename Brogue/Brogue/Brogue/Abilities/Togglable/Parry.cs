@@ -14,7 +14,7 @@ namespace Brogue.Abilities.Togglable
         {
             name = "Parry";
             description = "The duelist blocks the next set of \nattacks completely.";
-            abilitySprite = new Sprite(abilityLine, new IntVec(22, 0));
+            abilityIndex = 22;
         }
 
         public override void toggledAttackEffects(HeroClasses.Hero hero)

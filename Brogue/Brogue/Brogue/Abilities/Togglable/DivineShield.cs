@@ -14,7 +14,7 @@ namespace Brogue.Abilities.Togglable
         {
             name = "Divine Shield";
             description = "The juggernaut ignores the \nnext few attacks completely.";
-            abilitySprite = new Sprite(abilityLine, new IntVec(9, 0));
+            abilityIndex = 9;
         }
 
         public override void toggledAttackEffects(HeroClasses.Hero hero)

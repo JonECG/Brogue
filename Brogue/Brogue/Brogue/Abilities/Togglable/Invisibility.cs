@@ -14,7 +14,7 @@ namespace Brogue.Abilities.Togglable
         {
             name = "Invisibility";
             description = "The rogue shrouds himself to become \ninvisible for a certain number of \nturns. (Being invisble means that \nyour next basic attack will deal \n1.5*damage.)";
-            abilitySprite = new Sprite(abilityLine, new IntVec(21, 0));
+            abilityIndex = 21;
         }
 
         public override void updateToggle(int heroLevel, HeroClasses.Hero hero) {}

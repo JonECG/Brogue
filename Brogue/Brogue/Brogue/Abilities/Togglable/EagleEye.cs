@@ -13,7 +13,7 @@ namespace Brogue.Abilities.Togglable
         {
             name = "Eagle Eye";
             description = "The marksman's accuracy \ngives each of his weapons \na +1 range bonus.";
-            abilitySprite = new Sprite(abilityLine, new IntVec(29, 0));
+            abilityIndex = 29;
         }
 
         public override void toggledAttackEffects(HeroClasses.Hero hero)

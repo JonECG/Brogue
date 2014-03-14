@@ -13,7 +13,7 @@ namespace Brogue.Abilities.Togglable
         {
             name = "Ice Armor";
             description = "The mage summons armor to protect \nhimself during battle.";
-            abilitySprite = new Sprite(abilityLine, new IntVec(13, 0));
+            abilityIndex = 13;
         }
 
         public override void updateToggle(int heroLevel, HeroClasses.Hero hero) 

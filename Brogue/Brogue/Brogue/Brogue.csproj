@@ -75,37 +75,90 @@
     <Compile Include="Abilities\Ability.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Abilities\AOE\ArcaneOverload.cs" />
     <Compile Include="Abilities\AOE\AreaOfEffect.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Abilities\AOE\FlameStrike.cs" />
-    <Compile Include="Abilities\AOE\LightningStorm.cs" />
-    <Compile Include="Abilities\AOE\RangedAreaOfEffect.cs" />
-    <Compile Include="Abilities\AOE\Volley.cs" />
-    <Compile Include="Abilities\AOE\WhirlwindSlash.cs" />
-    <Compile Include="Abilities\SingleTargets\Blink.cs" />
+    <Compile Include="Abilities\AOE\DOTAreaOfEffect.cs" />
+    <Compile Include="Abilities\AOE\FlameStrike.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Abilities\AOE\LightningStorm.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Abilities\AOE\RangedAreaOfEffect.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Abilities\AOE\Slam.cs" />
+    <Compile Include="Abilities\AOE\TimeStop.cs" />
+    <Compile Include="Abilities\AOE\Volley.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Abilities\AOE\WhirlwindSlash.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Abilities\SingleTargets\ArcaneBarrage.cs" />
+    <Compile Include="Abilities\SingleTargets\Assassinate.cs" />
+    <Compile Include="Abilities\SingleTargets\Blink.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Abilities\SingleTargets\Cleave.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Abilities\SingleTargets\DoubleSlash.cs" />
-    <Compile Include="Abilities\SingleTargets\Execute.cs" />
-    <Compile Include="Abilities\SingleTargets\Fireball.cs" />
-    <Compile Include="Abilities\SingleTargets\Flurry.cs" />
-    <Compile Include="Abilities\SingleTargets\Mug.cs" />
-    <Compile Include="Abilities\SingleTargets\ShieldBash.cs" />
+    <Compile Include="Abilities\SingleTargets\DoubleSlash.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Abilities\SingleTargets\Execute.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Abilities\SingleTargets\Fireball.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Abilities\SingleTargets\Flurry.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Abilities\SingleTargets\Mug.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Abilities\SingleTargets\ShieldBash.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Abilities\SingleTargets\SingleTarget.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Abilities\SingleTargets\SoulSiphon.cs" />
-    <Compile Include="Abilities\SingleTargets\SteadyShot.cs" />
-    <Compile Include="Abilities\SingleTargets\Vault.cs" />
-    <Compile Include="Abilities\Togglable\FlameWeapon.cs" />
-    <Compile Include="Abilities\Togglable\IceArmor.cs" />
-    <Compile Include="Abilities\Togglable\Invisibility.cs" />
-    <Compile Include="Abilities\Togglable\Parry.cs" />
-    <Compile Include="Abilities\Togglable\Rage.cs" />
-    <Compile Include="Abilities\Togglable\ShieldBlock.cs" />
-    <Compile Include="Abilities\Togglable\ToggleAbility.cs" />
+    <Compile Include="Abilities\SingleTargets\SoulSiphon.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Abilities\SingleTargets\SteadyShot.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Abilities\SingleTargets\Vault.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Abilities\Togglable\DivineShield.cs" />
+    <Compile Include="Abilities\Togglable\EagleEye.cs" />
+    <Compile Include="Abilities\Togglable\FlameWeapon.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Abilities\Togglable\IceArmor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Abilities\Togglable\Invisibility.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Abilities\Togglable\Parry.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Abilities\Togglable\Rage.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Abilities\Togglable\ShieldBlock.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Abilities\Togglable\Thornmail.cs" />
+    <Compile Include="Abilities\Togglable\ToggleAbility.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Audio.cs" />
     <Compile Include="Enemies\BossEnemy.cs">
       <SubType>Code</SubType>
@@ -204,24 +257,40 @@
     <Compile Include="Enums\WeaponTypes.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="EnviromentObjects\Decorative\Chair.cs" />
+    <Compile Include="EnviromentObjects\Decorative\Chair.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="EnviromentObjects\Decorative\ILightsource.cs" />
-    <Compile Include="EnviromentObjects\Decorative\InonInteractable.cs" />
-    <Compile Include="EnviromentObjects\Decorative\Plant.cs" />
-    <Compile Include="EnviromentObjects\Decorative\Tourch.cs" />
-    <Compile Include="EnviromentObjects\EnviromentObjects.cs" />
+    <Compile Include="EnviromentObjects\Decorative\InonInteractable.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EnviromentObjects\Decorative\Plant.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EnviromentObjects\Decorative\Tourch.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EnviromentObjects\EnviromentObjects.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="EnviromentObjects\Interactive\Chest.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="EnviromentObjects\Interactive\Door.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="EnviromentObjects\Interactive\Gate.cs" />
-    <Compile Include="EnviromentObjects\Interactive\HiddenPassage.cs" />
+    <Compile Include="EnviromentObjects\Interactive\Gate.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EnviromentObjects\Interactive\HiddenPassage.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="EnviromentObjects\Interactive\Iinteractable.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="EnviromentObjects\Interactive\Stairs.cs" />
+    <Compile Include="EnviromentObjects\Interactive\Stairs.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="EnviromentObjects\Interactive\Swiches.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -526,6 +595,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="TestCases\" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="EnviromentObjects\Decorative\Images\Source\Chair.pdn" />
     <None Include="EnviromentObjects\Decorative\Images\Source\Plant.pdn" />
     <None Include="EnviromentObjects\Decorative\Images\Source\Stairs.pdn" />
@@ -534,9 +606,6 @@
     <None Include="EnviromentObjects\Interactive\Images\Source\Door Project.pdn" />
     <None Include="EnviromentObjects\Interactive\Images\Source\Swich.pdn" />
     <None Include="EnviromentObjects\XP.pdn" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="TestCases\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />

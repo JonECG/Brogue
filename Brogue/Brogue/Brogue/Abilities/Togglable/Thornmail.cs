@@ -14,7 +14,7 @@ namespace Brogue.Abilities.Togglable
         {
             name = "Thornmail";
             description = "The juggernaut deals one fifth of \nhis armor as damage to enemies \nwhen he is struck.";
-            abilitySprite = new Sprite(abilityLine, new IntVec(8, 0));
+            abilityIndex = 8;
             isActive = true;
         }
 

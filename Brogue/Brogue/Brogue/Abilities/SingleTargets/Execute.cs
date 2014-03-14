@@ -20,7 +20,7 @@ namespace Brogue.Abilities.SingleTargets
             baseDamage = 8;
             radius = 1;
             abilityCooldown = 8;
-            abilitySprite = new Sprite(abilityLine, new IntVec(4, 0));
+            abilityIndex = 4;
         }
 
         protected int getCooldown(GameCharacter enemy)

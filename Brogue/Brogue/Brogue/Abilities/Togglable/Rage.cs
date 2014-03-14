@@ -13,7 +13,7 @@ namespace Brogue.Abilities.Togglable
         {
             name = "Rage";
             description = "The berserker becomes enraged. \nDealing increased damage while \nlosing health with every attack.";
-            abilitySprite = new Sprite(abilityLine, new IntVec(5, 0));
+            abilityIndex = 5;
         }
 
         public override void updateToggle(int heroLevel, HeroClasses.Hero hero)

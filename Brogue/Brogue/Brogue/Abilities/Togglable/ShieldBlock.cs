@@ -14,7 +14,7 @@ namespace Brogue.Abilities.Togglable
         {
             name = "Shield Block";
             description = "The sentinel braces himself for the \nnext attack, gaining armor for a \nsingle hit.";
-            abilitySprite = new Sprite(abilityLine, new IntVec(7, 0));
+            abilityIndex = 7;
         }
 
         public override void updateToggle(int heroLevel, HeroClasses.Hero hero) {}

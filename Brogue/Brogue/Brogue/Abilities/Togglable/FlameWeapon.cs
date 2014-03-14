@@ -13,7 +13,7 @@ namespace Brogue.Abilities.Togglable
         {
             name = "Arcane Weapon";
             description = "The mage conjurs arcane energy to \namplify his weapon damage.";
-            abilitySprite = new Sprite(abilityLine, new IntVec(16, 0));
+            abilityIndex = 16;
         }
 
         public override void updateToggle(int heroLevel, HeroClasses.Hero hero){}
