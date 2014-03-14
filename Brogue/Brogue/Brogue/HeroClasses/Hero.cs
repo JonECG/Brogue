@@ -50,7 +50,7 @@ namespace Brogue.HeroClasses
         protected int baseHealth;
         protected bool turnOver;
         protected int armorRating;
-        protected int armorBoost, currentBoost;
+        protected int armorBoost, currentBoost, rangeBoost, reflectedDamage;
         public int armorBoostTurnCount;
         protected int requiredBranchLevel;
         protected int experience = 0;
@@ -73,6 +73,7 @@ namespace Brogue.HeroClasses
         {
             Element = new List<ElementAttributes>();
             currentBoost = 0;
+            rangeBoost = 0;
             baseHealth = 200;
             health = baseHealth;
             maxHealth = health;
@@ -132,8 +133,7 @@ namespace Brogue.HeroClasses
                 int damageReduction = (int)(armorRating / 12.5);
                 int finalDamage = (damage - damageReduction < 1)? 1: damage-damageReduction;
                 health -= finalDamage;
-                Engine.Engine.Log(health.ToString());
-                Engine.Engine.Log(attacker.ToString());
+                attacker.TakeDamage(reflectedDamage, this);
             }
             else
             {
@@ -151,6 +151,16 @@ namespace Brogue.HeroClasses
         public void setParryCount(int count)
         {
             parryCount = count;
+        }
+
+        public void setRangeBoost(int boost)
+        {
+            rangeBoost = boost;
+        }
+
+        public void setReflectedDamage(int damage)
+        {
+            reflectedDamage = damage;
         }
 
         public static void loadSprite()
@@ -280,6 +290,8 @@ namespace Brogue.HeroClasses
                 Enemies.Enemy.DeAggroAll();
             }
 
+            updateDOTabilities(mapLevel);
+
             if (!isFrozen)
             {
                 if (MouseController.LeftClicked())
@@ -407,7 +419,7 @@ namespace Brogue.HeroClasses
                 }
                 if (turnOver)
                 {
-                    cooldownAbilities();
+                    cooldownAbilities(mapLevel);
                     invisibilityTurnCount -= (!visible)?1:0;
                     visible = invisibilityTurnCount <= 0;
                 }
@@ -486,8 +498,8 @@ namespace Brogue.HeroClasses
                 GameCharacter testEnemy = (GameCharacter)mapLevel.CharacterEntities.FindEntity(MouseController.MouseGridPosition());
                 if (testEnemy != null)
                 {
-                    int weaponRange1 = currentlyEquippedItems.getPrimaryWeaponRange();
-                    int weaponRange2 = currentlyEquippedItems.getAuxilaryWeaponRange();
+                    int weaponRange1 = currentlyEquippedItems.getPrimaryWeaponRange()+rangeBoost;
+                    int weaponRange2 = currentlyEquippedItems.getAuxilaryWeaponRange()+rangeBoost;
                     IntVec[] weaponHitbox1 = AStar.getPossiblePositionsFrom(mapLevel, mapLevel.CharacterEntities.FindPosition(this), weaponRange1, true);
                     IntVec[] weaponHitbox2 = AStar.getPossiblePositionsFrom(mapLevel, mapLevel.CharacterEntities.FindPosition(this), weaponRange2, true);
                     damageEnemyIfInRange(weaponHitbox1, mapLevel, testEnemy, currentlyEquippedItems.getPrimaryWeapon(), true);
@@ -630,7 +642,7 @@ namespace Brogue.HeroClasses
             return (gridSquaresAway <= range);
         }
 
-        public void cooldownAbilities()
+        public void cooldownAbilities(Level mapLevel)
         {
             for (int i = 0; i < abilities.Length; i++)
             {
@@ -641,11 +653,32 @@ namespace Brogue.HeroClasses
                         ToggleAbility toggled = (ToggleAbility)abilities[i];
                         toggled.updateToggle(level, this);
                     }
+                    if (abilities[i].type == AbilityTypes.DOTAOE)
+                    {
+                        DOTAreaOfEffect dot = (DOTAreaOfEffect)abilities[i];
+                        dot.dotUsed = false;
+                    }
                     if (!abilities[i].wasJustCast)
                     {
                         abilities[i].cooldown -= (abilities[i].cooldown > 0) ? 1 : 0;
                     }
                     abilities[i].wasJustCast = false;
+                }
+            }
+        }
+
+        private void updateDOTabilities(Level mapLevel)
+        {
+            for(int i=0; i<abilities.Length; i++)
+            {
+                if (abilities[i] != null && abilities[i].type == AbilityTypes.DOTAOE && !abilities[i].wasJustCast)
+                {
+                    DOTAreaOfEffect dot = (DOTAreaOfEffect)abilities[i];
+                    if (!dot.dotUsed)
+                    {
+                        dot.updateAOEPosition(mapLevel, mapLevel.CharacterEntities.FindPosition(this), this);
+                        dot.dotUsed = true;
+                    }
                 }
             }
         }
