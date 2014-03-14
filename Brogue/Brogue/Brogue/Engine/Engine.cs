@@ -813,6 +813,19 @@ namespace Brogue.Engine
             }
         }
 
+        public static void AddVisualAttack(IntVec origin, string attackSprite, float startScale = 1, float endScale = 1, float scaleAmount = 0.05f)
+        {
+            IntVec gamePositionOrigin = origin*CELLWIDTH;
+            Vector2 originVector = Vector2.Transform(new Vector2(gamePositionOrigin.X, gamePositionOrigin.Y), worldToView);
+            if (attackSprite != null)
+            {
+                vattacks.Add(new VisualAttack(originVector, attackSprite, startScale, endScale, scaleAmount));
+            }
+            else
+            {
+            }
+        }
+
         public static void NextLevel()
         {
             GoToNextLevel();
