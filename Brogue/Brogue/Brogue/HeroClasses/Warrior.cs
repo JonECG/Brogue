@@ -34,7 +34,7 @@ namespace Brogue.HeroClasses
             resetLevel();
             resetHealth();
             abilities[0] = new Cleave();
-            abilities[1] = new Thornmail();
+            abilities[1] = new Slam();
             Engine.Engine.Log(health.ToString());
         }
     }
