@@ -44,13 +44,13 @@ namespace Brogue.EnviromentObjects.Interactive
             targets.Add(actingOn);
         }
 
-        public Switch(IInteractable actingOn, Direction directionToFace)
+        public Switch(List<IInteractable> actingOnTargets, Direction directionToFace)
         {
             active = false;
             isSolid = false;
             isPassable = false;
             directionFacing = directionToFace;
-            targets = new List<IInteractable>();
+            targets = actingOnTargets;
         }
 
         public void addTarget(IInteractable actingOn)
