@@ -33,10 +33,15 @@ namespace Brogue
             Enemies.BossEnemy.texture = Engine.Engine.GetTexture("Enemies/BossEnemy");
         }
 
-        public void DealElementalDamage(ElementAttributes e, int duration)
+        public void DealElementalDamage(ElementAttributes e, int duration, int damage = -1)
         {
-            int power = Engine.Engine.currentLevel.DungeonLevel;
-            elementDamageTime = duration;
+            int power = (damage != -1)? damage : Engine.Engine.currentLevel.DungeonLevel;
+
+            if (elementDamageTime <= 0)
+            {
+                elementDamageTime = duration;
+
+            }
 
             if (e == ElementAttributes.Fire)
             {
