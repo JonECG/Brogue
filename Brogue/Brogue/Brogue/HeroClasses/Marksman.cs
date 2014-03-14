@@ -2,7 +2,6 @@
 using Brogue.Abilities.SingleTargets;
 using Brogue.Abilities.Togglable;
 using Brogue.Enums;
-using Brogue.Items.Equipment.Weapon.Melee;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,25 +10,26 @@ using System.Text;
 namespace Brogue.HeroClasses
 {
     [Serializable]
-    public class Ranger : Hero
+    public class Marksman : Hero
     {
-        public Ranger()
+        public Marksman()
         {
-            heroTexture = Engine.Engine.GetTexture("Hero/Ranger");
+            heroTexture = Engine.Engine.GetTexture("Hero/Marksman");
             Hero.loadSprite();
-            heroRole = Classes.Ranger;
-            baseHealth = 350;
-            healthPerLevel = 35;
-            requiredBranchLevel = 30;
+            heroRole = Classes.Marksman;
+            baseHealth = 400;
+            healthPerLevel = 55;
+            requiredBranchLevel = int.MaxValue;
             resetLevel();
             resetHealth();
-            Enemies.Enemy.UpdateTargets(this);
-            Enemies.BossEnemy.UpdateBossTargets(this);
             abilities[0] = new Mug();
             abilities[1] = new Invisibility();
             abilities[2] = new Volley();
             abilities[3] = new SteadyShot();
-            Engine.Engine.Log(health.ToString());
+            abilities[4] = new Vault();
+            abilities[5] = new EagleEye();
+            Enemies.Enemy.UpdateTargets(this);
+            Enemies.BossEnemy.UpdateBossTargets(this);
         }
     }
 }

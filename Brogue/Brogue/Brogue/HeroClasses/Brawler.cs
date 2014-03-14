@@ -25,7 +25,7 @@ namespace Brogue.HeroClasses
             heroRole = Classes.Brawler;
             baseHealth = 300;
             healthPerLevel = 40;
-            requiredBranchLevel = 700;
+            requiredBranchLevel = 30;
             resetLevel();
             resetHealth();
             Enemies.Enemy.UpdateTargets(this);
