@@ -11,7 +11,7 @@ namespace Brogue.Abilities.AOE
         {
             name = "Lightning Storm";
             description = "The sorcerer conjurs a lightning \nstorm for ultimate destruction.";
-            radius = 5;
+            radius = 4;
             isActuallyFilled = false;
             castSquares = new IntVec[50];
             baseDamage = 10;

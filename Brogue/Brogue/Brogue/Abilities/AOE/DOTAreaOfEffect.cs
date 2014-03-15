@@ -10,13 +10,14 @@ namespace Brogue.Abilities.AOE
     {
         protected IntVec[] radiusSquares;
         protected bool isActuallyFilled;
-        public bool dotUsed;
+        public bool dotUsed, willBeCast;
         protected int baseDamage, turnCount, numTicks;
         protected int abilityCooldown;
 
         public DOTAreaOfEffect()
         {
             type = Enums.AbilityTypes.DOTAOE;
+            willBeCast = false;
         }
 
         public override IntVec[] viewCastRange(Level level, IntVec start)
@@ -66,6 +67,8 @@ namespace Brogue.Abilities.AOE
                 viewCastRange(mapLevel, start);
                 addCastingSquares(radiusSquares[0]);
                 finishCastandDealDamage(HeroClasses.Hero.level, hero.GetEquipment().getTotalDamageIncrease(), mapLevel, hero);
+                willBeCast = true;
+                wasJustCast = false;
             }
         }
 
@@ -74,6 +77,7 @@ namespace Brogue.Abilities.AOE
             int damage = calculateDamage(heroLevel, heroDamage);
             cooldown = abilityCooldown;
             wasJustCast = true;
+            willBeCast = false;
             for (int i = 0; i < castSquares.Length; i++)
             {
                 drawVisualEffect(castSquares[i]);

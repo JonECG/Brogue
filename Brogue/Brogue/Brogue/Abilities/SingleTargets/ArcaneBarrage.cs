@@ -13,7 +13,7 @@ namespace Brogue.Abilities.SingleTargets
         public ArcaneBarrage()
         {
             name = "Arcane Barrage";
-            description = "The spellblade fires a barrage \nof arcane energy at \nselected enemies.";
+            description = "The spellblade fires a barrage \nof arcane energy at all of the \nselected enemies.";
             castSquares = new IntVec[5];
             for (int i = 0; i < castSquares.Length; i++)
             {
@@ -33,7 +33,7 @@ namespace Brogue.Abilities.SingleTargets
                 if (test != null)
                 {
                     Engine.Engine.AddVisualAttack(hero, test, "Hero/Overload", 1.0f, 1.0f, 0);
-                    test.DealElementalDamage(Enums.ElementAttributes.Arcane, 7, HeroClasses.Hero.level);
+                    test.DealElementalDamage(Enums.ElementAttributes.Arcane, 7, HeroClasses.Hero.level/2);
                     test.TakeDamage(damage, hero);
                 }
                 castSquares[i] = new IntVec(0, 0);
