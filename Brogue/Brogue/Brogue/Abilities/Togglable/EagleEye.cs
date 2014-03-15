@@ -14,29 +14,23 @@ namespace Brogue.Abilities.Togglable
             name = "Eagle Eye";
             description = "The marksman's accuracy \ngives each of his weapons \na +1 range bonus.";
             abilityIndex = 29;
+            isActive = true;
         }
 
         public override void toggledAttackEffects(HeroClasses.Hero hero)
         {
         }
 
-        public override void updateToggle(int heroLevel, HeroClasses.Hero hero) {}
+        public override void updateToggle(int heroLevel, HeroClasses.Hero hero) 
+        {
+            hero.setRangeBoost(1);
+        }
 
         public override void finishCastandDealDamage(int heroLevel, int heroDamage, Mapping.Level mapLevel, HeroClasses.Hero hero)
         {
-            if (!isActive)
-            {
-                //SCREW YOU DEVIN
-                hero.setRangeBoost(1);
-                isActive = true;
-                wasJustCast = true;
-            }
-            else if (isActive)
-            {
-                hero.setRangeBoost(0);
-                isActive = false;
-                wasJustCast = true;
-            }
+            //SCREW YOU DEVIN
+            hero.setRangeBoost(1);
+            isActive = true;
         }
     }
 }

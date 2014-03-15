@@ -90,7 +90,7 @@ namespace Brogue.Abilities.AOE
             for (int i = 0; i < castSquares.Length; i++)
             {
                 GameCharacter test = (GameCharacter)mapLevel.CharacterEntities.FindEntity(castSquares[i]);
-                if (test != null)
+                if (test != null && !test.isFriendly)
                 {
                     Audio.playSound("ArrowShot");
                     Engine.Engine.AddVisualAttack(hero, test, "Enemies/Attacks/Arrow", 1.0f, 1.0f, 0);
