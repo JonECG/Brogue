@@ -15,7 +15,7 @@ namespace Brogue.Abilities.AOE
             radius = 4;
             isActuallyFilled = false;
             castSquares = new IntVec[16];
-            baseDamage = 9;
+            baseDamage = 5;
             abilityCooldown = 10;
             for (int i = 0; i < castSquares.Length; i++)
             {
@@ -26,7 +26,7 @@ namespace Brogue.Abilities.AOE
 
         public override int calculateDamage(int heroLevel, int heroDamage)
         {
-            return (baseDamage + heroLevel) + heroDamage;
+            return (baseDamage + heroLevel/3) + heroDamage;
         }
 
         public override void drawVisualEffect(GameCharacter hero, GameCharacter enemy)

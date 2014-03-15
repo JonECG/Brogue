@@ -25,7 +25,7 @@ namespace Brogue.Abilities.AOE
 
         public override int calculateDamage(int heroLevel, int heroDamage)
         {
-            return baseDamage+heroLevel+heroDamage*2;
+            return baseDamage+heroDamage;
         }
 
         public override void drawVisualEffect(GameCharacter hero, GameCharacter enemy)

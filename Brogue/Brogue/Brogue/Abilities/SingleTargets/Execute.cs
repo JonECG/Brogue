@@ -35,6 +35,7 @@ namespace Brogue.Abilities.SingleTargets
                 GameCharacter test = (GameCharacter)mapLevel.CharacterEntities.FindEntity(castSquares[i]);
                 if (test != null)
                 {
+                    Engine.Engine.AddVisualAttack(test, "Hero/Execute", .5f, 1.5f, .05f);
                     test.TakeDamage(damage, hero);
                     cooldown = getCooldown(test);
                 }

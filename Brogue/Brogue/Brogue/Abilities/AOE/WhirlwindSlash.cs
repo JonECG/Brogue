@@ -13,7 +13,7 @@ namespace Brogue.Abilities.AOE
         {
             name = "Whirlwind Slash";
             description = "The warrior swings his blade in a \ncircle sending tornadoes \nspiraling towards his foes.";
-            radius = 2;
+            radius = 1;
             isActuallyFilled = false;
             castSquares = new IntVec[12];
             baseDamage = 3;
@@ -23,6 +23,11 @@ namespace Brogue.Abilities.AOE
                 castSquares[i] = new IntVec(0, 0);
             }
             abilityIndex = 1;
+        }
+        public override IntVec[] viewCastRange(Level level, IntVec start)
+        {
+            radiusSquares = AStar.getPossiblePositionsInBox(level, start, radius, radius, AStar.CharacterTargeting.PASS_THROUGH, true);
+            return radiusSquares;
         }
 
         public override int calculateDamage(int heroLevel, int heroDamage)

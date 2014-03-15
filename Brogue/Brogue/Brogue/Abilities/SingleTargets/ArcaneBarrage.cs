@@ -19,7 +19,7 @@ namespace Brogue.Abilities.SingleTargets
             {
                 castSquares[i] = new IntVec(0, 0);
             }
-            baseDamage = 7;
+            baseDamage = 5;
             radius = 5;
             abilityCooldown = 12;
             abilityIndex = 19;
@@ -32,6 +32,7 @@ namespace Brogue.Abilities.SingleTargets
                 GameCharacter test = (GameCharacter)mapLevel.CharacterEntities.FindEntity(castSquares[i]);
                 if (test != null)
                 {
+                    Engine.Engine.AddVisualAttack(hero, test, "Hero/Overload", 1.0f, 1.0f, 0);
                     test.DealElementalDamage(Enums.ElementAttributes.Arcane, 7, HeroClasses.Hero.level);
                     test.TakeDamage(damage, hero);
                 }
@@ -41,7 +42,7 @@ namespace Brogue.Abilities.SingleTargets
 
         public override int calculateDamage(int heroLevel, int heroDamage)
         {
-            return (baseDamage + heroDamage/3) * heroLevel/3;
+            return (baseDamage +  heroLevel/3)+heroDamage;
         }
     }
 }

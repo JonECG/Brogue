@@ -46,7 +46,7 @@ namespace Brogue.Abilities.Damaging.SingleTargets
 
         public override int calculateDamage(int heroLevel, int heroDamage)
         {
-            return (baseDamage * heroLevel) + heroDamage;
+            return (baseDamage * heroLevel/5) + heroDamage;
         }
     }
 }

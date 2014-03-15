@@ -26,6 +26,7 @@ namespace Brogue.Abilities.Togglable
         {
             if (!isActive)
             {
+                //SCREW YOU DEVIN
                 hero.setRangeBoost(1);
                 isActive = true;
                 wasJustCast = true;
