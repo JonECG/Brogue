@@ -1288,6 +1288,17 @@ namespace Brogue.Engine
                                 hero.ObtainItems(tempInventory, tempEquip);
                                 hero.obtainStartingGear(currentLevel);
                                 currentLevel.CharacterEntities.Add(hero, tempPosition);
+                            } 
+                            if (HeroClasses.Hero.heroRole == Enums.Classes.Sentinel)
+                            {
+                                hero = new HeroClasses.Juggernaut();
+                                UpdateAbilities();
+                                Log("You are now a Juggernaut.");
+                                drawXP = hero.getExperience();
+                                gameStarted = true;
+                                hero.ObtainItems(tempInventory, tempEquip);
+                                hero.obtainStartingGear(currentLevel);
+                                currentLevel.CharacterEntities.Add(hero, tempPosition);
                             }
                             if (HeroClasses.Hero.heroRole == Enums.Classes.Sorcerer)
                             {
