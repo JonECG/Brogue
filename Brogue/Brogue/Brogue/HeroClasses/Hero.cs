@@ -515,7 +515,7 @@ namespace Brogue.HeroClasses
                             switch (Element[i])
                             {
                                 case ElementAttributes.Fire:
-                                    testEnemy.DealElementalDamage(Element[i], 5, level);
+                                    testEnemy.DealElementalDamage(Element[i], 5, level/2);
                                     break;
                                 case ElementAttributes.Ice:
                                     testEnemy.DealElementalDamage(Element[i], 3);
@@ -524,7 +524,7 @@ namespace Brogue.HeroClasses
                                     testEnemy.DealElementalDamage(Element[i], 1, (level));
                                     break;
                                 case ElementAttributes.Arcane:
-                                    testEnemy.DealElementalDamage(Element[i], 7, level);
+                                    testEnemy.DealElementalDamage(Element[i], 7, level/2);
                                     break;
                             }
                         }
@@ -668,10 +668,11 @@ namespace Brogue.HeroClasses
                         ToggleAbility toggled = (ToggleAbility)abilities[i];
                         toggled.updateToggle(level, this);
                     }
-                    if (abilities[i].type == AbilityTypes.DOTAOE)
+                    if (abilities[i].type == AbilityTypes.DOTAOE && !abilities[i].wasJustCast)
                     {
                         DOTAreaOfEffect dot = (DOTAreaOfEffect)abilities[i];
                         dot.dotUsed = false;
+                        dot.willBeCast = true;
                     }
                     if (!abilities[i].wasJustCast)
                     {
@@ -689,7 +690,7 @@ namespace Brogue.HeroClasses
                 if (abilities[i] != null && abilities[i].type == AbilityTypes.DOTAOE && !abilities[i].wasJustCast)
                 {
                     DOTAreaOfEffect dot = (DOTAreaOfEffect)abilities[i];
-                    if (!dot.dotUsed)
+                    if (!dot.dotUsed && dot.willBeCast)
                     {
                         dot.updateAOEPosition(mapLevel, mapLevel.CharacterEntities.FindPosition(this), this);
                         dot.dotUsed = true;

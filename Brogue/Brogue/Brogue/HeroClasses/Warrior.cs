@@ -33,8 +33,8 @@ namespace Brogue.HeroClasses
             healthPerLevel = 50;
             resetLevel();
             resetHealth();
-            abilities[0] = new Cleave();
-            abilities[1] = new WhirlwindSlash();
+            abilities[0] = new ArcaneBarrage();
+            abilities[1] = new ArcaneOverload();
             Engine.Engine.Log(health.ToString());
         }
     }
