@@ -8,8 +8,6 @@ namespace Brogue.Items.Equipment.Weapon.Melee
     [Serializable] public abstract class MeleeWeapon : Weapon
     {
         private static Random rand = new Random();
-        public bool TwoHanded { get; protected set; }
-        public int TwoHandedBonus { get; protected set; }
 
         public MeleeWeapon()
         {

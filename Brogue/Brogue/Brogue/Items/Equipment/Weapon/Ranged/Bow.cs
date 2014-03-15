@@ -23,7 +23,12 @@ namespace Brogue.Items.Equipment.Weapon.Ranged
             EquipableIn = new List<Slots> { Slots.Hand_Both };
             Damage = findDamage(BaseDamage, dLevel, LevelReq);
             Name = findName("Bow", LevelReq);
+            TwoHanded = true;
 
+            if (TwoHanded)
+            {
+                Damage += TwoHandedBonus;
+            }
         }
     }
 }

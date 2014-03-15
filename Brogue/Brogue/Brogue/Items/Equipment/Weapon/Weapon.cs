@@ -11,6 +11,8 @@ namespace Brogue.Items.Equipment.Weapon
         public int BaseDamage { get; protected set; }
         public int Damage { get; protected set; }
         public int Range { get; protected set; }
+        public bool TwoHanded { get; protected set; }
+        public int TwoHandedBonus { get; protected set; }
 
         public Weapon()
         {

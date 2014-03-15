@@ -13,6 +13,7 @@ namespace Brogue.Items.Equipment.Weapon.Ranged
         {
             Range = 3;
             BaseDamage = rand.Next(2, 8);
+            TwoHandedBonus = BaseDamage;
         }
     }
 }
