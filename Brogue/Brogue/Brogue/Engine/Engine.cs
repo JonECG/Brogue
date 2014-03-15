@@ -1963,7 +1963,7 @@ namespace Brogue.Engine
             DrawOutlined(sb, charSheetPosition + new Vector2(20, 80), "HP : ", Color.Black, Color.White);
             DrawOutlined(sb, charSheetPosition + new Vector2(20 + font.MeasureString("HP : ").X, 80), hero.health + " / " + hero.maxHealth, Color.Black, hero.health > hero.maxHealth / 2 ? Color.Green : hero.health > hero.maxHealth / 4? Color.Yellow : Color.Red);
             DrawOutlined(sb, charSheetPosition + new Vector2(20, 100), "Damage : ", Color.Black, Color.White);
-            DrawOutlined(sb, charSheetPosition + new Vector2(20 + font.MeasureString("Damage : ").X, 100), "" + hero.GetEquipment().getTotalDamageIncrease(), Color.Black, Color.White);
+            DrawOutlined(sb, charSheetPosition + new Vector2(20 + font.MeasureString("Damage : ").X, 100), "" + hero.getHeroDamage(), Color.Black, Color.White);
             DrawOutlined(sb, charSheetPosition + new Vector2(20, 120), "Armor : ", Color.Black, Color.White);
             DrawOutlined(sb, charSheetPosition + new Vector2(20 + font.MeasureString("Armor : ").X, 120), "" + hero.GetArmorRating(), Color.Black, Color.White);
 
