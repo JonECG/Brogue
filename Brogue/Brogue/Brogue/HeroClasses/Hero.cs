@@ -133,7 +133,10 @@ namespace Brogue.HeroClasses
                 int damageReduction = (int)(armorRating / 12.5);
                 int finalDamage = (damage - damageReduction < 1)? 1: damage-damageReduction;
                 health -= finalDamage;
-                attacker.TakeDamage(reflectedDamage, this);
+                if (reflectedDamage > 0)
+                {
+                    attacker.TakeDamage(reflectedDamage, this);
+                }
             }
             else
             {
@@ -268,6 +271,7 @@ namespace Brogue.HeroClasses
                 case Classes.Marksman:
                     inventory.addItem(new Pistol(mapLevel.DungeonLevel, level - 3));
                     inventory.addItem(new Pistol(mapLevel.DungeonLevel, level - 3));
+                    inventory.addItem(new SniperRifle(mapLevel.DungeonLevel, level - 3));
                     break;
             }
         }
@@ -504,8 +508,8 @@ namespace Brogue.HeroClasses
                 {
                     int weaponRange1 = currentlyEquippedItems.getPrimaryWeaponRange()+rangeBoost;
                     int weaponRange2 = currentlyEquippedItems.getAuxilaryWeaponRange()+rangeBoost;
-                    IntVec[] weaponHitbox1 = AStar.getPossiblePositionsFrom(mapLevel, mapLevel.CharacterEntities.FindPosition(this), weaponRange1, true);
-                    IntVec[] weaponHitbox2 = AStar.getPossiblePositionsFrom(mapLevel, mapLevel.CharacterEntities.FindPosition(this), weaponRange2, true);
+                    IntVec[] weaponHitbox1 = AStar.getPossiblePositionsFrom(mapLevel, mapLevel.CharacterEntities.FindPosition(this), weaponRange1, true, true);
+                    IntVec[] weaponHitbox2 = AStar.getPossiblePositionsFrom(mapLevel, mapLevel.CharacterEntities.FindPosition(this), weaponRange2, true, true);
                     damageEnemyIfInRange(weaponHitbox1, mapLevel, testEnemy, currentlyEquippedItems.getPrimaryWeapon(), true);
                     damageEnemyIfInRange(weaponHitbox2, mapLevel, testEnemy, currentlyEquippedItems.getAuxilaryWeapon(), false);
                     if (Element != null)
@@ -580,9 +584,14 @@ namespace Brogue.HeroClasses
                                 {
                                     Engine.Engine.AddVisualAttack(this, enemy, weapon.GetTexture());
                                 }
-                                else if (name[0] == "Ebony" || name[0] == "Ivory" || name[0] == "Bloodwing")
+                                else if (name[0] == "Ebony" || name[0] == "Ivory")
                                 {
-                                    Audio.playSound("Gunshot");
+                                    Audio.playSound("Gunshot", .5f);
+                                    Engine.Engine.AddVisualAttack(this, enemy, "Hero/Bullet", .5f, .5f, 0);
+                                }
+                                else if (name[0] == "Bloodwing")
+                                {
+                                    Engine.Engine.playSound("Sound/SniperShot");
                                     Engine.Engine.AddVisualAttack(this, enemy, "Hero/Bullet", .5f, .5f, 0);
                                 }
                                 else
@@ -590,45 +599,9 @@ namespace Brogue.HeroClasses
                                     Engine.Engine.AddVisualAttack(this, enemy, "Hero/MageAttack", .5f, 1.0f, .03f);
                                 }
                             }
-                            else
+                            else if(!checkForWeaponType(0, enemy, name, weapon))
                             {
-                                if (name[1] == "Sword" || name[1] == "Axe" || name[1] == "Great" || name[1] == "Bastard" || name[1] == "Rapier" || name[1] == "Scythe")
-                                {
-                                    Engine.Engine.AddVisualAttack(enemy, "Hero/sword-slash", .25f, 2.0f, .15f);
-                                    Audio.playSound("swordAttack");
-                                }
-                                else if (name[1] == "Dagger")
-                                {
-                                    Engine.Engine.AddVisualAttack(enemy, "Hero/DaggerSlash", .25f, 2.0f, .15f);
-                                    Audio.playSound("DaggerStab");
-                                }
-                                else if (name[1] == "Claw")
-                                {
-                                    Engine.Engine.AddVisualAttack(enemy, "Hero/ClawSlash", .25f, 2.0f, .15f);
-                                    Audio.playSound("DaggerStab");
-                                }
-                                else if (name[1] == "War")
-                                {
-                                    Audio.playSound("HammerSmash");
-                                    Engine.Engine.AddVisualAttack(enemy, "Hero/hammerSmash", .25f, 2.0f, .15f);
-                                }
-                                else if (name[1] == "Crossbow" || name[1] == "Bow")
-                                {
-                                    Engine.Engine.AddVisualAttack(this, enemy, "Enemies/Attacks/Arrow", .25f, 1.0f, .15f);
-                                }
-                                else if (name[1] == "Pistol" || name[1] == "Sniper")
-                                {
-                                    Audio.playSound("Gunshot");
-                                    Engine.Engine.AddVisualAttack(this, enemy, "Hero/Bullet", .5f, .5f, 0);
-                                }
-                                else if (name[1] == "Kunai" || name[1] == "Chakram")
-                                {
-                                    Engine.Engine.AddVisualAttack(this, enemy, weapon.GetTexture());
-                                }
-                                else
-                                {
-                                    Engine.Engine.AddVisualAttack(this, enemy, "Hero/MageAttack", .5f, 1.0f, .03f);
-                                }
+                                checkForWeaponType(1,enemy,name,weapon);
                             }
                         }
                         for (int j = 0; j < abilities.Length; j++)
@@ -648,6 +621,63 @@ namespace Brogue.HeroClasses
                     }
                 }
             }
+        }
+
+        private bool checkForWeaponType(int index, GameCharacter enemy, string[] name, Weapon weapon)
+        {
+            bool playingFile = false;
+            if (name[index] == "Sword" || name[index] == "Axe" || name[index] == "Great" || name[index] == "Bastard" || name[index] == "Rapier" || name[index] == "Scythe")
+            {
+                Engine.Engine.AddVisualAttack(enemy, "Hero/sword-slash", .25f, 2.0f, .15f);
+                Audio.playSound("swordAttack");
+                playingFile = true;
+            }
+            else if (name[index] == "Dagger")
+            {
+                Engine.Engine.AddVisualAttack(enemy, "Hero/DaggerSlash", .25f, 2.0f, .15f);
+                Audio.playSound("DaggerStab");
+                playingFile = true;
+            }
+            else if (name[index] == "Claw")
+            {
+                Engine.Engine.AddVisualAttack(enemy, "Hero/ClawSlash", .25f, 2.0f, .15f);
+                Audio.playSound("DaggerStab");
+                playingFile = true;
+            }
+            else if (name[index] == "War")
+            {
+                Audio.playSound("HammerSmash");
+                Engine.Engine.AddVisualAttack(enemy, "Hero/hammerSmash", .25f, 2.0f, .15f);
+                playingFile = true;
+            }
+            else if (name[index] == "Crossbow" || name[index] == "Bow")
+            {
+                Engine.Engine.AddVisualAttack(this, enemy, "Enemies/Attacks/Arrow", .25f, 1.0f, .15f);
+                playingFile = true;
+            }
+            else if (name[index] == "Pistol")
+            {
+                Audio.playSound("Gunshot", .5f);
+                Engine.Engine.AddVisualAttack(this, enemy, "Hero/Bullet", .5f, .5f, 0);
+                playingFile = true;
+            }
+            else if (name[index] == "Sniper")
+            {
+                Engine.Engine.playSound("Sound/SniperShot");
+                Engine.Engine.AddVisualAttack(this, enemy, "Hero/Bullet", .5f, .5f, 0);
+                playingFile = true;
+            }
+            else if (name[index] == "Kunai" || name[index] == "Chakram")
+            {
+                Engine.Engine.AddVisualAttack(this, enemy, weapon.GetTexture());
+                playingFile = true;
+            }
+            else if (name[index] == "Staff" || name[index] == "Wand")
+            {
+                Engine.Engine.AddVisualAttack(this, enemy, "Hero/MageAttack", .5f, 1.0f, .03f);
+                playingFile = true;
+            }
+            return playingFile;
         }
 
         private bool IsInRange(IntVec firstPosition, IntVec secondPosition, int range)
