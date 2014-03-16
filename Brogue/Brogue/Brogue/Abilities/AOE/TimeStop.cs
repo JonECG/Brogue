@@ -49,8 +49,8 @@ namespace Brogue.Abilities.AOE
 
         public override void drawVisualEffect(GameCharacter hero, GameCharacter enemy)
         {
-            //Engine.Engine.AddVisualAttack(enemy, "Hero/Bolt", .5f, 1.5f, .05f);
-            //Audio.playSound("lightning", .5f);
+            Engine.Engine.AddVisualAttack(enemy, "Hero/TimeStop", .5f, 1.5f, .05f);
+            Audio.playSound("ClockTick", .5f);
         }
     }
 }

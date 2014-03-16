@@ -32,6 +32,7 @@ namespace Brogue.Abilities.SingleTargets
                 GameCharacter test = (GameCharacter)mapLevel.CharacterEntities.FindEntity(castSquares[i]);
                 if (test != null)
                 {
+                    Audio.playSound("Arcane");
                     Engine.Engine.AddVisualAttack(hero, test, "Hero/Overload", 1.0f, 1.0f, 0);
                     test.DealElementalDamage(Enums.ElementAttributes.Arcane, 7, HeroClasses.Hero.level/2);
                     test.TakeDamage(damage, hero);

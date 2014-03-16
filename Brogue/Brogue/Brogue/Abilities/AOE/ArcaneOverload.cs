@@ -24,7 +24,7 @@ namespace Brogue.Abilities.AOE
             {
                 castSquares[i] = new IntVec(0,0);
             }
-            abilityIndex = 12;
+            abilityIndex = 18;
         }
 
         public override int calculateDamage(int heroLevel, int heroDamage)
@@ -55,6 +55,7 @@ namespace Brogue.Abilities.AOE
 
         public override void drawVisualEffect(IntVec origin)
         {
+            Audio.playSound("Arcane");
             Engine.Engine.AddVisualAttack(origin, "Hero/Overload", .5f, 1.5f, .05f);
         }
     }
