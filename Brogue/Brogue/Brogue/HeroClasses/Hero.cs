@@ -591,7 +591,7 @@ namespace Brogue.HeroClasses
                                 }
                                 else if (name[0] == "Bloodwing")
                                 {
-                                    Engine.Engine.playSound("Sound/SniperShot");
+                                    Audio.playSound("SniperShot");
                                     Engine.Engine.AddVisualAttack(this, enemy, "Hero/Bullet", .5f, .5f, 0);
                                 }
                                 else
@@ -663,7 +663,7 @@ namespace Brogue.HeroClasses
             }
             else if (name[index] == "Sniper")
             {
-                Engine.Engine.playSound("Sound/SniperShot");
+                Audio.playSound("SniperShot");
                 Engine.Engine.AddVisualAttack(this, enemy, "Hero/Bullet", .5f, .5f, 0);
                 playingFile = true;
             }
@@ -822,12 +822,15 @@ namespace Brogue.HeroClasses
 
         public void pickupItem(Item item, Level mapLevel)
         {
-            if (item != null && !inventory.inventoryMaxed())
+            if (item != null)
             {
-                inventory.addItem(item.PickUpEffect());
-                Engine.Engine.Log("" + jarBarAmount);
-                mapLevel.DroppedItems.RemoveEntity(item);
-                Engine.Engine.Log("item picked up");
+                if (!inventory.inventoryMaxed() || item.ItemType == ITypes.Consumable)
+                {
+                    inventory.addItem(item.PickUpEffect());
+                    Engine.Engine.Log("" + jarBarAmount);
+                    mapLevel.DroppedItems.RemoveEntity(item);
+                    Engine.Engine.Log("item picked up");
+                }
             }
 
         }
