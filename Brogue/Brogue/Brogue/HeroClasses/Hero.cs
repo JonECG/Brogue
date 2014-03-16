@@ -190,7 +190,7 @@ namespace Brogue.HeroClasses
 
         public void resetSprite()
         {
-            sprite.Blend = (visible)?new Color(255, 255, 255, 255):new Color(255,255,255,122);
+            sprite.Blend = (visible) ? new Color(255, 255, 255, 255) : new Color(255, 255, 255, 122);
         }
 
         public void ApplyArmorBoost(int boost, int turnCount)
@@ -260,13 +260,13 @@ namespace Brogue.HeroClasses
             switch (heroRole)
             {
                 case Classes.Ranger:
-                    inventory.addItem(new CrossBow(mapLevel.DungeonLevel, level-3));
+                    inventory.addItem(new CrossBow(mapLevel.DungeonLevel, level - 3));
                     break;
                 case Classes.Magus:
-                    inventory.addItem(new Sword(mapLevel.DungeonLevel, level-3));
+                    inventory.addItem(new Sword(mapLevel.DungeonLevel, level - 3));
                     break;
                 case Classes.Duelist:
-                    inventory.addItem(new Rapier(mapLevel.DungeonLevel, level-3));
+                    inventory.addItem(new Rapier(mapLevel.DungeonLevel, level - 3));
                     break;
                 case Classes.Marksman:
                     inventory.addItem(new Pistol(mapLevel.DungeonLevel, level - 3));
@@ -418,7 +418,7 @@ namespace Brogue.HeroClasses
                             Engine.Engine.ClearGridSelections();
                             abilities[viewedAbility].resetSquares();
                         }
-                        else if(abilities[viewedAbility].cooldown == 0)
+                        else if (abilities[viewedAbility].cooldown == 0)
                         {
                             abilities[viewedAbility].wasJustCast = false;
                         }
@@ -428,7 +428,7 @@ namespace Brogue.HeroClasses
                 if (turnOver)
                 {
                     cooldownAbilities(mapLevel);
-                    invisibilityTurnCount -= (!visible)?1:0;
+                    invisibilityTurnCount -= (!visible) ? 1 : 0;
                     visible = invisibilityTurnCount <= 0;
                 }
             }
@@ -455,7 +455,7 @@ namespace Brogue.HeroClasses
                     List<IntVec> gridSquares = new List<IntVec>();
                     for (int i = 0; i < abilities[ability].getCastingSquares().Length; i++)
                     {
-                        if(abilities[ability].getCastingSquares()[i] != new IntVec(0,0))
+                        if (abilities[ability].getCastingSquares()[i] != new IntVec(0, 0))
                         {
                             gridSquares.Add(abilities[ability].getCastingSquares()[i]);
                         }
@@ -475,7 +475,7 @@ namespace Brogue.HeroClasses
                             if (abilities[ability].filledSquares())
                             {
                                 turnOver = true;
-                                abilities[ability].finishCastandDealDamage(level, currentlyEquippedItems.getTotalDamageIncrease()+damageBoost, mapLevel, this);
+                                abilities[ability].finishCastandDealDamage(level, currentlyEquippedItems.getTotalDamageIncrease() + damageBoost, mapLevel, this);
                                 Engine.Engine.ClearGridSelections();
                                 viewingCast = false;
                                 invisibilityTurnCount = 0;
@@ -506,8 +506,8 @@ namespace Brogue.HeroClasses
                 GameCharacter testEnemy = (GameCharacter)mapLevel.CharacterEntities.FindEntity(MouseController.MouseGridPosition());
                 if (testEnemy != null)
                 {
-                    int weaponRange1 = currentlyEquippedItems.getPrimaryWeaponRange()+rangeBoost;
-                    int weaponRange2 = currentlyEquippedItems.getAuxilaryWeaponRange()+rangeBoost;
+                    int weaponRange1 = currentlyEquippedItems.getPrimaryWeaponRange() + rangeBoost;
+                    int weaponRange2 = currentlyEquippedItems.getAuxilaryWeaponRange() + rangeBoost;
                     IntVec[] weaponHitbox1 = AStar.getPossiblePositionsFrom(mapLevel, mapLevel.CharacterEntities.FindPosition(this), weaponRange1, true, true);
                     IntVec[] weaponHitbox2 = AStar.getPossiblePositionsFrom(mapLevel, mapLevel.CharacterEntities.FindPosition(this), weaponRange2, true, true);
                     damageEnemyIfInRange(weaponHitbox1, mapLevel, testEnemy, currentlyEquippedItems.getPrimaryWeapon(), true);
@@ -519,7 +519,7 @@ namespace Brogue.HeroClasses
                             switch (Element[i])
                             {
                                 case ElementAttributes.Fire:
-                                    testEnemy.DealElementalDamage(Element[i], 5, level/2);
+                                    testEnemy.DealElementalDamage(Element[i], 5, level / 2);
                                     break;
                                 case ElementAttributes.Ice:
                                     testEnemy.DealElementalDamage(Element[i], 3);
@@ -528,7 +528,7 @@ namespace Brogue.HeroClasses
                                     testEnemy.DealElementalDamage(Element[i], 1, (level));
                                     break;
                                 case ElementAttributes.Arcane:
-                                    testEnemy.DealElementalDamage(Element[i], 7, level/2);
+                                    testEnemy.DealElementalDamage(Element[i], 7, level / 2);
                                     break;
                             }
                         }
@@ -599,9 +599,9 @@ namespace Brogue.HeroClasses
                                     Engine.Engine.AddVisualAttack(this, enemy, "Hero/MageAttack", .5f, 1.0f, .03f);
                                 }
                             }
-                            else if(!checkForWeaponType(0, enemy, name, weapon))
+                            else if (!checkForWeaponType(0, enemy, name, weapon))
                             {
-                                checkForWeaponType(1,enemy,name,weapon);
+                                checkForWeaponType(1, enemy, name, weapon);
                             }
                         }
                         for (int j = 0; j < abilities.Length; j++)
@@ -663,7 +663,7 @@ namespace Brogue.HeroClasses
             }
             else if (name[index] == "Sniper")
             {
-                Audio.playSound("SniperShot");
+                Audio.playSound("Gunshot", .5f);
                 Engine.Engine.AddVisualAttack(this, enemy, "Hero/Bullet", .5f, .5f, 0);
                 playingFile = true;
             }
@@ -715,7 +715,7 @@ namespace Brogue.HeroClasses
 
         private void updateDOTabilities(Level mapLevel)
         {
-            for(int i=0; i<abilities.Length; i++)
+            for (int i = 0; i < abilities.Length; i++)
             {
                 if (abilities[i] != null && abilities[i].type == AbilityTypes.DOTAOE && !abilities[i].wasJustCast)
                 {
