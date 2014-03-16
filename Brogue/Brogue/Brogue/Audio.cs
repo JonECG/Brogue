@@ -207,7 +207,7 @@ namespace Brogue
             musicLibary[4] = new musicFile(content.Load<Song>("Music/LetsRock"), "Lets Rock", true);
 
             //Load Sound
-            defualtSound = new audioFile(content.Load<SoundEffect>("Sound/Whammy"), "Whammy");
+            //defualtSound = new audioFile(content.Load<SoundEffect>("Sound/Whammy"), "Whammy");
             sound[0]     = new audioFile(content.Load<SoundEffect>("Sound/stairs"), "stairs");
             sound[1]     = new audioFile(content.Load<SoundEffect>("Sound/Chest"), "chest");
             sound[2]     = new audioFile(content.Load<SoundEffect>("Sound/Water_Drop"), "waterDrop");

@@ -789,16 +789,19 @@ namespace Brogue.Engine
 
         public static void AddXP(int xp, IntVec gameGrid)
         {
-            hero.AddExperience(xp);
-            IntVec worldPosition = gameGrid * CELLWIDTH;
-            Vector2 worldVector = Vector2.Transform(new Vector2(worldPosition.X, worldPosition.Y), worldToView);
-
-            for (int i = 0; i < xp; i++)
+            if (gameGrid != null)
             {
-                XPParticle newxp = new XPParticle(
-                    new Vector2(worldVector.X + enginerand.Next(CELLWIDTH) - CELLWIDTH/2, 
-                        worldVector.Y + enginerand.Next(CELLWIDTH) - CELLWIDTH/2), enginerand.Next(15) + 10);
-                xpList.Add(newxp);
+                hero.AddExperience(xp);
+                IntVec worldPosition = gameGrid * CELLWIDTH;
+                Vector2 worldVector = Vector2.Transform(new Vector2(worldPosition.X, worldPosition.Y), worldToView);
+
+                for (int i = 0; i < xp; i++)
+                {
+                    XPParticle newxp = new XPParticle(
+                        new Vector2(worldVector.X + enginerand.Next(CELLWIDTH) - CELLWIDTH / 2,
+                            worldVector.Y + enginerand.Next(CELLWIDTH) - CELLWIDTH / 2), enginerand.Next(15) + 10);
+                    xpList.Add(newxp);
+                }
             }
         }
 
