@@ -190,7 +190,7 @@ namespace Brogue.HeroClasses
 
         public void resetSprite()
         {
-            sprite.Blend = (visible) ? new Color(255, 255, 255, 255) : new Color(255, 255, 255, 122);
+            sprite.Blend = (visible) ? new Color(255, 255, 255, 255) : new Color(130, 130, 130, 122);
         }
 
         public void ApplyArmorBoost(int boost, int turnCount)
@@ -549,6 +549,7 @@ namespace Brogue.HeroClasses
                     if (hitBox[i].Equals(mapLevel.CharacterEntities.FindPosition(enemy)))
                     {
                         int weaponDamage = weapon.Damage + damageBoost + currentlyEquippedItems.getAccessoryDamageIncrease();
+                        weaponDamage = (weaponDamage < 1) ? 1 : weaponDamage;
                         found = true;
                         int damage = (!visible) ? (int)(1.5 * (weaponDamage)) : weaponDamage;
                         if (playAttack)
@@ -568,7 +569,7 @@ namespace Brogue.HeroClasses
                                 else if (name[0] == "The")
                                 {
                                     Engine.Engine.AddVisualAttack(enemy, "Hero/LegendaryClawSlash", .25f, 2.0f, .15f);
-                                    Audio.playSound("DaggerStab");
+                                    Audio.playSound("swordAttack");
                                 }
                                 else if (name[0] == "40k")
                                 {
@@ -641,7 +642,7 @@ namespace Brogue.HeroClasses
             else if (name[index] == "Claw")
             {
                 Engine.Engine.AddVisualAttack(enemy, "Hero/ClawSlash", .25f, 2.0f, .15f);
-                Audio.playSound("DaggerStab");
+                Audio.playSound("swordAttack");
                 playingFile = true;
             }
             else if (name[index] == "War")
@@ -663,7 +664,7 @@ namespace Brogue.HeroClasses
             }
             else if (name[index] == "Sniper")
             {
-                Audio.playSound("Gunshot", .5f);
+                Audio.playSound("SniperShot");
                 Engine.Engine.AddVisualAttack(this, enemy, "Hero/Bullet", .5f, .5f, 0);
                 playingFile = true;
             }
@@ -817,7 +818,7 @@ namespace Brogue.HeroClasses
 
         public int getHeroDamage()
         {
-            return currentlyEquippedItems.getTotalDamageIncrease() + damageBoost;
+            return ((currentlyEquippedItems.getTotalDamageIncrease() + damageBoost)<1)?1:currentlyEquippedItems.getTotalDamageIncrease()+damageBoost;
         }
 
         public void pickupItem(Item item, Level mapLevel)

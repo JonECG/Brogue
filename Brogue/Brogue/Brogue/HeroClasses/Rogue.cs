@@ -21,6 +21,7 @@ namespace Brogue.HeroClasses
         {
             heroTexture = Engine.Engine.GetTexture("Hero/RogueSprite");
             Hero.loadSprite();
+            visible = true;
             heroRole = Classes.Rogue;
             inventory.addItem(new Kris(1, 1));
             inventory.addItem(new TheWolverine(1, 1));

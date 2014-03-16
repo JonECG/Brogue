@@ -20,6 +20,7 @@ namespace Brogue.HeroClasses
         {
             heroTexture = Engine.Engine.GetTexture("Hero/MageSprite");
             Hero.loadSprite();
+            visible = true;
             heroRole = Classes.Mage;
             canDuelWield = true;
             inventory.addItem(new Staff(1, 1));
