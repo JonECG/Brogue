@@ -31,7 +31,7 @@ namespace Brogue.Abilities.AOE
 
         public override void drawVisualEffect(GameCharacter hero, GameCharacter enemy)
         {
-            Audio.playSound("HammerSmash");
+            
             Engine.Engine.AddVisualAttack(enemy, "Hero/hammerSmash", .5f, 1.0f, .03f);
         }
 
@@ -42,6 +42,7 @@ namespace Brogue.Abilities.AOE
             wasJustCast = true;
             for (int i = 0; i < castSquares.Length; i++)
             {
+                Audio.playSound("HammerSmash");
                 Engine.Engine.AddVisualAttack(castSquares[i], "Hero/hammerSmash", .5f, 1.0f, .05f);
                 GameCharacter enemy = (GameCharacter)mapLevel.CharacterEntities.FindEntity(castSquares[i]);
                 if (enemy != null)

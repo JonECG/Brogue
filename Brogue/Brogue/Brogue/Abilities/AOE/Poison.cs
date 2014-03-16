@@ -33,6 +33,7 @@ namespace Brogue.Abilities.AOE
 
         public override void drawVisualEffect(IntVec origin)
         {
+            Audio.playSound("Poison");
             Engine.Engine.AddVisualAttack(origin, "Hero/Poison", .5f, 1.5f, .05f);
         }
     }

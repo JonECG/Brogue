@@ -10,7 +10,7 @@ namespace Brogue.Abilities.SingleTargets
     {
         public Assassinate()
         {
-            name = "Arcane Barrage";
+            name = "Assassinate";
             description = "The assassin strikes his opponent \nwith great precision";
             castSquares = new IntVec[1];
             for (int i = 0; i < castSquares.Length; i++)
