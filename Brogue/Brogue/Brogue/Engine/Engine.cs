@@ -165,6 +165,36 @@ namespace Brogue.Engine
         }
     }
 
+    class Splash
+    {
+        DynamicTexture tex;
+        Vector2 position;
+        float scaleMax;
+        float scale;
+        float scaleMod;
+
+        public Splash(DynamicTexture t, Vector2 pos, float scaleMax, float scaleMod)
+        {
+            tex = t;
+            scale = 0;
+            this.scaleMax = scaleMax;
+            this.scaleMod = scaleMod;
+            position = pos;
+        }
+
+        public bool update()
+        {
+            scale += scaleMod;
+            return scale >= scaleMax;
+        }
+
+        public void Draw(SpriteBatch sb)
+        {
+            Color color = Color.White * (1.0f - (scale / scaleMax));
+            sb.Draw(tex.texture, position, new Rectangle(0, 0, tex.texture.Width, tex.texture.Height), color, 0, new Vector2(tex.texture.Width / 2, tex.texture.Height / 2), scale, SpriteEffects.None, 0);
+        }
+    }
+
     class UIButton
     {
         static DynamicTexture standard = Engine.GetTexture("UI/InvSlot");
@@ -659,6 +689,8 @@ namespace Brogue.Engine
         private static Vector2 LogPosition, InvButtonPosition, InventoryPosition, InventorySize;
         private static HeroClasses.Hero hero;
 
+        private static List<Splash> splashes = new List<Splash>();
+
         private static AbilityButton[] abilityBar = new AbilityButton[6];
         private static Vector2 abilityPosition;
 
@@ -733,7 +765,14 @@ namespace Brogue.Engine
             newGame = GetTexture("UI/NewGame"),
             loadGame = GetTexture("UI/Load"),
             selectSave = GetTexture("UI/SelectSave"),
-            charSheetTex = GetTexture("UI/StatSheet")
+            charSheetTex = GetTexture("UI/StatSheet"),
+
+            upBerserker = GetTexture("UI/UpBerserker"),
+            upJuggernaut = GetTexture("UI/UpJuggernaut"),
+            upAssassin = GetTexture("UI/UpAssassin"),
+            upMarksman = GetTexture("UI/UpMarksman"),
+            upSpellblade = GetTexture("UI/UpSpellblade"),
+            upSpellweaver = GetTexture("UI/UpSpellweaver")
             ;
 
         const int SAVE_SLOTS = 8;
@@ -1166,7 +1205,6 @@ namespace Brogue.Engine
 
         public static void Update(GameTime gameTime)
         {
-
             MouseController.Update();
             if (gameStarted)
             {
@@ -1188,6 +1226,14 @@ namespace Brogue.Engine
                     if (vattacks[i].update())
                     {
                         vattacks.RemoveAt(i);
+                    }
+                }
+
+                for (int i = 0; i < splashes.Count(); i++)
+                {
+                    if (splashes[i].update())
+                    {
+                        splashes.RemoveAt(i);
                     }
                 }
 
@@ -1272,6 +1318,7 @@ namespace Brogue.Engine
                                 hero = new HeroClasses.Assassin();
                                 UpdateAbilities();
                                 Log("You are now an Assasin.");
+                                splashes.Add(new Splash(upAssassin, new Vector2(game.Width / 2, game.Height / 2), 3, .05f));
                                 drawXP = hero.getExperience();
                                 gameStarted = true;
                                 hero.ObtainItems(tempInventory, tempEquip);
@@ -1283,6 +1330,7 @@ namespace Brogue.Engine
                                 hero = new HeroClasses.Berserker();
                                 UpdateAbilities();
                                 Log("You are now a Berserker.");
+                                splashes.Add(new Splash(upBerserker, new Vector2(game.Width / 2, game.Height / 2), 3, .05f));
                                 drawXP = hero.getExperience();
                                 gameStarted = true;
                                 hero.ObtainItems(tempInventory, tempEquip);
@@ -1294,6 +1342,7 @@ namespace Brogue.Engine
                                 hero = new HeroClasses.Juggernaut();
                                 UpdateAbilities();
                                 Log("You are now a Juggernaut.");
+                                splashes.Add(new Splash(upJuggernaut, new Vector2(game.Width / 2, game.Height / 2), 3, .05f));
                                 drawXP = hero.getExperience();
                                 gameStarted = true;
                                 hero.ObtainItems(tempInventory, tempEquip);
@@ -1305,6 +1354,7 @@ namespace Brogue.Engine
                                 hero = new HeroClasses.Spellweaver();
                                 UpdateAbilities();
                                 Log("You are now a SpellWeaver.");
+                                splashes.Add(new Splash(upSpellweaver, new Vector2(game.Width / 2, game.Height / 2), 3, .05f));
                                 drawXP = hero.getExperience();
                                 gameStarted = true;
                                 hero.ObtainItems(tempInventory, tempEquip);
@@ -1316,6 +1366,7 @@ namespace Brogue.Engine
                                 hero = new HeroClasses.SpellBlade();
                                 UpdateAbilities();
                                 Log("You are now a SpellBlade.");
+                                splashes.Add(new Splash(upSpellblade, new Vector2(game.Width / 2, game.Height / 2), 3, .05f));
                                 drawXP = hero.getExperience();
                                 gameStarted = true;
                                 hero.ObtainItems(tempInventory, tempEquip);
@@ -1327,6 +1378,7 @@ namespace Brogue.Engine
                                 hero = new HeroClasses.Marksman();
                                 UpdateAbilities();
                                 Log("You are now a Marksman.");
+                                splashes.Add(new Splash(upMarksman, new Vector2(game.Width / 2, game.Height / 2), 3, .05f));
                                 drawXP = hero.getExperience();
                                 gameStarted = true;
                                 hero.ObtainItems(tempInventory, tempEquip);
@@ -1843,6 +1895,11 @@ namespace Brogue.Engine
                         SpriteEffects.None, 0);
                     //uisb.Draw(particleTex.texture, xp.screenPosition, Color.White);
                 }
+                foreach (Splash s in splashes)
+                {
+                    s.Draw(uisb);
+                }
+
                 if (drawXP > hero.getExperience())
                 {
                     drawXP = hero.getExperience();
