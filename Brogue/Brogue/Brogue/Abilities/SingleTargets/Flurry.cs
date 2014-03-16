@@ -33,8 +33,10 @@ namespace Brogue.Abilities.SingleTargets
                     Audio.playSound("eviscerate");
                     Engine.Engine.AddVisualAttack(test, "Hero/sword-slash", .25f, 1.5f, .1f);
                     test.TakeDamage(damage, hero);
-                    test.TakeDamage(damage, hero);
-                    test.TakeDamage(damage, hero);
+                    if (mapLevel.CharacterEntities.FindPosition(test) != null)
+                        test.TakeDamage(damage, hero);
+                    if (mapLevel.CharacterEntities.FindPosition(test) != null)
+                        test.TakeDamage(damage, hero);
                 }
                 castSquares[i] = new IntVec(0, 0);
             }

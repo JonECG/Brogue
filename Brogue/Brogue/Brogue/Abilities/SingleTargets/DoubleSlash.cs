@@ -34,7 +34,8 @@ namespace Brogue.Abilities.SingleTargets
                     Engine.Engine.AddVisualAttack(test, "Hero/DoubleSlash", .25f, 2.0f, .15f);
                     Audio.playSound("Slash", .25f);
                     test.TakeDamage(damage, hero);
-                    test.TakeDamage(damage, hero);
+                    if (mapLevel.CharacterEntities.FindPosition(test) != null )
+                        test.TakeDamage(damage, hero);
                 }
                 castSquares[i] = new IntVec(0, 0);
             }
