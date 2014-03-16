@@ -725,7 +725,7 @@ namespace Brogue.Engine
         private static UIButton weaponSlot1, weaponSlot2;
         private static UIButton escMainMenu, escContinue, escQuit;
 
-        private static int levelSeed = 101;
+        private static int levelSeed = 600;
         private static int currentSaveSlot = -1;
         private static int levelComplexity;
         private static int currentDungeonLevel = 1;
