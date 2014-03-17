@@ -30,7 +30,7 @@ namespace Brogue.Enemies
                         {
                             Audio.playSound("ArrowShot");
                             Engine.Engine.AddVisualAttack(this, target, Engine.Engine.GetTexture("Enemies/Attacks/Arrow"));
-                            Attack();
+                            Attack(GetCorrectDirection(path[0]));
                             //Engine.Engine.Log("Was in range: " + level.CharacterEntities.FindPosition(this) + " to " + level.CharacterEntities.FindPosition(target) + " " + pathCost + " " + String.Join<Direction>(", ", path));
                         }
                         else
@@ -130,6 +130,8 @@ namespace Brogue.Enemies
 
         public override void BuildEnemy(int i)
         {
+            LoadSprite();
+
             range = 5;
             aggroRange = 5;
             deAggroRange = 7;

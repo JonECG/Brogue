@@ -30,7 +30,7 @@ namespace Brogue.Enemies
                         {
                             Audio.playSound("Mugging");
                             Engine.Engine.AddVisualAttack(target, "Hero/HammerSmash", .25f, 2.0f, .15f);
-                            Attack();
+                            Attack(GetCorrectDirection(path[0]));
                         }
                         else
                         {
@@ -66,6 +66,8 @@ namespace Brogue.Enemies
 
         public override void BuildEnemy(int i)
         {
+            LoadSprite();
+
             if (i > 10)
             {
                 i = 10;

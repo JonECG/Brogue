@@ -30,17 +30,19 @@ namespace Brogue.Enemies
                     Direction[] path = AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(targets[0]));
                     if (path.Length > range)
                     {
-                        level.Move(this, path[0]);
+                        Move(path[0], level);
                     }
                     else if (turnCounter % 3 == 0)
                     {
                         Engine.Engine.AddVisualAttack(this, targets[0], Engine.Engine.GetTexture("Enemies/Attacks/TwoArrow"));
                         targets[0].TakeDamage(attacks[0]*2, this);
+                        eSprite.Direction = GetCorrectDirection(path[0]);
                     }
                     else
                     {
                         Engine.Engine.AddVisualAttack(this, targets[0], Engine.Engine.GetTexture("Enemies/Attacks/Arrow"));
                         targets[0].TakeDamage(attacks[0], this);
+                        eSprite.Direction = GetCorrectDirection(path[0]);
                     }
                 }
             }

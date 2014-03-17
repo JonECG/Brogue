@@ -30,7 +30,8 @@ namespace Brogue.Enemies
                         {
                             Audio.playSound("Slash");
                             Engine.Engine.AddVisualAttack(target, "Hero/HammerSmash", .25f, 2.0f, .15f);
-                            Attack();
+
+                            Attack(GetCorrectDirection(path[0]));
                         }
                         else
                         {
@@ -133,6 +134,8 @@ namespace Brogue.Enemies
 
         public override void BuildEnemy(int i)
         {
+            LoadSprite();
+
             range = 1;
             aggroRange = 5;
             deAggroRange = 10;

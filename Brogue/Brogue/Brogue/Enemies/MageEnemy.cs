@@ -10,6 +10,9 @@ namespace Brogue.Enemies
     [Serializable]
     class MageEnemy : Enemy
     {
+
+        //Direction attackPath;
+
         public override bool TakeTurn(Level level)
         {
             CheckElementDamage();
@@ -23,7 +26,7 @@ namespace Brogue.Enemies
                 {
                     Audio.playSound("enimeFireball");
                     Engine.Engine.AddVisualAttack(this, target, Engine.Engine.GetTexture("Enemies/Attacks/FireBall"));
-                    Attack();
+                    Attack(Direction.UP, false);
                 }
             }
             return true;
@@ -39,6 +42,8 @@ namespace Brogue.Enemies
             {
                 bool tIsPossible = false;
                 Direction[] tPath = AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(target), ref tIsPossible);
+                //attackPath = tPath[0];
+
                 if (tIsPossible)
                 {
                     if (tPath.Length > deAggroRange)
@@ -99,6 +104,8 @@ namespace Brogue.Enemies
 
         public override void BuildEnemy(int i)
         {
+            LoadSprite();
+
             range = 13;
             aggroRange = 3;
             deAggroRange = 6;

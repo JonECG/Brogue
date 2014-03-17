@@ -9,7 +9,7 @@ using System.Text;
 namespace Brogue.Enemies
 {
     [Serializable]
-    abstract class BossEnemy : GameCharacter
+    abstract class BossEnemy : GameCharacter, IRenderable
     {
         protected List<GameCharacter> targets = new List<GameCharacter>();
         protected List<int> attacks = new List<int>();
@@ -17,6 +17,34 @@ namespace Brogue.Enemies
         protected int defense;
         protected int moveSpeed;
         protected int exp;
+        protected Sprite eSprite;
+
+        public void LoadSprite()
+        {
+            eSprite = new Sprite(GetTexture());
+        }
+
+        public Direction GetCorrectDirection(Direction d)
+        {
+            if (d == Direction.DOWN)
+            {
+                d = Direction.LEFT;
+            }
+            else if (d == Direction.UP)
+            {
+                d = Direction.RIGHT;
+            }
+            else if (d == Direction.LEFT)
+            {
+                d = Direction.UP;
+            }
+            else if (d == Direction.RIGHT)
+            {
+                d = Direction.DOWN;
+            }
+
+            return d;
+        }
 
         public bool IsAggro
         {
@@ -70,6 +98,10 @@ namespace Brogue.Enemies
         public void Move(Direction d, Level level)
         {
             level.Move(this, d);
+
+            d = GetCorrectDirection(d);
+
+            eSprite.Direction = d;
         }
 
         //This method will be called each turn to determine who (if anyone) to attack
@@ -139,6 +171,12 @@ namespace Brogue.Enemies
         public override DynamicTexture GetTexture()
         {
             return Engine.Engine.GetTexture("Enemies/BossEnemy");
+        }
+
+        Sprite IRenderable.GetSprite()
+        {
+            eSprite.Texture = GetTexture();
+            return eSprite;
         }
     }
 }

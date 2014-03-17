@@ -14,7 +14,7 @@ using Brogue.HeroClasses;
 namespace Brogue.Enemies
 {
     [Serializable]
-    abstract class Enemy : GameCharacter
+    abstract class Enemy : GameCharacter, IRenderable
     {
         protected GameCharacter target;
         protected int attack;
@@ -25,6 +25,34 @@ namespace Brogue.Enemies
         protected int deAggroRange;
         protected int exp;
         protected ElementAttributes element;
+        protected Sprite eSprite;
+
+        public void LoadSprite()
+        {
+            eSprite = new Sprite(GetTexture());
+        }
+
+        public Direction GetCorrectDirection(Direction d)
+        {
+            if (d == Direction.DOWN)
+            {
+                d = Direction.LEFT;
+            }
+            else if (d == Direction.UP)
+            {
+                d = Direction.RIGHT;
+            }
+            else if (d == Direction.LEFT)
+            {
+                d = Direction.UP;
+            }
+            else if (d == Direction.RIGHT)
+            {
+                d = Direction.DOWN;
+            }
+
+            return d;
+        }
 
         public bool IsAggro
         {
@@ -85,6 +113,10 @@ namespace Brogue.Enemies
             {
                 level.Move(this, d);
             }
+
+            d = GetCorrectDirection(d);
+
+            eSprite.Direction = d;
         }
 
         /// <summary>
@@ -120,7 +152,7 @@ namespace Brogue.Enemies
         /// <summary>
         /// Attacks the current target based on its attack
         /// </summary>
-        protected void Attack()
+        protected void Attack(Direction d, bool turnable = true)
         {
             if (IsAggro)
             {
@@ -129,6 +161,11 @@ namespace Brogue.Enemies
                 {
                     target.DealElementalDamage(element, (1 + Engine.Engine.currentLevel.DungeonLevel / 3));
                 }
+            }
+
+            if (turnable)
+            {
+                eSprite.Direction = d;
             }
         }
 
@@ -175,6 +212,12 @@ namespace Brogue.Enemies
         public override DynamicTexture GetTexture()
         {
             return Engine.Engine.GetTexture("Enemies/Enemy");
+        }
+
+        Sprite IRenderable.GetSprite()
+        {
+            eSprite.Texture = GetTexture();
+            return eSprite;
         }
     }
 }

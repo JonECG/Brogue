@@ -50,12 +50,12 @@ namespace Brogue.Enemies
                 Direction[] path = AStar.getPathBetween(level, level.CharacterEntities.FindPosition(this), level.CharacterEntities.FindPosition(targets[0]));
                 if (path.Length > 1)
                 {
-                    level.Move(this, path[0]);
+                    Move(path[0], level);
                 }
                 else if (path.Length > 2)
                 {
-                    level.Move(this, path[0]);
-                    level.Move(this, path[1]);
+                    Move(path[0], level);
+                    Move(path[1], level);
                 }
 
                 if (path.Length < 4)
@@ -63,6 +63,7 @@ namespace Brogue.Enemies
                     Audio.playSound("Slash");
                     Engine.Engine.AddVisualAttack(targets[0], "Hero/HammerSmash", .25f, 2.0f, .15f);
                     targets[0].TakeDamage(attacks[0], this);
+                    eSprite.Direction = GetCorrectDirection(path[0]);
                 }
             }
            

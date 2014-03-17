@@ -28,15 +28,18 @@ namespace Brogue.Enemies
                     {
                         if (path.Length > 2)
                         {
-                            level.Move(this, path[0]);
+                            Move(path[0], level);
                         }
 
                         else if (turnCounter % 3 == 0)
                         {
                             foreach (GameCharacter g in targets)
                             {
+                                Engine.Engine.AddVisualAttack(this, targets[0], Engine.Engine.GetTexture("Enemies/Attacks/Blood"));
+                                Audio.playSound("bloodSpit");
                                 g.TakeDamage(attacks[1], this);
                                 health = (health * 4) / 5;
+                                eSprite.Direction = GetCorrectDirection(path[0]);
                             }
                         }
                         else
@@ -46,6 +49,7 @@ namespace Brogue.Enemies
                             Audio.playSound("bloodSpit");
                             targets[0].TakeDamage(attacks[0], this);
                             Heal(attacks[0] / 10);
+                            eSprite.Direction = GetCorrectDirection(path[0]);
                         }
                     }
                 }
