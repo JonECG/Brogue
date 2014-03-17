@@ -1262,7 +1262,8 @@ namespace Brogue.Engine
                             if (enemyPosition.X > heroPos.X - AIDist &&
                                 enemyPosition.X < heroPos.X + AIDist &&
                                 enemyPosition.Y > heroPos.Y - AIDist &&
-                                enemyPosition.Y < heroPos.Y + AIDist)
+                                enemyPosition.Y < heroPos.Y + AIDist &&
+                                HeroClasses.Hero.visible)
                             {
                                 if (currentLevel.CharacterEntities.Entities().ElementAt<GameCharacter>(charIndex).TakeTurn(currentLevel))
                                 {
