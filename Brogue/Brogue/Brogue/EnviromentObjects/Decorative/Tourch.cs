@@ -71,8 +71,19 @@ namespace Brogue.EnviromentObjects.Decorative
             return 8;
         }
 
+        int flickerCountdown = 5;
+
         public float GetCurrentFlicker()
         {
+            if (flickerCountdown == 0)
+            {
+                currentFlicker = (float)Engine.Engine.enginerand.NextDouble() / 6;
+                flickerCountdown = Engine.Engine.enginerand.Next(8) + 3;
+            }
+            else
+            {
+                flickerCountdown--;
+            }
             return currentFlicker;
         }
     }
