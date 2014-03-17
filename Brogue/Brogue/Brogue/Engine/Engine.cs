@@ -961,6 +961,7 @@ namespace Brogue.Engine
             HeroClasses.Hero.jarBarAmount = gd.jarBarAmount;
             HeroClasses.Hero.MaxJarBarAmount = gd.jarBarMax;
             HeroClasses.Hero.heroRole = gd.heroRole;
+            UpdateAbilities();
             GeneratedLevel nlevel = new GeneratedLevel(gd.seed, gd.levelComplexity, gd.dungeonLevel);
             currentLevel = nlevel.RetrieveLevel();
             currentLevel.CharacterEntities.Add(hero, currentLevel.GetStartPoint());
