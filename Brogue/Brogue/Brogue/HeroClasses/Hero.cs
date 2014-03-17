@@ -71,6 +71,7 @@ namespace Brogue.HeroClasses
 
         public Hero()
         {
+            
             Element = new List<ElementAttributes>();
             currentBoost = 0;
             rangeBoost = 0;

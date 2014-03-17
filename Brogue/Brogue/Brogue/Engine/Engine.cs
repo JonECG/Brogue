@@ -1257,7 +1257,7 @@ namespace Brogue.Engine
                         {
                             heroPos = currentLevel.CharacterEntities.FindPosition(hero);
                         }
-                        if (charIndex < currentLevel.CharacterEntities.Entities().Count<GameCharacter>())
+                        if (charIndex < currentLevel.CharacterEntities.Entities().Count<GameCharacter>() && heroPos != null)
                         {
                             IntVec enemyPosition = currentLevel.CharacterEntities.FindPosition(currentLevel.CharacterEntities.Entities().ElementAt<GameCharacter>(charIndex));
                             if (enemyPosition.X > heroPos.X - AIDist &&
@@ -1413,6 +1413,8 @@ namespace Brogue.Engine
                     if (mageButton.isClicked())
                     {
                         hero = new HeroClasses.Mage();
+                        HeroClasses.Hero.level = 5;
+                        UpdateAbilities();
                         UpdateAbilities();
                         mainMenuOpen = false;
                         showSaveSlotSelection = true;
@@ -1420,6 +1422,7 @@ namespace Brogue.Engine
                     if (warriorButton.isClicked())
                     {
                         hero = new HeroClasses.Warrior();
+                        HeroClasses.Hero.level = 5;
                         UpdateAbilities();
                         mainMenuOpen = false;
                         showSaveSlotSelection = true;
@@ -1427,6 +1430,7 @@ namespace Brogue.Engine
                     if (rogueButton.isClicked())
                     {
                         hero = new HeroClasses.Rogue();
+                        HeroClasses.Hero.level = 5;
                         UpdateAbilities();
                         mainMenuOpen = false;
                         showSaveSlotSelection = true;
