@@ -1057,6 +1057,10 @@ namespace Brogue.Engine
         public static void UpdateAbilities()
         {
             Abilities.Ability[] heroAbs = hero.getAbilities();
+            for (int i = 0; i < abilityBar.Length; i++)
+            {
+                abilityBar[i] = null;
+            }
             int acount = 0;
             foreach (Abilities.Ability a in heroAbs)
             {
@@ -1414,7 +1418,6 @@ namespace Brogue.Engine
                     {
                         hero = new HeroClasses.Mage();
                         HeroClasses.Hero.level = 5;
-                        UpdateAbilities();
                         UpdateAbilities();
                         mainMenuOpen = false;
                         showSaveSlotSelection = true;
