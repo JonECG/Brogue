@@ -66,6 +66,8 @@ namespace Brogue.Enemies
 
         public override void BuildBoss(int i)
         {
+            LoadSprite();
+
             Engine.Engine.Log("VAMP_BOSS_CREATED");
             health = 50 + 20 * i;
             maxHealth = health;

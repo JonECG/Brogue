@@ -84,6 +84,8 @@ namespace Brogue.Enemies
 
         public override void BuildBoss(int i)
         {
+            LoadSprite();
+
             health = 50 + 40 * i;
             maxHealth = health;
             defense = 20 + 5 * i;

@@ -66,7 +66,9 @@ namespace Brogue.Enemies
         }
 
         public override void BuildBoss(int i)
-        {   
+        {
+            LoadSprite();
+
             range = 7;
             health = 30 + 20 * i;
             maxHealth = health;
