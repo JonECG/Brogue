@@ -23,14 +23,7 @@ namespace Brogue.HeroClasses
             Hero.loadSprite();
             visible = true;
             heroRole = Classes.Rogue;
-            inventory.addItem(new Kris(1, 1));
             inventory.addItem(new TheWolverine(1, 1));
-            inventory.addItem(new ProwlerHelm(1, 1));
-            inventory.addItem(new ProwlerChest(1, 1));
-            inventory.addItem(new ProwlerLegs(1, 1));
-            inventory.addItem(new TheOne(1, 1));
-            inventory.addItem(new TheOne(1, 1));
-            inventory.addItem(new BlackPendant(1, 1));
             baseHealth = 225;
             healthPerLevel = 35;
             resetLevel();

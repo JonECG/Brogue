@@ -26,10 +26,7 @@ namespace Brogue.HeroClasses
             Hero.loadSprite();
             visible = true;
             heroRole = Classes.Warrior;
-            inventory.addItem(new Sword(1, 1));
             inventory.addItem(new WarHammer(1, 1));
-            inventory.addItem(new PlateShield(1, 1));
-            inventory.addItem(new PlateShield(1, 1));
             baseHealth = 300;
             healthPerLevel = 50;
             resetLevel();
